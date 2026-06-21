@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="660" viewBox="0 0 980 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+  </defs>
+  <rect width="980" height="660" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Database Indexing — B-Tree vs LSM Tree</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">How indexes work · When to use each · EXPLAIN ANALYZE · Common patterns</text>
+
+  <!-- B-Tree visual -->
+  <rect x="20" y="75" width="460" height="280" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="250" y="99" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">B-Tree Index (PostgreSQL, MySQL)</text>
+  <text x="250" y="117" text-anchor="middle" fill="#7ab8ff" font-size="11">Default index — optimized for reads</text>
+
+  <!-- B-Tree nodes -->
+  <rect x="195" y="128" width="110" height="28" rx="4" fill="#0d1a40" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="250" y="147" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">[500] root</text>
+  <line x1="210" y1="156" x2="130" y2="172" stroke="#388bfd" stroke-width="1.5"/>
+  <line x1="290" y1="156" x2="370" y2="172" stroke="#388bfd" stroke-width="1.5"/>
+
+  <rect x="80" y="172" width="100" height="26" rx="4" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="130" y="190" text-anchor="middle" fill="#7ab8ff" font-size="11">[200]</text>
+  <rect x="320" y="172" width="100" height="26" rx="4" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="370" y="190" text-anchor="middle" fill="#7ab8ff" font-size="11">[800]</text>
+  <line x1="100" y1="198" x2="65" y2="214" stroke="#388bfd" stroke-width="1"/>
+  <line x1="155" y1="198" x2="195" y2="214" stroke="#388bfd" stroke-width="1"/>
+  <line x1="340" y1="198" x2="305" y2="214" stroke="#388bfd" stroke-width="1"/>
+  <line x1="390" y1="198" x2="415" y2="214" stroke="#388bfd" stroke-width="1"/>
+
+  <rect x="30" y="214" width="80" height="24" rx="3" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="70" y="230" text-anchor="middle" fill="#7ab8ff" font-size="10">[100]</text>
+  <rect x="155" y="214" width="80" height="24" rx="3" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="195" y="230" text-anchor="middle" fill="#7ab8ff" font-size="10">[300]</text>
+  <rect x="270" y="214" width="80" height="24" rx="3" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="310" y="230" text-anchor="middle" fill="#7ab8ff" font-size="10">[600]</text>
+  <rect x="395" y="214" width="80" height="24" rx="3" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="435" y="230" text-anchor="middle" fill="#7ab8ff" font-size="10">[900]</text>
+
+  <!-- Arrow showing search path for 650 -->
+  <rect x="35" y="250" width="420" height="60" rx="5" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="245" y="270" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Search for user_id = 650:</text>
+  <text x="245" y="286" text-anchor="middle" fill="#85e89d" font-size="10">Root: 650 &gt; 500? yes → right · [800]: 650 &lt; 800? yes → left · [600]: 650 &gt; 600? yes → found!</text>
+  <text x="245" y="302" text-anchor="middle" fill="#85e89d" font-size="10">Only 3 comparisons for ANY row in the table · O(log n) → never scans all rows</text>
+
+  <!-- Performance comparison -->
+  <rect x="35" y="318" width="420" height="25" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="245" y="335" text-anchor="middle" fill="#f85149" font-size="11">Without index: scan ALL 50M rows = 2.3 seconds</text>
+  <rect x="35" y="347" width="420" height="25" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="245" y="364" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">With index: 3 comparisons = 0.18 milliseconds (13,000× faster)</text>
+
+  <!-- LSM Tree -->
+  <rect x="500" y="75" width="460" height="280" rx="10" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="730" y="99" text-anchor="middle" fill="#f85149" font-size="14" font-weight="bold">LSM Tree (Cassandra, RocksDB)</text>
+  <text x="730" y="117" text-anchor="middle" fill="#ff9090" font-size="11">Optimized for high write throughput</text>
+
+  <rect x="515" y="128" width="430" height="35" rx="5" fill="#330000" stroke="#f85149" stroke-width="1.5"/>
+  <text x="730" y="150" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">MemTable (in-memory buffer)</text>
+  <text x="730" y="164" text-anchor="middle" fill="#ff9090" font-size="10">All writes go HERE first — fast sequential writes in RAM</text>
+
+  <rect x="515" y="172" width="430" height="25" rx="4" fill="#1a0505" stroke="#f85149" stroke-width="1"/>
+  <text x="730" y="189" text-anchor="middle" fill="#ff7b72" font-size="10">Level 0 SSTables (when MemTable full, flush to disk sequentially)</text>
+  <rect x="515" y="203" width="430" height="25" rx="4" fill="#1a0505" stroke="#f85149" stroke-width="1"/>
+  <text x="730" y="220" text-anchor="middle" fill="#ff7b72" font-size="10">Level 1 SSTables (compaction merges and sorts)</text>
+  <rect x="515" y="234" width="430" height="25" rx="4" fill="#1a0505" stroke="#f85149" stroke-width="1"/>
+  <text x="730" y="251" text-anchor="middle" fill="#ff7b72" font-size="10">Level 2 SSTables (older, larger, more compressed)</text>
+
+  <rect x="515" y="267" width="430" height="75" rx="5" fill="#0a0505" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="730" y="288" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">B-Tree vs LSM Tree Trade-off</text>
+  <text x="530" y="308" fill="#cccccc" font-size="10">B-Tree:   Reads fast (one seek), Writes slower (random I/O)</text>
+  <text x="530" y="324" fill="#cccccc" font-size="10">LSM Tree: Reads slower (check multiple levels), Writes very fast (sequential)</text>
+  <text x="530" y="340" fill="#e3b341" font-size="10">Use B-Tree for OLTP (PostgreSQL/MySQL). Use LSM for write-heavy (Cassandra)</text>
+
+  <!-- Index types reference -->
+  <rect x="20" y="375" width="460" height="260" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="250" y="398" text-anchor="middle" fill="#e3b341" font-size="14" font-weight="bold">Index Types Quick Reference</text>
+  <rect x="35" y="408" width="430" height="28" rx="4" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="250" y="426" text-anchor="middle" fill="#7ab8ff" font-size="11">Single column: CREATE INDEX ON orders(user_id)</text>
+  <rect x="35" y="442" width="430" height="28" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1"/>
+  <text x="250" y="460" text-anchor="middle" fill="#85e89d" font-size="11">Composite: CREATE INDEX ON orders(user_id, status, created_at) ← LEFT to RIGHT</text>
+  <rect x="35" y="476" width="430" height="28" rx="4" fill="#1a0a28" stroke="#bc8cff" stroke-width="1"/>
+  <text x="250" y="494" text-anchor="middle" fill="#d2a8ff" font-size="11">Partial: CREATE INDEX ON orders(created_at) WHERE status='pending'</text>
+  <rect x="35" y="510" width="430" height="28" rx="4" fill="#1a1000" stroke="#e3b341" stroke-width="1"/>
+  <text x="250" y="528" text-anchor="middle" fill="#f0c060" font-size="11">Covering: INCLUDE(status, total) — Index Only Scan (never touches table)</text>
+  <rect x="35" y="544" width="430" height="28" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="250" y="562" text-anchor="middle" fill="#ff9090" font-size="11">Expression: CREATE INDEX ON users(LOWER(email)) — function-based</text>
+  <rect x="35" y="578" width="430" height="48" rx="4" fill="#0a1020" stroke="#8b949e" stroke-width="1"/>
+  <text x="250" y="596" text-anchor="middle" fill="#c9d1d9" font-size="11" font-weight="bold">Composite index rule (CRITICAL):</text>
+  <text x="250" y="612" text-anchor="middle" fill="#8b949e" font-size="10">Index used left-to-right. WHERE user_id=? AND status=? → uses index.</text>
+  <text x="250" y="626" text-anchor="middle" fill="#8b949e" font-size="10">WHERE status=? (no user_id) → does NOT use index. Always include leftmost column!</text>
+
+  <!-- EXPLAIN output -->
+  <rect x="500" y="375" width="460" height="260" rx="8" fill="#0a0a0a" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="730" y="398" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">Reading EXPLAIN ANALYZE</text>
+  <rect x="515" y="408" width="430" height="40" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="730" y="424" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">BAD — No index:</text>
+  <text x="730" y="440" text-anchor="middle" fill="#ff9090" font-size="10">Seq Scan on orders (rows=5000000) Execution: 2341ms</text>
+  <rect x="515" y="454" width="430" height="40" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="730" y="470" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">GOOD — With index:</text>
+  <text x="730" y="486" text-anchor="middle" fill="#85e89d" font-size="10">Index Scan using idx_orders_user_id (rows=23) Execution: 0.18ms</text>
+  <rect x="515" y="500" width="430" height="28" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="730" y="519" text-anchor="middle" fill="#85e89d" font-size="10">BEST: Index Only Scan — gets data FROM index, never touches table</text>
+  <text x="515" y="548" fill="#e3b341" font-size="11" font-weight="bold">What to look for:</text>
+  <text x="515" y="566" fill="#f85149" font-size="10">🔴 Seq Scan on large table · Rows Removed by Filter: millions</text>
+  <text x="515" y="582" fill="#3fb950" font-size="10">🟢 Index Scan · Index Only Scan · Execution Time &lt;10ms</text>
+  <text x="515" y="598" fill="#8b949e" font-size="10">Cost rule: adding index = reads 10-1000× faster, writes 5-20% slower</text>
+  <text x="515" y="616" fill="#8b949e" font-size="10">Don't over-index: each index slows INSERT/UPDATE/DELETE</text>
+</svg>

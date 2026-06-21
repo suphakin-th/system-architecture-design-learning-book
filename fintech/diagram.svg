@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="780" viewBox="0 0 1000 780" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+  </defs>
+  <rect width="1000" height="780" fill="url(#bg)"/>
+  <text x="500" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Financial Systems Architecture — Complete Stack</text>
+  <text x="500" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Double-Entry · Immutable Log · HSM · Zero Trust · Payment Networks · ISO 20022</text>
+
+  <!-- Layer 7: Payment Networks (top) -->
+  <rect x="20" y="75" width="960" height="65" rx="8" fill="#0a1020" stroke="#388bfd" stroke-width="2"/>
+  <text x="500" y="97" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Payment Networks (External — Framework Layer)</text>
+  <text x="120" y="122" text-anchor="middle" fill="#7ab8ff" font-size="11">VisaNet (65K tps)</text>
+  <text x="290" y="122" text-anchor="middle" fill="#7ab8ff" font-size="11">Banknet (Mastercard)</text>
+  <text x="460" y="122" text-anchor="middle" fill="#7ab8ff" font-size="11">SWIFT / ISO 20022</text>
+  <text x="640" y="122" text-anchor="middle" fill="#7ab8ff" font-size="11">PromptPay / BAHTNET</text>
+  <text x="840" y="122" text-anchor="middle" fill="#7ab8ff" font-size="11">Alipay / PayNow linkage</text>
+
+  <!-- Layer 6: Security (Zero Trust + HSM) -->
+  <rect x="20" y="155" width="960" height="80" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="500" y="177" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Security Layer — Zero Trust + HSM + PCI DSS</text>
+  <rect x="35" y="186" width="180" height="38" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="125" y="205" text-anchor="middle" fill="#ff9090" font-size="11" font-weight="bold">WAF + DDoS</text>
+  <text x="125" y="220" text-anchor="middle" fill="#ff9090" font-size="10">Cloudflare/AWS Shield</text>
+  <rect x="225" y="186" width="180" height="38" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="315" y="205" text-anchor="middle" fill="#ff9090" font-size="11" font-weight="bold">mTLS (Istio mesh)</text>
+  <text x="315" y="220" text-anchor="middle" fill="#ff9090" font-size="10">All service-to-service</text>
+  <rect x="415" y="186" width="180" height="38" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="505" y="205" text-anchor="middle" fill="#ff9090" font-size="11" font-weight="bold">HSM (Thales/AWS)</text>
+  <text x="505" y="220" text-anchor="middle" fill="#ff9090" font-size="10">Keys never leave hardware</text>
+  <rect x="605" y="186" width="180" height="38" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="695" y="205" text-anchor="middle" fill="#ff9090" font-size="11" font-weight="bold">TLS 1.3 + PCI DSS</text>
+  <text x="695" y="220" text-anchor="middle" fill="#ff9090" font-size="10">Tokenization, no PAN store</text>
+  <rect x="795" y="186" width="170" height="38" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="880" y="205" text-anchor="middle" fill="#ff9090" font-size="11" font-weight="bold">Zero Trust Auth</text>
+  <text x="880" y="220" text-anchor="middle" fill="#ff9090" font-size="10">Never trust, always verify</text>
+
+  <!-- Layer 5: API + Services -->
+  <rect x="20" y="250" width="960" height="165" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="500" y="272" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Microservices (Use Case Layer + Interface Adapters)</text>
+
+  <rect x="35" y="281" width="185" height="120" rx="6" fill="#0d1a40" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="127" y="300" text-anchor="middle" fill="#388bfd" font-size="11" font-weight="bold">Payment Service</text>
+  <text x="127" y="316" text-anchor="middle" fill="#7ab8ff" font-size="10">AuthorizeCard</text>
+  <text x="127" y="330" text-anchor="middle" fill="#7ab8ff" font-size="10">CapturePayment</text>
+  <text x="127" y="344" text-anchor="middle" fill="#7ab8ff" font-size="10">ProcessRefund</text>
+  <text x="127" y="362" text-anchor="middle" fill="#3fb950" font-size="10">→ IPaymentGateway</text>
+  <text x="127" y="376" text-anchor="middle" fill="#3fb950" font-size="10">→ ILedgerService</text>
+
+  <rect x="230" y="281" width="185" height="120" rx="6" fill="#200505" stroke="#f85149" stroke-width="1.5"/>
+  <text x="322" y="300" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">Ledger Service</text>
+  <text x="322" y="316" text-anchor="middle" fill="#ff9090" font-size="10">RecordJournalEntries</text>
+  <text x="322" y="330" text-anchor="middle" fill="#ff9090" font-size="10">GetAccountBalance</text>
+  <text x="322" y="344" text-anchor="middle" fill="#ff9090" font-size="10">ReconcileLedger</text>
+  <text x="322" y="362" text-anchor="middle" fill="#3fb950" font-size="10">Double-entry enforced</text>
+  <text x="322" y="376" text-anchor="middle" fill="#3fb950" font-size="10">DR = CR always</text>
+
+  <rect x="425" y="281" width="185" height="120" rx="6" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="517" y="300" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Fraud Service</text>
+  <text x="517" y="316" text-anchor="middle" fill="#85e89d" font-size="10">RealTimeRiskScore</text>
+  <text x="517" y="330" text-anchor="middle" fill="#85e89d" font-size="10">ML model inference</text>
+  <text x="517" y="344" text-anchor="middle" fill="#85e89d" font-size="10">BlockTransaction</text>
+  <text x="517" y="362" text-anchor="middle" fill="#85e89d" font-size="10">Score 0-100</text>
+  <text x="517" y="376" text-anchor="middle" fill="#85e89d" font-size="10">&gt;80 = block + alert</text>
+
+  <rect x="620" y="281" width="185" height="120" rx="6" fill="#1a0a28" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="712" y="300" text-anchor="middle" fill="#bc8cff" font-size="11" font-weight="bold">Notification Service</text>
+  <text x="712" y="316" text-anchor="middle" fill="#d2a8ff" font-size="10">SendPushNotification</text>
+  <text x="712" y="330" text-anchor="middle" fill="#d2a8ff" font-size="10">SendSMS (OTP)</text>
+  <text x="712" y="344" text-anchor="middle" fill="#d2a8ff" font-size="10">SendEmail (receipt)</text>
+  <text x="712" y="362" text-anchor="middle" fill="#d2a8ff" font-size="10">Async consumer</text>
+  <text x="712" y="376" text-anchor="middle" fill="#d2a8ff" font-size="10">Kafka subscriber</text>
+
+  <rect x="815" y="281" width="150" height="120" rx="6" fill="#201500" stroke="#d29922" stroke-width="1.5"/>
+  <text x="890" y="300" text-anchor="middle" fill="#d29922" font-size="11" font-weight="bold">KYC / AML</text>
+  <text x="890" y="316" text-anchor="middle" fill="#f0c060" font-size="10">VerifyIdentity</text>
+  <text x="890" y="330" text-anchor="middle" fill="#f0c060" font-size="10">Sanctions screening</text>
+  <text x="890" y="344" text-anchor="middle" fill="#f0c060" font-size="10">PEP check</text>
+  <text x="890" y="362" text-anchor="middle" fill="#f0c060" font-size="10">Regulatory reports</text>
+  <text x="890" y="376" text-anchor="middle" fill="#f0c060" font-size="10">STR filing</text>
+
+  <!-- Layer 4: Event Bus -->
+  <rect x="20" y="430" width="960" height="50" rx="8" fill="#0a1020" stroke="#e3b341" stroke-width="2"/>
+  <text x="500" y="450" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Event Bus — Kafka</text>
+  <text x="200" y="470" text-anchor="middle" fill="#f0c060" font-size="11">payment.authorized · payment.captured · payment.failed · transfer.completed · fraud.flagged</text>
+  <text x="730" y="470" text-anchor="middle" fill="#f0c060" font-size="11">All events → Audit Log (immutable)</text>
+
+  <!-- Layer 3: Data -->
+  <rect x="20" y="495" width="960" height="120" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="500" y="516" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Data Layer (Infrastructure)</text>
+
+  <rect x="35" y="525" width="200" height="78" rx="6" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="135" y="545" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">PostgreSQL (Ledger)</text>
+  <text x="135" y="561" text-anchor="middle" fill="#85e89d" font-size="10">journal_entries (append-only)</text>
+  <text x="135" y="575" text-anchor="middle" fill="#85e89d" font-size="10">transactions (immutable)</text>
+  <text x="135" y="591" text-anchor="middle" fill="#85e89d" font-size="10">AES-256 at rest, WAL on</text>
+
+  <rect x="245" y="525" width="200" height="78" rx="6" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="345" y="545" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Redis (Cache)</text>
+  <text x="345" y="561" text-anchor="middle" fill="#85e89d" font-size="10">Idempotency keys (24hr)</text>
+  <text x="345" y="575" text-anchor="middle" fill="#85e89d" font-size="10">Rate limit counters</text>
+  <text x="345" y="591" text-anchor="middle" fill="#85e89d" font-size="10">Session tokens (15min)</text>
+
+  <rect x="455" y="525" width="200" height="78" rx="6" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="555" y="545" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Cassandra (Events)</text>
+  <text x="555" y="561" text-anchor="middle" fill="#85e89d" font-size="10">financial_events (hash chain)</text>
+  <text x="555" y="575" text-anchor="middle" fill="#85e89d" font-size="10">append-only, no DELETE</text>
+  <text x="555" y="591" text-anchor="middle" fill="#85e89d" font-size="10">multi-datacenter replicated</text>
+
+  <rect x="665" y="525" width="145" height="78" rx="6" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="737" y="545" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">S3 Object Lock</text>
+  <text x="737" y="561" text-anchor="middle" fill="#85e89d" font-size="10">Audit archive (7 years)</text>
+  <text x="737" y="575" text-anchor="middle" fill="#85e89d" font-size="10">WORM: cannot delete</text>
+  <text x="737" y="591" text-anchor="middle" fill="#85e89d" font-size="10">Regulatory compliance</text>
+
+  <rect x="820" y="525" width="145" height="78" rx="6" fill="#0a1a28" stroke="#388bfd" stroke-width="1"/>
+  <text x="892" y="545" text-anchor="middle" fill="#388bfd" font-size="11" font-weight="bold">HSM (Thales)</text>
+  <text x="892" y="561" text-anchor="middle" fill="#7ab8ff" font-size="10">Keys never leave device</text>
+  <text x="892" y="575" text-anchor="middle" fill="#7ab8ff" font-size="10">PAN encryption/decrypt</text>
+  <text x="892" y="591" text-anchor="middle" fill="#7ab8ff" font-size="10">PIN verification</text>
+
+  <!-- Reconciliation monitor -->
+  <rect x="20" y="630" width="960" height="55" rx="8" fill="#0a0a0a" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="500" y="653" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Continuous Reconciliation — Run Every Minute</text>
+  <text x="500" y="672" text-anchor="middle" fill="#f0c060" font-size="11">SUM(debits) = SUM(credits) per transaction  ·  Pool balances match external accounts  ·  Kafka lag monitored  ·  Hash chain integrity verified</text>
+
+  <!-- Companies -->
+  <rect x="20" y="700" width="960" height="55" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="500" y="722" text-anchor="middle" fill="#c9d1d9" font-size="12" font-weight="bold">Companies Using This Architecture</text>
+  <text x="100" y="742" fill="#e3b341" font-size="11">Stripe (PostgreSQL Ledger)</text>
+  <text x="280" y="742" fill="#3fb950" font-size="11">Monzo (Cassandra Ledger)</text>
+  <text x="460" y="742" fill="#388bfd" font-size="11">Wise (Multi-currency pools)</text>
+  <text x="640" y="742" fill="#bc8cff" font-size="11">Revolut (PostgreSQL)</text>
+  <text x="800" y="742" fill="#d29922" font-size="11">Thai banks (BAHTNET + PromptPay)</text>
+</svg>
