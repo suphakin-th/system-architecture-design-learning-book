@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="740" viewBox="0 0 980 740" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrP" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#bc8cff"/></marker>
+  </defs>
+  <rect width="980" height="740" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">MVC · MVP · MVVM — UI Architecture Patterns</text>
+  <text x="490" y="57" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">⚠ NOT the same as MVCC (database concurrency) — these are UI organisation patterns</text>
+
+  <!-- ===== MVC ===== -->
+  <text x="163" y="85" text-anchor="middle" fill="#388bfd" font-size="15" font-weight="bold">MVC (1970s, Web)</text>
+  <text x="163" y="103" text-anchor="middle" fill="#8b949e" font-size="11">Rails · Django · Spring · Laravel</text>
+
+  <!-- User -->
+  <rect x="30" y="115" width="90" height="36" rx="6" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="75" y="138" text-anchor="middle" fill="#c9d1d9" font-size="11">User</text>
+
+  <!-- View -->
+  <rect x="30" y="175" width="260" height="70" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="160" y="197" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">View</text>
+  <text x="160" y="215" text-anchor="middle" fill="#7ab8ff" font-size="10">HTML template · ERB · Blade</text>
+  <text x="160" y="231" text-anchor="middle" fill="#7ab8ff" font-size="10">Renders data · Sends user actions to Controller</text>
+
+  <!-- Controller -->
+  <rect x="30" y="270" width="260" height="80" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="160" y="292" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Controller</text>
+  <text x="160" y="310" text-anchor="middle" fill="#85e89d" font-size="10">Receives user input</text>
+  <text x="160" y="326" text-anchor="middle" fill="#85e89d" font-size="10">Calls Model methods</text>
+  <text x="160" y="342" text-anchor="middle" fill="#85e89d" font-size="10">Selects which View to render</text>
+
+  <!-- Model -->
+  <rect x="30" y="375" width="260" height="80" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="160" y="397" text-anchor="middle" fill="#f85149" font-size="12" font-weight="bold">Model</text>
+  <text x="160" y="415" text-anchor="middle" fill="#ff9090" font-size="10">Data + business logic</text>
+  <text x="160" y="431" text-anchor="middle" fill="#ff9090" font-size="10">DB queries (ORM)</text>
+  <text x="160" y="447" text-anchor="middle" fill="#ff9090" font-size="10">Domain rules</text>
+
+  <!-- MVC arrows -->
+  <line x1="120" y1="151" x2="120" y2="175" stroke="#388bfd" stroke-width="1.5" marker-end="url(#arrB)"/>
+  <text x="130" y="167" fill="#388bfd" font-size="9">input</text>
+  <line x1="160" y1="245" x2="160" y2="270" stroke="#3fb950" stroke-width="1.5" marker-end="url(#arrG)"/>
+  <line x1="160" y1="350" x2="160" y2="375" stroke="#f85149" stroke-width="1.5" marker-end="url(#arrR)"/>
+  <text x="170" y="265" fill="#8b949e" font-size="9">calls</text>
+  <text x="170" y="365" fill="#8b949e" font-size="9">reads/writes</text>
+  <!-- Model notifies View (direct coupling) -->
+  <path d="M 30 415 Q -5 300 30 210" stroke="#e3b341" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+  <text x="-10" y="320" fill="#e3b341" font-size="9" transform="rotate(-90,-10,320)">notifies</text>
+
+  <!-- MVC problem note -->
+  <rect x="30" y="470" width="260" height="55" rx="6" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="160" y="492" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">⚠ Problem: Fat Controllers</text>
+  <text x="160" y="510" text-anchor="middle" fill="#ff9090" font-size="10">Business logic leaks into Controller</text>
+  <text x="160" y="526" text-anchor="middle" fill="#ff9090" font-size="10">View-Model coupling (direct notify)</text>
+
+  <!-- ===== MVP ===== -->
+  <text x="490" y="85" text-anchor="middle" fill="#bc8cff" font-size="15" font-weight="bold">MVP (1990s, Desktop/Android)</text>
+  <text x="490" y="103" text-anchor="middle" fill="#8b949e" font-size="11">Old Android · WinForms · Testable</text>
+
+  <rect x="362" y="115" width="90" height="36" rx="6" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="407" y="138" text-anchor="middle" fill="#c9d1d9" font-size="11">User</text>
+
+  <!-- View (MVP) -->
+  <rect x="362" y="175" width="255" height="80" rx="8" fill="#0a1628" stroke="#bc8cff" stroke-width="2"/>
+  <text x="489" y="197" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">View (implements IView)</text>
+  <text x="489" y="215" text-anchor="middle" fill="#d2a8ff" font-size="10">ONLY renders — no logic</text>
+  <text x="489" y="231" text-anchor="middle" fill="#d2a8ff" font-size="10">Calls presenter.onButtonClicked()</text>
+  <text x="489" y="247" text-anchor="middle" fill="#d2a8ff" font-size="10">Implements: showSuccess(), showError()</text>
+
+  <!-- Presenter (MVP) -->
+  <rect x="362" y="280" width="255" height="100" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="2.5"/>
+  <text x="489" y="302" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">Presenter</text>
+  <text x="489" y="320" text-anchor="middle" fill="#d2a8ff" font-size="10">ALL display logic lives here</text>
+  <text x="489" y="336" text-anchor="middle" fill="#d2a8ff" font-size="10">Gets data from Model</text>
+  <text x="489" y="352" text-anchor="middle" fill="#d2a8ff" font-size="10">Calls view.showX() methods</text>
+  <text x="489" y="368" text-anchor="middle" fill="#3fb950" font-size="10">★ Testable with MockView (no DOM!)</text>
+
+  <!-- Model (MVP) -->
+  <rect x="362" y="405" width="255" height="65" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="489" y="427" text-anchor="middle" fill="#f85149" font-size="12" font-weight="bold">Model</text>
+  <text x="489" y="445" text-anchor="middle" fill="#ff9090" font-size="10">Data + business logic</text>
+  <text x="489" y="461" text-anchor="middle" fill="#ff9090" font-size="10">Knows NOTHING about View</text>
+
+  <!-- MVP arrows -->
+  <line x1="407" y1="151" x2="450" y2="175" stroke="#bc8cff" stroke-width="1.5" marker-end="url(#arrP)"/>
+  <line x1="489" y1="255" x2="489" y2="280" stroke="#bc8cff" stroke-width="1.5" marker-end="url(#arrP)"/>
+  <line x1="489" y1="380" x2="489" y2="405" stroke="#f85149" stroke-width="1.5" marker-end="url(#arrR)"/>
+  <!-- Presenter calls View back -->
+  <path d="M 362 330 Q 340 260 362 220" stroke="#bc8cff" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrP)"/>
+  <text x="325" y="278" fill="#bc8cff" font-size="9" transform="rotate(-90,325,278)">updates</text>
+
+  <!-- MVP advantage note -->
+  <rect x="362" y="485" width="255" height="55" rx="6" fill="#0a2010" stroke="#3fb950" stroke-width="1"/>
+  <text x="489" y="507" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">✓ Key advantage: Testable</text>
+  <text x="489" y="525" text-anchor="middle" fill="#85e89d" font-size="10">MockView → test Presenter without DOM</text>
+
+  <!-- ===== MVVM ===== -->
+  <text x="818" y="85" text-anchor="middle" fill="#e3b341" font-size="15" font-weight="bold">MVVM (2005, Modern)</text>
+  <text x="818" y="103" text-anchor="middle" fill="#8b949e" font-size="11">React · Vue · SwiftUI · Jetpack Compose</text>
+
+  <rect x="727" y="115" width="90" height="36" rx="6" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="772" y="138" text-anchor="middle" fill="#c9d1d9" font-size="11">User</text>
+
+  <!-- View (MVVM) -->
+  <rect x="700" y="175" width="260" height="80" rx="8" fill="#0a1628" stroke="#e3b341" stroke-width="2"/>
+  <text x="830" y="197" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">View (React/Vue/SwiftUI)</text>
+  <text x="830" y="215" text-anchor="middle" fill="#f0c060" font-size="10">DECLARATIVE — no logic</text>
+  <text x="830" y="231" text-anchor="middle" fill="#f0c060" font-size="10">Binds to ViewModel state</text>
+  <text x="830" y="247" text-anchor="middle" fill="#f0c060" font-size="10">AUTO-UPDATES when state changes</text>
+
+  <!-- Data binding arrows (two-way) -->
+  <line x1="770" y1="151" x2="800" y2="175" stroke="#e3b341" stroke-width="1.5" marker-end="url(#arrY)"/>
+  <line x1="785" y1="175" x2="785" y2="151" stroke="#e3b341" stroke-width="1.5" marker-end="url(#arrY)" stroke-dasharray="4,3"/>
+  <text x="800" y="164" fill="#e3b341" font-size="9">auto-bind</text>
+
+  <!-- ViewModel -->
+  <rect x="700" y="280" width="260" height="130" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="830" y="302" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">ViewModel (React Hook)</text>
+  <text x="830" y="320" text-anchor="middle" fill="#f0c060" font-size="10">Reactive state: isLoading, error, data</text>
+  <text x="830" y="336" text-anchor="middle" fill="#f0c060" font-size="10">Computed: total, canSubmit</text>
+  <text x="830" y="352" text-anchor="middle" fill="#f0c060" font-size="10">Commands: placeOrder(), addItem()</text>
+  <text x="830" y="368" text-anchor="middle" fill="#3fb950" font-size="10">State changes → View auto-renders</text>
+  <text x="830" y="384" text-anchor="middle" fill="#3fb950" font-size="10">No manual DOM update needed!</text>
+  <text x="830" y="400" text-anchor="middle" fill="#e3b341" font-size="10">React: const vm = useOrderViewModel()</text>
+
+  <!-- Model (MVVM) -->
+  <rect x="700" y="435" width="260" height="65" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="830" y="457" text-anchor="middle" fill="#f85149" font-size="12" font-weight="bold">Model / Service</text>
+  <text x="830" y="475" text-anchor="middle" fill="#ff9090" font-size="10">orderService.place(items)</text>
+  <text x="830" y="491" text-anchor="middle" fill="#ff9090" font-size="10">API calls · Business logic · DB</text>
+
+  <!-- Two-way binding arrow (big, central) -->
+  <line x1="830" y1="255" x2="830" y2="280" stroke="#e3b341" stroke-width="2" marker-end="url(#arrY)"/>
+  <line x1="810" y1="280" x2="810" y2="255" stroke="#e3b341" stroke-width="2" marker-end="url(#arrY)" stroke-dasharray="5,3"/>
+  <text x="838" y="270" fill="#e3b341" font-size="9" font-weight="bold">TWO-WAY</text>
+  <text x="838" y="282" fill="#e3b341" font-size="9" font-weight="bold">BINDING</text>
+  <line x1="830" y1="410" x2="830" y2="435" stroke="#f85149" stroke-width="1.5" marker-end="url(#arrR)"/>
+
+  <!-- MVVM advantage note -->
+  <rect x="700" y="515" width="260" height="55" rx="6" fill="#1a1000" stroke="#e3b341" font-weight="1"/>
+  <text x="830" y="537" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">★ Auto-sync: no manual DOM</text>
+  <text x="830" y="555" text-anchor="middle" fill="#f0c060" font-size="10">State changes → UI re-renders automatically</text>
+
+  <!-- Bottom comparison table -->
+  <rect x="20" y="590" width="940" height="130" rx="8" fill="#0a0a0a" stroke="#30363d" stroke-width="1.5"/>
+  <text x="490" y="612" text-anchor="middle" fill="#c9d1d9" font-size="13" font-weight="bold">Pattern Comparison</text>
+  <!-- Headers -->
+  <text x="130" y="634" fill="#8b949e" font-size="11" font-weight="bold" text-anchor="middle">Aspect</text>
+  <text x="300" y="634" fill="#388bfd" font-size="11" font-weight="bold" text-anchor="middle">MVC</text>
+  <text x="490" y="634" fill="#bc8cff" font-size="11" font-weight="bold" text-anchor="middle">MVP</text>
+  <text x="680" y="634" fill="#e3b341" font-size="11" font-weight="bold" text-anchor="middle">MVVM</text>
+  <!-- Rows -->
+  <text x="130" y="654" fill="#6e7681" font-size="10" text-anchor="middle">Testing</text>
+  <text x="300" y="654" fill="#f85149" font-size="10" text-anchor="middle">Hard (DOM needed)</text>
+  <text x="490" y="654" fill="#3fb950" font-size="10" text-anchor="middle">Easy (MockView)</text>
+  <text x="680" y="654" fill="#3fb950" font-size="10" text-anchor="middle">Easy (test state)</text>
+  <text x="130" y="672" fill="#6e7681" font-size="10" text-anchor="middle">UI Updates</text>
+  <text x="300" y="672" fill="#cccccc" font-size="10" text-anchor="middle">Manual (controller)</text>
+  <text x="490" y="672" fill="#cccccc" font-size="10" text-anchor="middle">Manual (presenter)</text>
+  <text x="680" y="672" fill="#3fb950" font-size="10" text-anchor="middle">Automatic (binding)</text>
+  <text x="130" y="690" fill="#6e7681" font-size="10" text-anchor="middle">Best for</text>
+  <text x="300" y="690" fill="#cccccc" font-size="10" text-anchor="middle">Server-side web</text>
+  <text x="490" y="690" fill="#cccccc" font-size="10" text-anchor="middle">Android old / Desktop</text>
+  <text x="680" y="690" fill="#cccccc" font-size="10" text-anchor="middle">React / Vue / SwiftUI</text>
+  <text x="130" y="708" fill="#6e7681" font-size="10" text-anchor="middle">Examples</text>
+  <text x="300" y="708" fill="#cccccc" font-size="10" text-anchor="middle">Rails · Django · Spring</text>
+  <text x="490" y="708" fill="#cccccc" font-size="10" text-anchor="middle">WinForms · Old Android</text>
+  <text x="680" y="708" fill="#cccccc" font-size="10" text-anchor="middle">React Hooks · Vue 3 · SwiftUI</text>
+</svg>

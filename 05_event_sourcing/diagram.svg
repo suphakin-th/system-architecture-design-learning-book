@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="640" viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arr" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="960" height="640" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Event Sourcing</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">State = Replay of all events · Append-only log is the source of truth</text>
+
+  <!-- Command comes in -->
+  <rect x="360" y="75" width="240" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="480" y="102" text-anchor="middle" fill="#c9d1d9" font-size="13" font-weight="bold">Command: PlaceOrder(orderId)</text>
+  <line x1="480" y1="117" x2="480" y2="148" stroke="#cccccc" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Use Case -->
+  <rect x="280" y="148" width="400" height="55" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="480" y="171" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">PlaceOrderUseCase</text>
+  <text x="480" y="192" text-anchor="middle" fill="#7ab8ff" font-size="11">Load events → Reconstitute entity → Apply rule → Append new event</text>
+
+  <!-- Load events -->
+  <line x1="350" y1="203" x2="200" y2="240" stroke="#388bfd" stroke-width="1.5" marker-end="url(#arrB)"/>
+  <text x="250" y="228" fill="#7ab8ff" font-size="10">load(orderId)</text>
+
+  <!-- Event Store -->
+  <rect x="30" y="240" width="340" height="200" rx="10" fill="#200505" stroke="#f85149" stroke-width="2.5"/>
+  <text x="200" y="265" text-anchor="middle" fill="#f85149" font-size="14" font-weight="bold">Event Store</text>
+  <text x="200" y="284" text-anchor="middle" fill="#ff7b72" font-size="11">Append-only log — never update, never delete</text>
+  <rect x="50" y="295" width="300" height="26" rx="5" fill="#ff6b6b22" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="200" y="313" text-anchor="middle" fill="#ff9090" font-size="11">v1: OrderCreated { orderId, customerId }</text>
+  <rect x="50" y="328" width="300" height="26" rx="5" fill="#ff6b6b22" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="200" y="346" text-anchor="middle" fill="#ff9090" font-size="11">v2: ItemAdded { productId, qty, price }</text>
+  <rect x="50" y="361" width="300" height="26" rx="5" fill="#ff6b6b22" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="200" y="379" text-anchor="middle" fill="#ff9090" font-size="11">v3: ItemAdded { productId, qty, price }</text>
+  <rect x="50" y="394" width="300" height="26" rx="5" fill="#3fb95022" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="200" y="412" text-anchor="middle" fill="#85e89d" font-size="11" font-weight="bold">v4: OrderPlaced ← NEW event appended</text>
+
+  <!-- Return events to use case -->
+  <line x1="340" y1="340" x2="390" y2="280" stroke="#f85149" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+  <text x="380" y="306" fill="#ff7b72" font-size="10">events[]</text>
+
+  <!-- Entity reconstitution box -->
+  <rect x="530" y="215" width="340" height="100" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="2"/>
+  <text x="700" y="238" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="bold">Order Entity Reconstitution</text>
+  <text x="700" y="258" text-anchor="middle" fill="#d2a8ff" font-size="11">Order.reconstitute(events)</text>
+  <text x="700" y="276" text-anchor="middle" fill="#d2a8ff" font-size="11">Replay: apply(OrderCreated) → apply(ItemAdded×2)</text>
+  <text x="700" y="294" text-anchor="middle" fill="#d2a8ff" font-size="11">→ Current state: Order { status: NEW, items: [2] }</text>
+  <line x1="530" y1="260" x2="480" y2="205" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+
+  <!-- Publish event -->
+  <line x1="610" y1="315" x2="700" y2="360" stroke="#e3b341" stroke-width="1.5" marker-end="url(#arrY)"/>
+  <text x="680" y="344" fill="#e3b341" font-size="10">publish</text>
+
+  <!-- Event Bus / Projections -->
+  <rect x="530" y="360" width="400" height="55" rx="8" fill="#201500" stroke="#e3b341" stroke-width="2"/>
+  <text x="730" y="384" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Event Bus</text>
+  <text x="730" y="403" text-anchor="middle" fill="#f0c060" font-size="11">OrderPlacedEvent → fans out to projections</text>
+
+  <!-- Projections -->
+  <rect x="530" y="440" width="180" height="52" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="620" y="462" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Order Summary</text>
+  <text x="620" y="480" text-anchor="middle" fill="#85e89d" font-size="10">Read model (Redis)</text>
+
+  <rect x="750" y="440" width="180" height="52" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="840" y="462" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">Analytics Projection</text>
+  <text x="840" y="480" text-anchor="middle" fill="#7ab8ff" font-size="10">Data warehouse write</text>
+
+  <line x1="660" y1="415" x2="640" y2="440" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrG)"/>
+  <line x1="790" y1="415" x2="820" y2="440" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrB)"/>
+
+  <!-- Snapshot box -->
+  <rect x="30" y="465" width="340" height="55" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="200" y="488" text-anchor="middle" fill="#8b949e" font-size="12" font-weight="bold">Snapshots (Performance)</text>
+  <text x="200" y="507" text-anchor="middle" fill="#6e7681" font-size="11">Store state at v1000 → replay only v1001+ on load</text>
+
+  <!-- Big tech -->
+  <text x="40" y="556" fill="#8b949e" font-size="12" font-weight="bold">Big Tech:</text>
+  <text x="120" y="556" fill="#388bfd" font-size="12">Stripe (payment ledger)</text>
+  <text x="305" y="556" fill="#3fb950" font-size="12">Shopify (order state)</text>
+  <text x="490" y="556" fill="#e3b341" font-size="12">ABN AMRO Bank (Axon)</text>
+  <text x="700" y="556" fill="#f85149" font-size="12">EventStoreDB users</text>
+
+  <text x="40" y="584" fill="#3fb950" font-size="11">✓ Full audit trail  ✓ Time travel  ✓ Replay for new projections  ✓ Natural EDA integration</text>
+  <text x="40" y="604" fill="#f85149" font-size="11">✗ High complexity  ✗ Storage grows forever  ✗ Schema evolution hard  ✗ Not for simple CRUD</text>
+</svg>

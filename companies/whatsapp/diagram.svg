@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="580" viewBox="0 0 960 580" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#25d366"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+  </defs>
+  <rect width="960" height="580" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">WhatsApp Architecture — 50 Engineers, 2 Billion Users</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Erlang VM · 2M connections/server · Persistent TCP · Geographic sharding · E2E encryption</text>
+
+  <!-- User A -->
+  <rect x="30" y="80" width="140" height="70" rx="8" fill="#21262d" stroke="#25d366" stroke-width="2"/>
+  <text x="100" y="108" text-anchor="middle" fill="#25d366" font-size="13" font-weight="bold">User A</text>
+  <text x="100" y="126" text-anchor="middle" fill="#85e89d" font-size="10">(Bangkok, iPhone)</text>
+  <text x="100" y="142" text-anchor="middle" fill="#85e89d" font-size="10">Persistent TCP conn</text>
+
+  <!-- Ejabberd server -->
+  <rect x="240" y="60" width="480" height="290" rx="10" fill="#0a1a0a" stroke="#25d366" stroke-width="2.5"/>
+  <text x="480" y="86" text-anchor="middle" fill="#25d366" font-size="15" font-weight="bold">Ejabberd (Erlang/XMPP Server)</text>
+  <text x="480" y="104" text-anchor="middle" fill="#85e89d" font-size="11">1 Erlang process per user = 2KB · 2M users per server · FreeBSD for max connections</text>
+
+  <!-- Erlang actor per user -->
+  <rect x="255" y="115" width="200" height="100" rx="6" fill="#0a2010" stroke="#25d366" stroke-width="1.5"/>
+  <text x="355" y="136" text-anchor="middle" fill="#25d366" font-size="11" font-weight="bold">User Session (GenServer)</text>
+  <text x="355" y="154" text-anchor="middle" fill="#85e89d" font-size="10">-module(user_session)</text>
+  <text x="355" y="170" text-anchor="middle" fill="#85e89d" font-size="10">Presence: online/offline</text>
+  <text x="355" y="186" text-anchor="middle" fill="#85e89d" font-size="10">Routes messages to peer</text>
+  <text x="355" y="202" text-anchor="middle" fill="#85e89d" font-size="10">Handles delivery receipts</text>
+
+  <!-- Presence DB (Mnesia) -->
+  <rect x="475" y="115" width="230" height="100" rx="6" fill="#0a1628" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="590" y="136" text-anchor="middle" fill="#388bfd" font-size="11" font-weight="bold">Mnesia (Erlang in-RAM DB)</text>
+  <text x="590" y="154" text-anchor="middle" fill="#7ab8ff" font-size="10">Presence data (online/offline)</text>
+  <text x="590" y="170" text-anchor="middle" fill="#7ab8ff" font-size="10">Session state (active connections)</text>
+  <text x="590" y="186" text-anchor="middle" fill="#7ab8ff" font-size="10">Offline queue (undelivered msgs)</text>
+  <text x="590" y="202" text-anchor="middle" fill="#7ab8ff" font-size="10">Hot data: always in RAM</text>
+
+  <!-- Message routing -->
+  <rect x="255" y="228" width="450" height="105" rx="6" fill="#0a0a0a" stroke="#25d366" stroke-width="1"/>
+  <text x="480" y="250" text-anchor="middle" fill="#25d366" font-size="12" font-weight="bold">Message Delivery Logic</text>
+  <text x="270" y="272" fill="#85e89d" font-size="10">Is User B online?</text>
+  <text x="270" y="290" fill="#25d366" font-size="10" font-weight="bold">YES → push via TCP</text>
+  <text x="270" y="308" fill="#25d366" font-size="10">immediately (sub-second)</text>
+  <text x="480" y="272" fill="#85e89d" font-size="10">NO?</text>
+  <text x="480" y="290" fill="#388bfd" font-size="10" font-weight="bold">→ store in offline queue</text>
+  <text x="480" y="308" fill="#388bfd" font-size="10">(Mnesia) until User B connects</text>
+
+  <!-- User B -->
+  <rect x="790" y="80" width="140" height="70" rx="8" fill="#21262d" stroke="#25d366" stroke-width="2"/>
+  <text x="860" y="108" text-anchor="middle" fill="#25d366" font-size="13" font-weight="bold">User B</text>
+  <text x="860" y="126" text-anchor="middle" fill="#85e89d" font-size="10">(Singapore, Android)</text>
+  <text x="860" y="142" text-anchor="middle" fill="#85e89d" font-size="10">Persistent TCP conn</text>
+
+  <!-- Arrows -->
+  <line x1="170" y1="115" x2="240" y2="200" stroke="#25d366" stroke-width="2" marker-end="url(#arrG)"/>
+  <line x1="720" y1="200" x2="790" y2="115" stroke="#25d366" stroke-width="2" marker-end="url(#arrG)"/>
+
+  <!-- Geographic sharding -->
+  <rect x="30" y="385" width="900" height="80" rx="8" fill="#161b22" stroke="#25d366" stroke-width="1.5"/>
+  <text x="480" y="407" text-anchor="middle" fill="#25d366" font-size="13" font-weight="bold">Geographic Sharding by Phone Number</text>
+  <text x="50" y="430" fill="#85e89d" font-size="11">hash(+66812345678) % N → APAC shard (Bangkok server)</text>
+  <text x="50" y="448" fill="#85e89d" font-size="11">EU numbers → EU shards (Frankfurt) · US numbers → US shards · India → India (data localization law)</text>
+  <text x="50" y="466" fill="#25d366" font-size="10">GDPR: EU user data must physically stay in EU · WhatsApp compliance: geographic sharding solves this</text>
+
+  <!-- E2E encryption box -->
+  <rect x="30" y="482" width="430" height="75" rx="8" fill="#0a1a0a" stroke="#25d366" stroke-width="1.5"/>
+  <text x="245" y="504" text-anchor="middle" fill="#25d366" font-size="12" font-weight="bold">End-to-End Encryption (Signal Protocol)</text>
+  <text x="50" y="524" fill="#85e89d" font-size="11">A + B exchange public keys → derive shared secret (Diffie-Hellman)</text>
+  <text x="50" y="542" fill="#85e89d" font-size="11">WhatsApp servers see ONLY ciphertext · Cannot read your messages · Became a relay, not a store</text>
+
+  <!-- The math -->
+  <rect x="480" y="482" width="450" height="75" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="705" y="504" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">The 50-Engineer Math</text>
+  <text x="500" y="524" fill="#cccccc" font-size="11">2B users / 50 engineers = 40M users per engineer</text>
+  <text x="500" y="542" fill="#cccccc" font-size="11">Why: Erlang+Mnesia+XMPP = battle-tested; minimal custom code; no content moderation (E2E)</text>
+</svg>

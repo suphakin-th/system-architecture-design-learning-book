@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="660" viewBox="0 0 980 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#4285f4"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#34a853"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#fbbc04"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#ea4335"/></marker>
+  </defs>
+  <rect width="980" height="660" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Google Architecture — Papers That Changed the Industry</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">GFS (2003) → MapReduce (2004) → Bigtable (2006) → Borg (2003) → Spanner (2012) → Kubernetes (2014)</text>
+
+  <!-- GFS -->
+  <rect x="20" y="80" width="220" height="160" rx="8" fill="#0a1020" stroke="#4285f4" stroke-width="2"/>
+  <text x="130" y="103" text-anchor="middle" fill="#4285f4" font-size="13" font-weight="bold">GFS (2003)</text>
+  <text x="130" y="121" text-anchor="middle" fill="#7ab8ff" font-size="10">Google File System</text>
+  <rect x="35" y="130" width="190" height="30" rx="4" fill="#0d1a40" stroke="#4285f4" stroke-width="1"/>
+  <text x="130" y="150" text-anchor="middle" fill="#4285f4" font-size="11" font-weight="bold">1 Master (metadata)</text>
+  <rect x="35" y="167" width="190" height="30" rx="4" fill="#0d1a40" stroke="#4285f4" stroke-width="1"/>
+  <text x="130" y="187" text-anchor="middle" fill="#4285f4" font-size="11">N Chunkservers (data)</text>
+  <text x="130" y="210" fill="#8b949e" font-size="10" text-anchor="middle">3 replicas per chunk</text>
+  <text x="130" y="225" fill="#8b949e" font-size="10" text-anchor="middle">Failure = normal, not exception</text>
+  <text x="130" y="240" fill="#34a853" font-size="10" text-anchor="middle">→ Created: HDFS, Amazon S3</text>
+
+  <!-- MapReduce -->
+  <rect x="255" y="80" width="220" height="160" rx="8" fill="#0a2010" stroke="#34a853" stroke-width="2"/>
+  <text x="365" y="103" text-anchor="middle" fill="#34a853" font-size="13" font-weight="bold">MapReduce (2004)</text>
+  <text x="365" y="121" text-anchor="middle" fill="#85e89d" font-size="10">Distributed Data Processing</text>
+  <rect x="270" y="130" width="190" height="30" rx="4" fill="#0a2810" stroke="#34a853" stroke-width="1"/>
+  <text x="365" y="150" text-anchor="middle" fill="#34a853" font-size="11" font-weight="bold">Map: parallel on each chunk</text>
+  <rect x="270" y="167" width="190" height="30" rx="4" fill="#0a2810" stroke="#34a853" stroke-width="1"/>
+  <text x="365" y="187" text-anchor="middle" fill="#34a853" font-size="11">Reduce: aggregate by key</text>
+  <text x="365" y="210" fill="#8b949e" font-size="10" text-anchor="middle">def map(word) → emit(word, 1)</text>
+  <text x="365" y="225" fill="#8b949e" font-size="10" text-anchor="middle">def reduce(key, vals) → sum</text>
+  <text x="365" y="240" fill="#34a853" font-size="10" text-anchor="middle">→ Created: Hadoop, Spark, Flink</text>
+
+  <!-- Bigtable -->
+  <rect x="490" y="80" width="220" height="160" rx="8" fill="#1a0a00" stroke="#fbbc04" stroke-width="2"/>
+  <text x="600" y="103" text-anchor="middle" fill="#fbbc04" font-size="13" font-weight="bold">Bigtable (2006)</text>
+  <text x="600" y="121" text-anchor="middle" fill="#f0c060" font-size="10">Distributed Wide-Column Store</text>
+  <rect x="505" y="130" width="190" height="30" rx="4" fill="#1a1000" stroke="#fbbc04" stroke-width="1"/>
+  <text x="600" y="150" text-anchor="middle" fill="#fbbc04" font-size="10">row: URL · column: metadata</text>
+  <rect x="505" y="167" width="190" height="30" rx="4" fill="#1a1000" stroke="#fbbc04" stroke-width="1"/>
+  <text x="600" y="187" text-anchor="middle" fill="#fbbc04" font-size="10">Timestamps: multiple versions</text>
+  <text x="600" y="210" fill="#8b949e" font-size="10" text-anchor="middle">Sorted by row key (URL)</text>
+  <text x="600" y="225" fill="#8b949e" font-size="10" text-anchor="middle">Millions of reads/writes/sec</text>
+  <text x="600" y="240" fill="#fbbc04" font-size="10" text-anchor="middle">→ Created: Cassandra, HBase</text>
+
+  <!-- Spanner -->
+  <rect x="725" y="80" width="235" height="160" rx="8" fill="#200505" stroke="#ea4335" stroke-width="2"/>
+  <text x="842" y="103" text-anchor="middle" fill="#ea4335" font-size="13" font-weight="bold">Spanner (2012)</text>
+  <text x="842" y="121" text-anchor="middle" fill="#ff9090" font-size="10">Global Consistent SQL</text>
+  <rect x="740" y="130" width="205" height="30" rx="4" fill="#200505" stroke="#ea4335" stroke-width="1"/>
+  <text x="842" y="150" text-anchor="middle" fill="#ea4335" font-size="10" font-weight="bold">TrueTime: atomic clocks + GPS</text>
+  <rect x="740" y="167" width="205" height="30" rx="4" fill="#200505" stroke="#ea4335" stroke-width="1"/>
+  <text x="842" y="187" text-anchor="middle" fill="#ea4335" font-size="10">Global ACID transactions</text>
+  <text x="842" y="210" fill="#8b949e" font-size="10" text-anchor="middle">Solves: can't be Consistent +</text>
+  <text x="842" y="224" fill="#8b949e" font-size="10" text-anchor="middle">Available + Partition-tolerant?</text>
+  <text x="842" y="238" fill="#ea4335" font-size="10" text-anchor="middle">→ Physics solved it</text>
+
+  <!-- Borg / Kubernetes -->
+  <rect x="20" y="265" width="460" height="130" rx="8" fill="#0a1628" stroke="#4285f4" stroke-width="2"/>
+  <text x="250" y="288" text-anchor="middle" fill="#4285f4" font-size="13" font-weight="bold">Borg (2003) → Kubernetes (2014)</text>
+  <text x="250" y="306" text-anchor="middle" fill="#7ab8ff" font-size="11">Container orchestration for 2M+ servers</text>
+  <rect x="35" y="316" width="200" height="65" rx="6" fill="#0d1a40" stroke="#4285f4" stroke-width="1"/>
+  <text x="135" y="336" text-anchor="middle" fill="#4285f4" font-size="11" font-weight="bold">Borgmaster (brain)</text>
+  <text x="135" y="354" text-anchor="middle" fill="#7ab8ff" font-size="10">Accepts job requests</text>
+  <text x="135" y="370" text-anchor="middle" fill="#7ab8ff" font-size="10">Schedules tasks to machines</text>
+  <rect x="255" y="316" width="210" height="65" rx="6" fill="#0d1a40" stroke="#4285f4" stroke-width="1"/>
+  <text x="360" y="336" text-anchor="middle" fill="#4285f4" font-size="11" font-weight="bold">Borglet (agent)</text>
+  <text x="360" y="354" text-anchor="middle" fill="#7ab8ff" font-size="10">On every machine</text>
+  <text x="360" y="370" text-anchor="middle" fill="#7ab8ff" font-size="10">Starts/stops tasks</text>
+  <text x="250" y="388" text-anchor="middle" fill="#34a853" font-size="10">Same engineers → open-sourced as Kubernetes → changed the industry</text>
+
+  <!-- gRPC -->
+  <rect x="500" y="265" width="460" height="130" rx="8" fill="#0a2010" stroke="#34a853" stroke-width="2"/>
+  <text x="730" y="288" text-anchor="middle" fill="#34a853" font-size="13" font-weight="bold">gRPC (2016) — Service Communication</text>
+  <text x="730" y="306" text-anchor="middle" fill="#85e89d" font-size="11">Replaced REST for 1M+ internal service calls/second</text>
+  <rect x="515" y="316" width="200" height="65" rx="6" fill="#0a2810" stroke="#34a853" stroke-width="1"/>
+  <text x="615" y="336" text-anchor="middle" fill="#34a853" font-size="11" font-weight="bold">Protocol Buffers</text>
+  <text x="615" y="354" text-anchor="middle" fill="#85e89d" font-size="10">Binary (3-10x smaller than JSON)</text>
+  <text x="615" y="370" text-anchor="middle" fill="#85e89d" font-size="10">Type-safe schema</text>
+  <rect x="735" y="316" width="210" height="65" rx="6" fill="#0a2810" stroke="#34a853" stroke-width="1"/>
+  <text x="840" y="336" text-anchor="middle" fill="#34a853" font-size="11" font-weight="bold">HTTP/2 Transport</text>
+  <text x="840" y="354" text-anchor="middle" fill="#85e89d" font-size="10">Multiplexed connections</text>
+  <text x="840" y="370" text-anchor="middle" fill="#85e89d" font-size="10">Bidirectional streaming</text>
+  <text x="730" y="388" text-anchor="middle" fill="#34a853" font-size="10">Used by: gRPC-web (mobile), internal Google microservices, adopted by Uber, Lyft, Square</text>
+
+  <!-- Industry impact table -->
+  <rect x="20" y="420" width="940" height="100" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="490" y="442" text-anchor="middle" fill="#fbbc04" font-size="13" font-weight="bold">Papers → Industry Products (Google's architectural gifts to the world)</text>
+  <text x="40" y="464" fill="#4285f4" font-size="11" font-weight="bold">GFS (2003)</text><text x="120" y="464" fill="#cccccc" font-size="11"> → HDFS (Hadoop), S3 (Amazon), Azure Blob Storage</text>
+  <text x="40" y="482" fill="#34a853" font-size="11" font-weight="bold">MapReduce (2004)</text><text x="160" y="482" fill="#cccccc" font-size="11"> → Apache Hadoop, Apache Spark, Apache Flink, Hive</text>
+  <text x="40" y="500" fill="#fbbc04" font-size="11" font-weight="bold">Bigtable (2006)</text><text x="120" y="500" fill="#cccccc" font-size="11"> → Apache Cassandra, Apache HBase, Amazon DynamoDB</text>
+  <text x="500" y="464" fill="#ea4335" font-size="11" font-weight="bold">Spanner (2012)</text><text x="585" y="464" fill="#cccccc" font-size="11"> → CockroachDB, YugabyteDB, TiDB</text>
+  <text x="500" y="482" fill="#4285f4" font-size="11" font-weight="bold">Borg (2003)</text><text x="565" y="482" fill="#cccccc" font-size="11"> → Kubernetes (open-sourced Borg for the world)</text>
+  <text x="500" y="500" fill="#34a853" font-size="11" font-weight="bold">Dremel (2010)</text><text x="575" y="500" fill="#cccccc" font-size="11"> → Apache Parquet format, BigQuery, Presto, Athena</text>
+
+  <text x="40" y="556" fill="#34a853" font-size="11">✓ Google published everything → the entire industry benefited → talent attraction worth more than competitive advantage</text>
+  <text x="40" y="576" fill="#ea4335" font-size="11">✗ Massive operational complexity  ✗ Requires 100,000+ engineers to maintain  ✗ Not applicable at startup scale</text>
+  <text x="40" y="596" fill="#fbbc04" font-size="11">Key lesson: Physics solved distributed consensus (atomic clocks in Spanner). Sometimes the right answer is outside software.</text>
+</svg>

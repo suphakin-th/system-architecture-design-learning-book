@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="620" viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrP" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#bc8cff"/></marker>
+  </defs>
+  <rect width="960" height="620" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Serverless Architecture (FaaS)</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Functions triggered by events · Auto-scale · Pay per 100ms · No server management</text>
+
+  <!-- Client -->
+  <rect x="380" y="80" width="200" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="480" y="107" text-anchor="middle" fill="#c9d1d9" font-size="14" font-weight="bold">Client (Browser / Mobile)</text>
+
+  <!-- API Gateway -->
+  <rect x="330" y="166" width="300" height="48" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="480" y="186" text-anchor="middle" fill="#e3b341" font-size="14" font-weight="bold">API Gateway</text>
+  <text x="480" y="204" text-anchor="middle" fill="#f0c060" font-size="11">Auth · Route · HTTPS · Throttle</text>
+  <line x1="480" y1="122" x2="480" y2="166" stroke="#8b949e" stroke-width="1.8" marker-end="url(#arrY)"/>
+
+  <!-- Lambda 1: PlaceOrder -->
+  <rect x="150" y="264" width="300" height="130" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="300" y="287" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Lambda: PlaceOrder</text>
+  <text x="300" y="305" text-anchor="middle" fill="#7ab8ff" font-size="11">(Interface Adapter layer)</text>
+  <rect x="165" y="313" width="270" height="28" rx="5" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="300" y="332" text-anchor="middle" fill="#ff9090" font-size="11">handler → PlaceOrderUseCase.execute()</text>
+  <rect x="165" y="347" width="270" height="28" rx="5" fill="#e3b34118" stroke="#e3b341" stroke-width="1"/>
+  <text x="300" y="366" text-anchor="middle" fill="#f0c060" font-size="11">PlaceOrderUseCase (clean, no AWS imports)</text>
+  <rect x="165" y="381" width="270" height="5" rx="2" fill="#388bfd" opacity="0.5"/>
+
+  <line x1="390" y1="214" x2="310" y2="264" stroke="#e3b341" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+
+  <!-- Lambda 2: ProcessPayment (triggered by SQS) -->
+  <rect x="510" y="264" width="300" height="105" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="660" y="287" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Lambda: ProcessPayment</text>
+  <text x="660" y="305" text-anchor="middle" fill="#85e89d" font-size="11">(triggered by SQS event)</text>
+  <rect x="525" y="313" width="270" height="28" rx="5" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="660" y="332" text-anchor="middle" fill="#ff9090" font-size="11">handler → ChargePaymentUseCase.execute()</text>
+  <rect x="525" y="347" width="270" height="28" rx="5" fill="#e3b34118" stroke="#e3b341" stroke-width="1"/>
+  <text x="660" y="366" text-anchor="middle" fill="#f0c060" font-size="11">StripeGateway implements IPaymentGateway</text>
+
+  <line x1="565" y1="214" x2="620" y2="264" stroke="#e3b341" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#arrG)"/>
+
+  <!-- Lambda 3: SendNotification (triggered by SNS) -->
+  <rect x="330" y="440" width="300" height="80" rx="10" fill="#1a0a28" stroke="#bc8cff" stroke-width="2"/>
+  <text x="480" y="463" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="bold">Lambda: SendNotification</text>
+  <text x="480" y="481" text-anchor="middle" fill="#d2a8ff" font-size="11">(triggered by SNS event)</text>
+  <text x="480" y="499" text-anchor="middle" fill="#d2a8ff" font-size="11">→ SES email / SMS via adapter</text>
+
+  <!-- External services (right column) -->
+  <rect x="830" y="264" width="110" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="885" y="283" text-anchor="middle" fill="#c9d1d9" font-size="11" font-weight="bold">DynamoDB</text>
+  <text x="885" y="299" text-anchor="middle" fill="#8b949e" font-size="10">orders store</text>
+
+  <rect x="830" y="318" width="110" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="885" y="337" text-anchor="middle" fill="#c9d1d9" font-size="11" font-weight="bold">SQS</text>
+  <text x="885" y="353" text-anchor="middle" fill="#8b949e" font-size="10">order events queue</text>
+
+  <rect x="830" y="374" width="110" height="42" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="885" y="393" text-anchor="middle" fill="#c9d1d9" font-size="11" font-weight="bold">Stripe API</text>
+  <text x="885" y="409" text-anchor="middle" fill="#8b949e" font-size="10">payment gateway</text>
+
+  <!-- Arrows to external -->
+  <line x1="450" y1="320" x2="830" y2="285" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrB)"/>
+  <line x1="450" y1="340" x2="830" y2="340" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrG)"/>
+  <line x1="810" y1="340" x2="830" y2="340" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrG)"/>
+  <line x1="810" y1="340" x2="830" y2="393" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrP)"/>
+  <line x1="660" y1="369" x2="830" y2="393" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrP)"/>
+
+  <!-- SQS → Payment Lambda trigger -->
+  <line x1="480" y1="440" x2="660" y2="369" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrG)"/>
+
+  <!-- Clean arch mapping box -->
+  <rect x="20" y="264" width="125" height="130" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="82" y="284" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">Clean Arch</text>
+  <text x="82" y="300" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">Mapping</text>
+  <text x="82" y="322" text-anchor="middle" fill="#ff9090" font-size="10">Handler</text>
+  <text x="82" y="336" text-anchor="middle" fill="#7ab8ff" font-size="10">= Controller</text>
+  <text x="82" y="356" text-anchor="middle" fill="#f0c060" font-size="10">UseCase</text>
+  <text x="82" y="370" text-anchor="middle" fill="#7ab8ff" font-size="10">= Use Case</text>
+  <text x="82" y="390" text-anchor="middle" fill="#85e89d" font-size="10">Repo Adapter</text>
+  <text x="82" y="404" text-anchor="middle" fill="#7ab8ff" font-size="10">= Outbound port</text>
+
+  <!-- Big tech -->
+  <text x="40" y="554" fill="#8b949e" font-size="12" font-weight="bold">Big Tech:</text>
+  <text x="120" y="554" fill="#f85149" font-size="12">Netflix (media pipeline)</text>
+  <text x="320" y="554" fill="#bc8cff" font-size="12">Airbnb (image resize)</text>
+  <text x="520" y="554" fill="#e3b341" font-size="12">Coca-Cola (vending)</text>
+  <text x="710" y="554" fill="#388bfd" font-size="12">iRobot (IoT 10M devices)</text>
+
+  <text x="40" y="582" fill="#3fb950" font-size="11">✓ Zero server mgmt  ✓ Auto-scale to 0  ✓ Pay per use  ✓ Event-driven native  ✓ Fast deploy</text>
+  <text x="40" y="600" fill="#f85149" font-size="11">✗ Cold starts  ✗ 15min limit  ✗ Stateless only  ✗ Vendor lock-in  ✗ Hard debugging</text>
+</svg>

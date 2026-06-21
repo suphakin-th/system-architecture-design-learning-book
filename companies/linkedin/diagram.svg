@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="600" viewBox="0 0 980 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#0073b1"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="980" height="600" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">LinkedIn Architecture — Invented Kafka + Kappa</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">500B+ Kafka msgs/day · Lambda → Kappa migration · Venice read model · Feed as CQRS</text>
+
+  <!-- The M*N problem -->
+  <rect x="20" y="80" width="280" height="200" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="160" y="103" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Before Kafka: M*N Problem</text>
+  <text x="160" y="121" text-anchor="middle" fill="#ff9090" font-size="10">100 sources × 100 destinations</text>
+  <text x="160" y="137" text-anchor="middle" fill="#ff9090" font-size="10">= 10,000 custom ETL scripts</text>
+  <rect x="35" y="148" width="250" height="40" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="160" y="168" text-anchor="middle" fill="#ff9090" font-size="10">Database → ETL → Hadoop</text>
+  <text x="160" y="183" text-anchor="middle" fill="#ff9090" font-size="10">Database → different ETL → Metrics</text>
+  <rect x="35" y="196" width="250" height="70" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="160" y="216" text-anchor="middle" fill="#ff9090" font-size="10">Adding one new source:</text>
+  <text x="160" y="232" text-anchor="middle" fill="#ff9090" font-size="10">write N integrations</text>
+  <text x="160" y="248" text-anchor="middle" fill="#ff9090" font-size="10">Adding one new destination:</text>
+  <text x="160" y="264" text-anchor="middle" fill="#ff9090" font-size="10">write M integrations</text>
+
+  <!-- Arrow to Kafka -->
+  <line x1="300" y1="175" x2="340" y2="175" stroke="#e3b341" stroke-width="2" marker-end="url(#arrY)"/>
+  <text x="320" y="167" fill="#e3b341" font-size="10" text-anchor="middle">Kafka</text>
+  <text x="320" y="187" fill="#e3b341" font-size="10" text-anchor="middle">2011 →</text>
+
+  <!-- Kafka -->
+  <rect x="340" y="80" width="300" height="200" rx="8" fill="#0a1628" stroke="#0073b1" stroke-width="2.5"/>
+  <text x="490" y="103" text-anchor="middle" fill="#0073b1" font-size="14" font-weight="bold">Apache Kafka (Invented at LinkedIn)</text>
+  <text x="490" y="121" text-anchor="middle" fill="#7ab8ff" font-size="11">Hub-and-spoke: O(M+N) instead of O(M*N)</text>
+  <rect x="355" y="132" width="270" height="50" rx="5" fill="#0d1a40" stroke="#0073b1" stroke-width="1"/>
+  <text x="490" y="152" text-anchor="middle" fill="#0073b1" font-size="11" font-weight="bold">Log-structured (append-only)</text>
+  <text x="490" y="170" text-anchor="middle" fill="#7ab8ff" font-size="10">Sequential writes → 100× faster than random</text>
+  <rect x="355" y="188" width="270" height="50" rx="5" fill="#0d1a40" stroke="#0073b1" stroke-width="1"/>
+  <text x="490" y="208" text-anchor="middle" fill="#0073b1" font-size="11" font-weight="bold">Consumer groups + replay</text>
+  <text x="490" y="226" text-anchor="middle" fill="#7ab8ff" font-size="10">Any consumer can replay from offset 0</text>
+  <text x="490" y="250" text-anchor="middle" fill="#0073b1" font-size="11">500B msgs/day · 7T at peak · 500TB/day</text>
+
+  <!-- After Kafka -->
+  <rect x="660" y="80" width="300" height="200" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="810" y="103" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">After Kafka: Any Source → Any Consumer</text>
+  <text x="810" y="121" text-anchor="middle" fill="#85e89d" font-size="11">Adding new source: publish to Kafka. Done.</text>
+  <text x="810" y="137" text-anchor="middle" fill="#85e89d" font-size="11">Adding new consumer: subscribe. Done.</text>
+  <rect x="675" y="148" width="270" height="26" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="810" y="166" text-anchor="middle" fill="#85e89d" font-size="10">→ Hadoop (batch analytics)</text>
+  <rect x="675" y="180" width="270" height="26" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="810" y="198" text-anchor="middle" fill="#85e89d" font-size="10">→ Samza/Flink (real-time stream)</text>
+  <rect x="675" y="212" width="270" height="26" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="810" y="230" text-anchor="middle" fill="#85e89d" font-size="10">→ Venice (feed read model)</text>
+  <rect x="675" y="244" width="270" height="26" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="810" y="262" text-anchor="middle" fill="#85e89d" font-size="10">→ Notification service</text>
+
+  <!-- Lambda vs Kappa -->
+  <rect x="20" y="305" width="460" height="160" rx="8" fill="#161b22" stroke="#f85149" stroke-width="1.5"/>
+  <text x="250" y="327" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Lambda Architecture (old) — The Maintenance Tax</text>
+  <text x="40" y="348" fill="#ff9090" font-size="11">Problem: every business logic implemented TWICE</text>
+  <text x="40" y="366" fill="#ff9090" font-size="11">Once in Hadoop (batch) · Once in Storm (real-time)</text>
+  <text x="40" y="384" fill="#ff9090" font-size="11">When bug found: fix in 2 codebases (different APIs)</text>
+  <text x="40" y="402" fill="#ff9090" font-size="11">Sometimes they disagreed: which output is "correct"?</text>
+  <rect x="30" y="416" width="440" height="40" rx="5" fill="#200505" stroke="#f85149" stroke-width="1.5"/>
+  <text x="250" y="440" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">The DRY Principle violated at architecture level</text>
+
+  <rect x="500" y="305" width="460" height="160" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="730" y="327" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Kappa Architecture (new) — One Codebase</text>
+  <text x="520" y="348" fill="#85e89d" font-size="11">All data sources → Kafka (event log = source of truth)</text>
+  <text x="520" y="366" fill="#85e89d" font-size="11">One stream processor (Samza/Flink) handles both:</text>
+  <text x="520" y="384" fill="#85e89d" font-size="11">  Real-time: process events as they arrive</text>
+  <text x="520" y="400" fill="#85e89d" font-size="11">  "Batch": replay from Kafka offset 0 to historical</text>
+  <rect x="510" y="416" width="440" height="40" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="730" y="440" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">DRY at architecture level: one system, two modes</text>
+
+  <!-- Venice + Feed CQRS -->
+  <rect x="20" y="490" width="940" height="85" rx="8" fill="#0a0a20" stroke="#0073b1" stroke-width="1.5"/>
+  <text x="490" y="512" text-anchor="middle" fill="#0073b1" font-size="13" font-weight="bold">Feed Architecture = CQRS (Write: Kafka → Read: Venice)</text>
+  <text x="50" y="534" fill="#7ab8ff" font-size="11">Someone posts update → Kafka event → Samza FanOut → Venice: pre-computed feed per user</text>
+  <text x="50" y="552" fill="#7ab8ff" font-size="11">Open LinkedIn → read feed from Venice → one Redis/Venice lookup → &lt;10ms · No real-time computation</text>
+  <text x="50" y="570" fill="#3fb950" font-size="11">Pre-computing reads = CQRS at scale · Venice = purpose-built read model store (immutable, push-based)</text>
+</svg>

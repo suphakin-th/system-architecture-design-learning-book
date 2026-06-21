@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="860" height="780" viewBox="0 0 860 780" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arr" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#64ffda"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="860" height="780" fill="url(#bg)"/>
+  <text x="430" y="38" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Onion Architecture</text>
+  <text x="430" y="60" text-anchor="middle" fill="#8b949e" font-size="13">Concentric layers — dependencies ALWAYS point inward — Domain Model is king</text>
+
+  <!-- Layer 4: Infrastructure (outermost) -->
+  <ellipse cx="430" cy="430" rx="380" ry="330" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="430" y="118" text-anchor="middle" fill="#388bfd" font-size="15" font-weight="bold">INFRASTRUCTURE</text>
+  <text x="430" y="138" text-anchor="middle" fill="#7ab8ff" font-size="11">HTTP Controllers · Postgres Repositories · Stripe Client · Kafka Publisher</text>
+  <text x="430" y="718" text-anchor="middle" fill="#388bfd" font-size="11">(Implements interfaces from Application Services · Contains all external technology)</text>
+
+  <!-- Layer 3: Application Services -->
+  <ellipse cx="430" cy="430" rx="293" ry="255" fill="#0a1f10" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="430" y="192" text-anchor="middle" fill="#3fb950" font-size="15" font-weight="bold">APPLICATION SERVICES</text>
+  <text x="430" y="212" text-anchor="middle" fill="#85e89d" font-size="11">PlaceOrderService · RegisterUserService · ProcessPaymentService</text>
+  <text x="430" y="230" text-anchor="middle" fill="#85e89d" font-size="10">Defines ports (interfaces): IOrderRepository, IPaymentGateway</text>
+  <text x="430" y="640" text-anchor="middle" fill="#3fb950" font-size="11">(Orchestrates domain objects · Depends on Domain Services + Domain Model)</text>
+
+  <!-- Layer 2: Domain Services -->
+  <ellipse cx="430" cy="430" rx="204" ry="177" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="430" y="268" text-anchor="middle" fill="#e3b341" font-size="15" font-weight="bold">DOMAIN SERVICES</text>
+  <text x="430" y="288" text-anchor="middle" fill="#f0c060" font-size="11">PricingService · RiskAssessmentService · TaxCalculationService</text>
+  <text x="430" y="306" text-anchor="middle" fill="#f0c060" font-size="10">(Logic spanning multiple entities — belongs here, not in entities)</text>
+  <text x="430" y="574" text-anchor="middle" fill="#e3b341" font-size="11">(Depends only on Domain Model · Stateless business logic)</text>
+
+  <!-- Layer 1: Domain Model (innermost) -->
+  <ellipse cx="430" cy="430" rx="120" ry="105" fill="#1a0505" stroke="#f85149" stroke-width="3" filter="url(#glow)"/>
+  <text x="430" y="360" text-anchor="middle" fill="#f85149" font-size="16" font-weight="bold" filter="url(#glow)">DOMAIN MODEL</text>
+  <text x="430" y="382" text-anchor="middle" fill="#ff9090" font-size="11">Entities · Value Objects</text>
+  <text x="430" y="400" text-anchor="middle" fill="#ff9090" font-size="11">Aggregates · Domain Events</text>
+  <text x="430" y="422" text-anchor="middle" fill="#ff7070" font-size="13" font-weight="bold">Order · Account</text>
+  <text x="430" y="440" text-anchor="middle" fill="#ff7070" font-size="13" font-weight="bold">Customer · Money</text>
+  <text x="430" y="462" text-anchor="middle" fill="#ffaaaa" font-size="10">No external imports</text>
+  <text x="430" y="478" text-anchor="middle" fill="#ffaaaa" font-size="10">Pure business rules</text>
+  <text x="430" y="494" text-anchor="middle" fill="#ffaaaa" font-size="10">Tests run in &lt;1ms</text>
+
+  <!-- Dependency arrows -->
+  <line x1="740" y1="225" x2="660" y2="280" stroke="#64ffda" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#arr)"/>
+  <line x1="630" y1="228" x2="578" y2="268" stroke="#64ffda" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#arr)"/>
+  <line x1="578" y1="310" x2="546" y2="365" stroke="#64ffda" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#arr)"/>
+  <text x="748" y="216" fill="#64ffda" font-size="9" text-anchor="middle">depends on</text>
+  <text x="630" y="216" fill="#64ffda" font-size="9" text-anchor="middle">depends on</text>
+  <text x="568" y="336" fill="#64ffda" font-size="9" text-anchor="middle">depends on</text>
+
+  <!-- DDD mapping table -->
+  <rect x="30" y="730" width="800" height="38" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="42" y="750" fill="#f85149" font-size="11" font-weight="bold">DDD:</text>
+  <text x="85" y="750" fill="#ffaaaa" font-size="11">Entity/ValueObj/Aggregate → Domain Model</text>
+  <text x="355" y="750" fill="#f0c060" font-size="11">Domain Svc → Domain Service layer</text>
+  <text x="565" y="750" fill="#85e89d" font-size="11">Repository interface → Application Services</text>
+  <text x="42" y="764" fill="#7ab8ff" font-size="11">Repository impl → Infrastructure  |  Big Tech: ABN AMRO, ING Bank, Epic Health Records (Axon Framework)</text>
+</svg>

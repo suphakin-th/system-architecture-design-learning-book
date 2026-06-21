@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="680" viewBox="0 0 980 680" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+  </defs>
+  <rect width="980" height="680" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Database Types — Choose by Access Pattern</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">"What are my queries?" determines the database — not the other way around</text>
+
+  <!-- Relational -->
+  <rect x="20" y="75" width="295" height="180" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="167" y="97" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Relational (SQL)</text>
+  <text x="167" y="115" text-anchor="middle" fill="#7ab8ff" font-size="11">PostgreSQL · MySQL · SQL Server</text>
+  <rect x="35" y="123" width="265" height="22" rx="4" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="167" y="138" text-anchor="middle" fill="#7ab8ff" font-size="10">ACID · JOIN · Complex queries · Schema</text>
+  <text x="35" y="162" fill="#85e89d" font-size="10">✓ Complex relationships  ✓ ACID</text>
+  <text x="35" y="178" fill="#85e89d" font-size="10">✓ Flexible queries  ✓ Mature</text>
+  <text x="35" y="196" fill="#8b949e" font-size="10">Best for: e-commerce, banking, SaaS</text>
+  <text x="35" y="214" fill="#e3b341" font-size="10">Used by: Instagram, Shopify, Stripe, GitHub</text>
+  <text x="35" y="232" fill="#3fb950" font-size="10">→ Default first choice for any new system</text>
+
+  <!-- Document -->
+  <rect x="335" y="75" width="295" height="180" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="482" y="97" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Document</text>
+  <text x="482" y="115" text-anchor="middle" fill="#85e89d" font-size="11">MongoDB · Firestore · Couchbase</text>
+  <rect x="350" y="123" width="265" height="22" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="482" y="138" text-anchor="middle" fill="#85e89d" font-size="10">JSON documents · Flexible schema · Nested data</text>
+  <text x="350" y="162" fill="#85e89d" font-size="10">✓ Evolving schema  ✓ Hierarchical data</text>
+  <text x="350" y="178" fill="#85e89d" font-size="10">✗ No easy JOIN  ✗ Weaker ACID</text>
+  <text x="350" y="196" fill="#8b949e" font-size="10">Best for: CMS, user profiles, product catalogs</text>
+  <text x="350" y="214" fill="#e3b341" font-size="10">Used by: Airbnb (listings), EA Games</text>
+  <text x="350" y="232" fill="#3fb950" font-size="10">→ When schema changes weekly or data is hierarchical</text>
+
+  <!-- Key-Value -->
+  <rect x="650" y="75" width="310" height="180" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="2"/>
+  <text x="805" y="97" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="bold">Key-Value</text>
+  <text x="805" y="115" text-anchor="middle" fill="#d2a8ff" font-size="11">Redis (in-memory) · DynamoDB (persistent)</text>
+  <rect x="665" y="123" width="280" height="22" rx="4" fill="#15082a" stroke="#bc8cff" stroke-width="1"/>
+  <text x="805" y="138" text-anchor="middle" fill="#d2a8ff" font-size="10">O(1) lookup · Ultra-low latency · Auto-scale</text>
+  <text x="665" y="162" fill="#d2a8ff" font-size="10">✓ Sub-millisecond  ✓ Simple operations</text>
+  <text x="665" y="178" fill="#d2a8ff" font-size="10">✗ No complex queries  ✗ Design upfront</text>
+  <text x="665" y="196" fill="#8b949e" font-size="10">Best for: cache, sessions, rate limiting, queues</text>
+  <text x="665" y="214" fill="#e3b341" font-size="10">Used by: Twitter (Redis cache), Amazon (DynamoDB)</text>
+  <text x="665" y="232" fill="#bc8cff" font-size="10">→ When speed > everything, access always by key</text>
+
+  <!-- Wide-Column -->
+  <rect x="20" y="275" width="295" height="180" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="167" y="297" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Wide-Column</text>
+  <text x="167" y="315" text-anchor="middle" fill="#ff9090" font-size="11">Cassandra · ScyllaDB · HBase · Bigtable</text>
+  <rect x="35" y="323" width="265" height="22" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="167" y="338" text-anchor="middle" fill="#ff9090" font-size="10">LSM tree · High write throughput · Time-ordered</text>
+  <text x="35" y="362" fill="#ff9090" font-size="10">✓ 1M+ writes/sec  ✓ Time-series friendly</text>
+  <text x="35" y="378" fill="#ff9090" font-size="10">✗ No JOIN  ✗ Design queries upfront</text>
+  <text x="35" y="396" fill="#8b949e" font-size="10">Best for: IoT, event logs, message storage</text>
+  <text x="35" y="414" fill="#e3b341" font-size="10">Used by: Discord (ScyllaDB), Netflix (Cassandra)</text>
+  <text x="35" y="432" fill="#f85149" font-size="10">→ Write-heavy workloads that outgrow PostgreSQL</text>
+
+  <!-- Graph -->
+  <rect x="335" y="275" width="295" height="180" rx="8" fill="#0a1020" stroke="#e3b341" stroke-width="2"/>
+  <text x="482" y="297" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Graph</text>
+  <text x="482" y="315" text-anchor="middle" fill="#f0c060" font-size="11">Neo4j · Amazon Neptune · ArangoDB</text>
+  <rect x="350" y="323" width="265" height="22" rx="4" fill="#1a1000" stroke="#e3b341" stroke-width="1"/>
+  <text x="482" y="338" text-anchor="middle" fill="#f0c060" font-size="10">Nodes + Edges · O(1) traversal · Relationship-first</text>
+  <text x="350" y="362" fill="#f0c060" font-size="10">✓ Relationship queries (O(log n) not O(n²))</text>
+  <text x="350" y="378" fill="#f0c060" font-size="10">✗ Not for simple CRUD  ✗ Smaller community</text>
+  <text x="350" y="396" fill="#8b949e" font-size="10">Best for: social networks, fraud detection</text>
+  <text x="350" y="414" fill="#e3b341" font-size="10">Used by: LinkedIn (PYMK), Twitter (WTF feature)</text>
+  <text x="350" y="432" fill="#e3b341" font-size="10">→ When your data IS a graph with many relationships</text>
+
+  <!-- Vector + Time-Series -->
+  <rect x="650" y="275" width="310" height="180" rx="8" fill="#0a1a0a" stroke="#3fb950" stroke-width="2"/>
+  <text x="805" y="297" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Time-Series + Vector (AI Era)</text>
+  <text x="805" y="315" text-anchor="middle" fill="#85e89d" font-size="11">InfluxDB · TimescaleDB · Pinecone · pgvector</text>
+  <rect x="665" y="323" width="280" height="22" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1"/>
+  <text x="805" y="338" text-anchor="middle" fill="#85e89d" font-size="10">Time-ordered data · Semantic similarity search</text>
+  <text x="665" y="362" fill="#85e89d" font-size="10">Time-series: IoT, metrics, financial tick data</text>
+  <text x="665" y="378" fill="#85e89d" font-size="10">Vector: semantic search, RAG for LLMs, recommendations</text>
+  <text x="665" y="396" fill="#8b949e" font-size="10">Best for: monitoring (Prometheus), AI retrieval</text>
+  <text x="665" y="414" fill="#e3b341" font-size="10">Used by: Grafana (InfluxDB), OpenAI (vector search)</text>
+  <text x="665" y="432" fill="#3fb950" font-size="10">→ Domain-specific: don't use general DB for these</text>
+
+  <!-- CAP theorem visual -->
+  <rect x="20" y="475" width="940" height="170" rx="8" fill="#0a0a0a" stroke="#30363d" stroke-width="1.5"/>
+  <text x="490" y="498" text-anchor="middle" fill="#f0f6fc" font-size="14" font-weight="bold">CAP Theorem — The Immutable Law of Distributed Databases</text>
+  <text x="490" y="518" text-anchor="middle" fill="#8b949e" font-size="12">Choose 2 of: Consistency · Availability · Partition Tolerance (partitions always happen → real choice: C vs A)</text>
+  <rect x="40" y="530" width="270" height="90" rx="6" fill="#0a1628" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="175" y="552" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">CP (Consistency + Partition)</text>
+  <text x="175" y="570" text-anchor="middle" fill="#7ab8ff" font-size="10">Returns error during partition</text>
+  <text x="175" y="586" text-anchor="middle" fill="#7ab8ff" font-size="10">Never serves stale data</text>
+  <text x="175" y="604" text-anchor="middle" fill="#e3b341" font-size="10">CockroachDB · HBase · etcd · Zookeeper</text>
+  <text x="175" y="618" text-anchor="middle" fill="#3fb950" font-size="10">Use for: financial systems, inventory</text>
+  <rect x="355" y="530" width="270" height="90" rx="6" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="490" y="552" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">AP (Availability + Partition)</text>
+  <text x="490" y="570" text-anchor="middle" fill="#85e89d" font-size="10">Always responds, may serve stale data</text>
+  <text x="490" y="586" text-anchor="middle" fill="#85e89d" font-size="10">Eventually consistent</text>
+  <text x="490" y="604" text-anchor="middle" fill="#e3b341" font-size="10">Cassandra · DynamoDB · CouchDB · DNS</text>
+  <text x="490" y="618" text-anchor="middle" fill="#3fb950" font-size="10">Use for: social feeds, sessions, metrics</text>
+  <rect x="670" y="530" width="270" height="90" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="805" y="552" text-anchor="middle" fill="#8b949e" font-size="12" font-weight="bold">CA (Consistency + Availability)</text>
+  <text x="805" y="570" text-anchor="middle" fill="#6e7681" font-size="10">Only possible on single node</text>
+  <text x="805" y="586" text-anchor="middle" fill="#6e7681" font-size="10">(no network partition)</text>
+  <text x="805" y="604" text-anchor="middle" fill="#6e7681" font-size="10">PostgreSQL (single node) · MySQL (single node)</text>
+  <text x="805" y="618" text-anchor="middle" fill="#6e7681" font-size="10">"CA" = traditional single-server DB</text>
+</svg>

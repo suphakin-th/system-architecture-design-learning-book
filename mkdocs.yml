@@ -1,0 +1,149 @@
+site_name: System Architecture Design — Learning Book
+site_description: Complete architecture learning library — Clean Architecture, microservices, databases, fintech, big-tech company case studies, with SVG diagrams.
+site_author: Suphakin Th.
+site_url: https://suphakin-th.github.io/system-architecture-design-learning-book
+
+repo_name: suphakin-th/system-architecture-design-learning-book
+repo_url: https://github.com/suphakin-th/system-architecture-design-learning-book
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+
+plugins:
+  - search:
+      lang: en
+  - glightbox
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - def_list
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/suphakin-th
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX
+
+nav:
+  - Home: index.md
+
+  - Clean Architecture:
+    - Foundation (Zero to Hero): architecture/00_foundation.md
+    - 01 · Monolith: architecture/01_monolith.md
+    - 02 · Microservices: architecture/02_microservices.md
+    - 03 · Event-Driven: architecture/03_event_driven.md
+    - 04 · CQRS: architecture/04_cqrs.md
+    - 05 · Event Sourcing: architecture/05_event_sourcing.md
+    - 06 · Saga Pattern: architecture/06_saga.md
+    - 07 · API Gateway: architecture/07_api_gateway.md
+    - 08 · Hexagonal: architecture/08_hexagonal.md
+    - 09 · Onion Architecture: architecture/09_onion.md
+    - 10 · Layered N-Tier: architecture/10_layered_ntier.md
+    - 11 · BFF: architecture/11_bff.md
+    - 12 · Strangler Fig: architecture/12_strangler_fig.md
+    - 13 · Serverless: architecture/13_serverless.md
+    - 14 · Service Mesh: architecture/14_service_mesh.md
+    - MVC · MVP · MVVM: architecture/32_mvc_mvp_mvvm.md
+    - 3-Layer + Clean Code + FP: architecture/30_three_layer_clean_functional.md
+
+  - Database Design:
+    - Fundamentals: database/23_fundamentals.md
+    - Types Comparison: database/24_types_comparison.md
+    - Indexing: database/25_indexing.md
+    - Replication: database/26_replication.md
+    - Transactions (ACID · BASE · CAP): database/27_transactions.md
+    - Query Optimization: database/28_query_optimization.md
+    - Schema Patterns: database/29_schema_patterns.md
+    - Sharding: database/22_sharding.md
+    - 3-Layer DB Model (ANSI/SPARC): database/31_three_layer_model.md
+    - MVCC: database/33_mvcc.md
+
+  - Fintech Architecture:
+    - Overview: fintech/00_overview.md
+    - Double-Entry Ledger: fintech/01_double_entry_ledger.md
+    - Immutable Audit Log: fintech/02_immutable_audit_log.md
+    - Payment Networks (Visa · SWIFT · PromptPay): fintech/03_payment_networks.md
+    - Security (HSM · PCI DSS): fintech/05_security_hsm_pci.md
+    - Zero Trust Network: fintech/06_zero_trust.md
+    - Distributed Transactions: fintech/07_distributed_transactions.md
+    - Companies (Stripe · Monzo · Wise): fintech/08_companies.md
+
+  - Big Tech Companies:
+    - Amazon: companies/amazon.md
+    - Google: companies/google.md
+    - Meta / Facebook: companies/meta_facebook.md
+    - Netflix: companies/netflix.md
+    - Uber: companies/uber.md
+    - Twitter / X: companies/twitter_x.md
+    - LinkedIn: companies/linkedin.md
+    - Shopify: companies/shopify.md
+    - Stripe: companies/stripe.md
+    - Discord: companies/discord.md
+    - WhatsApp: companies/whatsapp.md
+    - TikTok / ByteDance: companies/tiktok_bytedance.md
+    - Airbnb: companies/airbnb.md
+    - Grab: companies/grab.md
+    - DoorDash: companies/doordash.md
+    - Microsoft: companies/microsoft.md
+    - Pantip (Thailand): companies/pantip.md
+
+  - Security:
+    - Linux Permissions (ภาษาไทย): security/linux_permissions_thai.md

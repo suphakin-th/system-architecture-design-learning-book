@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="660" viewBox="0 0 900 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrBL" markerWidth="9" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="9 0,0 3.5,9 7" fill="#3fb950"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="900" height="660" fill="url(#bg)"/>
+  <text x="450" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Hexagonal Architecture (Ports &amp; Adapters)</text>
+  <text x="450" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Application core isolated from ALL external actors via Ports (interfaces) and Adapters (impls)</text>
+
+  <!-- Hexagon (center) -->
+  <polygon points="450,130 560,195 560,325 450,390 340,325 340,195" fill="#0f1a0f" stroke="#3fb950" stroke-width="3" filter="url(#glow)"/>
+  <text x="450" y="220" text-anchor="middle" fill="#f0f6fc" font-size="15" font-weight="bold">Application</text>
+  <text x="450" y="240" text-anchor="middle" fill="#f0f6fc" font-size="15" font-weight="bold">Core</text>
+  <text x="450" y="270" text-anchor="middle" fill="#ff6b6b" font-size="13" font-weight="bold">Entities</text>
+  <text x="450" y="290" text-anchor="middle" fill="#e3b341" font-size="12">Order, User, Product</text>
+  <text x="450" y="318" text-anchor="middle" fill="#ff9f43" font-size="13" font-weight="bold">Use Cases</text>
+  <text x="450" y="338" text-anchor="middle" fill="#ffc58a" font-size="11">PlaceOrder, Register</text>
+  <text x="450" y="365" text-anchor="middle" fill="#3fb950" font-size="10">No framework imports</text>
+
+  <!-- PRIMARY SIDE (LEFT) - Driving Adapters -->
+  <text x="115" y="82" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">PRIMARY ADAPTERS</text>
+  <text x="115" y="98" text-anchor="middle" fill="#7ab8ff" font-size="11">(Driving — initiates actions)</text>
+
+  <rect x="20" y="108" width="190" height="50" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="115" y="128" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">HTTP Controller</text>
+  <text x="115" y="147" text-anchor="middle" fill="#7ab8ff" font-size="11">Express / NestJS route handler</text>
+
+  <rect x="20" y="175" width="190" height="50" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="115" y="195" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">CLI Runner</text>
+  <text x="115" y="214" text-anchor="middle" fill="#7ab8ff" font-size="11">node place-order.ts --id 123</text>
+
+  <rect x="20" y="242" width="190" height="50" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="115" y="262" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">Test Suite</text>
+  <text x="115" y="281" text-anchor="middle" fill="#7ab8ff" font-size="11">jest / vitest — no HTTP needed</text>
+
+  <rect x="20" y="309" width="190" height="50" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="115" y="329" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">Message Consumer</text>
+  <text x="115" y="348" text-anchor="middle" fill="#7ab8ff" font-size="11">Kafka / RabbitMQ handler</text>
+
+  <!-- Primary port labels (left edge of hexagon) -->
+  <text x="275" y="200" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="bold" transform="rotate(-30,275,200)">PRIMARY PORT</text>
+  <text x="283" y="218" text-anchor="middle" fill="#85e89d" font-size="9" transform="rotate(-30,283,218)">IPlaceOrderUseCase</text>
+
+  <!-- Arrows left -->
+  <line x1="210" y1="133" x2="334" y2="210" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+  <line x1="210" y1="200" x2="334" y2="230" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+  <line x1="210" y1="267" x2="334" y2="258" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+  <line x1="210" y1="334" x2="334" y2="290" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+  <!-- SECONDARY SIDE (RIGHT) - Driven Adapters -->
+  <text x="785" y="82" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">SECONDARY ADAPTERS</text>
+  <text x="785" y="98" text-anchor="middle" fill="#85e89d" font-size="11">(Driven — reacts to use case calls)</text>
+
+  <rect x="690" y="108" width="200" height="50" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="790" y="128" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">PostgreSQL Repository</text>
+  <text x="790" y="147" text-anchor="middle" fill="#85e89d" font-size="11">implements IOrderRepository</text>
+
+  <rect x="690" y="175" width="200" height="50" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="790" y="195" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Stripe Gateway</text>
+  <text x="790" y="214" text-anchor="middle" fill="#85e89d" font-size="11">implements IPaymentGateway</text>
+
+  <rect x="690" y="242" width="200" height="50" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="790" y="262" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">SendGrid Mailer</text>
+  <text x="790" y="281" text-anchor="middle" fill="#85e89d" font-size="11">implements IMailService</text>
+
+  <rect x="690" y="309" width="200" height="50" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="790" y="329" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">InMemory Repository</text>
+  <text x="790" y="348" text-anchor="middle" fill="#85e89d" font-size="11">for tests — same interface</text>
+
+  <!-- Secondary port labels -->
+  <text x="620" y="195" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="bold" transform="rotate(30,620,195)">SECONDARY PORT</text>
+  <text x="625" y="212" text-anchor="middle" fill="#85e89d" font-size="9" transform="rotate(30,625,212)">IOrderRepository</text>
+
+  <!-- Arrows right -->
+  <line x1="560" y1="210" x2="690" y2="133" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <line x1="560" y1="240" x2="690" y2="200" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <line x1="560" y1="270" x2="690" y2="267" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <line x1="560" y1="305" x2="690" y2="334" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+
+  <!-- Mapping table -->
+  <rect x="200" y="430" width="500" height="115" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="450" y="452" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Hexagonal ↔ Clean Architecture Mapping</text>
+  <text x="220" y="474" fill="#7ab8ff" font-size="11">Port (Primary):       IPlaceOrderUseCase    =  Use Case Interface</text>
+  <text x="220" y="492" fill="#85e89d" font-size="11">Port (Secondary):     IOrderRepository      =  Repository Interface</text>
+  <text x="220" y="510" fill="#388bfd" font-size="11">Adapter (Primary):    HttpOrderController   =  Interface Adapter (inbound)</text>
+  <text x="220" y="528" fill="#3fb950" font-size="11">Adapter (Secondary):  PostgresOrderRepo     =  Interface Adapter (outbound)</text>
+
+  <!-- Big tech and benefits -->
+  <text x="40" y="576" fill="#8b949e" font-size="12" font-weight="bold">Big Tech:</text>
+  <text x="120" y="576" fill="#3fb950" font-size="12">Netflix (Java Hexagonal)</text>
+  <text x="320" y="576" fill="#388bfd" font-size="12">Spotify (Python/Java)</text>
+  <text x="510" y="576" fill="#e3b341" font-size="12">Zalando (200+ svcs)</text>
+  <text x="700" y="576" fill="#bc8cff" font-size="12">ThoughtWorks</text>
+
+  <text x="40" y="604" fill="#3fb950" font-size="11">✓ Testable (InMemory adapters)  ✓ Framework-free core  ✓ Multiple drivers  ✓ Swap any external system</text>
+  <text x="40" y="624" fill="#f85149" font-size="11">✗ More interfaces to write  ✗ More files  ✗ Extra indirection  ✗ Overkill for small scripts</text>
+</svg>

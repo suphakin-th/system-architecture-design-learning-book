@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="600" viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrP" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#bc8cff"/></marker>
+  </defs>
+  <rect width="960" height="600" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">BFF — Backend for Frontend</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Each client type gets its own optimized backend — aggregates downstream services</text>
+
+  <!-- Clients column -->
+  <text x="70" y="88" text-anchor="middle" fill="#8b949e" font-size="13" font-weight="bold">Clients</text>
+  <rect x="10" y="100" width="120" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="70" y="127" text-anchor="middle" fill="#c9d1d9" font-size="12" font-weight="bold">Browser</text>
+  <rect x="10" y="200" width="120" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="70" y="222" text-anchor="middle" fill="#c9d1d9" font-size="12" font-weight="bold">iOS App</text>
+  <text x="70" y="237" text-anchor="middle" fill="#6e7681" font-size="10">Android App</text>
+  <rect x="10" y="300" width="120" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="70" y="327" text-anchor="middle" fill="#c9d1d9" font-size="12" font-weight="bold">TV App</text>
+  <rect x="10" y="400" width="120" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="70" y="422" text-anchor="middle" fill="#c9d1d9" font-size="12" font-weight="bold">Partners</text>
+  <text x="70" y="437" text-anchor="middle" fill="#6e7681" font-size="10">External API</text>
+
+  <!-- BFF column -->
+  <text x="285" y="88" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">BFF Layer</text>
+
+  <rect x="170" y="96" width="230" height="55" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="285" y="117" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Web BFF</text>
+  <text x="285" y="136" text-anchor="middle" fill="#f0c060" font-size="11">GraphQL · Rich aggregation · Full data</text>
+  <text x="285" y="150" text-anchor="middle" fill="#8b949e" font-size="10">Team: Frontend Web</text>
+
+  <rect x="170" y="193" width="230" height="55" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="2.5"/>
+  <text x="285" y="214" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="bold">Mobile BFF</text>
+  <text x="285" y="233" text-anchor="middle" fill="#d2a8ff" font-size="11">REST · Minimal payload · Parallel fetch</text>
+  <text x="285" y="247" text-anchor="middle" fill="#8b949e" font-size="10">Team: iOS + Android</text>
+
+  <rect x="170" y="290" width="230" height="55" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="285" y="311" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">TV BFF</text>
+  <text x="285" y="330" text-anchor="middle" fill="#85e89d" font-size="11">REST · 10ft UI data · Big thumbnails</text>
+  <text x="285" y="344" text-anchor="middle" fill="#8b949e" font-size="10">Team: Smart TV</text>
+
+  <rect x="170" y="387" width="230" height="55" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="285" y="408" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Public API Gateway</text>
+  <text x="285" y="427" text-anchor="middle" fill="#7ab8ff" font-size="11">REST v1/v2 · Rate limited · Versioned</text>
+  <text x="285" y="441" text-anchor="middle" fill="#8b949e" font-size="10">Team: Platform</text>
+
+  <!-- Client to BFF arrows -->
+  <line x1="130" y1="121" x2="170" y2="121" stroke="#e3b341" stroke-width="1.8" marker-end="url(#arrY)"/>
+  <line x1="130" y1="221" x2="170" y2="221" stroke="#bc8cff" stroke-width="1.8" marker-end="url(#arrP)"/>
+  <line x1="130" y1="321" x2="170" y2="318" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+  <line x1="130" y1="421" x2="170" y2="415" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+  <!-- Downstream services column -->
+  <text x="680" y="88" text-anchor="middle" fill="#8b949e" font-size="13" font-weight="bold">Downstream Services</text>
+
+  <rect x="590" y="100" width="200" height="50" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="690" y="121" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">User Service</text>
+  <text x="690" y="139" text-anchor="middle" fill="#7ab8ff" font-size="11">Profile, Auth, Preferences</text>
+
+  <rect x="590" y="170" width="200" height="50" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="690" y="191" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Order Service</text>
+  <text x="690" y="209" text-anchor="middle" fill="#85e89d" font-size="11">Orders, Items, Status</text>
+
+  <rect x="590" y="240" width="200" height="50" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="2"/>
+  <text x="690" y="261" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="bold">Product Service</text>
+  <text x="690" y="279" text-anchor="middle" fill="#d2a8ff" font-size="11">Catalog, Search, Details</text>
+
+  <rect x="590" y="310" width="200" height="50" rx="8" fill="#201500" stroke="#d29922" stroke-width="2"/>
+  <text x="690" y="331" text-anchor="middle" fill="#d29922" font-size="13" font-weight="bold">Payment Service</text>
+  <text x="690" y="349" text-anchor="middle" fill="#f0c060" font-size="11">Charges, Refunds, History</text>
+
+  <rect x="590" y="380" width="200" height="50" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="690" y="401" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Notification Svc</text>
+  <text x="690" y="419" text-anchor="middle" fill="#ff7b72" font-size="11">Email, SMS, Push</text>
+
+  <!-- BFF to service arrows (fan-out) -->
+  <!-- Web BFF -->
+  <line x1="400" y1="118" x2="590" y2="125" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+  <line x1="400" y1="125" x2="590" y2="195" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+  <line x1="400" y1="130" x2="590" y2="265" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+  <!-- Mobile BFF -->
+  <line x1="400" y1="214" x2="590" y2="195" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrP)"/>
+  <line x1="400" y1="220" x2="590" y2="265" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrP)"/>
+  <!-- TV BFF -->
+  <line x1="400" y1="315" x2="590" y2="265" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrG)"/>
+  <line x1="400" y1="320" x2="590" y2="335" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrG)"/>
+  <!-- API GW -->
+  <line x1="400" y1="410" x2="590" y2="335" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+  <line x1="400" y1="415" x2="590" y2="405" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+
+  <!-- Note box -->
+  <rect x="590" y="450" width="350" height="55" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="765" y="472" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">BFF in Clean Architecture</text>
+  <text x="765" y="490" text-anchor="middle" fill="#c9d1d9" font-size="11">BFF = Interface Adapter (inbound for client,</text>
+  <text x="765" y="505" text-anchor="middle" fill="#c9d1d9" font-size="11">outbound port per downstream service)</text>
+
+  <!-- Big tech -->
+  <text x="40" y="520" fill="#8b949e" font-size="12" font-weight="bold">Big Tech:</text>
+  <text x="120" y="520" fill="#e3b341" font-size="12">Netflix (2000+ device types)</text>
+  <text x="360" y="520" fill="#bc8cff" font-size="12">Airbnb (Gatekeeper)</text>
+  <text x="560" y="520" fill="#3fb950" font-size="12">SoundCloud (coined BFF)</text>
+  <text x="770" y="520" fill="#388bfd" font-size="12">Monzo Bank</text>
+
+  <text x="40" y="548" fill="#3fb950" font-size="11">✓ Client-optimized responses  ✓ Frontend team autonomy  ✓ Parallel fetching  ✓ Protocol flexibility</text>
+  <text x="40" y="566" fill="#f85149" font-size="11">✗ Code duplication  ✗ N BFFs to maintain  ✗ Fan-out latency  ✗ BFF sprawl risk</text>
+</svg>

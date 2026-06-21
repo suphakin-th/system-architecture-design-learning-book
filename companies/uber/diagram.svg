@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="660" viewBox="0 0 980 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#000000"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrW" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#cccccc"/></marker>
+  </defs>
+  <rect width="980" height="660" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Uber DOMA Architecture</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Python monolith → 2,200 microservices → Domain-Oriented Microservice Architecture (DOMA)</text>
+
+  <!-- DOMA Layer diagram -->
+  <!-- Layer 1: Infrastructure -->
+  <rect x="30" y="80" width="920" height="80" rx="8" fill="#0a1020" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="490" y="105" text-anchor="middle" fill="#8b949e" font-size="13" font-weight="bold">Layer 1: Infrastructure Services (used by everyone)</text>
+  <text x="200" y="130" text-anchor="middle" fill="#6e7681" font-size="11">LoggingService</text>
+  <text x="390" y="130" text-anchor="middle" fill="#6e7681" font-size="11">MonitoringService</text>
+  <text x="570" y="130" text-anchor="middle" fill="#6e7681" font-size="11">AuthService</text>
+  <text x="740" y="130" text-anchor="middle" fill="#6e7681" font-size="11">ConfigService</text>
+  <text x="900" y="130" text-anchor="middle" fill="#6e7681" font-size="11">SecurityService</text>
+
+  <!-- Layer 2: Business Services -->
+  <rect x="30" y="176" width="920" height="130" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="490" y="200" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Layer 2: Business Services (Uber-wide, cross-product)</text>
+  <rect x="50" y="210" width="200" height="80" rx="6" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="150" y="232" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Payments Domain</text>
+  <text x="150" y="249" text-anchor="middle" fill="#85e89d" font-size="10">PaymentMethodService</text>
+  <text x="150" y="265" text-anchor="middle" fill="#85e89d" font-size="10">ChargeService</text>
+  <text x="150" y="281" text-anchor="middle" fill="#85e89d" font-size="10">RefundService</text>
+  <rect x="270" y="210" width="200" height="80" rx="6" fill="#1a0a28" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="370" y="232" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">Identity Domain</text>
+  <text x="370" y="249" text-anchor="middle" fill="#d2a8ff" font-size="10">UserService</text>
+  <text x="370" y="265" text-anchor="middle" fill="#d2a8ff" font-size="10">DriverService</text>
+  <text x="370" y="281" text-anchor="middle" fill="#d2a8ff" font-size="10">AuthNService</text>
+  <rect x="490" y="210" width="200" height="80" rx="6" fill="#201500" stroke="#d29922" stroke-width="1.5"/>
+  <text x="590" y="232" text-anchor="middle" fill="#d29922" font-size="12" font-weight="bold">Maps Domain</text>
+  <text x="590" y="249" text-anchor="middle" fill="#f0c060" font-size="10">RoutingService</text>
+  <text x="590" y="265" text-anchor="middle" fill="#f0c060" font-size="10">ETAService</text>
+  <text x="590" y="281" text-anchor="middle" fill="#f0c060" font-size="10">GeofenceService</text>
+  <rect x="710" y="210" width="220" height="80" rx="6" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="820" y="232" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Location Domain</text>
+  <text x="820" y="249" text-anchor="middle" fill="#85e89d" font-size="10">H3 GeoIndex Service</text>
+  <text x="820" y="265" text-anchor="middle" fill="#85e89d" font-size="10">DriverLocationService</text>
+  <text x="820" y="281" text-anchor="middle" fill="#85e89d" font-size="10">15M updates/second</text>
+
+  <!-- Layer 3: Product Services -->
+  <rect x="30" y="322" width="920" height="130" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="490" y="346" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Layer 3: Product Services (specific to one Uber product)</text>
+  <rect x="50" y="358" width="420" height="80" rx="6" fill="#0d0d20" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="260" y="378" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">UberRides Domain</text>
+  <text x="150" y="398" text-anchor="middle" fill="#7ab8ff" font-size="10">DispatchService (Go)</text>
+  <text x="260" y="398" text-anchor="middle" fill="#7ab8ff" font-size="10">TripService (Go)</text>
+  <text x="370" y="398" text-anchor="middle" fill="#7ab8ff" font-size="10">PricingService (Go)</text>
+  <text x="150" y="416" text-anchor="middle" fill="#7ab8ff" font-size="10">Cadence Workflow</text>
+  <text x="260" y="416" text-anchor="middle" fill="#7ab8ff" font-size="10">SurgeCalcService</text>
+  <text x="370" y="416" text-anchor="middle" fill="#7ab8ff" font-size="10">RatingService</text>
+  <rect x="490" y="358" width="440" height="80" rx="6" fill="#0d0d20" stroke="#d29922" stroke-width="1.5"/>
+  <text x="710" y="378" text-anchor="middle" fill="#d29922" font-size="12" font-weight="bold">UberEats Domain</text>
+  <text x="580" y="398" text-anchor="middle" fill="#f0c060" font-size="10">OrderService</text>
+  <text x="710" y="398" text-anchor="middle" fill="#f0c060" font-size="10">RestaurantService</text>
+  <text x="860" y="398" text-anchor="middle" fill="#f0c060" font-size="10">DeliveryService</text>
+
+  <!-- DOMA Rule -->
+  <rect x="30" y="468" width="440" height="55" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="250" y="490" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">DOMA Rule = Clean Architecture Dependency Rule</text>
+  <text x="250" y="510" text-anchor="middle" fill="#f0c060" font-size="11">Layer 3 → Layer 2 → Layer 1 (only downward) · No same-layer calls</text>
+
+  <!-- Saga / Cadence -->
+  <rect x="490" y="468" width="460" height="55" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="720" y="490" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">Cadence Workflow (Saga Orchestrator)</text>
+  <text x="720" y="510" text-anchor="middle" fill="#d2a8ff" font-size="11">Trip workflow: Match → Price → Auth → Start → End → Charge → Payout</text>
+
+  <!-- Real-time pipeline -->
+  <rect x="30" y="540" width="920" height="80" rx="8" fill="#0a0a0a" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="490" y="563" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Real-Time Data Pipeline (15M location updates/second)</text>
+  <text x="100" y="586" text-anchor="middle" fill="#85e89d" font-size="11">Driver GPS update</text>
+  <text x="250" y="586" text-anchor="middle" fill="#e3b341" font-size="12">→</text>
+  <text x="380" y="586" text-anchor="middle" fill="#85e89d" font-size="11">Kafka (location.updates)</text>
+  <text x="520" y="586" text-anchor="middle" fill="#e3b341" font-size="12">→</text>
+  <text x="650" y="586" text-anchor="middle" fill="#85e89d" font-size="11">Flink (surge pricing)</text>
+  <text x="790" y="586" text-anchor="middle" fill="#e3b341" font-size="12">→</text>
+  <text x="890" y="586" text-anchor="middle" fill="#85e89d" font-size="11">Redis (H3 index)</text>
+  <text x="100" y="606" text-anchor="middle" fill="#6e7681" font-size="10">every 4 seconds</text>
+  <text x="380" y="606" text-anchor="middle" fill="#6e7681" font-size="10">partitioned by city</text>
+  <text x="650" y="606" text-anchor="middle" fill="#6e7681" font-size="10">surge updated per hex cell</text>
+  <text x="890" y="606" text-anchor="middle" fill="#6e7681" font-size="10">O(1) driver lookup</text>
+</svg>

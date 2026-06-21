@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="620" viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="960" height="620" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">CQRS — Command Query Responsibility Segregation</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Commands WRITE state · Queries READ state · Never mix them</text>
+
+  <!-- Client -->
+  <rect x="385" y="75" width="190" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="480" y="102" text-anchor="middle" fill="#c9d1d9" font-size="14" font-weight="bold">Client / API Layer</text>
+
+  <!-- Splitter lines -->
+  <line x1="480" y1="117" x2="240" y2="165" stroke="#cccccc" stroke-width="1.5"/>
+  <line x1="480" y1="117" x2="720" y2="165" stroke="#cccccc" stroke-width="1.5"/>
+
+  <!-- COMMAND SIDE (left) -->
+  <rect x="30" y="165" width="420" height="55" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="240" y="190" text-anchor="middle" fill="#388bfd" font-size="15" font-weight="bold">COMMAND SIDE</text>
+  <text x="240" y="210" text-anchor="middle" fill="#7ab8ff" font-size="11">PlaceOrderCommand · CancelOrderCommand · UpdateProfileCommand</text>
+
+  <line x1="240" y1="220" x2="240" y2="258" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+  <!-- Command Handler -->
+  <rect x="80" y="258" width="320" height="75" rx="8" fill="#0a1f40" stroke="#388bfd" stroke-width="2"/>
+  <text x="240" y="282" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Command Handler</text>
+  <text x="240" y="301" text-anchor="middle" fill="#7ab8ff" font-size="11">Loads Entity → Applies Rule → Saves</text>
+  <text x="240" y="319" text-anchor="middle" fill="#7ab8ff" font-size="11">Publishes Domain Event (optional)</text>
+
+  <line x1="240" y1="333" x2="240" y2="368" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+  <!-- Domain Model / Entities -->
+  <rect x="80" y="368" width="320" height="55" rx="8" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="2"/>
+  <text x="240" y="392" text-anchor="middle" fill="#ff6b6b" font-size="13" font-weight="bold">Domain Model (Entities)</text>
+  <text x="240" y="410" text-anchor="middle" fill="#ffaaaa" font-size="11">Order · User · Product — business rules</text>
+
+  <line x1="240" y1="423" x2="240" y2="458" stroke="#388bfd" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+  <!-- Write DB -->
+  <rect x="80" y="458" width="320" height="50" rx="8" fill="#0a1628" stroke="#58a6ff" stroke-width="2.5"/>
+  <text x="240" y="480" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="bold">Write Database</text>
+  <text x="240" y="498" text-anchor="middle" fill="#7ab8ff" font-size="11">PostgreSQL — Normalized (3NF), ACID</text>
+
+  <!-- QUERY SIDE (right) -->
+  <rect x="510" y="165" width="420" height="55" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="720" y="190" text-anchor="middle" fill="#3fb950" font-size="15" font-weight="bold">QUERY SIDE</text>
+  <text x="720" y="210" text-anchor="middle" fill="#85e89d" font-size="11">GetOrderDetails · ListOrders · SearchProducts</text>
+
+  <line x1="720" y1="220" x2="720" y2="258" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+
+  <!-- Query Handler -->
+  <rect x="560" y="258" width="320" height="75" rx="8" fill="#0a2a15" stroke="#3fb950" stroke-width="2"/>
+  <text x="720" y="282" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Query Handler</text>
+  <text x="720" y="301" text-anchor="middle" fill="#85e89d" font-size="11">Reads flat DTO directly from read model</text>
+  <text x="720" y="319" text-anchor="middle" fill="#85e89d" font-size="11">Never touches domain entities</text>
+
+  <line x1="720" y1="333" x2="720" y2="368" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+
+  <!-- Read Model / DTOs -->
+  <rect x="560" y="368" width="320" height="55" rx="8" fill="#e3b34118" stroke="#e3b341" stroke-width="2"/>
+  <text x="720" y="392" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Read Model DTOs</text>
+  <text x="720" y="410" text-anchor="middle" fill="#f0c060" font-size="11">OrderDetailsDto · ProductListDto (flat, denormalized)</text>
+
+  <line x1="720" y1="423" x2="720" y2="458" stroke="#3fb950" stroke-width="1.8" marker-end="url(#arrG)"/>
+
+  <!-- Read DB -->
+  <rect x="560" y="458" width="320" height="50" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="720" y="480" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">Read Database(s)</text>
+  <text x="720" y="498" text-anchor="middle" fill="#85e89d" font-size="11">Redis · Elasticsearch · Denormalized PostgreSQL view</text>
+
+  <!-- Sync arrow (write → read) -->
+  <path d="M 400 483 Q 480 520 560 483" stroke="#e3b341" stroke-width="2" fill="none" marker-end="url(#arrY)" stroke-dasharray="7,4"/>
+  <text x="480" y="528" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">Eventual Sync (Events / CDC / Polling)</text>
+
+  <!-- Big Tech -->
+  <text x="40" y="562" fill="#8b949e" font-size="12" font-weight="bold">Big Tech:</text>
+  <text x="120" y="562" fill="#388bfd" font-size="12">Microsoft Azure (architecture pattern)</text>
+  <text x="380" y="562" fill="#3fb950" font-size="12">Walmart (product catalog)</text>
+  <text x="580" y="562" fill="#e3b341" font-size="12">Booking.com (availability)</text>
+  <text x="785" y="562" fill="#bc8cff" font-size="12">LinkedIn (feed)</text>
+
+  <text x="40" y="588" fill="#3fb950" font-size="11">✓ Optimized reads  ✓ Indep scaling  ✓ Multiple read models  ✓ Clear intent  ✓ Easy caching</text>
+  <text x="40" y="606" fill="#f85149" font-size="11">✗ Eventual consistency  ✗ More code  ✗ Sync mechanism needed  ✗ Overkill for simple CRUD</text>
+</svg>

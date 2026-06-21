@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="740" viewBox="0 0 980 740" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="980" height="740" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">MVCC — Multiversion Concurrency Control</text>
+  <text x="490" y="57" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">⚠ NOT the same as MVC (UI pattern) — MVCC is a PostgreSQL/database internal mechanism</text>
+
+  <!-- Left: Without MVCC (locking) -->
+  <rect x="20" y="75" width="440" height="220" rx="10" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="240" y="99" text-anchor="middle" fill="#f85149" font-size="14" font-weight="bold">Without MVCC — Traditional Locking</text>
+  <text x="240" y="117" text-anchor="middle" fill="#ff9090" font-size="11">Readers BLOCK writers · Writers BLOCK readers</text>
+
+  <rect x="35" y="127" width="410" height="35" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="240" y="150" text-anchor="middle" fill="#ff9090" font-size="11">User A: SELECT * FROM orders  → acquires READ LOCK</text>
+
+  <rect x="35" y="168" width="410" height="35" rx="5" fill="#1a0000" stroke="#f85149" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="240" y="186" text-anchor="middle" fill="#8b949e" font-size="11">User B: UPDATE orders SET status='paid'  → BLOCKED ⏸</text>
+  <text x="240" y="201" text-anchor="middle" fill="#6e7681" font-size="10">Waiting... waiting... waiting for User A to finish...</text>
+
+  <rect x="35" y="210" width="410" height="35" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="240" y="233" text-anchor="middle" fill="#ff9090" font-size="11">User A finishes (5 seconds) → releases lock</text>
+
+  <rect x="35" y="251" width="410" height="35" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="240" y="274" text-anchor="middle" fill="#ff9090" font-size="11">User B finally runs → delayed 5 seconds!</text>
+
+  <!-- Right: With MVCC -->
+  <rect x="480" y="75" width="480" height="220" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="720" y="99" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">With MVCC — Row Versioning</text>
+  <text x="720" y="117" text-anchor="middle" fill="#85e89d" font-size="11">Readers NEVER block writers · Writers NEVER block readers</text>
+
+  <rect x="495" y="127" width="450" height="35" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="720" y="150" text-anchor="middle" fill="#85e89d" font-size="11">User A: SELECT * → sees SNAPSHOT (frozen view of data at T1)</text>
+
+  <rect x="495" y="168" width="450" height="35" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="720" y="186" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">User B: UPDATE → creates NEW ROW VERSION simultaneously ✓</text>
+  <text x="720" y="201" text-anchor="middle" fill="#85e89d" font-size="10">No waiting! Old version still exists for User A's snapshot.</text>
+
+  <rect x="495" y="210" width="450" height="35" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="720" y="230" text-anchor="middle" fill="#85e89d" font-size="11">User A: still sees OLD version (snapshot unaffected by B's write)</text>
+  <text x="720" y="244" text-anchor="middle" fill="#85e89d" font-size="10">User C (starts after B commits): sees NEW version ✓</text>
+
+  <!-- Row versioning detail -->
+  <rect x="20" y="315" width="940" height="230" rx="10" fill="#0a0a0a" stroke="#388bfd" stroke-width="2"/>
+  <text x="490" y="340" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">How Row Versioning Works (xmin / xmax hidden columns)</text>
+
+  <!-- Before update state -->
+  <text x="60" y="362" fill="#8b949e" font-size="11" font-weight="bold">BEFORE UPDATE (txid 200 starts):</text>
+  <rect x="40" y="370" width="880" height="32" rx="4" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="55" y="391" fill="#388bfd" font-size="11">xmin=100  xmax=0   id=1  status='pending'</text>
+  <text x="400" y="391" fill="#3fb950" font-size="11" font-weight="bold">← LIVE ROW (xmax=0 means not deleted)</text>
+
+  <!-- During update -->
+  <text x="60" y="420" fill="#8b949e" font-size="11" font-weight="bold">DURING UPDATE by txid 201 (UPDATE SET status='paid'):</text>
+  <rect x="40" y="428" width="880" height="28" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="55" y="447" fill="#ff9090" font-size="11">xmin=100  xmax=201  id=1  status='pending'</text>
+  <text x="400" y="447" fill="#f85149" font-size="11">← DEAD ROW (xmax set = txid 201 "deleted" this version)</text>
+
+  <rect x="40" y="462" width="880" height="28" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="55" y="481" fill="#3fb950" font-size="11" font-weight="bold">xmin=201  xmax=0   id=1  status='paid'</text>
+  <text x="400" y="481" fill="#3fb950" font-size="11" font-weight="bold">← NEW LIVE ROW (created by txid 201)</text>
+
+  <!-- Visibility rule -->
+  <rect x="40" y="497" width="880" height="38" rx="4" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="490" y="514" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">Visibility Rule: Row visible to txid T if:</text>
+  <text x="490" y="530" text-anchor="middle" fill="#f0c060" font-size="11">xmin committed BEFORE T started  AND  (xmax=0  OR  xmax NOT committed  OR  xmax > T's snapshot)</text>
+
+  <!-- VACUUM section -->
+  <rect x="20" y="565" width="460" height="145" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="250" y="589" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">VACUUM — Reclaiming Dead Rows</text>
+  <text x="250" y="607" text-anchor="middle" fill="#7ab8ff" font-size="11">Dead rows stay on disk until VACUUM runs</text>
+  <rect x="35" y="615" width="430" height="26" rx="4" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="250" y="633" text-anchor="middle" fill="#7ab8ff" font-size="11">1M updates/day → 1M dead rows/day → table bloat</text>
+  <rect x="35" y="647" width="430" height="26" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1"/>
+  <text x="250" y="665" text-anchor="middle" fill="#3fb950" font-size="11">VACUUM marks dead rows as free space → reusable</text>
+  <rect x="35" y="679" width="430" height="22" rx="4" fill="#1a1000" stroke="#e3b341" stroke-width="1"/>
+  <text x="250" y="695" text-anchor="middle" fill="#e3b341" font-size="11">Autovacuum: runs automatically when dead% &gt; 20%</text>
+  <text x="250" y="703" text-anchor="middle" fill="#8b949e" font-size="10">Tune per table for high-write workloads</text>
+
+  <!-- Isolation levels -->
+  <rect x="500" y="565" width="460" height="145" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="730" y="589" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">Isolation Levels (MVCC enables all)</text>
+  <rect x="515" y="600" width="430" height="25" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="730" y="617" text-anchor="middle" fill="#85e89d" font-size="11">READ COMMITTED: each statement = new snapshot (default)</text>
+  <rect x="515" y="631" width="430" height="25" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="730" y="648" text-anchor="middle" fill="#85e89d" font-size="11">REPEATABLE READ: whole transaction = one snapshot</text>
+  <rect x="515" y="662" width="430" height="25" rx="4" fill="#1a3010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="730" y="679" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">SERIALIZABLE: full isolation, conflict detection</text>
+  <text x="730" y="700" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">Key: Readers NEVER block writers · Writers NEVER block readers</text>
+</svg>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="680" viewBox="0 0 980 680" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+  </defs>
+  <rect width="980" height="680" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Database Design Fundamentals</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Normalization · Primary Keys · Data Types · Constraints · N+1 Problem</text>
+
+  <!-- Normalization (left column) -->
+  <rect x="20" y="75" width="440" height="390" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="240" y="99" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">Normalization — Eliminate Redundancy</text>
+
+  <!-- 1NF -->
+  <rect x="35" y="110" width="410" height="80" rx="6" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="240" y="130" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">1NF: Atomic Values</text>
+  <text x="50" y="150" fill="#f85149" font-size="10">❌ users: phones = "081,082"</text>
+  <text x="50" y="166" fill="#3fb950" font-size="10">✅ user_phones: (user_id, phone) — separate table for multi-values</text>
+  <text x="50" y="182" fill="#8b949e" font-size="10">Rule: one value per cell — no arrays, no comma-separated lists</text>
+
+  <!-- 2NF -->
+  <rect x="35" y="198" width="410" height="80" rx="6" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="240" y="218" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">2NF: No Partial Dependencies</text>
+  <text x="50" y="238" fill="#f85149" font-size="10">❌ order_items: (order_id, product_id, quantity, product_name)</text>
+  <text x="50" y="254" fill="#3fb950" font-size="10">✅ order_items: (order_id, product_id, quantity) · products: (id, name)</text>
+  <text x="50" y="270" fill="#8b949e" font-size="10">Rule: non-key columns depend on the WHOLE composite key</text>
+
+  <!-- 3NF -->
+  <rect x="35" y="286" width="410" height="80" rx="6" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="240" y="306" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">3NF: No Transitive Dependencies</text>
+  <text x="50" y="326" fill="#f85149" font-size="10">❌ employees: (id, name, dept_id, dept_name, dept_budget)</text>
+  <text x="50" y="342" fill="#3fb950" font-size="10">✅ employees: (id, name, dept_id) · departments: (id, name, budget)</text>
+  <text x="50" y="358" fill="#8b949e" font-size="10">Rule: non-key columns depend on primary key, not other non-key columns</text>
+
+  <!-- When to denormalize -->
+  <rect x="35" y="374" width="410" height="80" rx="6" fill="#1a1000" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="240" y="394" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">When to Denormalize (intentionally break rules)</text>
+  <text x="50" y="414" fill="#f0c060" font-size="10">✓ Read:Write ratio > 10:1  ✓ JOIN query measured as too slow</text>
+  <text x="50" y="430" fill="#f0c060" font-size="10">✓ READ MODEL in CQRS (already separate from write model)</text>
+  <text x="50" y="446" fill="#e3b341" font-size="10">Rule: normalize first, denormalize ONLY after measuring</text>
+
+  <!-- Primary keys (right column) -->
+  <rect x="480" y="75" width="480" height="390" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="720" y="99" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">Primary Key Strategies</text>
+
+  <rect x="495" y="110" width="450" height="80" rx="6" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="720" y="130" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">BIGINT (auto-increment)</text>
+  <text x="510" y="150" fill="#85e89d" font-size="10">8 bytes · Sequential writes (good for B-tree) · Predictable (security risk)</text>
+  <text x="510" y="166" fill="#85e89d" font-size="10">✓ Single database  ✗ Doesn't work across shards</text>
+  <text x="510" y="182" fill="#3fb950" font-size="10">Use when: small scale, internal IDs not exposed to users</text>
+
+  <rect x="495" y="198" width="450" height="80" rx="6" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="720" y="218" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">UUID v4 (random)</text>
+  <text x="510" y="238" fill="#85e89d" font-size="10">16 bytes · Globally unique · Unpredictable (secure)</text>
+  <text x="510" y="254" fill="#85e89d" font-size="10">✓ Distributed safe  ✗ Random writes break B-tree locality → fragmentation</text>
+  <text x="510" y="270" fill="#3fb950" font-size="10">Use when: distributed systems, user-facing IDs</text>
+
+  <rect x="495" y="286" width="450" height="80" rx="6" fill="#1a3010" stroke="#3fb950" stroke-width="2"/>
+  <text x="720" y="306" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">UUID v7 / ULID — RECOMMENDED ★</text>
+  <text x="510" y="326" fill="#85e89d" font-size="10">16 bytes · Globally unique · TIME-ORDERED (first 48 bits = timestamp)</text>
+  <text x="510" y="342" fill="#85e89d" font-size="10">✓ Globally unique  ✓ Sequential writes (no B-tree fragmentation)</text>
+  <text x="510" y="358" fill="#3fb950" font-size="10">Best of both worlds — use for all new distributed systems</text>
+
+  <!-- Real company choices -->
+  <rect x="495" y="374" width="450" height="80" rx="6" fill="#1a1000" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="720" y="394" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">Real Company Choices</text>
+  <text x="510" y="412" fill="#f0c060" font-size="10">Twitter/Discord: Snowflake ID (64-bit, time+worker+seq = sortable + unique)</text>
+  <text x="510" y="428" fill="#f0c060" font-size="10">Instagram: custom ID (timestamp+shard+sequence)</text>
+  <text x="510" y="444" fill="#f0c060" font-size="10">Stripe: "ch_", "cus_" prefixed string IDs (readable type prefix + random)</text>
+
+  <!-- Data types and constraints -->
+  <rect x="20" y="485" width="440" height="150" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="240" y="507" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Critical Data Type Rules</text>
+  <text x="35" y="527" fill="#ff9090" font-size="11">❌ FLOAT for money → 0.1 + 0.2 = 0.30000000000000004 (IEEE 754)</text>
+  <text x="35" y="545" fill="#3fb950" font-size="11">✅ DECIMAL(19,4) or store cents as INT (price_cents = 990 = $9.90)</text>
+  <text x="35" y="565" fill="#ff9090" font-size="11">❌ INT for user_id (max 2.1B users) · DATETIME without timezone</text>
+  <text x="35" y="583" fill="#3fb950" font-size="11">✅ BIGINT for IDs · TIMESTAMPTZ (with timezone) for timestamps</text>
+  <text x="35" y="603" fill="#ff9090" font-size="11">❌ VARCHAR(255) for everything (lazy)</text>
+  <text x="35" y="621" fill="#3fb950" font-size="11">✅ Choose appropriate length: CHAR(2) for country, VARCHAR(100) for names</text>
+
+  <!-- N+1 -->
+  <rect x="480" y="485" width="480" height="150" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="720" y="507" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">N+1 Query Problem</text>
+  <text x="495" y="527" fill="#f85149" font-size="11">❌ SELECT * FROM orders (100 rows) + for each order: SELECT user WHERE id=?</text>
+  <text x="495" y="545" fill="#f85149" font-size="11">= 101 queries! Gets worse as table grows</text>
+  <text x="495" y="565" fill="#3fb950" font-size="11">✅ SELECT o.*, u.name FROM orders o JOIN users u ON o.user_id = u.id</text>
+  <text x="495" y="583" fill="#3fb950" font-size="11">= 1 query. Always join, or use IN clause for batch fetch</text>
+  <text x="495" y="603" fill="#8b949e" font-size="11">Most ORM "lazy loading" is N+1 by default — always use eager loading</text>
+  <text x="495" y="621" fill="#8b949e" font-size="11">Most common bug that kills app performance at scale</text>
+</svg>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="760" viewBox="0 0 980 760" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrBL" markerWidth="9" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="9 0,0 3.5,9 7" fill="#388bfd"/></marker>
+    <marker id="arrGL" markerWidth="9" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="9 0,0 3.5,9 7" fill="#3fb950"/></marker>
+  </defs>
+  <rect width="980" height="760" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Database 3-Layer Model (ANSI/SPARC + Data Modeling)</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Two complementary 3-layer models every database designer must know</text>
+
+  <!-- ===== LEFT SIDE: ANSI/SPARC ===== -->
+  <text x="240" y="85" text-anchor="middle" fill="#e3b341" font-size="15" font-weight="bold">Model 1: ANSI/SPARC (How DBMS works)</text>
+  <text x="240" y="103" text-anchor="middle" fill="#8b949e" font-size="11">Proposed 1975 — governs ALL modern databases</text>
+
+  <!-- Users on the left -->
+  <rect x="20" y="120" width="100" height="36" rx="6" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="70" y="143" text-anchor="middle" fill="#c9d1d9" font-size="11">HR Manager</text>
+  <rect x="20" y="168" width="100" height="36" rx="6" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="70" y="191" text-anchor="middle" fill="#c9d1d9" font-size="11">Junior Dev</text>
+  <rect x="20" y="216" width="100" height="36" rx="6" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="70" y="239" text-anchor="middle" fill="#c9d1d9" font-size="11">Payroll App</text>
+
+  <!-- External Schema -->
+  <rect x="135" y="110" width="240" height="175" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="255" y="133" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">External Schema</text>
+  <text x="255" y="151" text-anchor="middle" fill="#7ab8ff" font-size="11">(View Level — "What each user sees")</text>
+  <rect x="150" y="160" width="210" height="30" rx="5" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="255" y="179" text-anchor="middle" fill="#7ab8ff" font-size="10">View 1: employee_hr_view (salary included)</text>
+  <rect x="150" y="196" width="210" height="30" rx="5" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="255" y="215" text-anchor="middle" fill="#7ab8ff" font-size="10">View 2: staff_directory (NO salary)</text>
+  <rect x="150" y="232" width="210" height="30" rx="5" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="255" y="251" text-anchor="middle" fill="#7ab8ff" font-size="10">View 3: payroll_view (bank account)</text>
+  <text x="255" y="275" text-anchor="middle" fill="#388bfd" font-size="10">SQL: CREATE VIEW · Security boundary</text>
+
+  <!-- Arrows users → external -->
+  <line x1="120" y1="138" x2="135" y2="155" stroke="#388bfd" stroke-width="1.5" marker-end="url(#arrB)"/>
+  <line x1="120" y1="186" x2="135" y2="200" stroke="#388bfd" stroke-width="1.5" marker-end="url(#arrB)"/>
+  <line x1="120" y1="234" x2="135" y2="245" stroke="#388bfd" stroke-width="1.5" marker-end="url(#arrB)"/>
+
+  <!-- Logical independence arrow -->
+  <text x="255" y="303" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="bold">↕ LOGICAL DATA INDEPENDENCE</text>
+  <text x="255" y="317" text-anchor="middle" fill="#8b949e" font-size="9">Views adapt; apps don't change</text>
+  <line x1="255" y1="285" x2="255" y2="328" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+
+  <!-- Conceptual Schema -->
+  <rect x="135" y="328" width="240" height="155" rx="10" fill="#200505" stroke="#f85149" stroke-width="2.5"/>
+  <text x="255" y="351" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Conceptual Schema</text>
+  <text x="255" y="369" text-anchor="middle" fill="#ff9090" font-size="11">(Logical Level — "What exists")</text>
+  <rect x="150" y="378" width="210" height="25" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="255" y="395" text-anchor="middle" fill="#ff9090" font-size="10">employees (emp_id PK, name, salary...)</text>
+  <rect x="150" y="408" width="210" height="25" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="255" y="425" text-anchor="middle" fill="#ff9090" font-size="10">departments (id PK, name UNIQUE...)</text>
+  <rect x="150" y="438" width="210" height="25" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="255" y="455" text-anchor="middle" fill="#ff9090" font-size="10">Constraints: salary >= 0, FK, UNIQUE</text>
+  <text x="255" y="474" text-anchor="middle" fill="#f85149" font-size="10">SQL: CREATE TABLE + constraints</text>
+
+  <!-- Physical independence arrow -->
+  <text x="255" y="501" text-anchor="middle" fill="#e3b341" font-size="10" font-weight="bold">↕ PHYSICAL DATA INDEPENDENCE</text>
+  <text x="255" y="515" text-anchor="middle" fill="#8b949e" font-size="9">Add index, move disk → tables unchanged</text>
+  <line x1="255" y1="483" x2="255" y2="528" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+
+  <!-- Internal Schema -->
+  <rect x="135" y="528" width="240" height="145" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="255" y="551" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Internal Schema</text>
+  <text x="255" y="569" text-anchor="middle" fill="#85e89d" font-size="11">(Physical Level — "How stored")</text>
+  <rect x="150" y="578" width="210" height="22" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="255" y="593" text-anchor="middle" fill="#85e89d" font-size="10">B-Tree index on emp_id</text>
+  <rect x="150" y="605" width="210" height="22" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="255" y="620" text-anchor="middle" fill="#85e89d" font-size="10">Hash index on email</text>
+  <rect x="150" y="632" width="210" height="22" rx="4" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="255" y="647" text-anchor="middle" fill="#85e89d" font-size="10">Tablespace: /mnt/ssd/postgres</text>
+  <text x="255" y="665" text-anchor="middle" fill="#3fb950" font-size="10">SQL: CREATE INDEX · TABLESPACE</text>
+
+  <!-- Disk icon -->
+  <rect x="165" y="678" width="180" height="28" rx="4" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="255" y="697" text-anchor="middle" fill="#8b949e" font-size="11">Physical Disk / SSD Storage</text>
+  <line x1="255" y1="673" x2="255" y2="678" stroke="#3fb950" stroke-width="1.5" marker-end="url(#arrG)"/>
+
+  <!-- ===== RIGHT SIDE: Data Modeling Process ===== -->
+  <text x="730" y="85" text-anchor="middle" fill="#e3b341" font-size="15" font-weight="bold">Model 2: Data Modeling Process</text>
+  <text x="730" y="103" text-anchor="middle" fill="#8b949e" font-size="11">How you DESIGN a database from requirements</text>
+
+  <!-- Conceptual Model -->
+  <rect x="600" y="110" width="360" height="155" rx="10" fill="#0a1020" stroke="#bc8cff" stroke-width="2.5"/>
+  <text x="780" y="133" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="bold">Conceptual Model</text>
+  <text x="780" y="151" text-anchor="middle" fill="#d2a8ff" font-size="11">(Business language — no tech terms)</text>
+  <rect x="615" y="160" width="330" height="28" rx="5" fill="#15082a" stroke="#bc8cff" stroke-width="1"/>
+  <text x="780" y="178" text-anchor="middle" fill="#d2a8ff" font-size="11">Entities: User, Post, Board, Comment, Tag</text>
+  <rect x="615" y="194" width="330" height="28" rx="5" fill="#15082a" stroke="#bc8cff" stroke-width="1"/>
+  <text x="780" y="212" text-anchor="middle" fill="#d2a8ff" font-size="11">Relations: User CREATES Post · Post IN Board</text>
+  <rect x="615" y="228" width="330" height="28" rx="5" fill="#15082a" stroke="#bc8cff" stroke-width="1"/>
+  <text x="780" y="246" text-anchor="middle" fill="#d2a8ff" font-size="11">Tool: ER Diagram · Who: Business analyst</text>
+
+  <text x="780" y="278" text-anchor="middle" fill="#8b949e" font-size="10">→ No SQL yet. No column names. No data types. Just WHAT and HOW-RELATED.</text>
+  <line x1="780" y1="265" x2="780" y2="285" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+
+  <!-- Logical Model -->
+  <rect x="600" y="290" width="360" height="165" rx="10" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="780" y="313" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Logical Model</text>
+  <text x="780" y="331" text-anchor="middle" fill="#f0c060" font-size="11">(Tables, columns, types — DB-agnostic)</text>
+  <rect x="615" y="340" width="330" height="28" rx="5" fill="#1a1200" stroke="#e3b341" stroke-width="1"/>
+  <text x="780" y="358" text-anchor="middle" fill="#f0c060" font-size="11">posts (id PK, title, body, user_id FK, board_id FK)</text>
+  <rect x="615" y="374" width="330" height="28" rx="5" fill="#1a1200" stroke="#e3b341" stroke-width="1"/>
+  <text x="780" y="392" text-anchor="middle" fill="#f0c060" font-size="11">post_upvotes (user_id FK, post_id FK, PK: both)</text>
+  <rect x="615" y="408" width="330" height="28" rx="5" fill="#1a1200" stroke="#e3b341" stroke-width="1"/>
+  <text x="780" y="426" text-anchor="middle" fill="#f0c060" font-size="11">Cardinality: 1-to-many, many-to-many</text>
+  <text x="780" y="448" text-anchor="middle" fill="#8b949e" font-size="10">→ Normalised tables · Relationships defined · No DB-specific SQL yet</text>
+
+  <line x1="780" y1="455" x2="780" y2="475" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+
+  <!-- Physical Model -->
+  <rect x="600" y="475" width="360" height="200" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="780" y="498" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Physical Model</text>
+  <text x="780" y="516" text-anchor="middle" fill="#85e89d" font-size="11">(Actual SQL for PostgreSQL — DB-specific)</text>
+  <rect x="615" y="525" width="330" height="28" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="780" y="543" text-anchor="middle" fill="#85e89d" font-size="11">id BIGSERIAL PRIMARY KEY (not just INTEGER)</text>
+  <rect x="615" y="559" width="330" height="28" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="780" y="577" text-anchor="middle" fill="#85e89d" font-size="11">TIMESTAMPTZ (timezone-aware)</text>
+  <rect x="615" y="593" width="330" height="28" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="780" y="611" text-anchor="middle" fill="#85e89d" font-size="11">PARTITION BY LIST (board_id) — for Pantip</text>
+  <rect x="615" y="627" width="330" height="28" rx="5" fill="#0a2810" stroke="#3fb950" stroke-width="1"/>
+  <text x="780" y="645" text-anchor="middle" fill="#85e89d" font-size="11">GIN index with Thai tokenizer for search</text>
+  <text x="780" y="668" text-anchor="middle" fill="#3fb950" font-size="10">→ Final DDL · Ready to execute · DB-specific optimizations</text>
+
+  <!-- Clean arch mapping bar at bottom -->
+  <rect x="20" y="715" width="940" height="35" rx="6" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="490" y="736" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">Clean Architecture Mapping: Conceptual = Entities · Logical = Interfaces (ports) · Physical = Infrastructure Adapters</text>
+
+  <!-- Cross-mapping lines (dashed) -->
+  <line x1="490" y1="193" x2="600" y2="193" stroke="#8b949e" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="545" y="188" text-anchor="middle" fill="#6e7681" font-size="9">similar</text>
+  <line x1="490" y1="400" x2="600" y2="372" stroke="#8b949e" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="545" y="385" text-anchor="middle" fill="#6e7681" font-size="9">similar</text>
+  <line x1="490" y1="600" x2="600" y2="575" stroke="#8b949e" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="545" y="590" text-anchor="middle" fill="#6e7681" font-size="9">similar</text>
+</svg>

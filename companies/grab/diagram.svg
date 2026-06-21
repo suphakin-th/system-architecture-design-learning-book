@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="600" viewBox="0 0 980 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#00b14f"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="980" height="600" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Grab — Southeast Asia Super App Architecture</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">8 countries · 40+ currencies · 10 regulatory frameworks · 2G to 5G network range</text>
+
+  <!-- The unique challenge -->
+  <rect x="20" y="75" width="940" height="50" rx="8" fill="#200505" stroke="#f85149" stroke-width="1.5"/>
+  <text x="490" y="98" text-anchor="middle" fill="#f85149" font-size="12" font-weight="bold">The Southeast Asia Problem: ONE app must work across SG (5G, 200/mo income) AND rural Indonesia (2G, $5/mo income)</text>
+  <text x="490" y="116" text-anchor="middle" fill="#ff9090" font-size="11">10 different regulatory frameworks · MAS (SG) ≠ OJK (ID) ≠ BNM (MY) · App must serve all simultaneously</text>
+
+  <!-- Strategy Pattern: per-country payments -->
+  <rect x="20" y="140" width="440" height="220" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="240" y="164" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">Payment Strategy Pattern</text>
+  <text x="240" y="182" text-anchor="middle" fill="#7ab8ff" font-size="11">IPaymentProcessor → country-specific adapter</text>
+  <rect x="35" y="193" width="410" height="40" rx="5" fill="#0a2010" stroke="#00b14f" stroke-width="1.5"/>
+  <text x="240" y="211" text-anchor="middle" fill="#00b14f" font-size="11" font-weight="bold">PaymentProcessorSG → DBS Bank API</text>
+  <text x="240" y="228" text-anchor="middle" fill="#85e89d" font-size="10">MAS-compliant · data in Singapore AWS region</text>
+  <rect x="35" y="240" width="410" height="40" rx="5" fill="#0a2010" stroke="#00b14f" stroke-width="1.5"/>
+  <text x="240" y="258" text-anchor="middle" fill="#00b14f" font-size="11" font-weight="bold">PaymentProcessorID → BCA Bank API</text>
+  <text x="240" y="275" text-anchor="middle" fill="#85e89d" font-size="10">OJK-compliant · data in Jakarta AWS region</text>
+  <rect x="35" y="287" width="410" height="40" rx="5" fill="#0a2010" stroke="#00b14f" stroke-width="1.5"/>
+  <text x="240" y="305" text-anchor="middle" fill="#00b14f" font-size="11" font-weight="bold">PaymentProcessorTH → Kasikorn Bank API</text>
+  <text x="240" y="322" text-anchor="middle" fill="#85e89d" font-size="10">BOT-compliant · PromptPay integration · THB</text>
+  <text x="240" y="348" text-anchor="middle" fill="#388bfd" font-size="10" font-weight="bold">PaymentRouter selects adapter by user country — Use Case unchanged</text>
+
+  <!-- Real-time location architecture -->
+  <rect x="480" y="140" width="480" height="220" rx="10" fill="#0a2010" stroke="#00b14f" stroke-width="2"/>
+  <text x="720" y="164" text-anchor="middle" fill="#00b14f" font-size="14" font-weight="bold">Real-Time Driver Location</text>
+  <text x="720" y="182" text-anchor="middle" fill="#85e89d" font-size="11">5M+ active rides · 2.5M GPS updates/second</text>
+  <rect x="495" y="193" width="450" height="40" rx="5" fill="#0a2810" stroke="#00b14f" stroke-width="1"/>
+  <text x="720" y="213" text-anchor="middle" fill="#85e89d" font-size="11">Driver (Bangkok, 5G) → TCP → Kafka → Flink → Redis H3 index</text>
+  <rect x="495" y="240" width="450" height="55" rx="5" fill="#1a0808" stroke="#f85149" stroke-width="1.5"/>
+  <text x="720" y="260" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">Rural Indonesia (2G) Problem:</text>
+  <text x="720" y="278" text-anchor="middle" fill="#ff9090" font-size="10">Connection drops frequently → gaps in location</text>
+  <text x="720" y="292" text-anchor="middle" fill="#ff9090" font-size="10">Solution: cache locally → bulk upload on reconnect</text>
+  <rect x="495" y="302" width="450" height="45" rx="5" fill="#0a2810" stroke="#00b14f" stroke-width="1.5"/>
+  <text x="720" y="322" text-anchor="middle" fill="#00b14f" font-size="11" font-weight="bold">Adaptive updates: good signal=2s, poor=10s, offline=cache</text>
+  <text x="720" y="340" text-anchor="middle" fill="#85e89d" font-size="10">Rider sees smooth animation (interpolated between known positions)</text>
+
+  <!-- App size problem -->
+  <rect x="20" y="380" width="440" height="130" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="2"/>
+  <text x="240" y="403" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">App Size Crisis (2024)</text>
+  <text x="40" y="425" fill="#f0c060" font-size="11">Problem: app growing 1%/month · 1,500+ modules</text>
+  <text x="40" y="443" fill="#f0c060" font-size="11">Rural Indonesia: $100 phone, 32GB storage</text>
+  <text x="40" y="461" fill="#f0c060" font-size="11">150MB app = significant % of storage on 2G = 40min download</text>
+  <text x="40" y="480" fill="#3fb950" font-size="11">Solution: R8 shrinking + WebP images + modular loading</text>
+  <text x="40" y="498" fill="#3fb950" font-size="11">Result: 25% app size reduction → more users can download</text>
+
+  <!-- Istio migration -->
+  <rect x="480" y="380" width="480" height="130" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="720" y="403" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">Consul → Istio Service Mesh (1000+ services)</text>
+  <text x="500" y="425" fill="#7ab8ff" font-size="11">Old: Consul (service discovery + health checks)</text>
+  <text x="500" y="443" fill="#7ab8ff" font-size="11">New: Istio + Envoy (mTLS + circuit breaking + tracing)</text>
+  <text x="500" y="461" fill="#7ab8ff" font-size="11">Challenge: hybrid AWS + GCP + on-prem across 8 countries</text>
+  <text x="500" y="479" fill="#3fb950" font-size="11">Zero code changes in services — Envoy sidecar transparent</text>
+  <text x="500" y="497" fill="#3fb950" font-size="11">mTLS now enforced across all 1000+ services automatically</text>
+
+  <!-- Key lesson -->
+  <rect x="20" y="530" width="940" height="52" rx="8" fill="#0a1a0a" stroke="#00b14f" stroke-width="1.5"/>
+  <text x="490" y="552" text-anchor="middle" fill="#00b14f" font-size="12" font-weight="bold">Key Insight: Regulatory compliance IS architecture · Per-country adapter = legal requirement, not over-engineering</text>
+  <text x="490" y="570" text-anchor="middle" fill="#85e89d" font-size="11">Clean Architecture makes this elegant: IPaymentProcessor (port) · country-specific implementations (adapters) · Use Cases unchanged</text>
+</svg>

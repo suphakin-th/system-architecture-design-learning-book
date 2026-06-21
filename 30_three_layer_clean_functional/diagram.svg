@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="720" viewBox="0 0 980 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+  </defs>
+  <rect width="980" height="720" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">3-Layer Model + Clean Code + Functional Programming</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">WHERE code lives (3-layers) · HOW it's written (Clean Code) · WHAT style (FP) = Maximum Quality</text>
+
+  <!-- Left column: 3 layers -->
+  <rect x="20" y="75" width="290" height="500" rx="10" fill="#0a0a0a" stroke="#30363d" stroke-width="1.5"/>
+  <text x="165" y="99" text-anchor="middle" fill="#c9d1d9" font-size="13" font-weight="bold">3-Layer Architecture</text>
+
+  <rect x="35" y="110" width="260" height="130" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="165" y="132" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">Presentation Layer</text>
+  <text x="50" y="152" fill="#7ab8ff" font-size="10">• HTTP Controllers</text>
+  <text x="50" y="168" fill="#7ab8ff" font-size="10">• REST/GraphQL handlers</text>
+  <text x="50" y="184" fill="#7ab8ff" font-size="10">• Request/Response DTOs</text>
+  <text x="50" y="200" fill="#7ab8ff" font-size="10">• Input validation</text>
+  <text x="50" y="216" fill="#3fb950" font-size="10">FP style: thin adapter, no logic</text>
+  <text x="50" y="232" fill="#8b949e" font-size="10">Clean Code: one responsibility</text>
+
+  <rect x="35" y="255" width="260" height="130" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="165" y="277" text-anchor="middle" fill="#f85149" font-size="12" font-weight="bold">Business Logic Layer</text>
+  <text x="50" y="297" fill="#ff9090" font-size="10">• Use Cases (PlaceOrder)</text>
+  <text x="50" y="313" fill="#ff9090" font-size="10">• Domain Entities (Order)</text>
+  <text x="50" y="329" fill="#ff9090" font-size="10">• Business Rules (pure fns)</text>
+  <text x="50" y="345" fill="#ff9090" font-size="10">• Value Objects (Money)</text>
+  <text x="50" y="361" fill="#3fb950" font-size="10">FP style: pure functions, immutable</text>
+  <text x="50" y="377" fill="#8b949e" font-size="10">Clean Code: rich domain, no DB</text>
+
+  <rect x="35" y="400" width="260" height="130" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="165" y="422" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Data Access Layer</text>
+  <text x="50" y="442" fill="#85e89d" font-size="10">• Repositories (PostgreSQL)</text>
+  <text x="50" y="458" fill="#85e89d" font-size="10">• Data mappers</text>
+  <text x="50" y="474" fill="#85e89d" font-size="10">• External API clients</text>
+  <text x="50" y="490" fill="#85e89d" font-size="10">• ORM / SQL queries</text>
+  <text x="50" y="506" fill="#3fb950" font-size="10">FP style: pure mappers (row → domain)</text>
+  <text x="50" y="522" fill="#8b949e" font-size="10">Clean Code: one DB concern</text>
+
+  <!-- Middle column: clean code + FP principles -->
+  <rect x="330" y="75" width="300" height="500" rx="10" fill="#0a0a0a" stroke="#30363d" stroke-width="1.5"/>
+  <text x="480" y="99" text-anchor="middle" fill="#c9d1d9" font-size="13" font-weight="bold">Clean Code + FP Principles</text>
+
+  <rect x="345" y="110" width="270" height="62" rx="6" fill="#0d1a40" stroke="#388bfd" stroke-width="1"/>
+  <text x="480" y="130" text-anchor="middle" fill="#388bfd" font-size="11" font-weight="bold">Meaningful Names</text>
+  <text x="360" y="148" fill="#f85149" font-size="10">❌ usrSvc.fndById(id)</text>
+  <text x="360" y="162" fill="#3fb950" font-size="10">✅ userService.findById(userId)</text>
+
+  <rect x="345" y="180" width="270" height="62" rx="6" fill="#0d1a40" stroke="#3fb950" stroke-width="1"/>
+  <text x="480" y="200" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Pure Functions</text>
+  <text x="360" y="218" fill="#f85149" font-size="10">❌ this.total += item.price (mutation)</text>
+  <text x="360" y="232" fill="#3fb950" font-size="10">✅ return this.total.add(item.price)</text>
+
+  <rect x="345" y="250" width="270" height="62" rx="6" fill="#0d1a40" stroke="#bc8cff" stroke-width="1"/>
+  <text x="480" y="270" text-anchor="middle" fill="#bc8cff" font-size="11" font-weight="bold">Immutability</text>
+  <text x="360" y="288" fill="#f85149" font-size="10">❌ order.status = 'paid' (mutate)</text>
+  <text x="360" y="302" fill="#3fb950" font-size="10">✅ order.withStatus(OrderStatus.PAID)</text>
+
+  <rect x="345" y="320" width="270" height="62" rx="6" fill="#0d1a40" stroke="#e3b341" stroke-width="1"/>
+  <text x="480" y="340" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">Guard Clauses (early return)</text>
+  <text x="360" y="358" fill="#f85149" font-size="10">❌ if (valid) { if (auth) { ...deep nesting</text>
+  <text x="360" y="372" fill="#3fb950" font-size="10">✅ if (!valid) throw Error · if (!auth) throw</text>
+
+  <rect x="345" y="390" width="270" height="62" rx="6" fill="#0d1a40" stroke="#f85149" stroke-width="1"/>
+  <text x="480" y="410" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">Single Responsibility</text>
+  <text x="360" y="428" fill="#f85149" font-size="10">❌ one function: validate+charge+save+email</text>
+  <text x="360" y="442" fill="#3fb950" font-size="10">✅ each function: one thing, one reason to change</text>
+
+  <rect x="345" y="460" width="270" height="80" rx="6" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="480" y="480" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Function Composition</text>
+  <text x="360" y="498" fill="#85e89d" font-size="10">const transform = pipe(</text>
+  <text x="360" y="512" fill="#85e89d" font-size="10">  normalizeEmail,    ← pure fn</text>
+  <text x="360" y="526" fill="#85e89d" font-size="10">  setDefaultRole,    ← pure fn</text>
+  <text x="360" y="540" fill="#85e89d" font-size="10">  enrichTimestamps   ← pure fn</text>
+
+  <!-- Right column: testing + examples -->
+  <rect x="650" y="75" width="310" height="500" rx="10" fill="#0a0a0a" stroke="#30363d" stroke-width="1.5"/>
+  <text x="805" y="99" text-anchor="middle" fill="#c9d1d9" font-size="13" font-weight="bold">Testing Pyramid</text>
+
+  <!-- Testing pyramid visual -->
+  <polygon points="805,115 680,280 930,280" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="805" y="165" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="bold">Unit Tests</text>
+  <text x="805" y="180" text-anchor="middle" fill="#85e89d" font-size="9">Pure entity functions</text>
+  <text x="805" y="194" text-anchor="middle" fill="#85e89d" font-size="9">&lt;1ms · No infra needed</text>
+  <text x="805" y="208" text-anchor="middle" fill="#85e89d" font-size="9">Most tests should be here</text>
+
+  <rect x="705" y="290" width="200" height="50" rx="6" fill="#0d1a40" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="805" y="310" text-anchor="middle" fill="#388bfd" font-size="11" font-weight="bold">Integration Tests</text>
+  <text x="805" y="328" text-anchor="middle" fill="#7ab8ff" font-size="10">Use case + mocked ports</text>
+
+  <rect x="705" y="350" width="200" height="50" rx="6" fill="#1a1000" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="805" y="370" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">E2E Tests</text>
+  <text x="805" y="388" text-anchor="middle" fill="#f0c060" font-size="10">Full system · Fewer · Slower</text>
+
+  <!-- FP benefits -->
+  <rect x="665" y="415" width="280" height="150" rx="8" fill="#0a1020" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="805" y="437" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">Why FP Fits Clean Architecture</text>
+  <text x="680" y="458" fill="#d2a8ff" font-size="10">Pure functions = entities/use cases</text>
+  <text x="680" y="474" fill="#d2a8ff" font-size="10">Side effects = pushed to adapters</text>
+  <text x="680" y="490" fill="#d2a8ff" font-size="10">Immutability = thread-safe entities</text>
+  <text x="680" y="506" fill="#d2a8ff" font-size="10">Composition = build complex from simple</text>
+  <text x="680" y="522" fill="#d2a8ff" font-size="10">Option/Result = explicit error handling</text>
+  <text x="680" y="538" fill="#3fb950" font-size="10">All pure layer code testable without DB</text>
+  <text x="680" y="554" fill="#3fb950" font-size="10">This is what Stripe/Netflix actually write</text>
+
+  <!-- Flow arrows between columns -->
+  <line x1="295" y1="175" x2="330" y2="175" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="295" y1="320" x2="330" y2="320" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="295" y1="465" x2="330" y2="465" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Bottom summary bar -->
+  <rect x="20" y="595" width="940" height="100" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="490" y="617" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">How They Work Together — The Complete Formula</text>
+  <text x="50" y="638" fill="#cccccc" font-size="11">3-Layer: separates WHAT code does · Clean Architecture: clarifies dependency direction · FP: ensures quality within each layer</text>
+  <text x="50" y="656" fill="#cccccc" font-size="11">Result: Presentation = thin adapter · Business Logic = pure functions + immutable entities · Data Access = pure mappers + side effects</text>
+  <text x="50" y="674" fill="#3fb950" font-size="11">Test pyramid: most tests on pure functions (&lt;1ms) · few integration (with mocks) · fewer E2E (with real DB)</text>
+  <text x="50" y="692" fill="#3fb950" font-size="11">This combination = the "senior engineer standard" — what top companies demand and what makes code maintainable for years</text>
+</svg>

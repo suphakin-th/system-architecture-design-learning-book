@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="860" viewBox="0 0 900 860" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#0f0f1a"/>
+      <stop offset="100%" style="stop-color:#060609"/>
+    </radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64ffda"/></marker>
+    <marker id="arrR" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#ff6b6b"/></marker>
+  </defs>
+  <rect width="900" height="860" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" fill="#ffffff" font-size="26" font-weight="bold" filter="url(#glow)">Clean Architecture — Foundation</text>
+  <text x="450" y="68" text-anchor="middle" fill="#8b949e" font-size="14">The universal lens for understanding all architecture patterns</text>
+
+  <!-- ── CONCENTRIC RINGS ── -->
+  <!-- Outer ring: Frameworks -->
+  <ellipse cx="450" cy="460" rx="390" ry="330" fill="#0a1628" stroke="#388bfd" stroke-width="3"/>
+  <!-- Adapters ring -->
+  <ellipse cx="450" cy="460" rx="300" ry="255" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <!-- Use Cases ring -->
+  <ellipse cx="450" cy="460" rx="208" ry="177" fill="#201505" stroke="#e3b341" stroke-width="2.5"/>
+  <!-- Entities core -->
+  <ellipse cx="450" cy="460" rx="116" ry="100" fill="#200a0a" stroke="#f85149" stroke-width="3" filter="url(#glow)"/>
+
+  <!-- ── LAYER LABELS inside rings ── -->
+  <!-- Frameworks label (top) -->
+  <text x="450" y="148" text-anchor="middle" fill="#388bfd" font-size="15" font-weight="bold">FRAMEWORKS &amp; DRIVERS</text>
+  <text x="450" y="167" text-anchor="middle" fill="#7ab8ff" font-size="11">Express · NestJS · React · PostgreSQL driver · Redis · Docker</text>
+  <!-- Adapters label -->
+  <text x="450" y="220" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">INTERFACE ADAPTERS</text>
+  <text x="450" y="237" text-anchor="middle" fill="#85e89d" font-size="11">Controllers · Presenters · Repository Implementations · Gateways</text>
+  <!-- Use Cases label -->
+  <text x="450" y="294" text-anchor="middle" fill="#e3b341" font-size="14" font-weight="bold">USE CASES</text>
+  <text x="450" y="311" text-anchor="middle" fill="#f0c060" font-size="11">PlaceOrder · RegisterUser · SearchProducts</text>
+  <!-- Entities label (inside core) -->
+  <text x="450" y="428" text-anchor="middle" fill="#f85149" font-size="16" font-weight="bold" filter="url(#glow)">ENTITIES</text>
+  <text x="450" y="450" text-anchor="middle" fill="#ff9090" font-size="12">Business Rules</text>
+  <text x="450" y="468" text-anchor="middle" fill="#ff7070" font-size="13" font-weight="bold">Order · User</text>
+  <text x="450" y="486" text-anchor="middle" fill="#ff7070" font-size="13" font-weight="bold">Product · Money</text>
+  <text x="450" y="508" text-anchor="middle" fill="#ffaaaa" font-size="10">No framework imports</text>
+  <text x="450" y="522" text-anchor="middle" fill="#ffaaaa" font-size="10">No DB imports</text>
+
+  <!-- Bottom labels for outer rings -->
+  <text x="450" y="688" text-anchor="middle" fill="#3fb950" font-size="11">(Converts data between layers — controllers inbound, repositories outbound)</text>
+  <text x="450" y="762" text-anchor="middle" fill="#388bfd" font-size="11">(The "Details" — swap without touching business logic)</text>
+
+  <!-- ── DEPENDENCY ARROWS (inward) ── -->
+  <line x1="740" y1="250" x2="660" y2="300" stroke="#64ffda" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arr)"/>
+  <line x1="620" y1="228" x2="558" y2="275" stroke="#64ffda" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arr)"/>
+  <line x1="555" y1="300" x2="520" y2="355" stroke="#64ffda" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arr)"/>
+  <text x="755" y="244" fill="#64ffda" font-size="10" text-anchor="middle">depends on</text>
+  <text x="632" y="218" fill="#64ffda" font-size="10" text-anchor="middle">depends on</text>
+  <text x="560" y="292" fill="#64ffda" font-size="10" text-anchor="middle">depends on</text>
+
+  <!-- ── SOLID table at bottom ── -->
+  <rect x="50" y="810" width="800" height="36" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="60" y="832" fill="#f85149" font-size="12" font-weight="bold">S</text><text x="75" y="832" fill="#cccccc" font-size="12">Single Resp  </text>
+  <text x="190" y="832" fill="#e3b341" font-size="12" font-weight="bold">O</text><text x="205" y="832" fill="#cccccc" font-size="12">Open/Closed  </text>
+  <text x="330" y="832" fill="#3fb950" font-size="12" font-weight="bold">L</text><text x="345" y="832" fill="#cccccc" font-size="12">Liskov Sub  </text>
+  <text x="465" y="832" fill="#388bfd" font-size="12" font-weight="bold">I</text><text x="480" y="832" fill="#cccccc" font-size="12">Interface Seg  </text>
+  <text x="610" y="832" fill="#bc8cff" font-size="12" font-weight="bold">D</text><text x="625" y="832" fill="#cccccc" font-size="12">Dependency Inversion ← enforces the ring structure above</text>
+</svg>

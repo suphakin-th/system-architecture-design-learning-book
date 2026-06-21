@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="940" height="680" viewBox="0 0 940 680" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arr" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#58a6ff"/></marker>
+  </defs>
+  <rect width="940" height="680" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="470" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Monolithic Architecture (Modular)</text>
+  <text x="470" y="58" text-anchor="middle" fill="#8b949e" font-size="13">All modules in ONE process — Clean Architecture applied within each module</text>
+
+  <!-- Single process container -->
+  <rect x="30" y="75" width="880" height="440" rx="14" fill="#0d1117" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="470" y="103" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">SINGLE PROCESS / SINGLE DEPLOYMENT</text>
+  <text x="470" y="121" text-anchor="middle" fill="#7ab8ff" font-size="11">All in-process function calls — nanosecond latency between modules</text>
+
+  <!-- Module helper macro — User Module -->
+  <rect x="60" y="135" width="235" height="340" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="177" y="158" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">User Module</text>
+  <rect x="75" y="168" width="205" height="46" rx="6" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1.2"/>
+  <text x="177" y="187" text-anchor="middle" fill="#ff6b6b" font-size="12" font-weight="bold">domain/</text>
+  <text x="177" y="204" text-anchor="middle" fill="#ffaaaa" font-size="10">User, Profile, Role entities</text>
+  <rect x="75" y="222" width="205" height="46" rx="6" fill="#e3b34118" stroke="#e3b341" stroke-width="1.2"/>
+  <text x="177" y="241" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">application/</text>
+  <text x="177" y="258" text-anchor="middle" fill="#f0c060" font-size="10">RegisterUser, Login use cases</text>
+  <rect x="75" y="276" width="205" height="46" rx="6" fill="#3fb95018" stroke="#3fb950" stroke-width="1.2"/>
+  <text x="177" y="295" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">adapters/</text>
+  <text x="177" y="312" text-anchor="middle" fill="#85e89d" font-size="10">UserController, UserRepoPostgres</text>
+  <rect x="75" y="330" width="205" height="46" rx="6" fill="#388bfd18" stroke="#388bfd" stroke-width="1.2"/>
+  <text x="177" y="349" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">infrastructure/</text>
+  <text x="177" y="366" text-anchor="middle" fill="#7ab8ff" font-size="10">Express routes, pg driver</text>
+  <rect x="75" y="384" width="205" height="78" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="177" y="403" text-anchor="middle" fill="#8b949e" font-size="11" font-weight="bold">IUserRepository</text>
+  <text x="177" y="420" text-anchor="middle" fill="#6e7681" font-size="10">interface (port)</text>
+  <text x="177" y="437" text-anchor="middle" fill="#6e7681" font-size="10">UserRepositoryPostgres</text>
+  <text x="177" y="452" text-anchor="middle" fill="#6e7681" font-size="10">implements it (adapter)</text>
+
+  <!-- Order Module -->
+  <rect x="352" y="135" width="235" height="340" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="469" y="158" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">Order Module</text>
+  <rect x="367" y="168" width="205" height="46" rx="6" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1.2"/>
+  <text x="469" y="187" text-anchor="middle" fill="#ff6b6b" font-size="12" font-weight="bold">domain/</text>
+  <text x="469" y="204" text-anchor="middle" fill="#ffaaaa" font-size="10">Order, OrderItem entities</text>
+  <rect x="367" y="222" width="205" height="46" rx="6" fill="#e3b34118" stroke="#e3b341" stroke-width="1.2"/>
+  <text x="469" y="241" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">application/</text>
+  <text x="469" y="258" text-anchor="middle" fill="#f0c060" font-size="10">PlaceOrder, CancelOrder</text>
+  <rect x="367" y="276" width="205" height="46" rx="6" fill="#3fb95018" stroke="#3fb950" stroke-width="1.2"/>
+  <text x="469" y="295" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">adapters/</text>
+  <text x="469" y="312" text-anchor="middle" fill="#85e89d" font-size="10">OrderController, OrderRepoPostgres</text>
+  <rect x="367" y="330" width="205" height="46" rx="6" fill="#388bfd18" stroke="#388bfd" stroke-width="1.2"/>
+  <text x="469" y="349" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">infrastructure/</text>
+  <text x="469" y="366" text-anchor="middle" fill="#7ab8ff" font-size="10">Express routes, pg driver</text>
+  <rect x="367" y="384" width="205" height="78" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="469" y="403" text-anchor="middle" fill="#8b949e" font-size="11" font-weight="bold">IOrderRepository</text>
+  <text x="469" y="420" text-anchor="middle" fill="#6e7681" font-size="10">interface (port)</text>
+  <text x="469" y="437" text-anchor="middle" fill="#6e7681" font-size="10">PlaceOrderUseCase calls</text>
+  <text x="469" y="452" text-anchor="middle" fill="#6e7681" font-size="10">IUserService (cross-module)</text>
+
+  <!-- Product Module -->
+  <rect x="645" y="135" width="235" height="340" rx="10" fill="#1a0a28" stroke="#bc8cff" stroke-width="2"/>
+  <text x="762" y="158" text-anchor="middle" fill="#bc8cff" font-size="14" font-weight="bold">Product Module</text>
+  <rect x="660" y="168" width="205" height="46" rx="6" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1.2"/>
+  <text x="762" y="187" text-anchor="middle" fill="#ff6b6b" font-size="12" font-weight="bold">domain/</text>
+  <text x="762" y="204" text-anchor="middle" fill="#ffaaaa" font-size="10">Product, Category entities</text>
+  <rect x="660" y="222" width="205" height="46" rx="6" fill="#e3b34118" stroke="#e3b341" stroke-width="1.2"/>
+  <text x="762" y="241" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">application/</text>
+  <text x="762" y="258" text-anchor="middle" fill="#f0c060" font-size="10">CreateProduct, Search</text>
+  <rect x="660" y="276" width="205" height="46" rx="6" fill="#3fb95018" stroke="#3fb950" stroke-width="1.2"/>
+  <text x="762" y="295" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">adapters/</text>
+  <text x="762" y="312" text-anchor="middle" fill="#85e89d" font-size="10">ProductController, ProductRepo</text>
+  <rect x="660" y="330" width="205" height="46" rx="6" fill="#388bfd18" stroke="#388bfd" stroke-width="1.2"/>
+  <text x="762" y="349" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">infrastructure/</text>
+  <text x="762" y="366" text-anchor="middle" fill="#7ab8ff" font-size="10">Express routes, pg driver</text>
+  <rect x="660" y="384" width="205" height="78" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="762" y="403" text-anchor="middle" fill="#8b949e" font-size="11" font-weight="bold">IProductRepository</text>
+  <text x="762" y="420" text-anchor="middle" fill="#6e7681" font-size="10">interface (port)</text>
+  <text x="762" y="437" text-anchor="middle" fill="#6e7681" font-size="10">ProductRepositoryPostgres</text>
+  <text x="762" y="452" text-anchor="middle" fill="#6e7681" font-size="10">implements it (adapter)</text>
+
+  <!-- Shared DB -->
+  <rect x="270" y="545" width="400" height="65" rx="10" fill="#0a1628" stroke="#58a6ff" stroke-width="2.5"/>
+  <text x="470" y="572" text-anchor="middle" fill="#58a6ff" font-size="15" font-weight="bold">PostgreSQL — Shared Database</text>
+  <text x="470" y="592" text-anchor="middle" fill="#7ab8ff" font-size="12">users | orders | products — ACID transactions FREE</text>
+
+  <!-- Arrows to DB -->
+  <line x1="177" y1="515" x2="320" y2="545" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#arr)"/>
+  <line x1="469" y1="515" x2="469" y2="545" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#arr)"/>
+  <line x1="762" y1="515" x2="620" y2="545" stroke="#58a6ff" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- Cross-module interface arrow -->
+  <line x1="295" y1="445" x2="352" y2="445" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr)"/>
+  <text x="323" y="437" text-anchor="middle" fill="#e3b341" font-size="10">IUserService</text>
+
+  <!-- Benefits/costs -->
+  <text x="40" y="640" fill="#3fb950" font-size="12" font-weight="bold">Benefits:</text>
+  <text x="40" y="657" fill="#85e89d" font-size="11">✓ Single deploy  ✓ Free ACID  ✓ Nanosecond calls  ✓ Simple debug  ✓ Low ops cost</text>
+  <text x="40" y="672" fill="#f85149" font-size="11">✗ Scale all-or-nothing  ✗ Deployment coupling  ✗ Tech lock-in  ✗ Risk of tangling without discipline</text>
+</svg>

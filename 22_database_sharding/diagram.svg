@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="720" viewBox="0 0 980 720" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+  </defs>
+  <rect width="980" height="720" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Database Sharding Strategies</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Split data across N machines when one machine's limits are reached</text>
+
+  <!-- Application / Use Case Layer -->
+  <rect x="340" y="75" width="300" height="55" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="490" y="97" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Application / Use Case Layer</text>
+  <text x="490" y="115" text-anchor="middle" fill="#85e89d" font-size="11">IUserRepository.findById(userId) — knows NOTHING about sharding</text>
+
+  <!-- Shard Router -->
+  <rect x="315" y="172" width="350" height="70" rx="10" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="490" y="196" text-anchor="middle" fill="#e3b341" font-size="14" font-weight="bold">Shard Router</text>
+  <text x="490" y="215" text-anchor="middle" fill="#f0c060" font-size="11">hash(userId) % N → shard index → DB connection</text>
+  <text x="490" y="232" text-anchor="middle" fill="#8b949e" font-size="10">Lives in Infrastructure layer · Use Case never touches this</text>
+
+  <line x1="490" y1="130" x2="490" y2="172" stroke="#3fb950" stroke-width="2" marker-end="url(#arrG)"/>
+
+  <!-- Consistent Hash Ring -->
+  <ellipse cx="490" cy="360" rx="200" ry="75" fill="none" stroke="#bc8cff" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="490" y="340" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">Consistent Hash Ring</text>
+  <text x="490" y="358" text-anchor="middle" fill="#d2a8ff" font-size="10">hash space: 0 → 2³²</text>
+  <text x="490" y="374" text-anchor="middle" fill="#d2a8ff" font-size="10">each node owns an arc</text>
+  <text x="490" y="390" text-anchor="middle" fill="#d2a8ff" font-size="10">adding node: only ~1/N data moves</text>
+
+  <line x1="490" y1="242" x2="490" y2="285" stroke="#e3b341" stroke-width="2" marker-end="url(#arrY)"/>
+
+  <!-- Shard nodes on ring -->
+  <circle cx="490" cy="285" r="12" fill="#388bfd" stroke="#7ab8ff" stroke-width="2"/>
+  <text x="490" y="289" text-anchor="middle" fill="#fff" font-size="9">A</text>
+  <circle cx="680" cy="345" r="12" fill="#3fb950" stroke="#85e89d" stroke-width="2"/>
+  <text x="680" y="349" text-anchor="middle" fill="#fff" font-size="9">B</text>
+  <circle cx="560" cy="425" r="12" fill="#e3b341" stroke="#f0c060" stroke-width="2"/>
+  <text x="560" y="429" text-anchor="middle" fill="#fff" font-size="9">C</text>
+  <circle cx="320" cy="425" r="12" fill="#f85149" stroke="#ff7b72" stroke-width="2"/>
+  <text x="320" y="429" text-anchor="middle" fill="#fff" font-size="9">D</text>
+  <circle cx="300" cy="345" r="12" fill="#bc8cff" stroke="#d2a8ff" stroke-width="2"/>
+  <text x="300" y="349" text-anchor="middle" fill="#fff" font-size="9">E</text>
+
+  <!-- Shard boxes (below) -->
+  <rect x="30" y="490" width="160" height="110" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="110" y="514" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">Shard 1 (A)</text>
+  <text x="110" y="532" text-anchor="middle" fill="#7ab8ff" font-size="10">user_id: 0–25M</text>
+  <text x="110" y="548" text-anchor="middle" fill="#7ab8ff" font-size="10">5TB data</text>
+  <text x="110" y="565" text-anchor="middle" fill="#7ab8ff" font-size="10">20K writes/sec</text>
+  <text x="110" y="582" text-anchor="middle" fill="#3fb950" font-size="10">✓ 3 read replicas</text>
+  <text x="110" y="598" text-anchor="middle" fill="#8b949e" font-size="9">PostgreSQL 14</text>
+
+  <rect x="210" y="490" width="160" height="110" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="290" y="514" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Shard 2 (B)</text>
+  <text x="290" y="532" text-anchor="middle" fill="#85e89d" font-size="10">user_id: 25M–50M</text>
+  <text x="290" y="548" text-anchor="middle" fill="#85e89d" font-size="10">5TB data</text>
+  <text x="290" y="565" text-anchor="middle" fill="#85e89d" font-size="10">22K writes/sec</text>
+  <text x="290" y="582" text-anchor="middle" fill="#3fb950" font-size="10">✓ 3 read replicas</text>
+  <text x="290" y="598" text-anchor="middle" fill="#8b949e" font-size="9">PostgreSQL 14</text>
+
+  <rect x="390" y="490" width="160" height="110" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2"/>
+  <text x="470" y="514" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">Shard 3 (C)</text>
+  <text x="470" y="532" text-anchor="middle" fill="#f0c060" font-size="10">user_id: 50M–75M</text>
+  <text x="470" y="548" text-anchor="middle" fill="#f0c060" font-size="10">5TB data</text>
+  <text x="470" y="565" text-anchor="middle" fill="#f0c060" font-size="10">19K writes/sec</text>
+  <text x="470" y="582" text-anchor="middle" fill="#3fb950" font-size="10">✓ 3 read replicas</text>
+  <text x="470" y="598" text-anchor="middle" fill="#8b949e" font-size="9">PostgreSQL 14</text>
+
+  <rect x="570" y="490" width="160" height="110" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="650" y="514" text-anchor="middle" fill="#f85149" font-size="12" font-weight="bold">Shard 4 (D)</text>
+  <text x="650" y="532" text-anchor="middle" fill="#ff9090" font-size="10">user_id: 75M–100M</text>
+  <text x="650" y="548" text-anchor="middle" fill="#ff9090" font-size="10">5TB data</text>
+  <text x="650" y="565" text-anchor="middle" fill="#ff9090" font-size="10">18K writes/sec</text>
+  <text x="650" y="582" text-anchor="middle" fill="#3fb950" font-size="10">✓ 3 read replicas</text>
+  <text x="650" y="598" text-anchor="middle" fill="#8b949e" font-size="9">PostgreSQL 14</text>
+
+  <rect x="750" y="490" width="200" height="110" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="2"/>
+  <text x="850" y="514" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">Shard 5 (E) — HOT</text>
+  <text x="850" y="532" text-anchor="middle" fill="#d2a8ff" font-size="10">user_id: 100M–125M</text>
+  <text x="850" y="548" text-anchor="middle" fill="#d2a8ff" font-size="10">5TB data</text>
+  <text x="850" y="565" text-anchor="middle" fill="#f85149" font-size="10">⚠ 45K writes/sec (HOT)</text>
+  <text x="850" y="582" text-anchor="middle" fill="#3fb950" font-size="10">✓ 10 read replicas</text>
+  <text x="850" y="598" text-anchor="middle" fill="#bc8cff" font-size="9">+ Redis cache layer</text>
+
+  <!-- Arrows from ring nodes to shards -->
+  <line x1="490" y1="297" x2="170" y2="490" stroke="#388bfd" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrB)"/>
+  <line x1="660" y1="357" x2="350" y2="490" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrG)"/>
+  <line x1="555" y1="437" x2="510" y2="490" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrY)"/>
+  <line x1="325" y1="437" x2="600" y2="490" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrR)"/>
+  <line x1="305" y1="357" x2="830" y2="490" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Strategy comparison boxes -->
+  <rect x="30" y="625" width="920" height="75" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="490" y="645" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">Sharding Strategy Comparison</text>
+  <text x="50" y="665" fill="#388bfd" font-size="11" font-weight="bold">Range:</text><text x="105" y="665" fill="#cccccc" font-size="11"> Fast range queries, risk of hotspot on latest shard</text>
+  <text x="50" y="683" fill="#3fb950" font-size="11" font-weight="bold">Hash:</text><text x="100" y="683" fill="#cccccc" font-size="11"> Even dist, no range queries, re-shard = move all data</text>
+  <text x="380" y="665" fill="#e3b341" font-size="11" font-weight="bold">Consistent Hash:</text><text x="500" y="665" fill="#cccccc" font-size="11"> Even dist, adding node moves only 1/N data · Best for growth</text>
+  <text x="380" y="683" fill="#f85149" font-size="11" font-weight="bold">Geographic:</text><text x="470" y="683" fill="#cccccc" font-size="11"> GDPR compliance, local latency · Risk: uneven region size</text>
+  <text x="710" y="665" fill="#bc8cff" font-size="11" font-weight="bold">Directory:</text><text x="773" y="665" fill="#cccccc" font-size="11"> Flexible rebalance, SPOF risk</text>
+  <text x="710" y="683" fill="#8b949e" font-size="11" font-weight="bold">Big Tech:</text><text x="770" y="683" fill="#cccccc" font-size="11"> Instagram(user_id), Shopify(shop_id), Discord(channel+bucket)</text>
+</svg>

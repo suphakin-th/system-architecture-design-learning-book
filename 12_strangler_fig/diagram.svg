@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="640" viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+  </defs>
+  <rect width="960" height="640" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Strangler Fig Pattern — Incremental Migration</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Extract one module at a time · Never a big bang rewrite · System runs throughout</text>
+
+  <!-- Timeline labels -->
+  <text x="115" y="90" text-anchor="middle" fill="#8b949e" font-size="13" font-weight="bold">Phase 1</text>
+  <text x="115" y="106" text-anchor="middle" fill="#6e7681" font-size="11">Day 0</text>
+  <text x="355" y="90" text-anchor="middle" fill="#8b949e" font-size="13" font-weight="bold">Phase 2</text>
+  <text x="355" y="106" text-anchor="middle" fill="#6e7681" font-size="11">Month 1-3</text>
+  <text x="595" y="90" text-anchor="middle" fill="#8b949e" font-size="13" font-weight="bold">Phase 3</text>
+  <text x="595" y="106" text-anchor="middle" fill="#6e7681" font-size="11">Month 3-6</text>
+  <text x="835" y="90" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">Phase N</text>
+  <text x="835" y="106" text-anchor="middle" fill="#3fb950" font-size="11">Month 12-24</text>
+
+  <!-- PHASE 1: Legacy only -->
+  <rect x="30" y="118" width="170" height="380" rx="10" fill="#200505" stroke="#f85149" stroke-width="2.5"/>
+  <text x="115" y="145" text-anchor="middle" fill="#f85149" font-size="13" font-weight="bold">Legacy Monolith</text>
+  <text x="115" y="165" text-anchor="middle" fill="#ff7b72" font-size="11">100% of traffic</text>
+  <rect x="45" y="178" width="140" height="30" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="115" y="198" text-anchor="middle" fill="#ff9090" font-size="11">Users module</text>
+  <rect x="45" y="215" width="140" height="30" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="115" y="235" text-anchor="middle" fill="#ff9090" font-size="11">Orders module</text>
+  <rect x="45" y="252" width="140" height="30" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="115" y="272" text-anchor="middle" fill="#ff9090" font-size="11">Search module</text>
+  <rect x="45" y="289" width="140" height="30" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="115" y="309" text-anchor="middle" fill="#ff9090" font-size="11">Products module</text>
+  <rect x="45" y="326" width="140" height="30" rx="5" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="115" y="346" text-anchor="middle" fill="#ff9090" font-size="11">Payments module</text>
+  <text x="115" y="440" text-anchor="middle" fill="#ff7b72" font-size="11" font-style="italic">Tightly coupled</text>
+  <text x="115" y="458" text-anchor="middle" fill="#ff7b72" font-size="11" font-style="italic">Hard to test</text>
+  <text x="115" y="476" text-anchor="middle" fill="#ff7b72" font-size="11" font-style="italic">Slow to deploy</text>
+
+  <!-- PHASE 2 -->
+  <rect x="270" y="118" width="170" height="55" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2"/>
+  <text x="355" y="143" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">API Gateway / Facade</text>
+  <text x="355" y="163" text-anchor="middle" fill="#f0c060" font-size="10">Routes: /search/* → New · rest → Legacy</text>
+
+  <rect x="270" y="190" width="170" height="90" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="355" y="213" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Search Service</text>
+  <text x="355" y="231" text-anchor="middle" fill="#85e89d" font-size="10">NEW — Clean Architecture</text>
+  <text x="355" y="248" text-anchor="middle" fill="#85e89d" font-size="10">domain/ + application/ + adapters/</text>
+  <text x="355" y="265" text-anchor="middle" fill="#85e89d" font-size="10">Own Elasticsearch index</text>
+
+  <rect x="270" y="295" width="170" height="200" rx="8" fill="#200505" stroke="#f85149" stroke-width="1.5" opacity="0.7"/>
+  <text x="355" y="320" text-anchor="middle" fill="#f85149" font-size="11">Legacy Monolith</text>
+  <text x="355" y="340" text-anchor="middle" fill="#ff9090" font-size="10">(Users, Orders, Products,</text>
+  <text x="355" y="358" text-anchor="middle" fill="#ff9090" font-size="10"> Payments — still here)</text>
+  <text x="355" y="376" text-anchor="middle" fill="#ff7b72" font-size="10">Getting smaller →</text>
+
+  <!-- PHASE 3 -->
+  <rect x="510" y="118" width="170" height="55" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2"/>
+  <text x="595" y="143" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">API Gateway / Facade</text>
+  <text x="595" y="163" text-anchor="middle" fill="#f0c060" font-size="10">Routes /search/ /orders/ → New</text>
+
+  <rect x="510" y="190" width="170" height="65" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="595" y="213" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Search Service ✓</text>
+  <text x="595" y="232" text-anchor="middle" fill="#85e89d" font-size="10">Stable · In production</text>
+  <text x="595" y="248" text-anchor="middle" fill="#85e89d" font-size="10">Own Elasticsearch index</text>
+
+  <rect x="510" y="265" width="170" height="65" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="595" y="288" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">Order Service ✓</text>
+  <text x="595" y="307" text-anchor="middle" fill="#7ab8ff" font-size="10">NEW — Clean Architecture</text>
+  <text x="595" y="323" text-anchor="middle" fill="#7ab8ff" font-size="10">Own PostgreSQL</text>
+
+  <rect x="510" y="342" width="170" height="155" rx="8" fill="#200505" stroke="#f85149" stroke-width="1.5" opacity="0.5"/>
+  <text x="595" y="367" text-anchor="middle" fill="#f85149" font-size="11">Legacy Monolith</text>
+  <text x="595" y="387" text-anchor="middle" fill="#ff9090" font-size="10">(Users, Products,</text>
+  <text x="595" y="405" text-anchor="middle" fill="#ff9090" font-size="10"> Payments)</text>
+  <text x="595" y="425" text-anchor="middle" fill="#ff7b72" font-size="10">Still shrinking →</text>
+  <text x="595" y="445" text-anchor="middle" fill="#6e7681" font-size="10">Each quarter</text>
+  <text x="595" y="462" text-anchor="middle" fill="#6e7681" font-size="10">one more module</text>
+
+  <!-- PHASE N: Final state -->
+  <rect x="750" y="118" width="180" height="55" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2"/>
+  <text x="840" y="143" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">API Gateway</text>
+  <text x="840" y="163" text-anchor="middle" fill="#f0c060" font-size="10">All routes → New services</text>
+
+  <rect x="750" y="190" width="180" height="52" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="840" y="211" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Search Service ✓</text>
+  <rect x="750" y="250" width="180" height="52" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="840" y="271" text-anchor="middle" fill="#388bfd" font-size="11" font-weight="bold">Order Service ✓</text>
+  <rect x="750" y="310" width="180" height="52" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="840" y="331" text-anchor="middle" fill="#bc8cff" font-size="11" font-weight="bold">User Service ✓</text>
+  <rect x="750" y="370" width="180" height="52" rx="8" fill="#201500" stroke="#d29922" stroke-width="1.5"/>
+  <text x="840" y="391" text-anchor="middle" fill="#d29922" font-size="11" font-weight="bold">Payment Service ✓</text>
+  <rect x="750" y="430" width="180" height="52" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="840" y="451" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Product Service ✓</text>
+  <text x="840" y="498" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">Legacy: DECOMMISSIONED ✓</text>
+
+  <!-- Progress arrows -->
+  <line x1="200" y1="320" x2="270" y2="320" stroke="#cccccc" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrY)"/>
+  <line x1="440" y1="320" x2="510" y2="320" stroke="#cccccc" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrY)"/>
+  <line x1="680" y1="320" x2="750" y2="320" stroke="#cccccc" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrG)"/>
+
+  <!-- Big tech -->
+  <text x="40" y="558" fill="#8b949e" font-size="12" font-weight="bold">Big Tech:</text>
+  <text x="120" y="558" fill="#f85149" font-size="12">Amazon (OBIDOS→SOA)</text>
+  <text x="325" y="558" fill="#388bfd" font-size="12">Netflix (DVD→streaming)</text>
+  <text x="545" y="558" fill="#3fb950" font-size="12">Airbnb (Rails→SOA)</text>
+  <text x="730" y="558" fill="#e3b341" font-size="12">Twitter (Fail Whale→Finagle)</text>
+
+  <text x="40" y="586" fill="#3fb950" font-size="11">✓ No big-bang rewrite  ✓ Business never stops  ✓ Each step reversible  ✓ Risk contained per module</text>
+  <text x="40" y="606" fill="#f85149" font-size="11">✗ Running 2 systems  ✗ DB sync complexity  ✗ Long duration (months-years)  ✗ Team discipline required</text>
+</svg>

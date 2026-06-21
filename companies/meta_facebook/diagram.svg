@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="660" viewBox="0 0 980 660" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#1877f2"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="980" height="660" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Meta/Facebook Architecture — TAO + GraphQL + React</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">3B users · Social graph: 3B nodes, trillions of edges · TAO: the engine behind every FB page</text>
+
+  <!-- Client -->
+  <rect x="380" y="75" width="220" height="42" rx="8" fill="#21262d" stroke="#1877f2" stroke-width="2"/>
+  <text x="490" y="102" text-anchor="middle" fill="#1877f2" font-size="14" font-weight="bold">Facebook Client (React)</text>
+  <line x1="490" y1="117" x2="490" y2="148" stroke="#1877f2" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+  <!-- GraphQL layer -->
+  <rect x="280" y="148" width="420" height="60" rx="8" fill="#0a1020" stroke="#1877f2" stroke-width="2.5"/>
+  <text x="490" y="172" text-anchor="middle" fill="#1877f2" font-size="14" font-weight="bold">GraphQL API</text>
+  <text x="490" y="192" text-anchor="middle" fill="#7ab8ff" font-size="11">Client asks for EXACTLY what it needs — no over-fetching, no under-fetching</text>
+
+  <!-- TAO -->
+  <rect x="200" y="258" width="580" height="170" rx="10" fill="#0a1020" stroke="#1877f2" stroke-width="3"/>
+  <text x="490" y="282" text-anchor="middle" fill="#1877f2" font-size="15" font-weight="bold">TAO — The Associations and Objects</text>
+  <text x="490" y="300" text-anchor="middle" fill="#7ab8ff" font-size="11">Facebook's purpose-built social graph data store</text>
+
+  <rect x="215" y="312" width="250" height="100" rx="8" fill="#0d1a2e" stroke="#1877f2" stroke-width="1.5"/>
+  <text x="340" y="332" text-anchor="middle" fill="#1877f2" font-size="12" font-weight="bold">TAO Follower Cache</text>
+  <text x="340" y="350" text-anchor="middle" fill="#7ab8ff" font-size="10">Per-datacenter read cache</text>
+  <text x="340" y="366" text-anchor="middle" fill="#7ab8ff" font-size="10">Objects: User, Post, Photo</text>
+  <text x="340" y="382" text-anchor="middle" fill="#7ab8ff" font-size="10">Edges: friends(A,B), likes(A,Post)</text>
+  <text x="340" y="398" text-anchor="middle" fill="#7ab8ff" font-size="10">Cache miss → TAO Leader</text>
+  <rect x="360" y="392" width="5" height="5" fill="#1877f2" rx="1"/>
+
+  <rect x="515" y="312" width="250" height="100" rx="8" fill="#0d1a2e" stroke="#1877f2" stroke-width="1.5"/>
+  <text x="640" y="332" text-anchor="middle" fill="#1877f2" font-size="12" font-weight="bold">TAO Leader Cache</text>
+  <text x="640" y="350" text-anchor="middle" fill="#7ab8ff" font-size="10">Per-region write-through cache</text>
+  <text x="640" y="366" text-anchor="middle" fill="#7ab8ff" font-size="10">Solves thundering herd</text>
+  <text x="640" y="382" text-anchor="middle" fill="#7ab8ff" font-size="10">Solves hot spot problem</text>
+  <text x="640" y="398" text-anchor="middle" fill="#7ab8ff" font-size="10">Cache miss → MySQL</text>
+
+  <line x1="465" y1="355" x2="515" y2="355" stroke="#1877f2" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+  <line x1="490" y1="208" x2="490" y2="258" stroke="#1877f2" stroke-width="1.8" marker-end="url(#arrB)"/>
+
+  <!-- MySQL source of truth -->
+  <rect x="350" y="460" width="280" height="55" rx="8" fill="#0a0a0a" stroke="#388bfd" stroke-width="2"/>
+  <text x="490" y="483" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">MySQL — Source of Truth</text>
+  <text x="490" y="501" text-anchor="middle" fill="#7ab8ff" font-size="11">Sharded by user_id · ACID within shard · TAO is the cache layer above</text>
+
+  <line x1="490" y1="428" x2="490" y2="460" stroke="#1877f2" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+
+  <!-- GraphQL explain box -->
+  <rect x="30" y="258" width="165" height="170" rx="8" fill="#0a1020" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="112" y="278" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">GraphQL Why</text>
+  <text x="50" y="298" fill="#85e89d" font-size="10">REST problem:</text>
+  <text x="50" y="314" fill="#85e89d" font-size="10">GET /user/feed</text>
+  <text x="50" y="330" fill="#ff9090" font-size="10">Returns 200 fields</text>
+  <text x="50" y="346" fill="#ff9090" font-size="10">Mobile uses 12</text>
+  <text x="50" y="362" fill="#ff9090" font-size="10">= 94% wasted</text>
+  <text x="50" y="384" fill="#85e89d" font-size="10">GraphQL solution:</text>
+  <text x="50" y="400" fill="#3fb950" font-size="10">Ask for 12 → get 12</text>
+  <text x="50" y="416" fill="#3fb950" font-size="10">One round trip</text>
+
+  <!-- React explain box -->
+  <rect x="785" y="258" width="165" height="170" rx="8" fill="#0a1020" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="867" y="278" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">React Why</text>
+  <text x="800" y="298" fill="#f0c060" font-size="10">jQuery problem:</text>
+  <text x="800" y="314" fill="#ff9090" font-size="10">Manual DOM updates</text>
+  <text x="800" y="330" fill="#ff9090" font-size="10">Race conditions</text>
+  <text x="800" y="346" fill="#ff9090" font-size="10">Stale state bugs</text>
+  <text x="800" y="362" fill="#f0c060" font-size="10">React solution:</text>
+  <text x="800" y="378" fill="#e3b341" font-size="10">UI = f(state)</text>
+  <text x="800" y="394" fill="#e3b341" font-size="10">State changes →</text>
+  <text x="800" y="410" fill="#e3b341" font-size="10">auto re-render</text>
+  <text x="800" y="426" fill="#e3b341" font-size="10">No manual DOM</text>
+
+  <!-- Numbers -->
+  <rect x="30" y="460" width="310" height="80" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="185" y="482" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="bold">Scale Numbers</text>
+  <text x="50" y="502" fill="#cccccc" font-size="11">3.2B daily active users across Meta apps</text>
+  <text x="50" y="520" fill="#cccccc" font-size="11">GraphQL: 100B+ API calls per day</text>
+  <text x="50" y="538" fill="#cccccc" font-size="11">TAO: billions of reads, millions of writes</text>
+
+  <rect x="640" y="460" width="310" height="80" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="795" y="482" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="bold">Clean Architecture Mapping</text>
+  <text x="660" y="502" fill="#cccccc" font-size="11">GraphQL resolver = Controller (Interface Adapter)</text>
+  <text x="660" y="520" fill="#cccccc" font-size="11">TAO = IGraphRepository (port + adapter)</text>
+  <text x="660" y="538" fill="#cccccc" font-size="11">Social graph query = Use Case business logic</text>
+
+  <text x="40" y="590" fill="#3fb950" font-size="11">✓ TAO solves thundering herd  ✓ GraphQL eliminates over-fetching  ✓ React makes UI a function of data</text>
+  <text x="40" y="610" fill="#f85149" font-size="11">✗ TAO is a proprietary system (complex to build)  ✗ GraphQL has N+1 query problem  ✗ MySQL sharding requires care</text>
+</svg>

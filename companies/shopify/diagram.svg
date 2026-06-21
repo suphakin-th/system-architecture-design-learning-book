@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="640" viewBox="0 0 960 640" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#96bf48"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="960" height="640" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Shopify Modular Monolith Architecture</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">2.8M+ lines of Rails · Packwerk enforces module boundaries · MySQL Pods isolate merchant load</text>
+
+  <!-- Single Ruby process -->
+  <rect x="30" y="75" width="600" height="420" rx="10" fill="#0d1117" stroke="#96bf48" stroke-width="3"/>
+  <text x="330" y="100" text-anchor="middle" fill="#96bf48" font-size="15" font-weight="bold">Shopify Rails Monolith (Single Process)</text>
+  <text x="330" y="118" text-anchor="middle" fill="#85e89d" font-size="11">Packwerk enforces: no cross-component imports without going through public API</text>
+
+  <!-- Checkout component -->
+  <rect x="50" y="130" width="250" height="130" rx="8" fill="#0a1020" stroke="#388bfd" stroke-width="2"/>
+  <text x="175" y="152" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">components/checkout/</text>
+  <rect x="65" y="162" width="220" height="25" rx="4" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="175" y="179" text-anchor="middle" fill="#ff6b6b" font-size="10">domain/ Order, Cart (entities)</text>
+  <rect x="65" y="193" width="220" height="25" rx="4" fill="#e3b34118" stroke="#e3b341" stroke-width="1"/>
+  <text x="175" y="210" text-anchor="middle" fill="#e3b341" font-size="10">application/ PlaceOrder (use case)</text>
+  <rect x="65" y="224" width="220" height="28" rx="4" fill="#3fb95018" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="175" y="242" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">public/checkout/api.rb (PORT)</text>
+
+  <!-- Payments component -->
+  <rect x="320" y="130" width="285" height="130" rx="8" fill="#0a1020" stroke="#d29922" stroke-width="2"/>
+  <text x="462" y="152" text-anchor="middle" fill="#d29922" font-size="12" font-weight="bold">components/payments/</text>
+  <rect x="335" y="162" width="255" height="25" rx="4" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="462" y="179" text-anchor="middle" fill="#ff6b6b" font-size="10">domain/ Payment, Transaction</text>
+  <rect x="335" y="193" width="255" height="25" rx="4" fill="#e3b34118" stroke="#e3b341" stroke-width="1"/>
+  <text x="462" y="210" text-anchor="middle" fill="#e3b341" font-size="10">application/ ProcessPayment</text>
+  <rect x="335" y="224" width="255" height="28" rx="4" fill="#d2992218" stroke="#d29922" stroke-width="1.5"/>
+  <text x="462" y="242" text-anchor="middle" fill="#d29922" font-size="11" font-weight="bold">public/payments/api.rb (PORT)</text>
+
+  <!-- Shipping component -->
+  <rect x="50" y="278" width="250" height="100" rx="8" fill="#0a1020" stroke="#bc8cff" stroke-width="2"/>
+  <text x="175" y="298" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">components/shipping/</text>
+  <rect x="65" y="308" width="220" height="25" rx="4" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="175" y="325" text-anchor="middle" fill="#ff6b6b" font-size="10">domain/ Shipment, Rate</text>
+  <rect x="65" y="339" width="220" height="28" rx="4" fill="#bc8cff18" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="175" y="357" text-anchor="middle" fill="#bc8cff" font-size="11" font-weight="bold">public/shipping/api.rb (PORT)</text>
+
+  <!-- Inventory component -->
+  <rect x="320" y="278" width="285" height="100" rx="8" fill="#0a1020" stroke="#3fb950" stroke-width="2"/>
+  <text x="462" y="298" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">components/inventory/</text>
+  <rect x="335" y="308" width="255" height="25" rx="4" fill="#ff6b6b18" stroke="#ff6b6b" stroke-width="1"/>
+  <text x="462" y="325" text-anchor="middle" fill="#ff6b6b" font-size="10">domain/ Product, StockLevel</text>
+  <rect x="335" y="339" width="255" height="28" rx="4" fill="#3fb95018" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="462" y="357" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">public/inventory/api.rb (PORT)</text>
+
+  <!-- Packwerk note -->
+  <rect x="50" y="393" width="560" height="90" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="330" y="415" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">Packwerk — The Boundary Enforcer</text>
+  <text x="70" y="436" fill="#f0c060" font-size="11">If checkout/order.rb tries: Shipping::Calculator.calculate(...)</text>
+  <text x="70" y="453" fill="#f85149" font-size="11">Packwerk error: "checkout cannot depend on shipping — use public API"</text>
+  <text x="70" y="470" fill="#3fb950" font-size="11">Correct: Checkout::ShippingPort.calculate(...) → calls shipping/api.rb → adapter</text>
+
+  <!-- MySQL Pods (right side) -->
+  <rect x="650" y="75" width="290" height="420" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="795" y="100" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">MySQL Pod Architecture</text>
+  <text x="795" y="118" text-anchor="middle" fill="#7ab8ff" font-size="11">shop_id → shard → MySQL pod</text>
+
+  <rect x="665" y="130" width="260" height="75" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="795" y="152" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Pod 1 (Merchants 1-500K)</text>
+  <text x="795" y="170" text-anchor="middle" fill="#85e89d" font-size="10">Primary + 5 read replicas</text>
+  <text x="795" y="187" text-anchor="middle" fill="#85e89d" font-size="10">Big merchant isolated here</text>
+  <text x="795" y="202" text-anchor="middle" fill="#3fb950" font-size="10" font-weight="bold">Black Friday: 30TB/min</text>
+
+  <rect x="665" y="220" width="260" height="65" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="795" y="242" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Pod 2 (Merchants 500K-1M)</text>
+  <text x="795" y="260" text-anchor="middle" fill="#85e89d" font-size="10">Primary + 3 read replicas</text>
+  <text x="795" y="278" text-anchor="middle" fill="#85e89d" font-size="10">Unaffected by Pod 1 load ✓</text>
+
+  <rect x="665" y="300" width="260" height="65" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="795" y="322" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Pod 3–N (Remaining)</text>
+  <text x="795" y="340" text-anchor="middle" fill="#85e89d" font-size="10">Primary + 1-3 replicas each</text>
+  <text x="795" y="358" text-anchor="middle" fill="#85e89d" font-size="10">Merchant isolation guaranteed</text>
+
+  <rect x="665" y="380" width="260" height="100" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="795" y="402" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">Why Pods Beat Microservices</text>
+  <text x="680" y="422" fill="#f0c060" font-size="10">✓ Big merchant peak never</text>
+  <text x="680" y="438" fill="#f0c060" font-size="10">   affects small merchant</text>
+  <text x="680" y="454" fill="#f0c060" font-size="10">✓ No distributed transactions</text>
+  <text x="680" y="470" fill="#f0c060" font-size="10">✓ Same Rails codebase</text>
+
+  <!-- Benefits -->
+  <rect x="30" y="515" width="920" height="60" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="480" y="537" text-anchor="middle" fill="#96bf48" font-size="12" font-weight="bold">Why Shopify chose Modular Monolith over Microservices</text>
+  <text x="480" y="557" text-anchor="middle" fill="#cccccc" font-size="11">1000 engineers + Rails expertise = massive productivity advantage · Microservices would require Kubernetes + service mesh + distributed tracing = 2yr migration</text>
+
+  <text x="40" y="600" fill="#3fb950" font-size="11">✓ One deploy  ✓ Merchant isolation via pods  ✓ Packwerk enforces Clean Architecture  ✓ $200B GMV/year on Rails</text>
+  <text x="40" y="620" fill="#f85149" font-size="11">✗ Can't scale individual modules independently  ✗ Ruby GIL limits CPU parallelism  ✗ All-or-nothing deploys</text>
+</svg>

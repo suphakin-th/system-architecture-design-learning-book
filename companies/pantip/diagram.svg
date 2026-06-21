@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="960" height="620" viewBox="0 0 960 620" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="960" height="620" fill="url(#bg)"/>
+  <text x="480" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Pantip Architecture</text>
+  <text x="480" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Thailand's largest community platform — Board-based sharding + Redis caching + Thai NLP search</text>
+
+  <!-- User request -->
+  <rect x="380" y="75" width="200" height="42" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="480" y="102" text-anchor="middle" fill="#c9d1d9" font-size="13" font-weight="bold">Thai User (Browser / Mobile)</text>
+  <line x1="480" y1="117" x2="480" y2="148" stroke="#8b949e" stroke-width="1.5" marker-end="url(#arrB)"/>
+
+  <!-- PHP App + Redis cache layer -->
+  <rect x="280" y="148" width="400" height="60" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="480" y="172" text-anchor="middle" fill="#388bfd" font-size="13" font-weight="bold">PHP Application + Nginx</text>
+  <text x="480" y="190" text-anchor="middle" fill="#7ab8ff" font-size="11">Request: GET /board/12/posts → board_id=12 → route to Cluster A</text>
+
+  <!-- Redis Cache -->
+  <rect x="50" y="148" width="210" height="60" rx="8" fill="#1a0a28" stroke="#bc8cff" stroke-width="2"/>
+  <text x="155" y="172" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="bold">Redis Cache Layer</text>
+  <text x="155" y="190" text-anchor="middle" fill="#d2a8ff" font-size="10">board:12:page:1 → TTL 30s (hot)</text>
+
+  <line x1="280" y1="178" x2="260" y2="178" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrB)"/>
+  <text x="270" y="170" fill="#bc8cff" font-size="9" text-anchor="middle">check</text>
+  <text x="270" y="192" fill="#bc8cff" font-size="9" text-anchor="middle">cache</text>
+
+  <!-- Board Shard Router -->
+  <rect x="305" y="240" width="350" height="55" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="480" y="263" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Board Shard Router</text>
+  <text x="480" y="282" text-anchor="middle" fill="#f0c060" font-size="11">board_id → cluster lookup table → correct MySQL cluster</text>
+  <line x1="480" y1="208" x2="480" y2="240" stroke="#388bfd" stroke-width="1.5" marker-end="url(#arrB)"/>
+
+  <!-- MySQL Clusters -->
+  <rect x="30" y="328" width="240" height="145" rx="8" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="150" y="350" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="bold">Cluster A (HOT Boards)</text>
+  <text x="150" y="368" text-anchor="middle" fill="#7ab8ff" font-size="10">Board 1: Pantip Cafe (General)</text>
+  <text x="150" y="384" text-anchor="middle" fill="#7ab8ff" font-size="10">Board 5: IT / Technology</text>
+  <text x="150" y="400" text-anchor="middle" fill="#7ab8ff" font-size="10">Board 12: Entertainment</text>
+  <rect x="45" y="413" width="210" height="30" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1"/>
+  <text x="150" y="433" text-anchor="middle" fill="#3fb950" font-size="10">Primary + 5 Read Replicas</text>
+  <text x="150" y="460" text-anchor="middle" fill="#f85149" font-size="10" font-weight="bold">Election day: 100x traffic spike</text>
+
+  <rect x="290" y="328" width="220" height="145" rx="8" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="400" y="350" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">Cluster B (Medium)</text>
+  <text x="400" y="368" text-anchor="middle" fill="#85e89d" font-size="10">Board 20: Cars</text>
+  <text x="400" y="384" text-anchor="middle" fill="#85e89d" font-size="10">Board 25: Food</text>
+  <text x="400" y="400" text-anchor="middle" fill="#85e89d" font-size="10">Board 30: Travel</text>
+  <rect x="305" y="413" width="190" height="30" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1"/>
+  <text x="400" y="433" text-anchor="middle" fill="#3fb950" font-size="10">Primary + 3 Read Replicas</text>
+  <text x="400" y="460" text-anchor="middle" fill="#3fb950" font-size="10">Unaffected by Cluster A spike</text>
+
+  <rect x="530" y="328" width="200" height="145" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="2"/>
+  <text x="630" y="350" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">Cluster C (Cold)</text>
+  <text x="630" y="368" text-anchor="middle" fill="#f0c060" font-size="10">Board 40: Gardening</text>
+  <text x="630" y="384" text-anchor="middle" fill="#f0c060" font-size="10">Board 45: Elderly Care</text>
+  <text x="630" y="400" text-anchor="middle" fill="#f0c060" font-size="10">Board 50: Pets</text>
+  <rect x="545" y="413" width="170" height="30" rx="4" fill="#1a1000" stroke="#e3b341" stroke-width="1"/>
+  <text x="630" y="433" text-anchor="middle" fill="#e3b341" font-size="10">Primary + 1 Read Replica</text>
+  <text x="630" y="460" text-anchor="middle" fill="#e3b341" font-size="10">TTL: 5 min (rarely changes)</text>
+
+  <!-- Elasticsearch for Thai search -->
+  <rect x="750" y="328" width="185" height="145" rx="8" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="842" y="350" text-anchor="middle" fill="#f85149" font-size="12" font-weight="bold">Elasticsearch</text>
+  <text x="842" y="368" text-anchor="middle" fill="#ff9090" font-size="10">Thai NLP Tokenizer</text>
+  <text x="842" y="384" text-anchor="middle" fill="#ff9090" font-size="10">(PyThaiNLP/ICU)</text>
+  <text x="842" y="400" text-anchor="middle" fill="#ff9090" font-size="10">"ซื้อบ้าน" split to</text>
+  <text x="842" y="416" text-anchor="middle" fill="#ff9090" font-size="10">ซื้อ + บ้าน tokens</text>
+  <text x="842" y="432" text-anchor="middle" fill="#ff9090" font-size="10">Full-text search</text>
+  <text x="842" y="450" text-anchor="middle" fill="#ff9090" font-size="10">across all 40M posts</text>
+  <text x="842" y="466" text-anchor="middle" fill="#f85149" font-size="9">Thai-specific requirement!</text>
+
+  <!-- Arrows from router to clusters -->
+  <line x1="400" y1="295" x2="200" y2="328" stroke="#e3b341" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+  <line x1="460" y1="295" x2="390" y2="328" stroke="#e3b341" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+  <line x1="530" y1="295" x2="600" y2="328" stroke="#e3b341" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#arrY)"/>
+  <line x1="570" y1="270" x2="750" y2="340" stroke="#f85149" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrR)"/>
+  <text x="680" y="298" fill="#f85149" font-size="10" transform="rotate(-15,680,298)">search queries</text>
+
+  <!-- Key insight box -->
+  <rect x="30" y="495" width="900" height="90" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="480" y="516" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Why Board-Based Sharding Works for Pantip</text>
+  <text x="50" y="538" fill="#cccccc" font-size="11">Access pattern: "Show me recent posts in the IT board" = always scoped to one board = stays in one shard</text>
+  <text x="50" y="556" fill="#cccccc" font-size="11">Thai event spikes: election politics board surges 100x → only Cluster A affected → Car board (Cluster B) is fine</text>
+  <text x="50" y="574" fill="#3fb950" font-size="11">✓ Natural boundary  ✓ Spike isolation  ✓ TTL tuned per board temperature  ✓ Thai NLP needed for real search</text>
+</svg>

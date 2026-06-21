@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="560" viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#0078d4"/></marker>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="980" height="560" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Microsoft Architecture — Azure + Teams + GitHub</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Azure born from internal need · Teams: 32M → 75M users in 3 weeks (COVID) · GitHub: 100M+ developers</text>
+
+  <!-- Azure cloud layer -->
+  <rect x="20" y="80" width="940" height="65" rx="8" fill="#0a1628" stroke="#0078d4" stroke-width="2.5"/>
+  <text x="490" y="103" text-anchor="middle" fill="#0078d4" font-size="14" font-weight="bold">Azure Cloud Platform (built to solve Microsoft's own internal problems first)</text>
+  <text x="100" y="128" text-anchor="middle" fill="#7ab8ff" font-size="10">Cosmos DB</text>
+  <text x="240" y="128" text-anchor="middle" fill="#7ab8ff" font-size="10">Event Hub</text>
+  <text x="380" y="128" text-anchor="middle" fill="#7ab8ff" font-size="10">AKS (Kubernetes)</text>
+  <text x="520" y="128" text-anchor="middle" fill="#7ab8ff" font-size="10">Service Fabric</text>
+  <text x="660" y="128" text-anchor="middle" fill="#7ab8ff" font-size="10">Active Directory</text>
+  <text x="820" y="128" text-anchor="middle" fill="#7ab8ff" font-size="10">Azure CDN / Akamai</text>
+
+  <!-- Teams architecture -->
+  <rect x="20" y="165" width="460" height="210" rx="10" fill="#0a0a20" stroke="#0078d4" stroke-width="2"/>
+  <text x="250" y="189" text-anchor="middle" fill="#0078d4" font-size="13" font-weight="bold">Teams Architecture (COVID Scaling Problem)</text>
+  <text x="250" y="207" text-anchor="middle" fill="#7ab8ff" font-size="11">March 2020: 32M users → April 2020: 75M users (in 3 weeks)</text>
+  <rect x="35" y="217" width="430" height="50" rx="5" fill="#0d1a40" stroke="#0078d4" stroke-width="1.5"/>
+  <text x="250" y="237" text-anchor="middle" fill="#0078d4" font-size="11" font-weight="bold">Message flow</text>
+  <text x="250" y="255" text-anchor="middle" fill="#7ab8ff" font-size="10">WebSocket → Event Hub (Kafka-compatible) → Azure Functions → Cosmos DB</text>
+  <rect x="35" y="275" width="430" height="50" rx="5" fill="#0d1a40" stroke="#0078d4" stroke-width="1.5"/>
+  <text x="250" y="295" text-anchor="middle" fill="#0078d4" font-size="11" font-weight="bold">Why Cosmos DB for Teams</text>
+  <text x="250" y="313" text-anchor="middle" fill="#7ab8ff" font-size="10">Multi-region: Tokyo user in meeting with Paris user — each reads nearest replica</text>
+  <rect x="35" y="333" width="430" height="34" rx="5" fill="#1a1000" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="250" y="355" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="bold">Survived 2.3× growth in 3 weeks = elastic AKS auto-scaling</text>
+
+  <!-- GitHub architecture -->
+  <rect x="500" y="165" width="460" height="210" rx="10" fill="#0a0a20" stroke="#3fb950" stroke-width="2"/>
+  <text x="730" y="189" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="bold">GitHub Architecture</text>
+  <text x="730" y="207" text-anchor="middle" fill="#85e89d" font-size="11">100M+ developers · 85M+ repositories</text>
+  <rect x="515" y="217" width="430" height="55" rx="5" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="730" y="238" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Blackbird Code Search (2022)</text>
+  <text x="730" y="255" text-anchor="middle" fill="#85e89d" font-size="10">Search 500M+ code files in &lt;1 second</text>
+  <text x="730" y="271" text-anchor="middle" fill="#85e89d" font-size="10">Trigram index → candidate files → grep → result</text>
+  <rect x="515" y="280" width="430" height="55" rx="5" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="730" y="301" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">Actions CI/CD at Scale</text>
+  <text x="730" y="319" text-anchor="middle" fill="#85e89d" font-size="10">1M+ concurrent CI jobs · Azure VMs on demand</text>
+  <text x="730" y="335" text-anchor="middle" fill="#85e89d" font-size="10">Push → webhook → Service Bus → runner → container</text>
+  <rect x="515" y="343" width="430" height="24" rx="4" fill="#1a1000" stroke="#e3b341" stroke-width="1"/>
+  <text x="730" y="360" text-anchor="middle" fill="#e3b341" font-size="10">Why custom search: Elasticsearch can't handle 20 quadrillion lines of code</text>
+
+  <!-- Cosmos DB multi-model -->
+  <rect x="20" y="398" width="460" height="100" rx="8" fill="#161b22" stroke="#0078d4" stroke-width="1.5"/>
+  <text x="250" y="420" text-anchor="middle" fill="#0078d4" font-size="13" font-weight="bold">Cosmos DB — Multi-Model Strategy</text>
+  <text x="40" y="442" fill="#7ab8ff" font-size="11">MongoDB API · Cassandra API · Gremlin (graph) · Table API · SQL API</text>
+  <text x="40" y="460" fill="#7ab8ff" font-size="11">All backed by same engine · 60+ Azure regions · Auto-sharding</text>
+  <text x="40" y="478" fill="#3fb950" font-size="11">One ops team for all database types → reduces complexity vs 5 separate DBs</text>
+
+  <!-- Clean arch + lessons -->
+  <rect x="500" y="398" width="460" height="100" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="730" y="420" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Key Lessons</text>
+  <text x="520" y="442" fill="#cccccc" font-size="11">1. Existing customer base shapes architecture (AD integration = Azure differentiator)</text>
+  <text x="520" y="460" fill="#cccccc" font-size="11">2. COVID-scale = planning problem, not surprise (elastic AKS design)</text>
+  <text x="520" y="478" fill="#cccccc" font-size="11">3. Sometimes you build custom (Blackbird) because nothing off-shelf works at scale</text>
+
+  <text x="40" y="530" fill="#3fb950" font-size="11">✓ Azure born from Microsoft's own pain  ✓ Teams survived 2.3× spike  ✓ Cosmos DB: one service, multiple APIs  ✓ GitHub Actions: 1M concurrent jobs</text>
+  <text x="40" y="550" fill="#f85149" font-size="11">✗ Azure came 7 years after AWS  ✗ Teams performance issues at launch  ✗ Blackbird was a 3-year engineering investment</text>
+</svg>

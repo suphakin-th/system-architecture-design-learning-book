@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="640" viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+  </defs>
+  <rect width="900" height="640" fill="url(#bg)"/>
+  <text x="450" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Layered Architecture (N-Tier)</text>
+  <text x="450" y="57" text-anchor="middle" fill="#8b949e" font-size="13">Horizontal layers — each layer calls the one below — simple but less strict than Clean Architecture</text>
+
+  <!-- Presentation Layer -->
+  <rect x="100" y="80" width="700" height="90" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2.5"/>
+  <text x="450" y="108" text-anchor="middle" fill="#388bfd" font-size="15" font-weight="bold">Presentation Layer</text>
+  <text x="450" y="128" text-anchor="middle" fill="#7ab8ff" font-size="12">HTTP Controllers · REST Endpoints · Views · GraphQL Resolvers</text>
+  <text x="450" y="148" text-anchor="middle" fill="#8b949e" font-size="11">Receives HTTP requests · Calls Business Logic Layer · Returns HTTP responses</text>
+  <text x="150" y="148" fill="#8b949e" font-size="10">e.g. OrderController, UserController</text>
+
+  <!-- Arrow 1 -->
+  <line x1="450" y1="170" x2="450" y2="200" stroke="#3fb950" stroke-width="2.5" marker-end="url(#arrG)"/>
+  <text x="470" y="191" fill="#3fb950" font-size="11">calls</text>
+
+  <!-- Business Logic Layer -->
+  <rect x="100" y="200" width="700" height="90" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="450" y="228" text-anchor="middle" fill="#3fb950" font-size="15" font-weight="bold">Business Logic Layer (Services)</text>
+  <text x="450" y="248" text-anchor="middle" fill="#85e89d" font-size="12">OrderService · UserService · PaymentService · PricingService</text>
+  <text x="450" y="268" text-anchor="middle" fill="#8b949e" font-size="11">Contains business rules · Validates input · Coordinates data access</text>
+  <text x="150" y="268" fill="#8b949e" font-size="10">e.g. orderService.placeOrder(cmd)</text>
+
+  <!-- Arrow 2 -->
+  <line x1="450" y1="290" x2="450" y2="320" stroke="#3fb950" stroke-width="2.5" marker-end="url(#arrG)"/>
+  <text x="470" y="311" fill="#3fb950" font-size="11">calls</text>
+
+  <!-- Data Access Layer -->
+  <rect x="100" y="320" width="700" height="90" rx="10" fill="#1a1000" stroke="#e3b341" stroke-width="2.5"/>
+  <text x="450" y="348" text-anchor="middle" fill="#e3b341" font-size="15" font-weight="bold">Data Access Layer (Repositories / ORM)</text>
+  <text x="450" y="368" text-anchor="middle" fill="#f0c060" font-size="12">OrderRepository · UserRepository · TypeORM / Sequelize / Prisma models</text>
+  <text x="450" y="388" text-anchor="middle" fill="#8b949e" font-size="11">Translates business operations to SQL · Manages DB connections</text>
+
+  <!-- Arrow 3 -->
+  <line x1="450" y1="410" x2="450" y2="440" stroke="#3fb950" stroke-width="2.5" marker-end="url(#arrG)"/>
+  <text x="470" y="431" fill="#3fb950" font-size="11">SQL/query</text>
+
+  <!-- Database Layer -->
+  <rect x="200" y="440" width="500" height="70" rx="10" fill="#161b22" stroke="#8b949e" stroke-width="2"/>
+  <text x="450" y="468" text-anchor="middle" fill="#c9d1d9" font-size="15" font-weight="bold">Database</text>
+  <text x="450" y="492" text-anchor="middle" fill="#8b949e" font-size="12">PostgreSQL · MySQL · MongoDB · SQL Server</text>
+
+  <!-- Layer skip anti-pattern arrow -->
+  <path d="M 820 125 Q 870 350 820 375" stroke="#f85149" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arrR)"/>
+  <rect x="730" y="220" width="145" height="65" rx="6" fill="#200505" stroke="#f85149" stroke-width="1.5"/>
+  <text x="802" y="244" text-anchor="middle" fill="#f85149" font-size="11" font-weight="bold">⚠ ANTI-PATTERN</text>
+  <text x="802" y="262" text-anchor="middle" fill="#ff7b72" font-size="10">Layer Skip!</text>
+  <text x="802" y="278" text-anchor="middle" fill="#ff7b72" font-size="10">Presentation calling</text>
+
+  <!-- Comparison box -->
+  <rect x="30" y="532" width="840" height="80" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="450" y="553" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Layered → Clean Architecture Migration Path</text>
+  <text x="50" y="574" fill="#cccccc" font-size="11">1. Add interface before Repository class   →   IOrderRepository   →   OCP + DIP satisfied</text>
+  <text x="50" y="592" fill="#cccccc" font-size="11">2. Make Service depend on interface only   →   Service becomes Use Case   →   unit-testable</text>
+  <text x="50" y="610" fill="#cccccc" font-size="11">3. Move business rules from Service to Entity   →   Rich domain model   →   Complete Clean Architecture</text>
+</svg>
