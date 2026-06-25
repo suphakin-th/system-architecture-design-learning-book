@@ -2718,7 +2718,7 @@
 </div>
 <hr>
 <h2 id="the-one-diagram-that-rules-them-all">The One Diagram That Rules Them All<a class="headerlink" href="#the-one-diagram-that-rules-them-all" title="Permanent link">¶</a></h2>
-<p>The four Clean Architecture layers nest inside one another. Dependencies point inward only - inner layers know nothing about outer layers.</p>
+<p>The four Clean Architecture layers nest inside one another. Each outer layer wraps the ones inside it, and dependencies point inward only - an inner layer knows nothing about the layers around it.</p>
 <pre class="mermaid"><code>flowchart TD
     subgraph FD["Frameworks and Drivers - Express, PostgreSQL, Kafka"]
         subgraph IA["Interface Adapters - Controllers, Repositories"]
@@ -2726,11 +2726,7 @@
                 E["Entities - Business rules, pure"]
             end
         end
-    end
-
-    FD --&gt;|depends inward| IA
-    IA --&gt;|depends inward| UC
-    UC --&gt;|depends inward| E</code></pre>
+    end</code></pre>
 <p><strong>This is Clean Architecture.</strong> Every pattern in this book is a variation on this diagram at a different scale - from a single module to 1,000 microservices.</p>
 <hr>
 <h2 id="sources-credits">Sources &amp; Credits<a class="headerlink" href="#sources-credits" title="Permanent link">¶</a></h2>
