@@ -1,0 +1,3876 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Complete architecture learning library — Clean Architecture, microservices, databases, fintech, big-tech company case studies, with SVG diagrams.">
+      
+      
+        <meta name="author" content="Suphakin Th.">
+      
+      
+        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/production/42_app_security/">
+      
+      
+        <link rel="prev" href="../41_observability/">
+      
+      
+        <link rel="next" href="../43_api_design/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Application Security (AuthN · AuthZ · OWASP) - System Architecture Design — Learning Book</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-XXXXXXXXXX"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-XXXXXXXXXX",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#application-security-authn-authz-and-the-owasp-basics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="System Architecture Design — Learning Book" class="md-header__button md-logo" aria-label="System Architecture Design — Learning Book" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            System Architecture Design — Learning Book
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Application Security (AuthN · AuthZ · OWASP)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="cyan" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard="" data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/suphakin-th/system-architecture-design-learning-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    suphakin-th/system-architecture-design-learning-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/00_foundation/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Clean Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../database/23_fundamentals/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Database Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../40_caching/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Production Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../fintech/00_overview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Fintech Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../companies/amazon/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Big Tech Companies
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../security/linux_permissions_thai/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Security
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="System Architecture Design — Learning Book" class="md-nav__button md-logo" aria-label="System Architecture Design — Learning Book" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    System Architecture Design — Learning Book
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/suphakin-th/system-architecture-design-learning-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    suphakin-th/system-architecture-design-learning-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clean Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clean Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/00_foundation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundation (Zero to Hero)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/01_monolith/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Monolith
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/02_microservices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Microservices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/03_event_driven/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Event-Driven
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/04_cqrs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · CQRS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/05_event_sourcing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Event Sourcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/06_saga/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Saga Pattern
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/07_api_gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · API Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/08_hexagonal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08 · Hexagonal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/09_onion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Onion Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/10_layered_ntier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Layered N-Tier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/11_bff/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11 · BFF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/12_strangler_fig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12 · Strangler Fig
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/13_serverless/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13 · Serverless
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/14_service_mesh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14 · Service Mesh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/32_mvc_mvp_mvvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MVC · MVP · MVVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/30_three_layer_clean_functional/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3-Layer + Clean Code + FP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/23_fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/24_types_comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Types Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/25_indexing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Indexing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/26_replication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/27_transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transactions (ACID · BASE · CAP)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/28_query_optimization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Query Optimization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/29_schema_patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/22_sharding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sharding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/31_three_layer_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3-Layer DB Model (ANSI/SPARC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/33_mvcc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Production Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../40_caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching &amp; CDN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../41_observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability (Logs · Metrics · Traces)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Application Security (AuthN · AuthZ · OWASP)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Application Security (AuthN · AuthZ · OWASP)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-story-first-read-this-even-if-you-skip-the-rest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Story First (Read This Even If You Skip the Rest)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authn-vs-authz-the-two-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AuthN vs AuthZ - The Two Gates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#password-hashing-bcrypt-and-argon2-never-plain-or-md5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password Hashing - bcrypt and argon2, Never Plain or MD5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sessions-vs-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessions vs Tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jwt-structure-signing-and-the-revocation-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JWT - Structure, Signing, and the Revocation Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JWT - Structure, Signing, and the Revocation Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-revocation-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The revocation problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauth2-and-openid-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OAuth2 and OpenID Connect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OAuth2 and OpenID Connect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The actors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization-code-flow-with-pkce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization Code flow with PKCE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rbac-vs-abac-modeling-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RBAC vs ABAC - Modeling Authorization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#owasp-top-10-the-highlights-with-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OWASP Top 10 - The Highlights, With Fixes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OWASP Top 10 - The Highlights, With Fixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-broken-access-control-the-number-one-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Broken Access Control (the number one risk)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-injection-sql-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Injection / SQL Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cross-site-scripting-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cross-Site Scripting (XSS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cross-site-request-forgery-csrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Cross-Site Request Forgery (CSRF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-server-side-request-forgery-ssrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Server-Side Request Forgery (SSRF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-security-misconfiguration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Security Misconfiguration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secrets-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets Management
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defense-in-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defense in Depth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes-and-the-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes (and the Fix)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-clean-architecture-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In Clean Architecture Terms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../43_api_design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Design &amp; Protocols
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../44_resilience/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resilience Patterns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5">
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fintech Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Fintech Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/00_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/01_double_entry_ledger/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Double-Entry Ledger
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/02_immutable_audit_log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Immutable Audit Log
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/03_payment_networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Payment Networks (Visa · SWIFT · PromptPay)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/05_security_hsm_pci/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security (HSM · PCI DSS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/06_zero_trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zero Trust Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/07_distributed_transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Transactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fintech/08_companies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Companies (Stripe · Monzo · Wise)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big Tech Companies
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Big Tech Companies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/amazon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Amazon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/google/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Google
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/meta_facebook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Meta / Facebook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/netflix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Netflix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/uber/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uber
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/twitter_x/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Twitter / X
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/linkedin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LinkedIn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/shopify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shopify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/discord/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Discord
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/whatsapp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WhatsApp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/tiktok_bytedance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TikTok / ByteDance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/airbnb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Airbnb
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/grab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/doordash/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DoorDash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/microsoft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Microsoft
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../companies/pantip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pantip (Thailand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/linux_permissions_thai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Permissions (ภาษาไทย)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-story-first-read-this-even-if-you-skip-the-rest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Story First (Read This Even If You Skip the Rest)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authn-vs-authz-the-two-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AuthN vs AuthZ - The Two Gates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#password-hashing-bcrypt-and-argon2-never-plain-or-md5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password Hashing - bcrypt and argon2, Never Plain or MD5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sessions-vs-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sessions vs Tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jwt-structure-signing-and-the-revocation-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JWT - Structure, Signing, and the Revocation Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JWT - Structure, Signing, and the Revocation Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-revocation-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The revocation problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oauth2-and-openid-connect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OAuth2 and OpenID Connect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OAuth2 and OpenID Connect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The actors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization-code-flow-with-pkce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authorization Code flow with PKCE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rbac-vs-abac-modeling-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RBAC vs ABAC - Modeling Authorization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#owasp-top-10-the-highlights-with-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OWASP Top 10 - The Highlights, With Fixes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OWASP Top 10 - The Highlights, With Fixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-broken-access-control-the-number-one-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Broken Access Control (the number one risk)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-injection-sql-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Injection / SQL Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cross-site-scripting-xss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cross-Site Scripting (XSS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cross-site-request-forgery-csrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Cross-Site Request Forgery (CSRF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-server-side-request-forgery-ssrf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Server-Side Request Forgery (SSRF)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-security-misconfiguration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Security Misconfiguration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secrets-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets Management
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defense-in-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defense in Depth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-mistakes-and-the-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Mistakes (and the Fix)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-clean-architecture-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In Clean Architecture Terms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="application-security-authn-authz-and-the-owasp-basics">Application Security - AuthN, AuthZ, and the OWASP Basics<a class="headerlink" href="#application-security-authn-authz-and-the-owasp-basics" title="Permanent link">¶</a></h1>
+<blockquote>
+<p>"Most breaches are not clever. Someone shipped a password in plain text, trusted a JWT they never verified, or let a user change <code>accountId</code> in the URL. Security is mostly doing the boring things, every single time." - Staff Security Engineer</p>
+</blockquote>
+<hr>
+<h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>The problem</strong></td>
+<td>A payment API leaks money and data when it cannot prove WHO you are and WHAT you are allowed to do</td>
+</tr>
+<tr>
+<td><strong>The core idea</strong></td>
+<td>Authentication answers "who are you", authorization answers "are you allowed" - they are two separate gates</td>
+</tr>
+<tr>
+<td><strong>The trap</strong></td>
+<td>Checking the user is logged in (authn) and assuming that means they can touch this account (authz). It does not.</td>
+</tr>
+<tr>
+<td><strong>Hashing</strong></td>
+<td>Passwords are hashed with bcrypt or argon2, never stored or compared in plain text, never MD5 or SHA-256 alone</td>
+</tr>
+<tr>
+<td><strong>Tokens</strong></td>
+<td>A signed JWT proves identity, but you cannot un-issue it - plan for short expiry and a revocation strategy up front</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="the-story-first-read-this-even-if-you-skip-the-rest">The Story First (Read This Even If You Skip the Rest)<a class="headerlink" href="#the-story-first-read-this-even-if-you-skip-the-rest" title="Permanent link">¶</a></h2>
+<p>A fintech startup ships a clean account API. <code>GET /accounts/12345/balance</code> returns a balance. Login works, sessions work, the demo is smooth, the round closes.</p>
+<p>Three weeks after launch, a user notices the URL. They are account <code>12345</code>. Out of curiosity they try <code>GET /accounts/12346/balance</code>. It returns someone else's balance. They try <code>12347</code>. Another. Within an hour a script is walking every account number and scraping every balance in the company.</p>
+<p>Nothing was "hacked". TLS was fine. The login was fine. The password hashing was fine. The bug was simpler and far more common: the endpoint checked that you were <em>logged in</em> (authentication) but never checked that account <code>12346</code> <em>belonged to you</em> (authorization). This single class of bug - broken access control - is the number one item on the OWASP Top 10.</p>
+<p>This page teaches the two gates every request must pass, how to store credentials so a database leak is not a catastrophe, how sessions and tokens actually work, and the handful of OWASP attacks you will meet in any real payment or account system - with the concrete fix for each.</p>
+<hr>
+<h2 id="authn-vs-authz-the-two-gates">AuthN vs AuthZ - The Two Gates<a class="headerlink" href="#authn-vs-authz-the-two-gates" title="Permanent link">¶</a></h2>
+<p>These two words look alike and get mixed up constantly. They are different jobs at different times.</p>
+<ul>
+<li><strong>Authentication (authn):</strong> "Who are you?" You prove your identity - password, passkey, token. Output: a trusted identity.</li>
+<li><strong>Authorization (authz):</strong> "Are you allowed to do this, to this resource, right now?" Output: allow or deny.</li>
+</ul>
+<p>Authentication happens once (at login, or once per request when validating a token). Authorization happens on <strong>every single action</strong>, because the answer depends on the resource being touched.</p>
+<pre class="mermaid"><code>flowchart TD
+    Req["Incoming request to transfer funds"]
+    AuthN["AuthN gate - verify identity"]
+    Identity["Trusted identity - user 8842"]
+    AuthZ["AuthZ gate - is user 8842 allowed to debit account 12346"]
+    Deny401["Reject 401 Unauthorized - not who you claim"]
+    Deny403["Reject 403 Forbidden - not your account"]
+    Allow["Execute the transfer use case"]
+
+    Req --&gt; AuthN
+    AuthN --&gt;|invalid or missing credential| Deny401
+    AuthN --&gt;|credential valid| Identity
+    Identity --&gt; AuthZ
+    AuthZ --&gt;|owner mismatch or missing role| Deny403
+    AuthZ --&gt;|allowed| Allow</code></pre>
+<div class="admonition note">
+<p class="admonition-title">401 vs 403</p>
+<p><code>401 Unauthorized</code> means authentication failed - we do not know who you are. <code>403 Forbidden</code> means authentication succeeded but authorization failed - we know who you are, and you still cannot do this. The HTTP names are historically swapped, which is exactly why people confuse the two concepts.</p>
+</div>
+<hr>
+<h2 id="password-hashing-bcrypt-and-argon2-never-plain-or-md5">Password Hashing - bcrypt and argon2, Never Plain or MD5<a class="headerlink" href="#password-hashing-bcrypt-and-argon2-never-plain-or-md5" title="Permanent link">¶</a></h2>
+<p>If you store passwords, assume your database will leak someday. Your job is to make the leaked file useless.</p>
+<p><strong>The rules:</strong></p>
+<ol>
+<li>Never store the password. Store a hash.</li>
+<li>Never use a fast hash (MD5, SHA-1, SHA-256) on its own. They were built to be fast, which is exactly what an attacker with a GPU wants - billions of guesses per second.</li>
+<li>Use a slow, salted password hash designed for the job: <strong>argon2id</strong> (first choice today) or <strong>bcrypt</strong> (battle-tested, fine). These bake in a per-password salt and a tunable cost factor.</li>
+</ol>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">bcrypt (Node)</label><label for="__tabbed_1_2">argon2 (Node)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">import</span><span class="w"> </span><span class="nx">bcrypt</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"bcrypt"</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// On signup - cost factor 12 is a sane 2026 default</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">bcrypt</span><span class="p">.</span><span class="nx">hash</span><span class="p">(</span><span class="nx">plainPassword</span><span class="p">,</span><span class="w"> </span><span class="mf">12</span><span class="p">);</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">await</span><span class="w"> </span><span class="nx">users</span><span class="p">.</span><span class="nx">save</span><span class="p">({</span><span class="w"> </span><span class="nx">email</span><span class="p">,</span><span class="w"> </span><span class="nx">passwordHash</span><span class="o">:</span><span class="w"> </span><span class="kt">hash</span><span class="w"> </span><span class="p">});</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// On login - compare in constant time, never with ===</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">const</span><span class="w"> </span><span class="nx">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">bcrypt</span><span class="p">.</span><span class="nx">compare</span><span class="p">(</span><span class="nx">submittedPassword</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">passwordHash</span><span class="p">);</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">ok</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">InvalidCredentialsError</span><span class="p">();</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">import</span><span class="w"> </span><span class="nx">argon2</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"argon2"</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">// argon2id resists both GPU and side-channel attacks</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">argon2</span><span class="p">.</span><span class="nx">hash</span><span class="p">(</span><span class="nx">plainPassword</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="nx">argon2</span><span class="p">.</span><span class="nx">argon2id</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nx">memoryCost</span><span class="o">:</span><span class="w"> </span><span class="kt">19456</span><span class="p">,</span><span class="w"> </span><span class="c1">// ~19 MB, OWASP minimum</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nx">timeCost</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nx">parallelism</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">});</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="kd">const</span><span class="w"> </span><span class="nx">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">argon2</span><span class="p">.</span><span class="nx">verify</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">passwordHash</span><span class="p">,</span><span class="w"> </span><span class="nx">submittedPassword</span><span class="p">);</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">MD5 and SHA-256 are not password hashes</p>
+<p><code>md5(password)</code> or <code>sha256(password + salt)</code> is broken for passwords. Rainbow tables and GPUs crack them in seconds. The salt only stops precomputation - it does nothing about raw speed. The slowness of bcrypt and argon2 is the whole point.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Salt is automatic, pepper is optional</p>
+<p>bcrypt and argon2 generate and embed a random salt for you - you do not manage it separately. For extra defense you can add a "pepper" (a secret constant stored in your vault, not the database) so a database-only leak is not enough to start cracking. Compare hashes in constant time, which the library's <code>compare</code>/<code>verify</code> already does.</p>
+</div>
+<hr>
+<h2 id="sessions-vs-tokens">Sessions vs Tokens<a class="headerlink" href="#sessions-vs-tokens" title="Permanent link">¶</a></h2>
+<p>After login, the server needs to remember you across requests. Two main models:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Server-side session</th>
+<th>Token (JWT)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Where state lives</td>
+<td>Server (session store / Redis)</td>
+<td>Inside the token itself, held by the client</td>
+</tr>
+<tr>
+<td>What the client holds</td>
+<td>An opaque session id (a cookie)</td>
+<td>A signed, readable token</td>
+</tr>
+<tr>
+<td>Revocation</td>
+<td>Easy - delete the session row</td>
+<td>Hard - the token is valid until it expires</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>Needs a shared session store</td>
+<td>Stateless - any server can verify</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Classic web apps, one trust domain</td>
+<td>APIs, microservices, mobile, third parties</td>
+</tr>
+</tbody>
+</table>
+<p>The deep tradeoff: <strong>sessions are easy to revoke but need shared state; tokens are stateless but hard to revoke.</strong> Most fintech systems use tokens for the API and accept the revocation cost by keeping access tokens short-lived (more below).</p>
+<hr>
+<h2 id="jwt-structure-signing-and-the-revocation-problem">JWT - Structure, Signing, and the Revocation Problem<a class="headerlink" href="#jwt-structure-signing-and-the-revocation-problem" title="Permanent link">¶</a></h2>
+<p>A JSON Web Token is three base64url parts joined by dots: <code>header.payload.signature</code>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>eyJhbGciOiJSUzI1NiJ9 . eyJzdWIiOiI4ODQyIiwiZXhwIjoxNzUwMH0 . MEUCIQ...signature
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>   header (alg)            payload (claims)                     signature
+</span></code></pre></div>
+<ul>
+<li><strong>Header:</strong> the signing algorithm, e.g. <code>RS256</code>.</li>
+<li><strong>Payload (claims):</strong> <code>sub</code> (subject / user id), <code>exp</code> (expiry), <code>iat</code> (issued at), <code>iss</code> (issuer), <code>aud</code> (audience), plus your own claims like <code>roles</code>.</li>
+<li><strong>Signature:</strong> proves the token was issued by you and was not tampered with. With <code>RS256</code> you sign with a private key and verify with a public key.</li>
+</ul>
+<p>The payload is <strong>signed, not encrypted</strong>. Anyone holding the token can read it.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">import</span><span class="w"> </span><span class="nx">jwt</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"jsonwebtoken"</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">// Issue an access token - short lived, signed with the private key</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jwt</span><span class="p">.</span><span class="nx">sign</span><span class="p">(</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">sub</span><span class="o">:</span><span class="w"> </span><span class="kt">user.id</span><span class="p">,</span><span class="w"> </span><span class="nx">roles</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"account_holder"</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nx">PRIVATE_KEY</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">algorithm</span><span class="o">:</span><span class="w"> </span><span class="s2">"RS256"</span><span class="p">,</span><span class="w"> </span><span class="nx">expiresIn</span><span class="o">:</span><span class="w"> </span><span class="s2">"15m"</span><span class="p">,</span><span class="w"> </span><span class="nx">issuer</span><span class="o">:</span><span class="w"> </span><span class="s2">"pay.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nx">audience</span><span class="o">:</span><span class="w"> </span><span class="s2">"pay-api"</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">);</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1">// Verify on every request - ALWAYS specify the allowed algorithm</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="kd">const</span><span class="w"> </span><span class="nx">claims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jwt</span><span class="p">.</span><span class="nx">verify</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">PUBLIC_KEY</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="nx">algorithms</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"RS256"</span><span class="p">],</span><span class="w"> </span><span class="c1">// pin it - never trust the token's own alg field</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="nx">issuer</span><span class="o">:</span><span class="w"> </span><span class="s2">"pay.example.com"</span><span class="p">,</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="nx">audience</span><span class="o">:</span><span class="w"> </span><span class="s2">"pay-api"</span><span class="p">,</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="p">});</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">What NOT to put in a JWT</p>
+<p>Because the payload is readable by anyone holding the token, never put secrets in it: no passwords, no card numbers (PAN), no national ID, no account balances. Keep it to a user id, roles, and standard claims. Treat the contents as public.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">The alg=none and algorithm-confusion attacks</p>
+<p>Old libraries would honor <code>alg: none</code> (no signature) or let an attacker swap <code>RS256</code> for <code>HS256</code> and sign with the public key. Always pin the expected algorithm in your verify call. Never let the token decide how it is verified.</p>
+</div>
+<h3 id="the-revocation-problem">The revocation problem<a class="headerlink" href="#the-revocation-problem" title="Permanent link">¶</a></h3>
+<p>A session can be killed instantly - delete the row. A signed JWT is valid until <code>exp</code>, even if the user logs out or you fire an employee. There is no built-in "delete". You manage this with a two-token pattern:</p>
+<ul>
+<li><strong>Access token:</strong> short-lived (5-15 min), sent on every API call. Worst case, a stolen one is useless within minutes.</li>
+<li><strong>Refresh token:</strong> long-lived (days), stored securely, used only to mint new access tokens at the auth server. To revoke, delete or block the refresh token in a server-side store. For high-risk actions (a large transfer), also keep a small denylist of revoked access-token ids (<code>jti</code>) checked at the gateway.</li>
+</ul>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Client
+    participant A as Auth Server
+    participant API as Payment API
+
+    C-&gt;&gt;A: Login - email plus password
+    A-&gt;&gt;A: Verify argon2 hash
+    A--&gt;&gt;C: Access token 15m plus Refresh token 7d
+    C-&gt;&gt;API: GET balance with access token
+    API-&gt;&gt;API: Verify signature, exp, aud
+    API--&gt;&gt;C: 200 balance
+    Note over C,API: 15 minutes pass, access token expires
+    C-&gt;&gt;API: GET balance with expired token
+    API--&gt;&gt;C: 401 expired
+    C-&gt;&gt;A: Refresh using refresh token
+    A-&gt;&gt;A: Refresh token still valid and not revoked
+    A--&gt;&gt;C: New access token 15m
+    Note over A: Logout or fraud - delete refresh token, future refresh fails</code></pre>
+<hr>
+<h2 id="oauth2-and-openid-connect">OAuth2 and OpenID Connect<a class="headerlink" href="#oauth2-and-openid-connect" title="Permanent link">¶</a></h2>
+<p>People conflate these. Keep them straight:</p>
+<ul>
+<li><strong>OAuth2</strong> is an <strong>authorization</strong> framework: it lets an app get <em>delegated access</em> to an API on a user's behalf, without the user handing over their password. It produces an <strong>access token</strong>.</li>
+<li><strong>OpenID Connect (OIDC)</strong> is a thin <strong>authentication</strong> layer on top of OAuth2. It adds an <strong>ID token</strong> (a JWT) that tells your app <em>who the user is</em>. "Log in with Google" is OIDC.</li>
+</ul>
+<p>Rule of thumb: OAuth2 = "can this app call that API for me". OIDC = "who is this person".</p>
+<h3 id="the-actors">The actors<a class="headerlink" href="#the-actors" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Resource Owner:</strong> the human (your customer).</li>
+<li><strong>Client:</strong> your app (the mobile app or SPA).</li>
+<li><strong>Authorization Server:</strong> issues tokens (Auth0, Okta, Cognito, or your own).</li>
+<li><strong>Resource Server:</strong> the API holding the protected data (your payment API).</li>
+</ul>
+<h3 id="authorization-code-flow-with-pkce">Authorization Code flow with PKCE<a class="headerlink" href="#authorization-code-flow-with-pkce" title="Permanent link">¶</a></h3>
+<p>This is the flow you should use for web and mobile apps in 2026. PKCE ("pixie", Proof Key for Code Exchange) stops an attacker who intercepts the authorization code from redeeming it, because only the original client knows the secret <code>code_verifier</code>.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as User Browser
+    participant C as Client App
+    participant AS as Authorization Server
+    participant API as Payment API
+
+    C-&gt;&gt;C: Create code_verifier and its SHA256 code_challenge
+    C-&gt;&gt;AS: Redirect to authorize with code_challenge
+    AS-&gt;&gt;U: Show login and consent
+    U-&gt;&gt;AS: Authenticate and approve
+    AS--&gt;&gt;C: Redirect back with one-time auth code
+    C-&gt;&gt;AS: Exchange code plus code_verifier for tokens
+    AS-&gt;&gt;AS: Verify SHA256 of verifier equals stored challenge
+    AS--&gt;&gt;C: Access token plus ID token plus refresh token
+    C-&gt;&gt;API: Call API with access token
+    API-&gt;&gt;API: Validate token signature, exp, aud, scope
+    API--&gt;&gt;C: 200 protected data</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Do not roll your own</p>
+<p>Authentication is the wrong place to be creative. Use a vetted identity provider (Auth0, Okta, AWS Cognito, Keycloak) or a well-maintained library. They handle PKCE, key rotation, token introspection, and the dozens of edge cases that turn into CVEs.</p>
+</div>
+<hr>
+<h2 id="rbac-vs-abac-modeling-authorization">RBAC vs ABAC - Modeling Authorization<a class="headerlink" href="#rbac-vs-abac-modeling-authorization" title="Permanent link">¶</a></h2>
+<p>Once you know who the user is, how do you decide what they can do?</p>
+<p><strong>RBAC (Role-Based Access Control):</strong> permissions attach to roles, users get roles. Simple and auditable.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Role: account_holder  -&gt; can view own accounts, create transfers &lt;= 50k
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Role: support_agent   -&gt; can view any account read-only, cannot move money
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Role: compliance      -&gt; can freeze accounts, view audit logs
+</span></code></pre></div>
+<p><strong>ABAC (Attribute-Based Access Control):</strong> decisions are computed from attributes of the user, the resource, the action, and the context. More expressive, more complex.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ALLOW transfer IF
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  user.id == account.owner_id           (ownership)
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  AND amount &lt;= user.daily_limit         (resource policy)
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  AND request.country == account.country (context)
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  AND time.now in business_hours_or_low_risk
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>RBAC</th>
+<th>ABAC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decision basis</td>
+<td>Role membership</td>
+<td>Attributes and policy rules</td>
+</tr>
+<tr>
+<td>Simplicity</td>
+<td>High</td>
+<td>Lower</td>
+</tr>
+<tr>
+<td>Granularity</td>
+<td>Coarse</td>
+<td>Fine-grained, contextual</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Most apps, clear job functions</td>
+<td>Risk-based limits, regulatory, multi-tenant</td>
+</tr>
+</tbody>
+</table>
+<p>In practice, fintech systems start with RBAC for coarse access ("is this a support agent?") and layer ABAC for the money-sensitive rules ("does this user own this account, and is this within their daily limit?"). The ownership check from our story is ABAC, and it is the one people forget.</p>
+<hr>
+<h2 id="owasp-top-10-the-highlights-with-fixes">OWASP Top 10 - The Highlights, With Fixes<a class="headerlink" href="#owasp-top-10-the-highlights-with-fixes" title="Permanent link">¶</a></h2>
+<p>You do not need all ten memorized. You need to recognize these six in your own code.</p>
+<h3 id="1-broken-access-control-the-number-one-risk">1. Broken Access Control (the number one risk)<a class="headerlink" href="#1-broken-access-control-the-number-one-risk" title="Permanent link">¶</a></h3>
+<p>The story bug. Also called IDOR - Insecure Direct Object Reference. The fix is to always check ownership/role on the server against the authenticated identity, never trust an id from the client.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// BROKEN - returns any account to any logged-in user</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"/accounts/:id/balance"</span><span class="p">,</span><span class="w"> </span><span class="nx">authn</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">acct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">accounts</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">balance</span><span class="o">:</span><span class="w"> </span><span class="kt">acct.balance</span><span class="w"> </span><span class="p">});</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">});</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">// FIXED - verify the account belongs to the caller</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"/accounts/:id/balance"</span><span class="p">,</span><span class="w"> </span><span class="nx">authn</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">acct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">accounts</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">acct</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">acct</span><span class="p">.</span><span class="nx">ownerId</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">sub</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">sendStatus</span><span class="p">(</span><span class="mf">403</span><span class="p">);</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span><span class="w"> </span><span class="nx">balance</span><span class="o">:</span><span class="w"> </span><span class="kt">acct.balance</span><span class="w"> </span><span class="p">});</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="p">});</span>
+</span></code></pre></div>
+<h3 id="2-injection-sql-injection">2. Injection / SQL Injection<a class="headerlink" href="#2-injection-sql-injection" title="Permanent link">¶</a></h3>
+<p>Untrusted input changes the meaning of a query or command.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// BROKEN - attacker sends id = "1 OR 1=1; DROP TABLE accounts;--"</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="sb">`SELECT * FROM accounts WHERE id = </span><span class="si">${</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">// FIXED - parameterized query; the driver never treats input as SQL</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">"SELECT * FROM accounts WHERE id = $1"</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">]);</span>
+</span></code></pre></div>
+<p>Fix: parameterized queries / prepared statements everywhere. Never build SQL by string concatenation. The same idea applies to shell commands and NoSQL queries.</p>
+<h3 id="3-cross-site-scripting-xss">3. Cross-Site Scripting (XSS)<a class="headerlink" href="#3-cross-site-scripting-xss" title="Permanent link">¶</a></h3>
+<p>Attacker-supplied content runs as script in another user's browser - e.g. a malicious "memo" field on a transfer that steals session cookies when an admin views it.</p>
+<p>Fix: escape/encode output by context (HTML, attribute, JS), use a templating engine that auto-escapes, set a strict <code>Content-Security-Policy</code>, and never <code>innerHTML</code> untrusted data. Treat all user input as hostile on the way out, not just on the way in.</p>
+<h3 id="4-cross-site-request-forgery-csrf">4. Cross-Site Request Forgery (CSRF)<a class="headerlink" href="#4-cross-site-request-forgery-csrf" title="Permanent link">¶</a></h3>
+<p>A user logged into your bank visits a malicious page that silently submits <code>POST /transfer</code> using the user's cookie.</p>
+<p>Fix: use the <code>SameSite=Strict</code> (or <code>Lax</code>) cookie attribute, require an anti-CSRF token on state-changing requests, and prefer the <code>Authorization: Bearer</code> header over cookies for APIs (headers are not auto-sent cross-site, so token-based APIs are largely immune).</p>
+<h3 id="5-server-side-request-forgery-ssrf">5. Server-Side Request Forgery (SSRF)<a class="headerlink" href="#5-server-side-request-forgery-ssrf" title="Permanent link">¶</a></h3>
+<p>You let the user supply a URL (a webhook, an avatar fetch) and your server fetches it - so the attacker points it at <code>http://169.254.169.254/</code> (the cloud metadata endpoint) to steal credentials, or at internal services.</p>
+<p>Fix: allowlist the destinations you will fetch, resolve and validate the IP (block private/link-local ranges), disable redirects to internal hosts, and put outbound fetches behind a locked-down egress proxy.</p>
+<h3 id="6-security-misconfiguration">6. Security Misconfiguration<a class="headerlink" href="#6-security-misconfiguration" title="Permanent link">¶</a></h3>
+<p>Default admin passwords, verbose stack traces in production, an S3 bucket left public, debug mode on, unused ports open.</p>
+<p>Fix: harden by default, ship the same config to staging and prod, turn off debug/verbose errors in production, scan images and infra (CIS benchmarks), and review what is exposed.</p>
+<pre class="mermaid"><code>flowchart LR
+    In["Untrusted input - params, body, URLs"]
+    V["Validate and allowlist at the edge"]
+    P["Parameterized queries - no string SQL"]
+    O["Context-aware output encoding"]
+    AC["Server-side ownership and role check"]
+    Out["Safe response"]
+
+    In --&gt; V
+    V --&gt; AC
+    AC --&gt; P
+    P --&gt; O
+    O --&gt; Out</code></pre>
+<hr>
+<h2 id="secrets-management">Secrets Management<a class="headerlink" href="#secrets-management" title="Permanent link">¶</a></h2>
+<p>Credentials, signing keys, and database passwords are not configuration - they are secrets, and they leak constantly through the channels below.</p>
+<div class="admonition danger">
+<p class="admonition-title">Where secrets must never live</p>
+<p>Not in source code. Not in git history (rotate immediately if committed - the history is forever). Not baked into a Docker image (<code>docker history</code> reveals build args and layers). Not in client-side code. Not in plain <code>.env</code> files committed to the repo.</p>
+</div>
+<p><strong>Do this instead:</strong></p>
+<ul>
+<li>Store secrets in a dedicated <strong>vault</strong>: HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager, or Azure Key Vault.</li>
+<li>Inject them at runtime as environment variables or mounted files - the app reads them at startup, they are never written to disk in the repo.</li>
+<li><strong>Rotate</strong> regularly and automatically. The signing key for your JWTs should be rotatable without a redeploy (publish keys via JWKS so verifiers pick up new keys).</li>
+<li>Use <strong>short-lived, dynamically generated</strong> credentials where the vault supports it (e.g. database creds that expire in an hour) so a leaked credential has a tiny blast radius.</li>
+<li>Scan commits with a pre-commit hook (gitleaks, trufflehog) so a secret never reaches the remote in the first place.</li>
+</ul>
+<hr>
+<h2 id="defense-in-depth">Defense in Depth<a class="headerlink" href="#defense-in-depth" title="Permanent link">¶</a></h2>
+<p>No single control is enough. Assume each layer will fail and put another behind it. If TLS terminates, the JWT signature still protects you. If the token is stolen, the short expiry limits the damage. If access control is bypassed, the database user has least-privilege grants. If the database leaks, argon2 makes the passwords near-useless.</p>
+<pre class="mermaid"><code>flowchart TD
+    Edge["Edge - TLS 1.3, WAF, rate limiting"]
+    Gate["Gateway - authn, token validation"]
+    App["Application - authz ownership and role checks"]
+    Data["Data - least-privilege DB grants, encryption at rest"]
+    Crypto["Stored secrets - argon2 hashes, vault-managed keys"]
+
+    Edge --&gt; Gate
+    Gate --&gt; App
+    App --&gt; Data
+    Data --&gt; Crypto</code></pre>
+<p>Each layer assumes the one in front of it has already failed. That mindset - not one perfect wall, but many imperfect ones - is what survives a real attack.</p>
+<hr>
+<h2 id="common-mistakes-and-the-fix">Common Mistakes (and the Fix)<a class="headerlink" href="#common-mistakes-and-the-fix" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Mistake</th>
+<th>Why it hurts</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checking login but not ownership</td>
+<td>Any user reads any account (IDOR)</td>
+<td>Server-side check: resource.ownerId == caller.sub on every request</td>
+</tr>
+<tr>
+<td>Storing passwords with MD5/SHA-256</td>
+<td>GPUs crack the dump in minutes</td>
+<td>argon2id or bcrypt with a real cost factor</td>
+</tr>
+<tr>
+<td>Putting card numbers or PII in a JWT</td>
+<td>Payload is readable by anyone holding it</td>
+<td>Keep claims to user id, roles, standard fields</td>
+</tr>
+<tr>
+<td>Not pinning the JWT algorithm</td>
+<td>alg=none and RS256/HS256 confusion forge tokens</td>
+<td>Pass algorithms: ["RS256"] to verify</td>
+</tr>
+<tr>
+<td>Long-lived access tokens, no refresh plan</td>
+<td>A stolen token works for days; cannot revoke</td>
+<td>15-min access token plus revocable refresh token</td>
+</tr>
+<tr>
+<td>Building SQL with string concatenation</td>
+<td>SQL injection, full database compromise</td>
+<td>Parameterized queries / prepared statements</td>
+</tr>
+<tr>
+<td>Secrets in .env committed to git</td>
+<td>History is forever; anyone with the repo has the keys</td>
+<td>Vault + runtime injection + secret scanning</td>
+</tr>
+<tr>
+<td>Trusting a user-supplied URL to fetch</td>
+<td>SSRF reaches cloud metadata and internal services</td>
+<td>Allowlist hosts, block private IP ranges, no internal redirects</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
+<p>Security spans the layers - it is not one box.</p>
+<ul>
+<li><strong>Framework and Drivers layer:</strong> TLS termination, WAF, rate limiting, JWT signature verification, OAuth2/OIDC token exchange. Your business code never parses a JWT by hand.</li>
+<li><strong>Interface Adapters layer:</strong> controllers turn a verified token into a trusted identity object and attach it to the request. Output encoding for the response also lives here.</li>
+<li><strong>Use Case layer:</strong> business authorization. "Can user 8842 debit account 12346?" and "is this transfer within the daily limit?" are use-case decisions - they depend on domain rules, not on HTTP.</li>
+<li><strong>Entities layer:</strong> invariants that protect the domain itself, e.g. an account balance cannot go negative.</li>
+</ul>
+<p>The split that matters: infrastructure verifies <em>who you are</em> (authn), the use case decides <em>what you may do</em> (authz). Putting the ownership check in middleware is tempting but wrong - it belongs in the use case, where the domain rules live and where it can be unit-tested without HTTP.</p>
+<hr>
+<h2 id="checklist">Checklist<a class="headerlink" href="#checklist" title="Permanent link">¶</a></h2>
+<ul>
+<li>[ ] Passwords hashed with argon2id or bcrypt - never plain, MD5, or bare SHA-256</li>
+<li>[ ] Every resource endpoint checks ownership/role against the authenticated identity, server-side</li>
+<li>[ ] JWTs are signed (RS256), short-lived, with the algorithm pinned on verify</li>
+<li>[ ] No secrets, PII, or card data inside JWT payloads</li>
+<li>[ ] Refresh-token rotation in place; logout and fraud can revoke access</li>
+<li>[ ] All database access uses parameterized queries</li>
+<li>[ ] Output is context-encoded; a strict Content-Security-Policy is set</li>
+<li>[ ] State-changing requests are CSRF-protected (SameSite cookies or bearer tokens)</li>
+<li>[ ] User-supplied URLs are allowlisted and private IP ranges blocked (SSRF)</li>
+<li>[ ] Production runs with debug off, verbose errors off, hardened defaults</li>
+<li>[ ] Secrets live in a vault, injected at runtime, rotated automatically</li>
+<li>[ ] A secret scanner runs in pre-commit and CI</li>
+<li>[ ] Defense in depth: each layer assumes the one in front of it failed</li>
+</ul>
+<hr>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/">OWASP Cheat Sheet Series - Password Storage and Authentication</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7519">RFC 7519 - JSON Web Token (JWT)</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7636">OAuth 2.0 Authorization Framework and PKCE (RFC 7636)</a></li>
+<li><a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core Specification</a></li>
+<li><a href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-pkce">Auth0 Docs - Tokens and Authorization Code Flow with PKCE</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../41_observability/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Observability (Logs · Metrics · Traces)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Observability (Logs · Metrics · Traces)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../43_api_design/" class="md-footer__link md-footer__link--next" aria-label="Next: API Design &amp; Protocols">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                API Design &amp; Protocols
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/suphakin-th" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "navigation.indexes", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

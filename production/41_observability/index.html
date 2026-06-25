@@ -9,13 +9,13 @@
         <meta name="author" content="Suphakin Th.">
       
       
-        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/database/34_users_permissions_load_balanced/">
+        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/production/41_observability/">
       
       
-        <link rel="prev" href="../33_mvcc/">
+        <link rel="prev" href="../40_caching/">
       
       
-        <link rel="next" href="../../production/40_caching/">
+        <link rel="next" href="../42_app_security/">
       
       
         
@@ -26,7 +26,7 @@
     
     
       
-        <title>Users &amp; Permissions (Load-Balanced) - System Architecture Design — Learning Book</title>
+        <title>Observability (Logs · Metrics · Traces) - System Architecture Design — Learning Book</title>
       
     
     
@@ -97,7 +97,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#database-users-and-permissions-in-a-load-balanced-setup" class="md-skip">
+        <a href="#observability" class="md-skip">
           Skip to content
         </a>
       
@@ -132,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Users &amp; Permissions (Load-Balanced)
+              Observability (Logs · Metrics · Traces)
             
           </span>
         </div>
@@ -283,13 +283,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../23_fundamentals/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../database/23_fundamentals/" class="md-tabs__link">
           
   
   
@@ -307,11 +305,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../production/40_caching/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../40_caching/" class="md-tabs__link">
           
   
   
@@ -1045,10 +1045,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -1078,22 +1076,21 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked="">
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -1111,7 +1108,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1129,7 +1126,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../23_fundamentals/" class="md-nav__link">
+      <a href="../../database/23_fundamentals/" class="md-nav__link">
         
   
   
@@ -1157,7 +1154,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../24_types_comparison/" class="md-nav__link">
+      <a href="../../database/24_types_comparison/" class="md-nav__link">
         
   
   
@@ -1185,7 +1182,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../25_indexing/" class="md-nav__link">
+      <a href="../../database/25_indexing/" class="md-nav__link">
         
   
   
@@ -1213,7 +1210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../26_replication/" class="md-nav__link">
+      <a href="../../database/26_replication/" class="md-nav__link">
         
   
   
@@ -1241,7 +1238,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../27_transactions/" class="md-nav__link">
+      <a href="../../database/27_transactions/" class="md-nav__link">
         
   
   
@@ -1269,7 +1266,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../28_query_optimization/" class="md-nav__link">
+      <a href="../../database/28_query_optimization/" class="md-nav__link">
         
   
   
@@ -1297,7 +1294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../29_schema_patterns/" class="md-nav__link">
+      <a href="../../database/29_schema_patterns/" class="md-nav__link">
         
   
   
@@ -1325,7 +1322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../22_sharding/" class="md-nav__link">
+      <a href="../../database/22_sharding/" class="md-nav__link">
         
   
   
@@ -1353,7 +1350,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../31_three_layer_model/" class="md-nav__link">
+      <a href="../../database/31_three_layer_model/" class="md-nav__link">
         
   
   
@@ -1381,7 +1378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../33_mvcc/" class="md-nav__link">
+      <a href="../../database/33_mvcc/" class="md-nav__link">
         
   
   
@@ -1389,6 +1386,138 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Production Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../40_caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching &amp; CDN
   
 
     
@@ -1425,7 +1554,7 @@
   <span class="md-ellipsis">
     
   
-    Users &amp; Permissions (Load-Balanced)
+    Observability (Logs · Metrics · Traces)
   
 
     
@@ -1443,7 +1572,7 @@
   <span class="md-ellipsis">
     
   
-    Users &amp; Permissions (Load-Balanced)
+    Observability (Logs · Metrics · Traces)
   
 
     
@@ -1491,10 +1620,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-big-picture" class="md-nav__link">
+  <a href="#monitoring-vs-observability" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Big Picture
+        Monitoring vs Observability
       
     </span>
   </a>
@@ -1502,10 +1631,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-1-separate-users-by-job-not-by-person" class="md-nav__link">
+  <a href="#the-three-pillars-logs-metrics-traces" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1: Separate Users by Job, Not by Person
+        The Three Pillars: Logs, Metrics, Traces
       
     </span>
   </a>
@@ -1513,10 +1642,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-create-the-accounts-with-concrete-sql" class="md-nav__link">
+  <a href="#structured-logging-and-log-levels" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Create the Accounts (with Concrete SQL)
+        Structured Logging and Log Levels
       
     </span>
   </a>
@@ -1524,10 +1653,66 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-the-detail-everyone-misses-permissions-live-on-every-server" class="md-nav__link">
+  <a href="#metrics-counters-gauges-histograms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: The Detail Everyone Misses - Permissions Live on Every Server
+        Metrics: Counters, Gauges, Histograms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metrics: Counters, Gauges, Histograms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#red-and-use-two-methods-so-you-measure-the-right-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RED and USE: two methods so you measure the right things
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distributed-tracing-spans-ids-and-context-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distributed Tracing: Spans, IDs, and Context Propagation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Distributed Tracing: Spans, IDs, and Context Propagation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opentelemetry-the-vendor-neutral-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenTelemetry: the vendor-neutral standard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correlation-ids-tying-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correlation IDs: Tying It All Together
       
     </span>
   </a>
@@ -1535,10 +1720,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-route-the-right-account-to-the-right-server" class="md-nav__link">
+  <a href="#sli-slo-sla-and-error-budgets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Route the Right Account to the Right Server
+        SLI, SLO, SLA, and Error Budgets
       
     </span>
   </a>
@@ -1546,10 +1731,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-concrete-case-the-forum-on-black-friday" class="md-nav__link">
+  <a href="#alerting-on-symptoms-not-causes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A Concrete Case: The Forum on Black Friday
+        Alerting on Symptoms, Not Causes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together-solving-the-914-pm-slow-checkout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting It Together: Solving the 9:14 PM Slow Checkout
       
     </span>
   </a>
@@ -1609,79 +1805,6 @@
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4">
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Production Engineering
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Production Engineering
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix="">
-            
               
                 
   
@@ -1689,63 +1812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../production/40_caching/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Caching &amp; CDN
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../production/41_observability/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Observability (Logs · Metrics · Traces)
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../production/42_app_security/" class="md-nav__link">
+      <a href="../42_app_security/" class="md-nav__link">
         
   
   
@@ -1773,7 +1840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../production/43_api_design/" class="md-nav__link">
+      <a href="../43_api_design/" class="md-nav__link">
         
   
   
@@ -1801,7 +1868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../production/44_resilience/" class="md-nav__link">
+      <a href="../44_resilience/" class="md-nav__link">
         
   
   
@@ -2847,10 +2914,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-big-picture" class="md-nav__link">
+  <a href="#monitoring-vs-observability" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Big Picture
+        Monitoring vs Observability
       
     </span>
   </a>
@@ -2858,10 +2925,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-1-separate-users-by-job-not-by-person" class="md-nav__link">
+  <a href="#the-three-pillars-logs-metrics-traces" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1: Separate Users by Job, Not by Person
+        The Three Pillars: Logs, Metrics, Traces
       
     </span>
   </a>
@@ -2869,10 +2936,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-create-the-accounts-with-concrete-sql" class="md-nav__link">
+  <a href="#structured-logging-and-log-levels" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Create the Accounts (with Concrete SQL)
+        Structured Logging and Log Levels
       
     </span>
   </a>
@@ -2880,10 +2947,66 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-the-detail-everyone-misses-permissions-live-on-every-server" class="md-nav__link">
+  <a href="#metrics-counters-gauges-histograms" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: The Detail Everyone Misses - Permissions Live on Every Server
+        Metrics: Counters, Gauges, Histograms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metrics: Counters, Gauges, Histograms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#red-and-use-two-methods-so-you-measure-the-right-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RED and USE: two methods so you measure the right things
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distributed-tracing-spans-ids-and-context-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Distributed Tracing: Spans, IDs, and Context Propagation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Distributed Tracing: Spans, IDs, and Context Propagation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opentelemetry-the-vendor-neutral-standard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenTelemetry: the vendor-neutral standard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correlation-ids-tying-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correlation IDs: Tying It All Together
       
     </span>
   </a>
@@ -2891,10 +3014,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-route-the-right-account-to-the-right-server" class="md-nav__link">
+  <a href="#sli-slo-sla-and-error-budgets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Route the Right Account to the Right Server
+        SLI, SLO, SLA, and Error Budgets
       
     </span>
   </a>
@@ -2902,10 +3025,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-concrete-case-the-forum-on-black-friday" class="md-nav__link">
+  <a href="#alerting-on-symptoms-not-causes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        A Concrete Case: The Forum on Black Friday
+        Alerting on Symptoms, Not Causes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together-solving-the-914-pm-slow-checkout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Putting It Together: Solving the 9:14 PM Slow Checkout
       
     </span>
   </a>
@@ -2976,9 +3110,10 @@
   
 
 
-<h1 id="database-users-and-permissions-in-a-load-balanced-setup">Database Users and Permissions in a Load-Balanced Setup<a class="headerlink" href="#database-users-and-permissions-in-a-load-balanced-setup" title="Permanent link">¶</a></h1>
+<h1 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"Your application does not have one database account. It has several, each allowed to do exactly one job - no more. The day someone leaks the read-only password, nothing bad happens. That is the whole point." - Senior DBA</p>
+<p>"Monitoring tells you the system is sick. Observability lets you ask why - even for a question you never thought to ask before the incident started."
+- Staff SRE</p>
 </blockquote>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
@@ -2992,214 +3127,327 @@
 <tbody>
 <tr>
 <td><strong>The problem</strong></td>
-<td>One app, many database servers behind a load balancer. Who connects as whom, and what are they allowed to do?</td>
+<td>A request got slow in production and you have no idea which of your 6 services caused it.</td>
 </tr>
 <tr>
 <td><strong>The core idea</strong></td>
-<td>Separate database users by job (write vs read vs admin), not by person. Give each the least privilege it needs.</td>
+<td>Emit logs, metrics, and traces so you can ask new questions about the system without shipping new code.</td>
 </tr>
 <tr>
 <td><strong>The trap</strong></td>
-<td>Using one all-powerful <code>root</code>/<code>admin</code> account everywhere. One leak and the attacker owns everything.</td>
+<td>Logging everything as plain strings, alerting on CPU instead of user pain, and treating dashboards as observability.</td>
 </tr>
 <tr>
-<td><strong>Where permissions live</strong></td>
-<td>On every server. Replicas copy data automatically, but you must still create the accounts and grants.</td>
+<td><strong>Monitoring vs observability</strong></td>
+<td>Monitoring = known questions on known dashboards. Observability = unknown questions answered from rich telemetry.</td>
+</tr>
+<tr>
+<td><strong>The glue</strong></td>
+<td>A correlation ID (and trace ID) that ties one user request across every log line and every service hop.</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="the-story-first-read-this-even-if-you-skip-the-rest">The Story First (Read This Even If You Skip the Rest)<a class="headerlink" href="#the-story-first-read-this-even-if-you-skip-the-rest" title="Permanent link">¶</a></h2>
-<p>Imagine a busy forum like Pantip. Millions of people read posts; far fewer write them. So you do not run one database - you run a small fleet:</p>
+<p>It is 9:14 PM. Checkout is "slow." Support is forwarding angry messages: orders take 8 seconds to confirm, sometimes they time out. Nothing is <em>down</em> - your uptime check is green, CPU is fine, no service is throwing 500s in bulk. The monitoring dashboard you built six months ago shows nothing useful because nobody predicted <em>this</em> failure.</p>
+<p>You open your logs. Thousands of lines like <code>processing order</code> and <code>done</code> scroll by with no order ID, no timing, no way to follow one customer's request through the system. You have data, but you cannot ask it a question.</p>
+<p>This is the difference between <strong>monitoring</strong> (you watch the things you decided to watch in advance) and <strong>observability</strong> (you can interrogate the system about things you never anticipated). The fix is not "more dashboards." It is emitting telemetry rich enough - logs, metrics, and traces, all stitched together by an ID - that you can follow a single slow checkout from the browser, through the API gateway, into the cart service, the payment service, and the inventory database, and see exactly where the 8 seconds went.</p>
+<p>By the end of this page you will be able to take that 9:14 PM page and answer "why" in minutes, not hours.</p>
+<hr>
+<h2 id="monitoring-vs-observability">Monitoring vs Observability<a class="headerlink" href="#monitoring-vs-observability" title="Permanent link">¶</a></h2>
+<p>These words get used interchangeably. They are not the same thing.</p>
 <ul>
-<li><strong>One primary</strong> that accepts all writes (new posts, edits, likes).</li>
-<li><strong>Several read replicas</strong> that copy the primary's data and serve the reads.</li>
-<li>A <strong>load balancer</strong> (or smart proxy) that sends each query to the right server.</li>
+<li><strong>Monitoring</strong> answers <em>known</em> questions: "Is the error rate above 1%?" "Is latency over 500ms?" You define the question, build a dashboard or alert, and watch it. Monitoring is necessary - it is how you find out something is wrong.</li>
+<li><strong>Observability</strong> is a <em>property of the system</em>: can you understand its internal state from the outside, well enough to answer questions you did not pre-bake? When a brand-new failure mode appears, monitoring tells you <em>that</em> it is broken; observability tells you <em>why</em>.</li>
 </ul>
-<p>Now the question this page answers: when your app opens a connection, <em>who is it logging in as</em>, and <em>what is that account allowed to do</em>? Get this wrong and you either (a) hand an attacker the keys to everything, or (b) accidentally send a write to a read-only replica at 2am and page yourself.</p>
-<p>The answer is simple to say and worth saying slowly: <strong>give each job its own database user, and give that user the least power it needs to do the job.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">The cheap mental model</p>
+<p>Monitoring is the smoke alarm. Observability is being able to walk through the house and find which wire shorted. You want both. A smoke alarm with no way to inspect the house is a recipe for panic.</p>
+</div>
+<pre class="mermaid"><code>flowchart LR
+    A["Known failure modes"] --&gt;|dashboards and alerts| B["Monitoring"]
+    C["Unknown failure modes"] --&gt;|ask new questions| D["Observability"]
+    B --&gt;|tells you it broke| E["On-call engineer"]
+    D --&gt;|tells you why it broke| E</code></pre>
 <hr>
-<h2 id="the-big-picture">The Big Picture<a class="headerlink" href="#the-big-picture" title="Permanent link">¶</a></h2>
-<p>The diagram below shows the whole shape of the system. Notice there is no single "the database user" - there are three, one per job.</p>
-<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../users_permissions.svg" data-desc-position="bottom"><img alt="Database users and permissions across a load-balanced fleet" src="../users_permissions.svg"></a></p>
+<h2 id="the-three-pillars-logs-metrics-traces">The Three Pillars: Logs, Metrics, Traces<a class="headerlink" href="#the-three-pillars-logs-metrics-traces" title="Permanent link">¶</a></h2>
+<p>Observability is usually built from three kinds of telemetry. Each answers a different shape of question. You reach for a different one depending on what you are trying to learn.</p>
 <pre class="mermaid"><code>flowchart TD
-    App["Application"]
-    Proxy["Load Balancer / Proxy (ProxySQL, PgBouncer, RDS Proxy)"]
-    Primary["Primary DB (accepts writes)"]
-    R1["Read Replica 1"]
-    R2["Read Replica 2"]
-
-    App --&gt;|"writes: login as app_writer"| Proxy
-    App --&gt;|"reads: login as app_reader"| Proxy
-    Proxy --&gt;|"route writes"| Primary
-    Proxy --&gt;|"route reads (load balanced)"| R1
-    Proxy --&gt;|"route reads (load balanced)"| R2
-    Primary -.-&gt;|"replication copies data AND the writer account"| R1
-    Primary -.-&gt;|"replication copies data AND the writer account"| R2</code></pre>
-<p>Two things to lock in from this picture:</p>
-<ol>
-<li>The app uses <strong>different accounts for reads and writes</strong>, even though it is one app.</li>
-<li>The proxy decides <strong>which server</strong> a query goes to. The account decides <strong>what the query is allowed to do</strong>. These are two separate concerns - do not mix them up.</li>
-</ol>
-<hr>
-<h2 id="step-1-separate-users-by-job-not-by-person">Step 1: Separate Users by Job, Not by Person<a class="headerlink" href="#step-1-separate-users-by-job-not-by-person" title="Permanent link">¶</a></h2>
-<p>A common beginner mistake is one account per developer, or worse, one <code>admin</code> account shared by the app and the humans. Instead, model accounts around <em>jobs</em>:</p>
+    R["One checkout request"] --&gt; L["Logs: discrete events with context"]
+    R --&gt; M["Metrics: numbers aggregated over time"]
+    R --&gt; T["Traces: the request path across services"]
+    L --&gt;|what happened in this exact event| Q1["Why did THIS order fail?"]
+    M --&gt;|how often, how much, how fast| Q2["Is checkout slow for EVERYONE?"]
+    T --&gt;|where the time went across hops| Q3["WHICH service ate the 8 seconds?"]</code></pre>
 <table>
 <thead>
 <tr>
-<th>Account</th>
-<th>Job</th>
-<th>Allowed to</th>
-<th>Connects to</th>
+<th>Pillar</th>
+<th>Answers</th>
+<th>Cardinality / cost</th>
+<th>Reach for it when</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>app_writer</code></td>
-<td>Handle writes from the app</td>
-<td><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td>
-<td>Primary only</td>
+<td><strong>Logs</strong></td>
+<td>"What exactly happened in this one event?"</td>
+<td>High detail, can get expensive at volume</td>
+<td>You need the specifics of a single request or error.</td>
 </tr>
 <tr>
-<td><code>app_reader</code></td>
-<td>Handle reads from the app</td>
-<td><code>SELECT</code> only</td>
-<td>Replicas (and primary if needed)</td>
+<td><strong>Metrics</strong></td>
+<td>"What is the rate / count / distribution over time?"</td>
+<td>Cheap, aggregated, great for alerting</td>
+<td>You need to know if a problem is widespread and trending.</td>
 </tr>
 <tr>
-<td><code>migrator</code></td>
-<td>Run schema migrations on deploy</td>
-<td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code> + DML</td>
-<td>Primary only, used briefly</td>
-</tr>
-<tr>
-<td><code>dba_admin</code></td>
-<td>Human break-glass / on-call</td>
-<td>Everything, including user management</td>
-<td>Primary, audited</td>
-</tr>
-<tr>
-<td><code>replication</code></td>
-<td>The replica logging in to copy data</td>
-<td>Replication stream only</td>
-<td>Primary</td>
-</tr>
-<tr>
-<td><code>monitoring</code></td>
-<td>Metrics scraper (Prometheus, etc)</td>
-<td><code>SELECT</code> on stats views only</td>
-<td>Any server</td>
+<td><strong>Traces</strong></td>
+<td>"Where did one request spend its time across services?"</td>
+<td>Medium, usually sampled</td>
+<td>You need to find which hop in a distributed call is slow.</td>
 </tr>
 </tbody>
 </table>
-<p>Why this matters: if <code>app_reader</code>'s password leaks, the attacker can read data - bad, but recoverable. They <strong>cannot</strong> drop a table, change a price, or create new accounts. You have contained the blast radius. This is the principle of <strong>least privilege</strong>, and it is the single most valuable habit on this page.</p>
+<p>The power comes from using them <em>together</em>. Metrics tell you checkout p99 latency jumped. Traces tell you the payment service is the slow hop. Logs from that service tell you it was a slow database query against an un-indexed column. We will walk that exact path below.</p>
 <hr>
-<h2 id="step-2-create-the-accounts-with-concrete-sql">Step 2: Create the Accounts (with Concrete SQL)<a class="headerlink" href="#step-2-create-the-accounts-with-concrete-sql" title="Permanent link">¶</a></h2>
-<p>Here is the actual SQL for both major engines. Read the comments - they explain the <em>why</em>.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">PostgreSQL</label><label for="__tabbed_1_2">MySQL</label></div>
+<h2 id="structured-logging-and-log-levels">Structured Logging and Log Levels<a class="headerlink" href="#structured-logging-and-log-levels" title="Permanent link">¶</a></h2>
+<p>The single biggest upgrade most teams can make is moving from string logs to <strong>structured logs</strong> - logs emitted as key/value pairs (usually JSON) instead of prose.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Unstructured (avoid)</label><label for="__tabbed_1_2">Structured (do this)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Writer: full DML on the app's tables, but NOT schema changes</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">app_writer</span><span class="w"> </span><span class="n">LOGIN</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">'use-a-secret-manager'</span><span class="p">;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">CONNECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">forum</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_writer</span><span class="p">;</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_writer</span><span class="p">;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_writer</span><span class="p">;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">-- Apply the same grant to tables created in the future:</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_writer</span><span class="p">;</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1">-- Reader: SELECT only. Cannot change a single row.</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">app_reader</span><span class="w"> </span><span class="n">LOGIN</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">'use-a-secret-manager'</span><span class="p">;</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">CONNECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">forum</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_reader</span><span class="p">;</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_reader</span><span class="p">;</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_reader</span><span class="p">;</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">app_reader</span><span class="p">;</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// You cannot query this. You cannot filter by orderId.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// You cannot tie it to a trace. It is just text.</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"processing order for user, took a while"</span><span class="p">);</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"done"</span><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Writer: DML only, restricted to connections from the app network</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'app_writer'</span><span class="o">@</span><span class="s1">'10.0.%'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'use-a-secret-manager'</span><span class="p">;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">forum</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'app_writer'</span><span class="o">@</span><span class="s1">'10.0.%'</span><span class="p">;</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">-- Reader: SELECT only</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">'app_reader'</span><span class="o">@</span><span class="s1">'10.0.%'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'use-a-secret-manager'</span><span class="p">;</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">forum</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'app_reader'</span><span class="o">@</span><span class="s1">'10.0.%'</span><span class="p">;</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">;</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">logger</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"./logger"</span><span class="p">;</span><span class="w"> </span><span class="c1">// pino, winston, etc.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">({</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="s2">"checkout.completed"</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">order.id</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nx">userId</span><span class="o">:</span><span class="w"> </span><span class="kt">user.id</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nx">amountThb</span><span class="o">:</span><span class="w"> </span><span class="kt">order.totalThb</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nx">durationMs</span><span class="o">:</span><span class="w"> </span><span class="kt">Date.now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">startedAt</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nx">correlationId</span><span class="o">:</span><span class="w"> </span><span class="kt">ctx.correlationId</span><span class="p">,</span><span class="w"> </span><span class="c1">// ties logs together</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nx">traceId</span><span class="o">:</span><span class="w"> </span><span class="kt">ctx.traceId</span><span class="p">,</span><span class="w">             </span><span class="c1">// ties logs to the trace</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">},</span><span class="w"> </span><span class="s2">"checkout completed"</span><span class="p">);</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
+<p>The structured version is <em>queryable</em>: in Loki or any log backend you can ask "show me all <code>checkout.completed</code> events where <code>durationMs &gt; 5000</code> for the last hour" without grep gymnastics.</p>
+<p><strong>Log levels</strong> let you control volume and signal. Use them deliberately:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ERROR</code></td>
+<td>Something failed and a human or retry must handle it</td>
+<td>Payment gateway returned 500</td>
+</tr>
+<tr>
+<td><code>WARN</code></td>
+<td>Suspicious but handled; watch for trends</td>
+<td>Retry succeeded on 2nd attempt</td>
+</tr>
+<tr>
+<td><code>INFO</code></td>
+<td>Normal business events worth recording</td>
+<td><code>checkout.completed</code>, <code>user.registered</code></td>
+</tr>
+<tr>
+<td><code>DEBUG</code></td>
+<td>Developer detail, usually off in production</td>
+<td>Full request payload, SQL text</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Do not log secrets or PHI</p>
+<p>In fintech and health insurance, logging a card number, a national ID, or a diagnosis is a compliance incident. Redact before logging. Structured logging makes redaction easier because you control each field - never log the whole request object blindly.</p>
+</div>
 <div class="admonition tip">
-<p class="admonition-title">Notice what is missing</p>
-<p>Neither account can <code>CREATE</code>, <code>DROP</code>, or <code>GRANT</code>. Those powers belong to the <code>migrator</code> and <code>dba_admin</code> accounts, which you use rarely and audit closely.</p>
+<p class="admonition-title">Log at the boundaries</p>
+<p>Log when a request enters and leaves a service, and on every external call (DB, payment gateway, third party). Those boundary logs plus a correlation ID are 80% of what you need at 9:14 PM.</p>
 </div>
 <hr>
-<h2 id="step-3-the-detail-everyone-misses-permissions-live-on-every-server">Step 3: The Detail Everyone Misses - Permissions Live on Every Server<a class="headerlink" href="#step-3-the-detail-everyone-misses-permissions-live-on-every-server" title="Permanent link">¶</a></h2>
-<p>Here is the question that trips people up: <em>"If I create <code>app_reader</code> on the primary, do the replicas get it automatically?"</em></p>
-<p>The honest answer is: <strong>it depends on the engine, and you must verify.</strong></p>
-<pre class="mermaid"><code>flowchart LR
-    subgraph Primary["Primary"]
-        D1["Data tables"]
-        U1["User accounts and grants"]
-    end
-    subgraph Replica["Read Replica"]
-        D2["Data tables (copied)"]
-        U2["User accounts and grants (sometimes copied)"]
-    end
-    D1 --&gt;|"always replicated"| D2
-    U1 -.-&gt;|"replicated ONLY if the user table is part of the stream"| U2</code></pre>
+<h2 id="metrics-counters-gauges-histograms">Metrics: Counters, Gauges, Histograms<a class="headerlink" href="#metrics-counters-gauges-histograms" title="Permanent link">¶</a></h2>
+<p>Metrics are cheap numbers sampled over time. Three core types cover almost everything:</p>
 <ul>
-<li><strong>MySQL / MariaDB:</strong> the user accounts live in the <code>mysql</code> system database. If your replication includes that database (the common default), <code>CREATE USER</code>/<code>GRANT</code> run on the primary <em>do</em> flow to replicas. If you filter out the <code>mysql</code> schema, they do <strong>not</strong> - you must create the accounts on each server yourself.</li>
-<li><strong>PostgreSQL:</strong> roles are <strong>cluster-wide and are NOT copied by streaming replication</strong> in the way table data is. With physical (streaming) replication the replica is a byte-for-byte copy, so roles created before the replica was cloned exist on it - but a role you add <em>later</em> needs care, and with logical replication you manage roles on each node yourself.</li>
+<li><strong>Counter</strong> - only ever goes up (or resets to zero on restart). Count of things that happened. Example: <code>checkout_requests_total</code>. You graph the <em>rate</em> of a counter (<code>rate(checkout_requests_total[5m])</code>), not the raw value.</li>
+<li><strong>Gauge</strong> - goes up and down; a snapshot of "right now." Example: <code>queue_depth</code>, <code>active_connections</code>, <code>memory_bytes</code>.</li>
+<li><strong>Histogram</strong> - buckets observations to let you compute distributions and percentiles. Example: <code>http_request_duration_seconds</code>. This is how you get p50, p95, p99 latency. Averages lie; percentiles tell the truth about tail latency.</li>
 </ul>
-<p>The safe rule that always works: <strong>manage accounts and grants as code (migrations or a tool like Terraform/Ansible), and apply them to every node.</strong> Never click-create a user on one box and assume the fleet caught up.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Counter</span><span class="p">,</span><span class="w"> </span><span class="nx">Gauge</span><span class="p">,</span><span class="w"> </span><span class="nx">Histogram</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"prom-client"</span><span class="p">;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">checkoutTotal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Counter</span><span class="p">({</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">"checkout_requests_total"</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nx">help</span><span class="o">:</span><span class="w"> </span><span class="s2">"Total checkout requests"</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nx">labelNames</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"status"</span><span class="p">],</span><span class="w"> </span><span class="c1">// "ok" | "error"</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">});</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="kd">const</span><span class="w"> </span><span class="nx">inFlight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Gauge</span><span class="p">({</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">"checkout_in_flight"</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="nx">help</span><span class="o">:</span><span class="w"> </span><span class="s2">"Checkouts currently being processed"</span><span class="p">,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">});</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="kd">const</span><span class="w"> </span><span class="nx">checkoutDuration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Histogram</span><span class="p">({</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">"checkout_duration_seconds"</span><span class="p">,</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="nx">help</span><span class="o">:</span><span class="w"> </span><span class="s2">"Checkout latency"</span><span class="p">,</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">  </span><span class="nx">buckets</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">8</span><span class="p">,</span><span class="w"> </span><span class="mf">13</span><span class="p">],</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="p">});</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Label cardinality is a footgun</p>
+<p>Do not put <code>userId</code> or <code>orderId</code> as a metric label. Each unique label value is a new time series; high-cardinality labels (millions of users) will melt your metrics backend. Identifiers belong in logs and traces, not metric labels.</p>
+</div>
+<h3 id="red-and-use-two-methods-so-you-measure-the-right-things">RED and USE: two methods so you measure the right things<a class="headerlink" href="#red-and-use-two-methods-so-you-measure-the-right-things" title="Permanent link">¶</a></h3>
+<p>You do not need a thousand metrics. Two well-known frameworks tell you which handful matter.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>For</th>
+<th>The three signals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RED</strong></td>
+<td>Request-driven services (your APIs)</td>
+<td><strong>R</strong>ate (requests/sec), <strong>E</strong>rrors (failed/sec), <strong>D</strong>uration (latency distribution)</td>
+</tr>
+<tr>
+<td><strong>USE</strong></td>
+<td>Resources (CPU, disk, queue, connection pool)</td>
+<td><strong>U</strong>tilization (% busy), <strong>S</strong>aturation (queued work), <strong>E</strong>rrors (error count)</td>
+</tr>
+</tbody>
+</table>
+<p>For checkout, RED gives you the user-facing health (how many checkouts, how many failing, how slow). USE on the database connection pool tells you whether the pool is saturated and requests are queuing - which is often the hidden cause of the slowness RED reveals.</p>
 <hr>
-<h2 id="step-4-route-the-right-account-to-the-right-server">Step 4: Route the Right Account to the Right Server<a class="headerlink" href="#step-4-route-the-right-account-to-the-right-server" title="Permanent link">¶</a></h2>
-<p>The account controls <em>what is allowed</em>. The proxy controls <em>where the query lands</em>. You want both to agree: writes go to the primary as <code>app_writer</code>; reads go to a replica as <code>app_reader</code>.</p>
-<pre class="mermaid"><code>sequenceDiagram
-    participant App
-    participant Proxy as Load Balancer / Proxy
-    participant P as Primary
-    participant R as Read Replica
-
-    App-&gt;&gt;Proxy: INSERT new post (as app_writer)
-    Proxy-&gt;&gt;P: route to primary
-    P--&gt;&gt;App: ok, row written
-    Note over P,R: replication copies the row to replicas
-
-    App-&gt;&gt;Proxy: SELECT recent posts (as app_reader)
-    Proxy-&gt;&gt;R: route to a replica
-    R--&gt;&gt;App: rows (maybe a few ms stale)</code></pre>
-<p>How the routing decision is made, in practice:</p>
+<h2 id="distributed-tracing-spans-ids-and-context-propagation">Distributed Tracing: Spans, IDs, and Context Propagation<a class="headerlink" href="#distributed-tracing-spans-ids-and-context-propagation" title="Permanent link">¶</a></h2>
+<p>A single checkout touches the API gateway, cart, payment, and inventory services. Logs alone cannot show you the <em>shape</em> of that journey or where the time went. <strong>Distributed tracing</strong> can.</p>
 <ul>
-<li><strong>Two connection pools in the app.</strong> The simplest, most portable approach: one pool configured with <code>app_writer</code> pointing at the primary, one pool with <code>app_reader</code> pointing at the replica endpoint. Your code picks the pool based on whether it is reading or writing.</li>
-<li><strong>A query-aware proxy</strong> (ProxySQL for MySQL, PgPool/PgCat for PostgreSQL, RDS Proxy on AWS). It inspects the SQL and sends writes to the primary, reads to replicas - so the app can use one endpoint. Powerful, but it is another moving part to operate.</li>
+<li>A <strong>trace</strong> represents one request end to end. It has a single <strong>trace ID</strong>.</li>
+<li>A <strong>span</strong> is one unit of work within that trace - one service handling the request, or one database call. Each span has its own <strong>span ID</strong> and records a start time, a duration, and a parent span ID.</li>
+<li><strong>Context propagation</strong> is how the trace ID and parent span ID travel from one service to the next - usually via HTTP headers (the W3C <code>traceparent</code> header). If you do not propagate, each service starts its own trace and you get disconnected fragments instead of one picture.</li>
+</ul>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as Browser
+    participant G as API Gateway
+    participant C as Cart Service
+    participant P as Payment Service
+    participant I as Inventory Service
+    U-&gt;&gt;G: POST /checkout (start trace abc123)
+    G-&gt;&gt;C: create order (span: gateway-&gt;cart)
+    C-&gt;&gt;P: charge card (span: cart-&gt;payment)
+    P--&gt;&gt;C: ok after 7.4s (SLOW span)
+    C-&gt;&gt;I: reserve stock (span: cart-&gt;inventory)
+    I--&gt;&gt;C: ok
+    C--&gt;&gt;G: order confirmed
+    G--&gt;&gt;U: 200 OK after 8s total</code></pre>
+<p>Render that trace as a waterfall and the slow span is obvious: the <code>cart-&gt;payment</code> span is 7.4 seconds wide while every other span is tens of milliseconds. You now know <em>which service</em> to investigate, before you have read a single log line.</p>
+<h3 id="opentelemetry-the-vendor-neutral-standard">OpenTelemetry: the vendor-neutral standard<a class="headerlink" href="#opentelemetry-the-vendor-neutral-standard" title="Permanent link">¶</a></h3>
+<p><strong>OpenTelemetry (OTel)</strong> is the open standard for generating and exporting traces, metrics, and logs. You instrument your code once against the OTel API, then export to whatever backend you like (Jaeger, Tempo, etc.) without rewriting instrumentation.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">trace</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"@opentelemetry/api"</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">tracer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">trace</span><span class="p">.</span><span class="nx">getTracer</span><span class="p">(</span><span class="s2">"payment-service"</span><span class="p">);</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">chargeCard</span><span class="p">(</span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="kt">Order</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="c1">// A child span is created and the trace context is propagated automatically</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="c1">// when the incoming request carried a W3C traceparent header.</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">tracer</span><span class="p">.</span><span class="nx">startActiveSpan</span><span class="p">(</span><span class="s2">"charge_card"</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">span</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nx">span</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">"order.id"</span><span class="p">,</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nx">span</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">"amount.thb"</span><span class="p">,</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span><span class="nx">totalThb</span><span class="p">);</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">gateway</span><span class="p">.</span><span class="nx">charge</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">      </span><span class="nx">span</span><span class="p">.</span><span class="nx">setStatus</span><span class="p">({</span><span class="w"> </span><span class="nx">code</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="w"> </span><span class="p">});</span><span class="w"> </span><span class="c1">// OK</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">result</span><span class="p">;</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">      </span><span class="nx">span</span><span class="p">.</span><span class="nx">recordException</span><span class="p">(</span><span class="nx">err</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="ne">Error</span><span class="p">);</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">      </span><span class="nx">span</span><span class="p">.</span><span class="nx">setStatus</span><span class="p">({</span><span class="w"> </span><span class="nx">code</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="w"> </span><span class="p">});</span><span class="w"> </span><span class="c1">// ERROR</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="nx">err</span><span class="p">;</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">      </span><span class="nx">span</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">  </span><span class="p">});</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Sample, do not store everything</p>
+<p>Tracing every request at full volume is expensive. Use tail-based sampling: keep 100% of slow or errored traces and a small percentage of the fast/healthy ones. You almost never need the millionth identical happy-path trace.</p>
+</div>
+<hr>
+<h2 id="correlation-ids-tying-it-all-together">Correlation IDs: Tying It All Together<a class="headerlink" href="#correlation-ids-tying-it-all-together" title="Permanent link">¶</a></h2>
+<p>The three pillars are only powerful when you can pivot between them for <em>the same request</em>. The glue is a single shared ID.</p>
+<ul>
+<li>Generate a <strong>correlation ID</strong> at the edge (API gateway) if the client did not send one.</li>
+<li>Put it on the request context, log it on every line, and propagate it downstream alongside the trace ID.</li>
+<li>Now: a log line shows an error -&gt; copy its <code>traceId</code> -&gt; open that exact trace in Jaeger -&gt; see the slow span -&gt; jump to that service's logs filtered by the same <code>correlationId</code>. Three pillars, one thread.</li>
+</ul>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Express middleware at the gateway</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">,</span><span class="w"> </span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">correlationId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">header</span><span class="p">(</span><span class="s2">"x-correlation-id"</span><span class="p">)</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="nx">crypto</span><span class="p">.</span><span class="nx">randomUUID</span><span class="p">();</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s2">"x-correlation-id"</span><span class="p">,</span><span class="w"> </span><span class="nx">correlationId</span><span class="p">);</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="c1">// attach to async-local context so every log + span downstream sees it</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nx">context</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span><span class="w"> </span><span class="nx">correlationId</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">next</span><span class="p">);</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">});</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">This is the move that pays off at 9:14 PM</p>
+<p>Without a correlation ID you grep logs by timestamp and guess. With one, you follow a single request across six services deterministically. It is a few lines of middleware for an enormous incident-time payoff.</p>
+</div>
+<hr>
+<h2 id="sli-slo-sla-and-error-budgets">SLI, SLO, SLA, and Error Budgets<a class="headerlink" href="#sli-slo-sla-and-error-budgets" title="Permanent link">¶</a></h2>
+<p>Observability data is the <em>input</em> to reliability targets. Three acronyms, layered:</p>
+<ul>
+<li><strong>SLI (Service Level Indicator)</strong> - a <em>measurement</em> of behaviour. "Percentage of checkout requests served in under 1 second" or "percentage of checkout requests that returned 2xx." Computed from your metrics.</li>
+<li><strong>SLO (Service Level Objective)</strong> - an internal <em>target</em> for an SLI. "99.9% of checkouts succeed in under 1 second, measured over 30 days." This is the line you hold yourselves to.</li>
+<li><strong>SLA (Service Level Agreement)</strong> - a <em>contract</em> with customers, usually looser than the SLO and with financial penalties. "99.5% uptime or we refund X." The SLO is stricter so you catch trouble before you breach the SLA.</li>
+</ul>
+<p>An <strong>error budget</strong> is the inverse of an SLO. If your SLO is 99.9% success, your error budget is 0.1% - the allowed amount of failure over the window. It turns reliability into a number you can <em>spend</em>.</p>
+<pre class="mermaid"><code>flowchart LR
+    SLI["SLI: 99.95% checkouts under 1s"] --&gt; SLO["SLO target: 99.9% over 30d"]
+    SLO --&gt; EB["Error budget: 0.1% allowed failure"]
+    EB --&gt;|budget remaining| SHIP["Ship features faster"]
+    EB --&gt;|budget exhausted| FREEZE["Freeze releases, fix reliability"]</code></pre>
+<div class="admonition tip">
+<p class="admonition-title">Error budgets end the dev-vs-ops fight</p>
+<p>When budget remains, ship boldly. When it is spent, the same data says "stop shipping, stabilize." It replaces opinion ("it feels risky") with a shared number both teams agreed on in advance.</p>
+</div>
+<hr>
+<h2 id="alerting-on-symptoms-not-causes">Alerting on Symptoms, Not Causes<a class="headerlink" href="#alerting-on-symptoms-not-causes" title="Permanent link">¶</a></h2>
+<p>A bad alerting strategy is worse than none - it trains people to ignore the pager.</p>
+<ul>
+<li><strong>Alert on symptoms (user pain), not causes.</strong> Page on "checkout success rate dropped below 99% / p99 latency over 2s" - things a user feels. Do <em>not</em> page on "CPU is 85%." High CPU might be totally fine; a page should mean a human needs to act <em>now</em> because customers are hurting.</li>
+<li><strong>Causes go on dashboards, not pagers.</strong> CPU, memory, queue depth, cache hit rate - these help you <em>diagnose</em> once a symptom alert fires. They are diagnostic context, not wake-up calls.</li>
+<li><strong>Burn-rate alerts</strong> are the mature version: alert when you are spending your error budget too fast (e.g. consuming a month's budget in an hour), which catches both fast outages and slow bleeds.</li>
 </ul>
 <div class="admonition warning">
-<p class="admonition-title">Replication lag is real</p>
-<p>A read replica is usually a few milliseconds to a few seconds behind the primary. Right after a user writes something, reading it back from a replica may show the <em>old</em> value. For "read-your-own-writes" cases (the user just posted and expects to see it), route that specific read to the <strong>primary</strong>, or use the engine's session-consistency feature. This is a routing decision, not a permission one.</p>
+<p class="admonition-title">Alert fatigue is a real outage cause</p>
+<p>If the pager cries wolf, on-call mutes it, and the night it matters the real alert gets ignored. Every alert must be actionable and tied to user impact. If an alert fires and the answer is "yeah that's normal, ignore it," delete or fix that alert today.</p>
 </div>
 <hr>
-<h2 id="a-concrete-case-the-forum-on-black-friday">A Concrete Case: The Forum on Black Friday<a class="headerlink" href="#a-concrete-case-the-forum-on-black-friday" title="Permanent link">¶</a></h2>
-<p>Let us walk one real incident, because the abstract rules click once you see them save you.</p>
-<p><strong>Setup:</strong> the forum runs 1 primary + 3 read replicas behind ProxySQL. The app has two pools: <code>app_writer</code> to the primary, <code>app_reader</code> to the replica endpoint.</p>
-<p><strong>What happens:</strong></p>
+<h2 id="putting-it-together-solving-the-914-pm-slow-checkout">Putting It Together: Solving the 9:14 PM Slow Checkout<a class="headerlink" href="#putting-it-together-solving-the-914-pm-slow-checkout" title="Permanent link">¶</a></h2>
+<p>Here is the full investigation, using each pillar in turn:</p>
 <ol>
-<li><strong>Traffic spikes 10x.</strong> Reads (people browsing) dominate. Because reads use <code>app_reader</code> against three replicas, you scale by <strong>adding a fourth replica</strong> - no app change, the proxy load-balances onto it automatically.</li>
-<li><strong>A bug ships</strong> in the read path that tries to <code>UPDATE</code> a "view count" on every page load. Because the read pool logs in as <code>app_reader</code> (SELECT only), the stray <code>UPDATE</code> is <strong>rejected by the database</strong>, not silently executed against a replica. You get a clean error in logs instead of corrupted data spread across replicas. Least privilege just caught a bug for you.</li>
-<li><strong>The <code>app_reader</code> password leaks</strong> in a misconfigured log shipper. An attacker connects. They can read public forum posts (already public) but <strong>cannot</strong> delete posts, change users, or read the <code>mysql</code>/admin tables. You rotate one secret and move on. No data loss.</li>
-<li><strong>On-call needs to fix a stuck row.</strong> They use the <code>dba_admin</code> break-glass account, every statement of which is <strong>audited</strong>. The fix is logged, attributable, and time-boxed.</li>
+<li><strong>Metrics (RED) raise the flag.</strong> A burn-rate alert fires: checkout p99 latency is 8s, way over the 2s SLO; error budget is draining fast. You know the problem is real and widespread, not one unlucky user.</li>
+<li><strong>Traces localize it.</strong> You open a slow trace in Jaeger/Tempo. The waterfall shows the <code>cart-&gt;payment</code> span is 7.4s wide; everything else is fast. The payment service is the culprit.</li>
+<li><strong>Logs explain it.</strong> You filter the payment service's logs by that trace's <code>correlationId</code>. A boundary log shows <code>db.query durationMs: 7300</code> on a lookup against <code>transactions</code> by <code>card_fingerprint</code>.</li>
+<li><strong>USE confirms the mechanism.</strong> The DB connection pool gauge is pinned at max (saturation), and the slow query has no index on <code>card_fingerprint</code> - so queries serialize and queue.</li>
+<li><strong>Fix and verify.</strong> Add the index, watch the latency histogram drop back under SLO, watch the error budget stop draining. Done by 9:35 PM instead of midnight.</li>
 </ol>
-<pre class="mermaid"><code>flowchart TD
-    Spike["Traffic spike 10x"] --&gt; Add["Add replica 4"]
-    Add --&gt; Proxy["Proxy load-balances reads onto it"]
-    Bug["Stray UPDATE in read path"] --&gt;|"app_reader is SELECT-only"| Blocked["Database rejects it - bug caught early"]
-    Leak["app_reader password leaks"] --&gt;|"least privilege"| Contained["Attacker can only read public data; rotate one secret"]
-    Fix["On-call fixes a row"] --&gt;|"dba_admin break-glass"| Audit["Every statement audited"]</code></pre>
-<p>Every good outcome above came from one decision made months earlier: <strong>separate accounts, least privilege.</strong></p>
+<p>That is observability: not one magic tool, but logs + metrics + traces, tied by a correlation/trace ID, letting you ask and answer a question nobody pre-built a dashboard for.</p>
 <hr>
 <h2 id="common-mistakes-and-the-fix">Common Mistakes (and the Fix)<a class="headerlink" href="#common-mistakes-and-the-fix" title="Permanent link">¶</a></h2>
 <table>
@@ -3212,64 +3460,76 @@
 </thead>
 <tbody>
 <tr>
-<td>One <code>root</code> account for the app</td>
-<td>One leak = total compromise</td>
-<td>Split into <code>app_writer</code> / <code>app_reader</code>, drop the rest</td>
+<td>String logs (<code>console.log("done")</code>)</td>
+<td>Not queryable; useless at incident time</td>
+<td>Structured JSON logs with <code>event</code>, IDs, <code>durationMs</code></td>
 </tr>
 <tr>
-<td>Reads sent to the primary "to be safe"</td>
-<td>Primary becomes the bottleneck; replicas sit idle</td>
-<td>Route reads to replicas via a reader pool/endpoint</td>
+<td><code>userId</code>/<code>orderId</code> as metric labels</td>
+<td>Cardinality explosion melts the metrics store</td>
+<td>Keep IDs in logs/traces; metric labels stay low-cardinality</td>
 </tr>
 <tr>
-<td>Creating users by hand on one server</td>
-<td>Replicas/new nodes drift out of sync</td>
-<td>Manage users as code, apply to every node</td>
+<td>Alerting on CPU/memory</td>
+<td>Pages for non-problems; trains people to ignore alerts</td>
+<td>Alert on user-facing symptoms (SLO/burn rate); CPU stays on dashboards</td>
 </tr>
 <tr>
-<td>Same password baked into the image</td>
-<td>Cannot rotate without a redeploy; leaks everywhere</td>
-<td>Pull credentials from a secret manager at runtime</td>
+<td>No correlation/trace ID</td>
+<td>Cannot follow one request across services</td>
+<td>Generate at the edge, propagate everywhere, log on every line</td>
 </tr>
 <tr>
-<td>Giving <code>app_writer</code> <code>DROP</code>/<code>CREATE</code></td>
-<td>A SQL-injection bug can now destroy schema</td>
-<td>Keep DDL in the <code>migrator</code> account, used only on deploy</td>
+<td>Averaging latency</td>
+<td>Averages hide the slow tail users actually feel</td>
+<td>Use histograms and p95/p99 percentiles</td>
 </tr>
 <tr>
-<td>Ignoring replication lag</td>
-<td>Users do not see their own writes</td>
-<td>Route read-your-writes to the primary</td>
+<td>Tracing 100% of traffic</td>
+<td>Huge cost, mostly identical happy paths</td>
+<td>Tail-based sampling: keep all slow/errored, sample the rest</td>
+</tr>
+<tr>
+<td>Logging secrets/PHI</td>
+<td>Compliance breach (PCI, health data)</td>
+<td>Redact fields before logging; never dump whole request objects</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<p>Database accounts map cleanly onto the layers you already know:</p>
+<p>Observability lives almost entirely in the <strong>infrastructure / frameworks-and-drivers layer</strong>, and that is by design:</p>
 <ul>
-<li>The <strong>use case layer</strong> declares an interface like <code>IOrderReader</code> (reads) and <code>IOrderWriter</code> (writes). It does not know about replicas or proxies.</li>
-<li>The <strong>infrastructure layer</strong> provides two adapters: a reader adapter wired to the <code>app_reader</code> pool/replica endpoint, and a writer adapter wired to the <code>app_writer</code> pool/primary.</li>
-<li>Swapping a single database for a primary-plus-replicas fleet then changes <strong>only the infrastructure layer</strong>. Your business rules never learn that the database grew from one box into five.</li>
+<li><strong>Entities and use cases</strong> should not import a logging or tracing SDK. A use case like <code>PlaceOrderUseCase</code> expresses business intent; it should not know whether telemetry goes to Loki or Tempo.</li>
+<li>Define <strong>ports</strong> in the inner layers (e.g. an <code>ILogger</code> or a domain-event interface) and implement them with adapters in infrastructure (a Pino/OTel-backed logger). The use case depends on the abstraction, not the vendor.</li>
+<li><strong>Cross-cutting concerns</strong> - correlation IDs, trace context propagation, request/response logging - belong in <strong>middleware and decorators at the boundary</strong>, not sprinkled through business logic. This keeps the domain pure and lets you swap OpenTelemetry backends without touching a single entity.</li>
 </ul>
-<p>That is the same payoff Clean Architecture gives everywhere: an operational change (scaling the database) stays out of your business logic.</p>
+<p>The result mirrors the service-mesh idea: the most valuable telemetry is gathered at the edges and infrastructure, leaving your core business rules clean and unaware of how they are being observed.</p>
 <hr>
 <h2 id="checklist">Checklist<a class="headerlink" href="#checklist" title="Permanent link">¶</a></h2>
 <ul>
-<li>[ ] One account per job (writer, reader, migrator, admin, replication, monitoring).</li>
-<li>[ ] Each account has the least privilege it needs - readers cannot write.</li>
-<li>[ ] Accounts and grants are defined as code and applied to every node.</li>
-<li>[ ] Writes route to the primary; reads route to replicas.</li>
-<li>[ ] Read-your-own-writes paths route to the primary (or use session consistency).</li>
-<li>[ ] Credentials come from a secret manager, not the image or repo.</li>
-<li>[ ] The admin/break-glass account is audited.</li>
+<li>[ ] All logs are structured (JSON) with <code>event</code>, <code>correlationId</code>, <code>traceId</code>, and timing fields</li>
+<li>[ ] Log levels (<code>ERROR</code>/<code>WARN</code>/<code>INFO</code>/<code>DEBUG</code>) are used deliberately; <code>DEBUG</code> is off in prod</li>
+<li>[ ] No secrets, card numbers, national IDs, or health data are ever logged</li>
+<li>[ ] RED metrics exist for every request-driven service; USE metrics for key resources (DB pool, queues)</li>
+<li>[ ] Latency is tracked as a histogram and alerted on p95/p99, never on averages</li>
+<li>[ ] Metric labels are low-cardinality (no per-user/per-order IDs as labels)</li>
+<li>[ ] A correlation ID is generated at the edge and propagated to every downstream service</li>
+<li>[ ] Distributed tracing is instrumented via OpenTelemetry with W3C context propagation</li>
+<li>[ ] Traces use tail-based sampling (keep all slow/errored traces)</li>
+<li>[ ] SLIs and SLOs are defined for user-facing journeys (e.g. checkout), with an error budget</li>
+<li>[ ] Alerts fire on user-facing symptoms / burn rate, not on raw CPU or memory</li>
+<li>[ ] Every alert is actionable; noisy non-actionable alerts have been deleted or fixed</li>
 </ul>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://www.postgresql.org/docs/current/user-manag.html">PostgreSQL: Database Roles and Privileges</a></li>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/access-control.html">MySQL: Access Control and Account Management</a></li>
-<li><a href="https://proxysql.com/documentation/">ProxySQL: Read/Write Split</a></li>
-<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html">AWS: Amazon RDS Proxy</a></li>
+<li><a href="https://sre.google/sre-book/monitoring-distributed-systems/">Google SRE Book - Monitoring Distributed Systems</a></li>
+<li><a href="https://sre.google/workbook/implementing-slos/">Google SRE Workbook - Implementing SLOs</a></li>
+<li><a href="https://opentelemetry.io/docs/">OpenTelemetry Documentation</a></li>
+<li><a href="https://prometheus.io/docs/concepts/metric_types/">Prometheus - Metric Types</a></li>
+<li><a href="https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services/">Grafana - The RED method and observability concepts</a></li>
+<li><a href="https://www.brendangregg.com/usemethod.html">Brendan Gregg - The USE Method</a></li>
 </ul>
 
 
@@ -3310,7 +3570,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer">
         
           
-          <a href="../33_mvcc/" class="md-footer__link md-footer__link--prev" aria-label="Previous: MVCC">
+          <a href="../40_caching/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Caching &amp; CDN">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -3320,20 +3580,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                MVCC
+                Caching &amp; CDN
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../production/40_caching/" class="md-footer__link md-footer__link--next" aria-label="Next: Caching &amp; CDN">
+          <a href="../42_app_security/" class="md-footer__link md-footer__link--next" aria-label="Next: Application Security (AuthN · AuthZ · OWASP)">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Caching &amp; CDN
+                Application Security (AuthN · AuthZ · OWASP)
               </div>
             </div>
             <div class="md-footer__button md-icon">
