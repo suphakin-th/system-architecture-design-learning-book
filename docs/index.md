@@ -98,7 +98,7 @@ A complete, self-contained learning library for software and system architecture
 
 ## The One Diagram That Rules Them All
 
-The four Clean Architecture layers nest inside one another. Dependencies point inward only - inner layers know nothing about outer layers.
+The four Clean Architecture layers nest inside one another. Each outer layer wraps the ones inside it, and dependencies point inward only - an inner layer knows nothing about the layers around it.
 
 ```mermaid
 flowchart TD
@@ -109,10 +109,6 @@ flowchart TD
             end
         end
     end
-
-    FD -->|depends inward| IA
-    IA -->|depends inward| UC
-    UC -->|depends inward| E
 ```
 
 **This is Clean Architecture.** Every pattern in this book is a variation on this diagram at a different scale - from a single module to 1,000 microservices.
