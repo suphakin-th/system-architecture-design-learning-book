@@ -2834,10 +2834,15 @@
 <h2 id="the-dependency-rule-the-one-rule">The Dependency Rule (The ONE Rule)<a class="headerlink" href="#the-dependency-rule-the-one-rule" title="Permanent link">¶</a></h2>
 <p>The four layers nest inside each other - each outer layer contains the one within it:</p>
 <pre class="mermaid"><code>flowchart TD
-  subgraph L4["Frameworks and Drivers - Express, PostgreSQL"]
-    subgraph L3["Interface Adapters - Controllers, Repos"]
-      subgraph L2["Use Cases - Application Logic"]
-        L1["Entities - Business Rules"]
+  subgraph L4["Frameworks &amp; Drivers"]
+    L4n["Express, PostgreSQL, the web, the DB"]
+    subgraph L3["Interface Adapters"]
+      L3n["Controllers, Presenters, Repositories"]
+      subgraph L2["Use Cases"]
+        L2n["Application logic"]
+        subgraph L1["Entities"]
+          L1n["Business rules (pure)"]
+        end
       end
     end
   end</code></pre>

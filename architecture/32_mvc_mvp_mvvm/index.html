@@ -3442,13 +3442,15 @@
 <h2 id="how-all-three-map-to-clean-architecture">How All Three Map to Clean Architecture<a class="headerlink" href="#how-all-three-map-to-clean-architecture" title="Permanent link">¶</a></h2>
 <p>All three patterns live in the Interface Adapters layer of Clean Architecture. The nesting below shows containment: each outer layer wraps the inner ones, with Entities at the core.</p>
 <pre class="mermaid"><code>flowchart TD
-    subgraph FD["Frameworks and Drivers (Express, React runtime, SwiftUI)"]
+    subgraph FD["Frameworks &amp; Drivers (Express, React runtime, SwiftUI)"]
+        FDn["The web, the screen, the database driver"]
         subgraph IA["Interface Adapters - MVC/MVP/MVVM live here"]
             ADAPTERS["MVC Controller, MVP Presenter, MVVM ViewModel: all just different styles of Interface Adapter"]
-        end
-        subgraph UC["Use Cases"]
-            subgraph ENT["Entities - Model equals domain here"]
-                E["Entities"]
+            subgraph UC["Use Cases"]
+                UCn["Application business rules"]
+                subgraph ENT["Entities (Model = domain here)"]
+                    E["Enterprise business rules (pure)"]
+                end
             end
         end
     end</code></pre>
