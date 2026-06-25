@@ -117,6 +117,13 @@ nav:
     - MVCC: database/33_mvcc.md
     - Users & Permissions (Load-Balanced): database/34_users_permissions_load_balanced.md
 
+  - Production Engineering:
+    - Caching & CDN: production/40_caching.md
+    - Observability (Logs · Metrics · Traces): production/41_observability.md
+    - Application Security (AuthN · AuthZ · OWASP): production/42_app_security.md
+    - API Design & Protocols: production/43_api_design.md
+    - Resilience Patterns: production/44_resilience.md
+
   - Fintech Architecture:
     - Overview: fintech/00_overview.md
     - Double-Entry Ledger: fintech/01_double_entry_ledger.md
