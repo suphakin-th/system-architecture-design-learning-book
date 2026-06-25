@@ -1,6 +1,6 @@
-# Discord — Architecture Case Study
+# Discord - Architecture Case Study
 
-> "We chose Elixir because the Erlang VM was literally built for what Discord is: millions of persistent connections, real-time messaging, fault tolerance." — Discord Engineering
+> "We chose Elixir because the Erlang VM was literally built for what Discord is: millions of persistent connections, real-time messaging, fault tolerance." - Discord Engineering
 
 ---
 
@@ -18,7 +18,7 @@
 
 ## The Problem Discord Was Built to Solve
 
-> "Every gaming session needs voice chat. But every voice chat solution in 2015 was terrible — Skype crashed, TeamSpeak was complicated, Mumble looked like a 2004 website. We needed: always on, always available, no accounts to set up, <50ms voice latency, supports 100 people in one channel."
+> "Every gaming session needs voice chat. But every voice chat solution in 2015 was terrible - Skype crashed, TeamSpeak was complicated, Mumble looked like a 2004 website. We needed: always on, always available, no accounts to set up, <50ms voice latency, supports 100 people in one channel."
 
 ---
 
@@ -29,18 +29,18 @@
 Discord is fundamentally different from Twitter or Facebook. Users don't open Discord, do something, and close it. Users leave Discord OPEN all day. Your entire friend group is connected simultaneously. This means:
 
 ```
-Twitter: User opens app → request → response → close
+Twitter: User opens app -> request -> response -> close
   Connections: burst, then close
   Model: stateless HTTP is fine
 
-Discord: User opens app → WebSocket → stays open for 8 hours
+Discord: User opens app -> WebSocket -> stays open for 8 hours
   Connections: persistent, stateful, always open
   Model: stateless HTTP is WRONG; need stateful actor model
 ```
 
 **Why not Node.js?**
 
-> "Node.js runs on a single thread with an event loop. It handles 10K concurrent connections fine. At 100K, garbage collection pauses cause jitter — users hear audio glitches. At 1M, Node.js becomes unstable. We needed something designed for this."
+> "Node.js runs on a single thread with an event loop. It handles 10K concurrent connections fine. At 100K, garbage collection pauses cause jitter - users hear audio glitches. At 1M, Node.js becomes unstable. We needed something designed for this."
 
 **Why Elixir (Erlang VM):**
 
@@ -56,14 +56,14 @@ Erlang/Elixir processes:
   - Lightweight: 2KB per process (vs 1MB per OS thread)
   - 1 server: handles 2M Elixir processes (vs 1K OS threads)
   - Isolated: one crash kills one process, not the server
-  - Message-passing: no shared state → no race conditions
+  - Message-passing: no shared state -> no race conditions
 ```
 
 **Result:** Discord scaled Elixir to 5 million concurrent users on surprisingly few servers.
 
 ---
 
-## Phase 2: The Cassandra Nightmare (2017–2022)
+## Phase 2: The Cassandra Nightmare (2017-2022)
 
 **The initial decision:**
 Discord chose Apache Cassandra to store messages. The reasoning was sound:
@@ -84,42 +84,42 @@ The hot partition problem:
   Discord servers (communities) are sharded by server_id
   Popular servers (Reddit, gaming communities) = millions of messages
   All messages for r/gaming go to the same Cassandra partition
-  That partition = HOTSPOT → all reads/writes queue up → latency spikes
+  That partition = HOTSPOT -> all reads/writes queue up -> latency spikes
 
-p99 read latency: 40–125ms (users can see noticeable lag)
-p99 write latency: 5–70ms (inconsistent, spiky)
+p99 read latency: 40-125ms (users can see noticeable lag)
+p99 write latency: 5-70ms (inconsistent, spiky)
 Engineering time: constant firefighting of Cassandra issues
 ```
 
 **The senior architect's perspective:**
 
-> "Cassandra saved us at 1 billion messages. At 1 trillion messages, it became our biggest problem. This is normal in architecture: the solution to problem A creates problem B at scale. The question is always: what are the failure modes at 10× current scale? Cassandra's failure mode was hot partitions, and we could see that becoming catastrophic."
+> "Cassandra saved us at 1 billion messages. At 1 trillion messages, it became our biggest problem. This is normal in architecture: the solution to problem A creates problem B at scale. The question is always: what are the failure modes at 10x current scale? Cassandra's failure mode was hot partitions, and we could see that becoming catastrophic."
 
 ---
 
-## Phase 3: Migration to ScyllaDB + Rust (2022–2023)
+## Phase 3: Migration to ScyllaDB + Rust (2022-2023)
 
 **Why ScyllaDB:**
-- Same Cassandra Query Language (CQL) — no application code changes
-- Written in C++ (not Java) — no JVM garbage collection pauses
-- Uses the same consistent hashing approach — same data model
-- Per-core architecture — one core handles one set of shards (no thread contention)
+- Same Cassandra Query Language (CQL) - no application code changes
+- Written in C++ (not Java) - no JVM garbage collection pauses
+- Uses the same consistent hashing approach - same data model
+- Per-core architecture - one core handles one set of shards (no thread contention)
 
-**The hot partition solution — Bucket Layer:**
+**The hot partition solution - Bucket Layer:**
 
 ```
 Old shard key: channel_id
-  All messages for one channel → one partition → hotspot
+  All messages for one channel -> one partition -> hotspot
 
 New shard key: channel_id + bucket
   bucket = message_id / (10 days worth of messages)
   Messages spread across multiple partitions over time
   Hot channels spread their load across multiple partitions
 
-Before: channel 12345 → partition 12345 (hot)
-After:  channel 12345, bucket 1 → partition A
-        channel 12345, bucket 2 → partition B
-        channel 12345, bucket 3 → partition C
+Before: channel 12345 -> partition 12345 (hot)
+After:  channel 12345, bucket 1 -> partition A
+        channel 12345, bucket 2 -> partition B
+        channel 12345, bucket 3 -> partition C
         Load is distributed across 3 partitions
 ```
 
@@ -128,8 +128,8 @@ After:  channel 12345, bucket 1 → partition A
 > "Between our Elixir application and ScyllaDB, we built a Rust data service layer. Rust gives us: no garbage collector (no pauses), zero-cost abstractions, memory safety without runtime overhead. For the hot path between our app and DB, we need deterministic performance. Rust delivers that."
 
 **Results:**
-- p99 read latency: **15ms** (was 40–125ms → 4-8× improvement)
-- p99 write latency: **5ms** (was 5–70ms → consistent, not spiky)
+- p99 read latency: **15ms** (was 40-125ms -> 4-8x improvement)
+- p99 write latency: **5ms** (was 5-70ms -> consistent, not spiky)
 - Node count: reduced from 177 Cassandra nodes to fewer ScyllaDB nodes
 
 ---
@@ -139,7 +139,7 @@ After:  channel 12345, bucket 1 → partition A
 **How Discord voice works:**
 
 ```
-User A (Bangkok) → Discord Edge Server (Singapore)
+User A (Bangkok) -> Discord Edge Server (Singapore)
   WebSocket: control plane (who's talking, muting, joining)
   UDP: audio data (real-time, loss-tolerant)
 
@@ -190,7 +190,7 @@ Elixir GenServer = Entity + Use Case
   Each GenServer IS the aggregate root for its channel
 
 ScyllaDB/Rust layer = Interface Adapter (outbound)
-  IMessageRepository → ScyllaDB Rust client
+  IMessageRepository -> ScyllaDB Rust client
   Use cases call IMessageRepository.save(message)
   ScyllaDB details (shard key, bucket) hidden in the adapter
 
@@ -208,11 +208,11 @@ Elixir Supervisor = Framework & Drivers layer
 
 ## Lessons for Your Architecture
 
-1. **Match technology to the problem** — Erlang/Elixir exists for exactly Discord's problem (persistent connections, actor model)
-2. **Cassandra isn't always the answer** — it saved Discord at 1B messages, hurt them at 1T messages
-3. **Design the shard key around access patterns** — the bucket layer solved Cassandra's hotspot problem
-4. **Language choice matters for specific problems** — Rust's predictability in the hot data path vs Elixir's concurrency for the control plane
-5. **Supervisors = architectural resilience** — Elixir supervisors let you isolate failures to one actor
+1. **Match technology to the problem** - Erlang/Elixir exists for exactly Discord's problem (persistent connections, actor model)
+2. **Cassandra isn't always the answer** - it saved Discord at 1B messages, hurt them at 1T messages
+3. **Design the shard key around access patterns** - the bucket layer solved Cassandra's hotspot problem
+4. **Language choice matters for specific problems** - Rust's predictability in the hot data path vs Elixir's concurrency for the control plane
+5. **Supervisors = architectural resilience** - Elixir supervisors let you isolate failures to one actor
 
 ---
 

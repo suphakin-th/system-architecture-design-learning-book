@@ -1,6 +1,6 @@
-# Database Types — Complete Comparison
+# Database Types - Complete Comparison
 
-> "Choosing the wrong database is like choosing the wrong foundation for a house. It holds everything. Changing it later is demolition." — Senior architect
+> "Choosing the wrong database is like choosing the wrong foundation for a house. It holds everything. Changing it later is demolition." - Senior architect
 
 ---
 
@@ -9,36 +9,34 @@
 There is no "best database." There is only the right database for your access pattern.
 
 ```
-Data model → Choose the right type first
-Access pattern → Then choose the specific product
-Scale requirement → Then consider distribution strategy
+Data model -> Choose the right type first
+Access pattern -> Then choose the specific product
+Scale requirement -> Then consider distribution strategy
 ```
 
 ---
 
 ## The Complete Database Taxonomy
 
-```
-Database
-├── Relational (SQL)
-│   ├── Traditional: PostgreSQL, MySQL, SQL Server, Oracle
-│   └── NewSQL (distributed): CockroachDB, TiDB, Google Spanner
-│
-├── Document: MongoDB, Firestore, Couchbase
-│
-├── Key-Value
-│   ├── In-memory: Redis, Memcached
-│   └── Persistent: DynamoDB, Riak, Voldemort
-│
-├── Wide-Column: Cassandra, HBase, ScyllaDB, Bigtable
-│
-├── Graph: Neo4j, Amazon Neptune, ArangoDB
-│
-├── Time-Series: InfluxDB, TimescaleDB, Prometheus, ClickHouse
-│
-├── Search: Elasticsearch, Typesense, MeiliSearch
-│
-└── Vector: Pinecone, Weaviate, Chroma, pgvector (PostgreSQL extension)
+The database family tree, grouped by data model with representative products under each.
+
+```mermaid
+flowchart TD
+    DB["Database"]
+    DB --> REL["Relational (SQL)"]
+    DB --> DOC["Document: MongoDB, Firestore, Couchbase"]
+    DB --> KV["Key-Value"]
+    DB --> WC["Wide-Column: Cassandra, HBase, ScyllaDB, Bigtable"]
+    DB --> GR["Graph: Neo4j, Amazon Neptune, ArangoDB"]
+    DB --> TS["Time-Series: InfluxDB, TimescaleDB, Prometheus, ClickHouse"]
+    DB --> SR["Search: Elasticsearch, Typesense, MeiliSearch"]
+    DB --> VEC["Vector: Pinecone, Weaviate, Chroma, pgvector"]
+
+    REL --> RELT["Traditional: PostgreSQL, MySQL, SQL Server, Oracle"]
+    REL --> RELN["NewSQL distributed: CockroachDB, TiDB, Google Spanner"]
+
+    KV --> KVM["In-memory: Redis, Memcached"]
+    KV --> KVP["Persistent: DynamoDB, Riak, Voldemort"]
 ```
 
 ---
@@ -50,16 +48,16 @@ Database
 **5 questions to ask before choosing:**
 
 1. **What is the primary access pattern?** By key? By range? Graph traversal? Full-text?
-2. **What is the read/write ratio?** 100:1 reads → optimize for reads; 1:100 writes → optimize for writes
-3. **Do I need ACID transactions?** Financial systems → yes. User sessions → probably not
-4. **How does data scale?** 1GB → single node. 1TB → sharding. 10TB+ → distributed from day one
-5. **What are the query shapes?** Fixed queries known upfront? → SQL. Flexible, evolving queries? → document store
+2. **What is the read/write ratio?** 100:1 reads -> optimize for reads; 1:100 writes -> optimize for writes
+3. **Do I need ACID transactions?** Financial systems -> yes. User sessions -> probably not
+4. **How does data scale?** 1GB -> single node. 1TB -> sharding. 10TB+ -> distributed from day one
+5. **What are the query shapes?** Fixed queries known upfront? -> SQL. Flexible, evolving queries? -> document store
 
 ---
 
-## Relational Databases (SQL) — The Default Choice
+## Relational Databases (SQL) - The Default Choice
 
-### PostgreSQL — The Universal Recommendation
+### PostgreSQL - The Universal Recommendation
 
 **Best for:** OLTP (transactional), moderate OLAP (analytics), JSON documents, full-text search, geospatial
 
@@ -68,7 +66,7 @@ Database
 -- Relational data with ACID
 SELECT * FROM orders JOIN users ON orders.user_id = users.id WHERE ...;
 
--- JSON documents (JSONB — indexed)
+-- JSON documents (JSONB - indexed)
 SELECT * FROM products WHERE metadata->>'brand' = 'Apple';
 
 -- Full-text search
@@ -88,7 +86,7 @@ SELECT * FROM embeddings ORDER BY vector <-> '[0.1, 0.2, ...]' LIMIT 10;
 
 **When NOT to use:** 1M+ writes/second (single node limit), heavy graph traversal, time-series at IoT scale
 
-### MySQL — The Web Default
+### MySQL - The Web Default
 
 **Best for:** Read-heavy web apps, e-commerce, CMS
 
@@ -100,14 +98,14 @@ SELECT * FROM embeddings ORDER BY vector <-> '[0.1, 0.2, ...]' LIMIT 10;
 
 **Real companies using MySQL:** Facebook (core for many years), Twitter (legacy), Shopify (MySQL pods), Wikipedia
 
-### NewSQL — Distributed SQL
+### NewSQL - Distributed SQL
 
 When you need SQL semantics but one PostgreSQL can't handle the scale:
 
 ```
-Traditional SQL: one machine → scale up (buy bigger machine) → hits ceiling
+Traditional SQL: one machine -> scale up (buy bigger machine) -> hits ceiling
 
-NewSQL solution: multiple machines → appears as one SQL database
+NewSQL solution: multiple machines -> appears as one SQL database
   - CockroachDB: inspired by Google Spanner, PostgreSQL wire protocol
   - TiDB: MySQL wire protocol, HTAP (handles both OLTP and OLAP)
   - Google Spanner: uses atomic clocks for global consistency (see Google case study)
@@ -129,14 +127,14 @@ NewSQL solution: multiple machines → appears as one SQL database
 
 ---
 
-## Document Databases — Flexible Schema
+## Document Databases - Flexible Schema
 
 ### MongoDB
 
 **Best for:** Hierarchical data, evolving schema, content management, user profiles
 
 ```javascript
-// Document model — data stored as it's accessed (no JOIN needed)
+// Document model - data stored as it's accessed (no JOIN needed)
 {
   "_id": "order_123",
   "customer": {
@@ -158,27 +156,27 @@ NewSQL solution: multiple machines → appears as one SQL database
 
 **When MongoDB shines:**
 ```
-✓ Schema changes frequently (just add new fields, no migration)
-✓ Data is hierarchical (blog post + comments + author info all in one document)
-✓ Each document is self-contained (no need to join across documents)
-✓ Developer speed is priority (flexible schema = fast iteration)
+[OK] Schema changes frequently (just add new fields, no migration)
+[OK] Data is hierarchical (blog post + comments + author info all in one document)
+[OK] Each document is self-contained (no need to join across documents)
+[OK] Developer speed is priority (flexible schema = fast iteration)
 ```
 
 **When MongoDB fails:**
 ```
-✗ Complex relationships between entities (JOIN in MongoDB = $lookup = slow)
-✗ Strong ACID transactions across documents (now supported, but with limitations)
-✗ Complex aggregations (SQL GROUP BY is easier than MongoDB aggregate pipeline)
-✗ Data that naturally fits relational model
+[X] Complex relationships between entities (JOIN in MongoDB = $lookup = slow)
+[X] Strong ACID transactions across documents (now supported, but with limitations)
+[X] Complex aggregations (SQL GROUP BY is easier than MongoDB aggregate pipeline)
+[X] Data that naturally fits relational model
 ```
 
 **Real companies:** Airbnb (listing metadata), EA Games (player profiles), Forbes (CMS)
 
 ---
 
-## Key-Value Databases — Maximum Speed
+## Key-Value Databases - Maximum Speed
 
-### Redis — The Speed King
+### Redis - The Speed King
 
 **Best for:** Cache, session storage, rate limiting, pub/sub, leaderboards, queues
 
@@ -192,7 +190,7 @@ Redis data structures:
   Stream:  event log, real-time feeds (Kafka-lite)
   Bitmap:  tracking which users saw a notification
 
-Redis speed: all data in RAM → sub-millisecond response
+Redis speed: all data in RAM -> sub-millisecond response
 Redis limit: all data must fit in RAM (expensive at scale)
 ```
 
@@ -228,7 +226,7 @@ async function getTopPlayers(n: number) {
 
 **Real companies using Redis:** Twitter (timeline cache), Instagram (feed), GitHub (session), Stack Overflow (cache)
 
-### Amazon DynamoDB — Serverless Scale
+### Amazon DynamoDB - Serverless Scale
 
 **Best for:** Key-value + simple document at internet scale, serverless applications
 
@@ -240,14 +238,14 @@ DynamoDB design philosophy:
   - Auto-scales from 1 to millions of requests with no config
 
 Trade-off:
-  ✓ Infinitely scalable, always available
-  ✗ You must know ALL access patterns upfront
-  ✗ Wrong design = rewrite the entire table
+  [OK] Infinitely scalable, always available
+  [X] You must know ALL access patterns upfront
+  [X] Wrong design = rewrite the entire table
 ```
 
 ---
 
-## Wide-Column Databases — Write at Scale
+## Wide-Column Databases - Write at Scale
 
 ### Apache Cassandra / ScyllaDB
 
@@ -255,8 +253,8 @@ Trade-off:
 
 ```
 Cassandra data model:
-  Table → partitioned by partition key
-  Within partition → rows sorted by clustering key
+  Table -> partitioned by partition key
+  Within partition -> rows sorted by clustering key
 
   Design principle: "Design for queries, not for normalization"
 
@@ -265,20 +263,20 @@ Example: Discord messages
   Clustering key: message_id (time-ordered)
 
   Query: "Get last 50 messages in channel 12345"
-  → one partition → sequential read → fast
+ -> one partition -> sequential read -> fast
 
 Cassandra limitations:
-  ✗ No JOIN
-  ✗ Aggregations (COUNT, SUM) are full table scans
-  ✗ Updates are expensive (uses tombstones → compaction)
-  ✗ No ACID (eventual consistency by default)
+  [X] No JOIN
+  [X] Aggregations (COUNT, SUM) are full table scans
+  [X] Updates are expensive (uses tombstones -> compaction)
+  [X] No ACID (eventual consistency by default)
 ```
 
 **Discord's lesson:** Cassandra was perfect at 1B messages. At 1T, hot partitions caused latency spikes. They migrated to ScyllaDB (same model, C++ instead of JVM = no GC pauses).
 
 ---
 
-## Graph Databases — Relationship-First
+## Graph Databases - Relationship-First
 
 ### Neo4j
 
@@ -295,14 +293,14 @@ SQL (finding friends of friends):
   JOIN users u2 ON f2.friend_id = u2.id
   WHERE u1.id = 123 AND u2.id != 123;
 
-  At 3M users with 500M friendships → this JOIN is catastrophically slow
+  At 3M users with 500M friendships -> this JOIN is catastrophically slow
 
-Neo4j (Cypher query — same operation):
+Neo4j (Cypher query - same operation):
   MATCH (u1:User {id: 123})-[:FRIEND]-()-[:FRIEND]-(u2:User)
   WHERE u2.id <> 123
   RETURN u2.name
 
-  Graph traversal is O(log n) not O(n²) → fast even at millions of nodes
+  Graph traversal is O(log n) not O(n^2) -> fast even at millions of nodes
 
 Why:
   In a graph DB, relationships are stored as pointers (constant time traversal)
@@ -310,9 +308,9 @@ Why:
 ```
 
 **Real companies using Graph DBs:**
-- LinkedIn (People You May Know) — graph traversal to find connection suggestions
-- Twitter (Who to Follow) — graph of mutual connections
-- Uber (fraud detection) — graph of suspicious behavior patterns
+- LinkedIn (People You May Know) - graph traversal to find connection suggestions
+- Twitter (Who to Follow) - graph of mutual connections
+- Uber (fraud detection) - graph of suspicious behavior patterns
 
 ---
 
@@ -323,9 +321,9 @@ Why:
 **Best for:** IoT sensor data, metrics, monitoring, financial tick data
 
 ```
-Time-series problem: 1 million IoT devices × 1 reading/second = 86B rows/day
+Time-series problem: 1 million IoT devices x 1 reading/second = 86B rows/day
   Regular SQL: INSERT 86B rows, then query with WHERE timestamp BETWEEN...
-  → Full table scan for every time range query → catastrophically slow
+ -> Full table scan for every time range query -> catastrophically slow
 
 Time-series solution:
   Data partitioned by time (automatic)
@@ -337,7 +335,7 @@ Time-series solution:
   FROM sensor_readings
   WHERE device_id = 'sensor_1' AND time > NOW() - INTERVAL '24 hours'
   GROUP BY hour;
-  → Uses time-based index → reads only today's partition → fast
+ -> Uses time-based index -> reads only today's partition -> fast
 ```
 
 **Real companies:**
@@ -347,7 +345,7 @@ Time-series solution:
 
 ---
 
-## Vector Databases — AI Era
+## Vector Databases - AI Era
 
 ### Pinecone / Weaviate / pgvector
 
@@ -357,21 +355,21 @@ Time-series solution:
 The vector problem: "Find documents similar in MEANING to this query"
 
 Traditional search (keyword):
-  "Thai restaurant Bangkok" → finds docs with those exact words
+  "Thai restaurant Bangkok" -> finds docs with those exact words
   Misses: "Pad Thai place in the capital of Thailand"
 
 Vector search:
   Convert text to 1536-dimensional vector via embedding model
-  "Thai restaurant Bangkok" → [0.1, -0.2, 0.5, ...]
+  "Thai restaurant Bangkok" -> [0.1, -0.2, 0.5, ...]
   All documents also stored as vectors
   Query: find vectors CLOSEST to query vector (cosine similarity)
-  → Finds semantically similar content, not just keyword matches
+ -> Finds semantically similar content, not just keyword matches
 
 How LLM + Vector DB works (RAG pattern):
-  1. Index your company docs → generate embeddings → store in vector DB
-  2. User asks question → generate query embedding
+  1. Index your company docs -> generate embeddings -> store in vector DB
+  2. User asks question -> generate query embedding
   3. Vector DB finds most relevant document chunks (similarity search)
-  4. Send: question + relevant context → LLM
+  4. Send: question + relevant context -> LLM
   5. LLM answers using your specific knowledge base
 ```
 
@@ -382,13 +380,13 @@ How LLM + Vector DB works (RAG pattern):
 
 ---
 
-## The CAP Theorem — Why Distributed DBs Must Compromise
+## The CAP Theorem - Why Distributed DBs Must Compromise
 
 ```
 CAP Theorem: In a distributed database, you can ONLY guarantee 2 of 3:
-  C — Consistency: all nodes see the same data at the same time
-  A — Availability: every request gets a response (even if it's stale)
-  P — Partition Tolerance: system works even if some nodes can't communicate
+  C - Consistency: all nodes see the same data at the same time
+  A - Availability: every request gets a response (even if it's stale)
+  P - Partition Tolerance: system works even if some nodes can't communicate
 
 In practice: Network Partitions ALWAYS happen.
 So real choice is: C vs A when partition occurs.
@@ -408,45 +406,32 @@ CA systems (Consistency + Availability):
   "PostgreSQL is CA" means: consistent + available when no partitions
 ```
 
-**PACELC — The Extension:**
+**PACELC - The Extension:**
 Even when there's NO partition, there's still a trade-off:
-- P → Partition: choose A or C
-- ELC → Else (no partition): choose Latency vs Consistency
+- P -> Partition: choose A or C
+- ELC -> Else (no partition): choose Latency vs Consistency
 
 ---
 
 ## Database Selection Decision Tree
 
-```
-What is your primary data model?
-│
-├─ Relationships between entities, complex queries
-│   → PostgreSQL (default choice, handles most cases)
-│
-├─ Hierarchical, flexible schema, documents
-│   → MongoDB (if schema evolves frequently)
-│
-├─ Simple key-value, ultra-low latency
-│   ├─ Caching, session, real-time → Redis (in-memory)
-│   └─ Durable, internet scale → DynamoDB
-│
-├─ High write throughput, time-ordered data
-│   └─ Cassandra / ScyllaDB
-│
-├─ Graph traversal, relationship analysis
-│   └─ Neo4j
-│
-├─ Time-series, metrics, IoT
-│   └─ InfluxDB or TimescaleDB
-│
-├─ Full-text search
-│   └─ Elasticsearch (or PostgreSQL full-text for small scale)
-│
-├─ Semantic/vector similarity (AI)
-│   └─ pgvector (if on PostgreSQL) or Pinecone/Weaviate
-│
-└─ Need SQL + horizontal write scaling
-    └─ CockroachDB or TiDB
+Start from your primary data model and follow the branch to a recommended database.
+
+```mermaid
+flowchart TD
+    Q["What is your primary data model?"]
+    Q -->|Relationships between entities, complex queries| PG["PostgreSQL: default choice, handles most cases"]
+    Q -->|Hierarchical, flexible schema, documents| MONGO["MongoDB: if schema evolves frequently"]
+    Q -->|Simple key-value, ultra-low latency| KV["Key-value"]
+    Q -->|High write throughput, time-ordered data| CASS["Cassandra or ScyllaDB"]
+    Q -->|Graph traversal, relationship analysis| NEO["Neo4j"]
+    Q -->|Time-series, metrics, IoT| TS["InfluxDB or TimescaleDB"]
+    Q -->|Full-text search| ES["Elasticsearch, or PostgreSQL full-text for small scale"]
+    Q -->|Semantic or vector similarity for AI| VEC["pgvector if on PostgreSQL, or Pinecone or Weaviate"]
+    Q -->|Need SQL plus horizontal write scaling| NEWSQL["CockroachDB or TiDB"]
+
+    KV -->|Caching, session, real-time| REDIS["Redis: in-memory"]
+    KV -->|Durable, internet scale| DYNAMO["DynamoDB"]
 ```
 
 ---
@@ -466,8 +451,8 @@ These interfaces NEVER mention:
 
 Each implementation is an adapter:
   PostgresUserRepository implements IUserRepository
-  MongoUserRepository implements IUserRepository  ← swap without changing use case
-  RedisUserCache implements IUserRepository         ← or a cache decorator
+  MongoUserRepository implements IUserRepository <- swap without changing use case
+  RedisUserCache implements IUserRepository <- or a cache decorator
 
 This is why database selection belongs in the Infrastructure layer:
   Changing from PostgreSQL to MongoDB = change adapters only

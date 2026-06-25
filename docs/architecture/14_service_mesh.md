@@ -1,4 +1,4 @@
-# Architecture 14 — Service Mesh
+# Architecture 14 - Service Mesh
 
 ---
 
@@ -30,42 +30,48 @@ A Service Mesh is a **dedicated infrastructure layer** that handles service-to-s
 
 Every service pod gets a **sidecar proxy** (e.g., Envoy). All traffic flows through these proxies:
 
-```
-[Order Service] ──► [Envoy Sidecar] ──► [Network] ──► [Envoy Sidecar] ──► [Payment Service]
+Traffic from the Order Service flows through a local sidecar, across the network, and into the Payment Service's sidecar before reaching the service:
 
-The Order Service just makes an HTTP call to http://payment-service:3004/charge
-The sidecar proxy handles:
-  - mTLS encryption (both sides authenticated)
-  - Retry on 503 (3 times, exponential backoff)
-  - Circuit breaking (stop sending if 50% errors)
-  - Timeout (fail fast after 2 seconds)
-  - Metrics (request count, latency, error rate)
-  - Distributed tracing (add/propagate trace headers)
-  - Load balancing (choose healthiest instance)
+```mermaid
+flowchart LR
+    A["Order Service"] --> B["Envoy Sidecar"]
+    B --> C["Network"]
+    C --> D["Envoy Sidecar"]
+    D --> E["Payment Service"]
 ```
+
+The Order Service just makes an HTTP call to `http://payment-service:3004/charge`. The sidecar proxy handles everything else:
+
+- mTLS encryption (both sides authenticated)
+- Retry on 503 (3 times, exponential backoff)
+- Circuit breaking (stop sending if 50% errors)
+- Timeout (fail fast after 2 seconds)
+- Metrics (request count, latency, error rate)
+- Distributed tracing (add and propagate trace headers)
+- Load balancing (choose healthiest instance)
 
 ---
 
 ## Components
 
 ### Data Plane (Sidecar Proxies)
-- **Envoy Proxy** — the most widely used; handles all traffic
+- **Envoy Proxy** - the most widely used; handles all traffic
 - Injected automatically by the mesh control plane
 - Intercepts ALL inbound + outbound traffic from the service
 
 ### Control Plane
-- **Istio** — most feature-rich; uses Envoy as data plane
-- **Linkerd** — lightweight alternative; Rust-based
-- **Consul Connect** — HashiCorp's mesh; integrates with Consul service discovery
+- **Istio** - most feature-rich; uses Envoy as data plane
+- **Linkerd** - lightweight alternative; Rust-based
+- **Consul Connect** - HashiCorp's mesh; integrates with Consul service discovery
 
 ---
 
 ## In Clean Architecture Terms
 
-The service mesh is **entirely in the Frameworks & Drivers layer** — it's infrastructure. Your use cases, entities, and interface adapters know NOTHING about it.
+The service mesh is **entirely in the Frameworks & Drivers layer** - it's infrastructure. Your use cases, entities, and interface adapters know NOTHING about it.
 
 ```typescript
-// Order Service — PlaceOrderUseCase calls Payment Service via IPaymentGateway port
+// Order Service - PlaceOrderUseCase calls Payment Service via IPaymentGateway port
 class PlaceOrderUseCase {
   constructor(private payments: IPaymentGateway) {}
 
@@ -103,14 +109,14 @@ class HttpPaymentGateway implements IPaymentGateway {
 - Timeout enforcement (fail after 2 seconds)
 
 ### Security
-- **mTLS** — mutual TLS between all services; every service authenticates
-- **Authorization policies** — "Order Service can call Payment Service; cannot call User Service"
-- **Certificate rotation** — automatic, no human involvement
+- **mTLS** - mutual TLS between all services; every service authenticates
+- **Authorization policies** - "Order Service can call Payment Service; cannot call User Service"
+- **Certificate rotation** - automatic, no human involvement
 
 ### Observability
-- **Metrics** — request count, error rate, latency per service pair (Prometheus)
-- **Distributed tracing** — full trace across service calls (Jaeger, Zipkin)
-- **Access logs** — who called what, when, with what response
+- **Metrics** - request count, error rate, latency per service pair (Prometheus)
+- **Distributed tracing** - full trace across service calls (Jaeger, Zipkin)
+- **Access logs** - who called what, when, with what response
 
 ---
 
@@ -129,12 +135,12 @@ class HttpPaymentGateway implements IPaymentGateway {
 
 ## Benefits
 
-1. **Zero-code resilience** — retries, circuit breaking, timeouts configured in YAML, not code
-2. **Automatic mTLS** — all service-to-service traffic encrypted and authenticated without code
-3. **Full observability** — golden signals (latency, traffic, errors, saturation) for every service pair
-4. **Traffic splitting** — canary deployments and A/B tests without code changes
-5. **Policy enforcement** — "Search Service must NOT call Payments Service" enforced at infrastructure level
-6. **Uniform across languages** — same sidecar works for Node.js, Python, Go, Java services
+1. **Zero-code resilience** - retries, circuit breaking, timeouts configured in YAML, not code
+2. **Automatic mTLS** - all service-to-service traffic encrypted and authenticated without code
+3. **Full observability** - golden signals (latency, traffic, errors, saturation) for every service pair
+4. **Traffic splitting** - canary deployments and A/B tests without code changes
+5. **Policy enforcement** - "Search Service must NOT call Payments Service" enforced at infrastructure level
+6. **Uniform across languages** - same sidecar works for Node.js, Python, Go, Java services
 
 ---
 
@@ -142,21 +148,21 @@ class HttpPaymentGateway implements IPaymentGateway {
 
 | Problem | Why Service Mesh Wins |
 |---|---|
-| "10 teams, 50 services — each implements retries differently" | Mesh provides uniform retry policy for all |
+| "10 teams, 50 services - each implements retries differently" | Mesh provides uniform retry policy for all |
 | "We need mTLS between all services but can't change 50 service codebases" | Mesh injects mTLS at sidecar level; zero code change |
 | "How do I know which service is the bottleneck?" | Mesh traces every request; Jaeger shows you exactly |
 | "We want to deploy new version to 5% of traffic" | Istio VirtualService: weight: 5 for new, weight: 95 for old |
-| "GDPR: Service A must never send data to Service B" | Istio AuthorizationPolicy: DENY A→B at network level |
+| "GDPR: Service A must never send data to Service B" | Istio AuthorizationPolicy: DENY A -> B at network level |
 
 ---
 
 ## Costs / Tradeoffs
 
-1. **Complexity** — Istio alone has 20+ CRDs; steep learning curve
-2. **Resource overhead** — every pod needs a sidecar (+100MB RAM, +5-10% CPU)
-3. **Debugging harder** — mTLS issues, sidecar config errors add a new failure layer
-4. **Requires Kubernetes** — most meshes are Kubernetes-native
-5. **Not needed at small scale** — 3 services don't need a mesh; overkill
+1. **Complexity** - Istio alone has 20+ CRDs; steep learning curve
+2. **Resource overhead** - every pod needs a sidecar (+100MB RAM, +5-10% CPU)
+3. **Debugging harder** - mTLS issues, sidecar config errors add a new failure layer
+4. **Requires Kubernetes** - most meshes are Kubernetes-native
+5. **Not needed at small scale** - 3 services don't need a mesh; overkill
 
 ---
 
@@ -170,13 +176,13 @@ class HttpPaymentGateway implements IPaymentGateway {
 
 ### Google (Istio, Traffic Director)
 - **Architecture:** Istio control plane + Envoy data plane (Google developed Istio)
-- **Use case:** Internal Google services use similar proxy-based mesh (Stubby → gRPC)
+- **Use case:** Internal Google services use similar proxy-based mesh (Stubby -> gRPC)
 - **Scale:** Handles trillions of RPCs/day internally
 - **Good at:** Automatic certificate rotation; mTLS enforced at cluster level
 
 ### Uber (uForwarder + Envoy)
 - **Architecture:** Envoy-based mesh managing 4000+ services
-- **Good at:** Traffic shifting during deployments — 1% canary, then 5%, 20%, 100% — automated
+- **Good at:** Traffic shifting during deployments - 1% canary, then 5%, 20%, 100% - automated
 - **Observability:** Full request traces across 4000 services via Jaeger
 
 ### Pinterest
@@ -193,10 +199,10 @@ class HttpPaymentGateway implements IPaymentGateway {
 
 ## Senior Advice
 
-> "Add a service mesh when you have 10+ services and a dedicated platform team. It's not something a product team should manage. Think of it as 'WiFi for your microservices' — you don't implement 802.11 in every application; you let the infrastructure layer handle it. The beauty is that your services (and Clean Architecture within them) remain completely unchanged. The mesh is invisible to your use cases, which is exactly right."
+> "Add a service mesh when you have 10+ services and a dedicated platform team. It's not something a product team should manage. Think of it as 'WiFi for your microservices' - you don't implement 802.11 in every application; you let the infrastructure layer handle it. The beauty is that your services (and Clean Architecture within them) remain completely unchanged. The mesh is invisible to your use cases, which is exactly right."
 
 ---
 
 ## Key Takeaway
 
-> The Service Mesh is the purest expression of Clean Architecture's "separation of concerns" at the infrastructure level. Your services don't implement resilience, observability, or security — the mesh does. Your use cases remain clean. This is Clean Architecture applied not just to code organization, but to the entire runtime infrastructure.
+> The Service Mesh is the purest expression of Clean Architecture's "separation of concerns" at the infrastructure level. Your services don't implement resilience, observability, or security - the mesh does. Your use cases remain clean. This is Clean Architecture applied not just to code organization, but to the entire runtime infrastructure.

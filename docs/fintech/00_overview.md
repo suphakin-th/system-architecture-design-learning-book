@@ -1,6 +1,6 @@
-# Financial Systems Architecture — Complete Overview
+# Financial Systems Architecture - Complete Overview
 
-> "In financial systems, the cost of a bug is not a bad user experience. It is real money lost, real accounts corrupted, real people's savings gone. This changes everything about how you design, test, and operate these systems." — Senior fintech architect
+> "In financial systems, the cost of a bug is not a bad user experience. It is real money lost, real accounts corrupted, real people's savings gone. This changes everything about how you design, test, and operate these systems." - Senior fintech architect
 
 ---
 
@@ -21,31 +21,31 @@
 ```
 Layer 1: BUSINESS MODEL
   Double-Entry Bookkeeping
-  → Every transaction: debit one account, credit another
-  → Sum of all debits = Sum of all credits ALWAYS
-  → Mathematical proof of correctness
+ -> Every transaction: debit one account, credit another
+ -> Sum of all debits = Sum of all credits ALWAYS
+ -> Mathematical proof of correctness
 
 Layer 2: DATA INTEGRITY
   Immutable Append-Only Ledger
-  → Never UPDATE or DELETE financial records
-  → Every change is a new INSERT
-  → Cryptographic hash chain (tamper-evident)
+ -> Never UPDATE or DELETE financial records
+ -> Every change is a new INSERT
+ -> Cryptographic hash chain (tamper-evident)
 
 Layer 3: TRANSACTION SAFETY
   ACID Transactions + Idempotency
-  → All-or-nothing: debit + credit together or neither
-  → Idempotency keys: charge exactly once even with retries
+ -> All-or-nothing: debit + credit together or neither
+ -> Idempotency keys: charge exactly once even with retries
 
 Layer 4: DISTRIBUTED SAFETY
   Saga Pattern (not 2PC) for cross-service transactions
-  → Each step has a compensating action
-  → No distributed locks that can deadlock
+ -> Each step has a compensating action
+ -> No distributed locks that can deadlock
 
 Layer 5: SECURITY
-  HSM → Key management (keys never leave hardware)
-  PCI DSS → Compliance framework
-  mTLS → Mutual auth between all services
-  Zero Trust → Never trust, always verify
+  HSM -> Key management (keys never leave hardware)
+  PCI DSS -> Compliance framework
+  mTLS -> Mutual auth between all services
+  Zero Trust -> Never trust, always verify
 
 Layer 6: AUDIT & COMPLIANCE
   Write-Ahead Log (WAL)
@@ -76,7 +76,7 @@ SELECT
 FROM journal_entries;
 
 -- imbalance must always = 0
--- If it's not zero → data corruption → investigate immediately
+-- If it's not zero -> data corruption -> investigate immediately
 -- This is your first monitoring alert
 ```
 
@@ -93,15 +93,15 @@ Transfer $100 from Alice to Bob:
   Net change to system: $0
 
 Payment received $100 from Stripe:
-  Stripe liability account:  -$100 (debit → we owe Stripe less)
-  Customer account:          +$100 (credit → customer has more)
+  Stripe liability account:  -$100 (debit -> we owe Stripe less)
+  Customer account:          +$100 (credit -> customer has more)
   Net change to system: $0
 
 WRONG approach:
   Alice.balance -= 100;  // where did the $100 go?
   Bob.balance += 100;    // where did the $100 come from?
-  → No audit trail of the TRANSFER itself
-  → If Alice is debited and system crashes → $100 lost
+ -> No audit trail of the TRANSFER itself
+ -> If Alice is debited and system crashes -> $100 lost
 ```
 
 ### Rule 2: Every Financial Record Is Immutable
@@ -124,18 +124,18 @@ INSERT INTO journal_entries (
 -- Auditors can trace exactly what happened and when.
 ```
 
-### Rule 3: Idempotency — Process Each Payment Exactly Once
+### Rule 3: Idempotency - Process Each Payment Exactly Once
 
 ```
 Without idempotency:
-  User clicks "Pay" → network timeout → user clicks "Pay" again
-  → Two charges processed → user double-charged → angry customer, refund needed
+  User clicks "Pay" -> network timeout -> user clicks "Pay" again
+ -> Two charges processed -> user double-charged -> angry customer, refund needed
 
 With idempotency:
-  User clicks "Pay" → generates idempotency_key = uuid()
-  Network timeout → user clicks "Pay" again → SAME idempotency_key
-  Second request: "already processed → return stored result"
-  → Charged exactly once → correct
+  User clicks "Pay" -> generates idempotency_key = uuid()
+  Network timeout -> user clicks "Pay" again -> SAME idempotency_key
+  Second request: "already processed -> return stored result"
+ -> Charged exactly once -> correct
 ```
 
 ---

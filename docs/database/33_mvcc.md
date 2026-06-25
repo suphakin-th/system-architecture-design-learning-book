@@ -1,6 +1,6 @@
-# MVCC — Multiversion Concurrency Control
+# MVCC - Multiversion Concurrency Control
 
-> "MVCC is the reason PostgreSQL can have 10,000 readers and 1,000 writers all running simultaneously without anyone waiting for anyone else. Readers never block writers. Writers never block readers. This sounds impossible — MVCC makes it real." — PostgreSQL documentation
+> "MVCC is the reason PostgreSQL can have 10,000 readers and 1,000 writers all running simultaneously without anyone waiting for anyone else. Readers never block writers. Writers never block readers. This sounds impossible - MVCC makes it real." - PostgreSQL documentation
 
 ---
 
@@ -11,15 +11,15 @@
 | **What** | A database mechanism for handling concurrent reads and writes |
 | **Used by** | PostgreSQL, MySQL InnoDB, Oracle, CockroachDB, MongoDB |
 | **Key promise** | Readers never block writers. Writers never block readers. |
-| **Trade-off** | Dead rows accumulate — VACUUM needed to reclaim storage |
+| **Trade-off** | Dead rows accumulate - VACUUM needed to reclaim storage |
 
 ---
 
-## IMPORTANT: MVCC ≠ MVC
+## IMPORTANT: MVCC != MVC
 
 ```
-MVC  = Model-View-Controller → UI architecture pattern (how you organize app code)
-MVCC = Multiversion Concurrency Control → database engine mechanism (how DB handles concurrent transactions)
+MVC  = Model-View-Controller -> UI architecture pattern (how you organize app code)
+MVCC = Multiversion Concurrency Control -> database engine mechanism (how DB handles concurrent transactions)
 
 These are completely unrelated. Only the letters M, V, C are shared.
 This file is about MVCC (the database one).
@@ -30,21 +30,21 @@ See 32_mvc_mvp_mvvm_architecture/ for MVC.
 
 ## The Problem MVCC Solves
 
-**Without MVCC — Traditional Locking:**
+**Without MVCC - Traditional Locking:**
 
 ```
 Scenario: User A reads a report. User B updates data.
 
 Traditional lock-based system:
-  User A: SELECT * FROM orders WHERE date = today  ← acquires READ LOCK
-  User B: UPDATE orders SET status = 'shipped'     ← blocked! waiting for read lock
+  User A: SELECT * FROM orders WHERE date = today <- acquires READ LOCK
+  User B: UPDATE orders SET status = 'shipped' <- blocked! waiting for read lock
   User A: (still reading, report takes 5 seconds)
   User B: (waiting 5 seconds... 10 seconds...)
   User A: done. releases lock.
   User B: finally runs.
 
 At scale:
-  1000 readers × 5 seconds = writers waiting 5000 seconds in a queue
+  1000 readers x 5 seconds = writers waiting 5000 seconds in a queue
   Database becomes a bottleneck
   Users see slow updates
 ```
@@ -52,8 +52,8 @@ At scale:
 **With MVCC:**
 
 ```
-User A: SELECT * FROM orders WHERE date = today  ← sees SNAPSHOT of data
-User B: UPDATE orders SET status = 'shipped'     ← creates NEW VERSION of the row
+User A: SELECT * FROM orders WHERE date = today <- sees SNAPSHOT of data
+User B: UPDATE orders SET status = 'shipped' <- creates NEW VERSION of the row
                                                     User A's snapshot unchanged!
 
 Both run simultaneously. Neither blocks the other.
@@ -67,7 +67,7 @@ Other readers after B commits: see the new status
 
 ## How MVCC Works: Row Versioning
 
-The core idea: **never overwrite data in place — create a new version.**
+The core idea: **never overwrite data in place - create a new version.**
 
 ### Every Row Has Hidden System Columns
 
@@ -91,13 +91,13 @@ SELECT xmin, xmax, *, ctid FROM orders WHERE id = 1;
 
 ```sql
 -- Before update:
--- xmin=101, xmax=0,   id=1, status='pending'  ← LIVE row
+-- xmin=101, xmax=0,   id=1, status='pending' <- LIVE row
 
 -- Transaction 200 runs: UPDATE orders SET status='paid' WHERE id = 1;
 
 -- After update:
--- xmin=101, xmax=200, id=1, status='pending'  ← DEAD row (xmax set = this tx deleted it)
--- xmin=200, xmax=0,   id=1, status='paid'     ← NEW LIVE row (xmin = tx that created it)
+-- xmin=101, xmax=200, id=1, status='pending' <- DEAD row (xmax set = this tx deleted it)
+-- xmin=200, xmax=0,   id=1, status='paid' <- NEW LIVE row (xmin = tx that created it)
 
 -- The old row is NOT deleted immediately.
 -- It's marked as "dead" by setting xmax = current transaction ID.
@@ -110,10 +110,10 @@ SELECT xmin, xmax, *, ctid FROM orders WHERE id = 1;
 -- DELETE FROM orders WHERE id = 1;
 
 -- Before:
--- xmin=101, xmax=0, id=1, status='pending'  ← LIVE
+-- xmin=101, xmax=0, id=1, status='pending' <- LIVE
 
 -- After delete by transaction 201:
--- xmin=101, xmax=201, id=1, status='pending'  ← DEAD (xmax marks it deleted)
+-- xmin=101, xmax=201, id=1, status='pending' <- DEAD (xmax marks it deleted)
 
 -- The row still exists on disk! Just marked as dead.
 -- Future transactions with txid > 201 won't see it.
@@ -137,45 +137,32 @@ In plain English:
 
 ---
 
-## MVCC in Action — Step by Step
+## MVCC in Action - Step by Step
 
-```
-Timeline (transaction IDs in order):
+This sequence shows how a long-running reader (txid 200) keeps seeing the old row version even after a writer (txid 201) commits a change, while a later reader (txid 202) sees the new version.
 
-txid 100: INSERT row (id=1, status='pending')  → commits
-txid 101: INSERT row (id=2, status='pending')  → commits
+```mermaid
+sequenceDiagram
+    participant T200 as "txid 200 (long reader)"
+    participant DB as "orders table"
+    participant T201 as "txid 201 (writer)"
+    participant T202 as "txid 202 (later reader)"
 
-Current state:
-  Row 1: xmin=100, xmax=0, status='pending'   ← live
-  Row 2: xmin=101, xmax=0, status='pending'   ← live
+    Note over DB: Row 1 xmin=100 xmax=0 status=pending<br/>Row 2 xmin=101 xmax=0 status=pending
 
-─────────────────────────────────────────────────────────
+    T200->>DB: BEGIN, takes snapshot (sees txids below 200)
+    DB-->>T200: Row 1 pending, Row 2 pending
 
-txid 200 begins (snapshot: sees committed txids < 200)
-  → Sees rows 1 and 2 (both committed before 200)
+    T201->>DB: UPDATE Row 1 SET status=paid
+    Note over DB: Row 1 old xmin=100 xmax=201 (now dead)<br/>Row 1 new xmin=201 xmax=0 status=paid
+    T201->>DB: COMMIT
 
-txid 201 begins (UPDATE row 1 SET status='paid')
-  → Creates new version:
-     Row 1 old: xmin=100, xmax=201, status='pending'  ← now dead
-     Row 1 new: xmin=201, xmax=0,   status='paid'     ← new live version
-  → txid 201 commits
+    T200->>DB: SELECT again (same snapshot)
+    DB-->>T200: Row 1 old version still visible, status=pending
+    Note over T200: xmax=201 committed but is after 200 snapshot<br/>Repeatable Read, consistent view
 
-─────────────────────────────────────────────────────────
-
-txid 200 is STILL RUNNING, queries again:
-  SELECT * FROM orders;
-  → Row 1: old version (xmin=100, xmax=201=committed but > 200's snapshot) → still visible!
-  → Row 2: xmin=101, xmax=0 → visible
-
-  txid 200 still sees status='pending' for row 1!
-  Even though txid 201 already committed the change!
-
-  This is "Repeatable Read" — txid 200 has a consistent view of the world.
-
-txid 202 begins (NEW transaction, AFTER 201 committed):
-  → Row 1: old version (xmin=100, xmax=201=committed) → INVISIBLE (dead)
-  → Row 1: new version (xmin=201, xmax=0) → VISIBLE (committed before 202)
-  → txid 202 sees status='paid'
+    T202->>DB: BEGIN after 201 committed, SELECT
+    DB-->>T202: Row 1 old version invisible (dead)<br/>Row 1 new version visible, status=paid
 ```
 
 ---
@@ -209,7 +196,7 @@ COMMIT;
 
 
 -- SERIALIZABLE:
--- Full isolation — appears as if transactions ran one after another
+-- Full isolation - appears as if transactions ran one after another
 -- PostgreSQL uses "Serializable Snapshot Isolation" (SSI)
 -- Detects conflicts and aborts transactions that would violate serializability
 
@@ -222,7 +209,7 @@ COMMIT;
 
 ---
 
-## The VACUUM Problem — MVCC's Hidden Cost
+## The VACUUM Problem - MVCC's Hidden Cost
 
 **Dead rows accumulate:**
 
@@ -231,11 +218,11 @@ Every UPDATE creates a dead row (old version).
 Every DELETE creates a dead row.
 
 A table updated 1 million times/day:
-  → 1 million dead rows accumulate per day
-  → Dead rows take disk space (even though invisible to queries)
-  → Table bloat: logical size 1GB, physical size 10GB
-  → Index bloat: indexes still point to dead rows (wasted I/O)
-  → Query performance degrades as table grows with dead rows
+ -> 1 million dead rows accumulate per day
+ -> Dead rows take disk space (even though invisible to queries)
+ -> Table bloat: logical size 1GB, physical size 10GB
+ -> Index bloat: indexes still point to dead rows (wasted I/O)
+ -> Query performance degrades as table grows with dead rows
 ```
 
 **VACUUM reclaims dead rows:**
@@ -248,7 +235,7 @@ VACUUM ANALYZE orders;  -- vacuums + updates statistics for query planner
 
 -- Autovacuum (runs automatically):
 -- PostgreSQL's autovacuum daemon monitors all tables
--- When dead row % exceeds threshold → runs VACUUM automatically
+-- When dead row % exceeds threshold -> runs VACUUM automatically
 -- Default: vacuum when 20% + 50 rows are dead
 
 -- Check vacuum health:
@@ -261,7 +248,7 @@ SELECT
   last_autovacuum
 FROM pg_stat_user_tables
 ORDER BY dead_pct DESC NULLS LAST;
--- If dead_pct > 10% for a hot table → autovacuum may be falling behind
+-- If dead_pct > 10% for a hot table -> autovacuum may be falling behind
 ```
 
 **Tuning autovacuum for high-traffic tables:**
@@ -273,16 +260,16 @@ ALTER TABLE orders SET (
   autovacuum_analyze_scale_factor = 0.005, -- analyze when 0.5% changed
   autovacuum_vacuum_cost_delay = 2         -- less delay between vacuum cycles (ms)
 );
--- This tells autovacuum: "don't let orders table bloat — vacuum aggressively"
+-- This tells autovacuum: "don't let orders table bloat - vacuum aggressively"
 ```
 
 ---
 
-## Transaction ID Wraparound — The "VACUUM Freeze" Problem
+## Transaction ID Wraparound - The "VACUUM Freeze" Problem
 
 ```
-PostgreSQL transaction IDs are 32-bit integers → max ~4.3 billion transactions.
-When txid wraps around, old rows could appear "newer" than new rows → catastrophic data corruption.
+PostgreSQL transaction IDs are 32-bit integers -> max ~4.3 billion transactions.
+When txid wraps around, old rows could appear "newer" than new rows -> catastrophic data corruption.
 
 Solution: VACUUM FREEZE
   Scans all rows and sets xmin to a special "frozen" state
@@ -303,14 +290,14 @@ ORDER BY txid_age DESC;
 
 ---
 
-## MVCC vs Locking — When to Use Each
+## MVCC vs Locking - When to Use Each
 
 ```
 MVCC (PostgreSQL default):
   Reads never block writes
   Writes never block reads
   Perfect for: OLTP (lots of reads + writes simultaneously)
-  Trade-off: dead row accumulation → VACUUM needed
+  Trade-off: dead row accumulation -> VACUUM needed
 
 Traditional Locking (still needed for some cases):
   SELECT ... FOR UPDATE: explicitly lock rows for update
@@ -377,13 +364,13 @@ class PlaceOrderUseCase {
 Your Repository Adapter knows slightly more:
 class OrderRepositoryPostgres {
   async findById(id: string) {
-    // This SELECT sees a snapshot — guaranteed by MVCC
+    // This SELECT sees a snapshot - guaranteed by MVCC
     // No lock needed for a simple read
     return this.db.query('SELECT * FROM orders WHERE id = $1', [id]);
   }
 
   async save(order: Order) {
-    // This UPDATE creates a new row version — MVCC at work
+    // This UPDATE creates a new row version - MVCC at work
     // xmax set on old row, new row inserted
     // Future readers will see new version, in-progress readers keep old snapshot
     await this.db.query('UPDATE orders SET status = $1 WHERE id = $2', [order.status, order.id]);
@@ -406,7 +393,7 @@ inner layers never depend on, or even know about, infrastructure mechanisms.
 | **What** | Database creates new row versions instead of overwriting |
 | **Why** | Readers never block writers, writers never block readers |
 | **How** | xmin/xmax system columns mark row version visibility |
-| **Cost** | Dead rows accumulate → VACUUM needed to reclaim space |
+| **Cost** | Dead rows accumulate -> VACUUM needed to reclaim space |
 | **Isolation** | MVCC enables READ COMMITTED, REPEATABLE READ, SERIALIZABLE |
 | **Monitor** | pg_stat_user_tables for dead row %, pg_database for txid age |
 | **Tune** | autovacuum settings per table for high-write workloads |
@@ -414,8 +401,8 @@ inner layers never depend on, or even know about, infrastructure mechanisms.
 ---
 
 ## Sources
-- [Understanding MVCC in PostgreSQL — Medium](https://nagvekar.medium.com/understanding-multi-version-concurrency-control-mvcc-in-postgresql-a-comprehensive-guide-9b4f82153860)
-- [PostgreSQL MVCC Introduction — Official Docs](https://www.postgresql.org/docs/current/mvcc-intro.html)
-- [PostgreSQL Concurrency with MVCC — Heroku Dev Center](https://devcenter.heroku.com/articles/postgresql-concurrency)
-- [MVCC in PostgreSQL — GeeksforGeeks](https://www.geeksforgeeks.org/postgresql/multiversion-concurrency-control-mvcc-in-postgresql/)
-- [What is MVCC — TheServerSide](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/What-is-MVCC-How-does-Multiversion-Concurrencty-Control-work)
+- [Understanding MVCC in PostgreSQL - Medium](https://nagvekar.medium.com/understanding-multi-version-concurrency-control-mvcc-in-postgresql-a-comprehensive-guide-9b4f82153860)
+- [PostgreSQL MVCC Introduction - Official Docs](https://www.postgresql.org/docs/current/mvcc-intro.html)
+- [PostgreSQL Concurrency with MVCC - Heroku Dev Center](https://devcenter.heroku.com/articles/postgresql-concurrency)
+- [MVCC in PostgreSQL - GeeksforGeeks](https://www.geeksforgeeks.org/postgresql/multiversion-concurrency-control-mvcc-in-postgresql/)
+- [What is MVCC - TheServerSide](https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/What-is-MVCC-How-does-Multiversion-Concurrencty-Control-work)

@@ -1,6 +1,6 @@
-# Shopify — Architecture Case Study
+# Shopify - Architecture Case Study
 
-> "We chose to stay a monolith and optimize it. That was the hardest, most contrarian decision we made." — Shopify Engineering
+> "We chose to stay a monolith and optimize it. That was the hardest, most contrarian decision we made." - Shopify Engineering
 
 ---
 
@@ -18,26 +18,24 @@
 
 ## The Senior Architect Explains the Key Decision
 
-> "In 2019, when every other company at our scale was racing to microservices, Shopify doubled down on the monolith. Not the spaghetti monolith that breaks everything — the modular monolith with strict boundaries enforced by tooling. This decision is still controversial. Let me explain why it was right."
+> "In 2019, when every other company at our scale was racing to microservices, Shopify doubled down on the monolith. Not the spaghetti monolith that breaks everything - the modular monolith with strict boundaries enforced by tooling. This decision is still controversial. Let me explain why it was right."
 
 ---
 
-## The Problem: The Tangled Monolith (2015–2018)
+## The Problem: The Tangled Monolith (2015-2018)
 
-**What "Shopify's monolith" looked like before they fixed it:**
+**What "Shopify's monolith" looked like before they fixed it** - one flat `app/` tree where models held business logic and called each other directly:
 
-```
-shopify/
-├── app/
-│   ├── models/
-│   │   ├── order.rb          # business logic AND DB model
-│   │   ├── product.rb        # calls shipping.rb directly
-│   │   ├── cart.rb           # calls payments.rb directly
-│   │   └── checkout.rb       # calls everything
-│   ├── controllers/
-│   │   └── (fat controllers calling models directly)
-│   └── services/
-│       └── (no consistent pattern — some have, some don't)
+```mermaid
+flowchart TD
+  shopify["shopify/"] --> app["app/"]
+  app --> models["models/"]
+  app --> controllers["controllers/ - fat controllers calling models directly"]
+  app --> services["services/ - no consistent pattern"]
+  models --> order["order.rb - business logic AND DB model"]
+  models --> product["product.rb - calls shipping.rb directly"]
+  models --> cart["cart.rb - calls payments.rb directly"]
+  models --> checkout["checkout.rb - calls everything"]
 ```
 
 **The specific problems:**
@@ -58,7 +56,7 @@ shopify/
 
 > "We don't need network boundaries to have clean boundaries. We need ENFORCED MODULE BOUNDARIES inside our monolith. Microservices enforce this with the network. We'll enforce it with static analysis."
 
-**Packwerk — Shopify's open-source boundary enforcer:**
+**Packwerk - Shopify's open-source boundary enforcer:**
 
 ```ruby
 # packages.yml (defines the modules)
@@ -73,26 +71,26 @@ components/shipping:
 
 # If checkout/order.rb tries to import Shipping::Calculator:
 #   Packwerk fails the build
-#   Error: "checkout cannot depend on shipping — use the API"
+#   Error: "checkout cannot depend on shipping - use the API"
 ```
 
-**The module structure after Packwerk:**
+**The module structure after Packwerk** - each component is a bounded module exposing a public API, with legacy code isolated under `app/`:
 
-```
-shopify/
-├── components/
-│   ├── checkout/
-│   │   ├── app/models/checkout/order.rb     # Internal: can't import shipping directly
-│   │   ├── app/public/checkout/api.rb       # Public interface (port)
-│   │   └── package.yml                      # Defines this as a bounded module
-│   ├── shipping/
-│   │   ├── app/models/shipping/calculator.rb
-│   │   ├── app/public/shipping/api.rb       # Public interface
-│   │   └── package.yml
-│   ├── payments/
-│   ├── inventory/
-│   └── tax/
-└── app/                                     # Legacy code (being migrated)
+```mermaid
+flowchart TD
+  shopify["shopify/"] --> components["components/"]
+  shopify --> legacy["app/ - legacy code being migrated"]
+  components --> checkout["checkout/"]
+  components --> shipping["shipping/"]
+  components --> payments["payments/"]
+  components --> inventory["inventory/"]
+  components --> tax["tax/"]
+  checkout --> co_model["app/models/checkout/order.rb - internal, cannot import shipping"]
+  checkout --> co_api["app/public/checkout/api.rb - public interface, the port"]
+  checkout --> co_pkg["package.yml - defines this as a bounded module"]
+  shipping --> sh_model["app/models/shipping/calculator.rb"]
+  shipping --> sh_api["app/public/shipping/api.rb - public interface"]
+  shipping --> sh_pkg["package.yml"]
 ```
 
 **How checkout calls shipping after Packwerk:**
@@ -101,7 +99,7 @@ shopify/
 # WRONG (before Packwerk enforcement):
 class Checkout::Order
   def calculate_shipping
-    Shipping::Calculator.calculate(self.items)  # Direct import — BANNED
+    Shipping::Calculator.calculate(self.items)  # Direct import - BANNED
   end
 end
 
@@ -131,11 +129,11 @@ Merchant A (big store): 10,000 orders/minute
 Merchant B (small store): 10 orders/minute
 
 On a shared database:
-  Merchant A's massive load → long-running queries → locks tables
-  → Merchant B's queries wait for locks
-  → Merchant B's checkout is slow
-  → Merchant B's customers abandon carts
-  → Merchant B loses sales they'd have made
+  Merchant A's massive load -> long-running queries -> locks tables
+ -> Merchant B's queries wait for locks
+ -> Merchant B's checkout is slow
+ -> Merchant B's customers abandon carts
+ -> Merchant B loses sales they'd have made
 
   Merchant A's success is costing Merchant B.
 ```
@@ -143,26 +141,26 @@ On a shared database:
 **Shopify's Pod Architecture:**
 
 ```
-Pod 1 (MySQL cluster): Merchants #1–500,000
+Pod 1 (MySQL cluster): Merchants #1-500,000
   Primary MySQL + 3 read replicas
   All data for these 500K merchants lives ONLY here
 
-Pod 2 (MySQL cluster): Merchants #500,001–1,000,000
+Pod 2 (MySQL cluster): Merchants #500,001-1,000,000
   Primary MySQL + 3 read replicas
 
-Pod 3: Merchants #1,000,001–1,500,000
+Pod 3: Merchants #1,000,001-1,500,000
 ...
-Pod N: Merchants #(N-1)*500K – N*500K
+Pod N: Merchants #(N-1)*500K - N*500K
 
-Routing layer: every request → look up merchant → route to correct pod
+Routing layer: every request -> look up merchant -> route to correct pod
 ```
 
 **Why this is brilliant:**
 
 ```
 Black Friday:
-  Big merchant (1M orders/minute) → on Pod 3 → only Pod 3 is stressed
-  Small merchant → on Pod 7 → completely unaffected by Pod 3's load
+  Big merchant (1M orders/minute) -> on Pod 3 -> only Pod 3 is stressed
+  Small merchant -> on Pod 7 -> completely unaffected by Pod 3's load
 
   Pod isolation = merchant isolation = every merchant gets consistent performance
 
@@ -196,11 +194,11 @@ Normal day: baseline load
 Black Friday peak:
   Checkout: 10,000,000 orders/minute
   Response time: must still be <100ms
-  Traffic increase: 1000×
+  Traffic increase: 1000x
 
 How Shopify handles it:
 1. Pre-scaling (days before):
-   Database pods pre-scaled to 3× normal capacity
+   Database pods pre-scaled to 3x normal capacity
    Redis cluster pre-scaled for session/cart caching
    CDN pre-warmed with merchant storefront assets
    Kubernetes auto-scaling configured with higher upper limits
@@ -211,7 +209,7 @@ How Shopify handles it:
    99% of Black Friday traffic = reading product pages = CDN cached
 
 3. Queue-based checkout (asynchrony):
-   Cart → checkout attempt → enters queue → processed serially per shop
+   Cart -> checkout attempt -> enters queue -> processed serially per shop
    Prevents N simultaneous checkouts from overwhelming one shop's pod
    User sees: "Your order is being processed" (immediately)
    vs: "503 Service Unavailable" (without queue)
@@ -227,10 +225,10 @@ How Shopify handles it:
 > - Kubernetes expertise (takes 6-12 months to learn)
 > - Service mesh (Istio adds 50% ops complexity)
 > - Distributed tracing (had none at the time)
-> - Per-service CI/CD pipelines (×100 services = ×100 pipelines)
+> - Per-service CI/CD pipelines (x100 services = x100 pipelines)
 > - Cross-service API versioning (extremely painful in practice)
 >
-> And what would we gain? Independent deployments, maybe. Independent scaling of specific components, possibly. But we can already scale horizontally — we just add more Shopify app servers. The bottleneck is the database, and we solved that with pods.
+> And what would we gain? Independent deployments, maybe. Independent scaling of specific components, possibly. But we can already scale horizontally - we just add more Shopify app servers. The bottleneck is the database, and we solved that with pods.
 >
 > The cost of microservices was: 2 years of migration, massive ops overhead, probable bugs from distributed transactions. The benefit: marginal. We chose modular monolith."
 
@@ -247,7 +245,7 @@ Packwerk modules = Clean Architecture layers + bounded contexts
   component/checkout/app/adapters/ = Interface Adapters
 
 MySQL Pod routing = Infrastructure layer (outbound adapter)
-  IOrderRepository → ShopifyActiveRecordRepository
+  IOrderRepository -> ShopifyActiveRecordRepository
   Repository selects correct pod connection based on current_shop_id
   Use cases never know which pod they're on
 
@@ -264,18 +262,18 @@ The boundaries are enforced by tools (Packwerk) not by the network.
 
 ## Lessons for Your Architecture
 
-1. **Modular monolith beats unstructured microservices** — Shopify serves $200B GMV from one deployable Ruby app
-2. **Enforce boundaries with tools, not willpower** — Packwerk makes the architecture real; without it, developers take shortcuts
-3. **Database isolation solves tenant isolation** — pods separate merchants more effectively than code separation
-4. **Caching is the biggest scaling lever** — 99% of Black Friday traffic is CDN-served product pages
-5. **The right architecture depends on your team, not just your scale** — 1000 engineers on Rails > 1000 engineers learning Kubernetes
+1. **Modular monolith beats unstructured microservices** - Shopify serves $200B GMV from one deployable Ruby app
+2. **Enforce boundaries with tools, not willpower** - Packwerk makes the architecture real; without it, developers take shortcuts
+3. **Database isolation solves tenant isolation** - pods separate merchants more effectively than code separation
+4. **Caching is the biggest scaling lever** - 99% of Black Friday traffic is CDN-served product pages
+5. **The right architecture depends on your team, not just your scale** - 1000 engineers on Rails > 1000 engineers learning Kubernetes
 
 ---
 
 ## Sources
 - [Under Deconstruction: The State of Shopify's Monolith](https://shopify.engineering/shopify-monolith)
-- [Deconstructing the Monolith — Shopify Engineering](https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity)
-- [Inside Shopify's Modular Monolith — Dr. Milan Milanović](https://newsletter.techworld-with-milan.com/p/inside-shopifys-modular-monolith)
+- [Deconstructing the Monolith - Shopify Engineering](https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity)
+- [Inside Shopify's Modular Monolith - Dr. Milan Milanovic](https://newsletter.techworld-with-milan.com/p/inside-shopifys-modular-monolith)
 - [How Shopify Handles 30TB of Data Every Minute](https://medium.com/@himanshusingour7/how-shopify-handles-30tb-of-data-every-minute-with-a-monolithic-architecture-cad54df86955)
 
 

@@ -1,6 +1,6 @@
-# Netflix — Architecture Case Study
+# Netflix - Architecture Case Study
 
-> "Netflix's greatest achievement isn't streaming video — it's building a system where any part can fail and users never notice." — Engineering observation
+> "Netflix's greatest achievement isn't streaming video - it's building a system where any part can fail and users never notice." - Engineering observation
 
 ---
 
@@ -18,11 +18,11 @@
 
 ## The Senior Architect Tells the Story
 
-> "Netflix is the definitive case study for why you need to plan for failure at the architecture level. Not 'log errors nicely' level — 'assume every single dependency WILL fail' level. Their architecture decisions come from one core belief: your system is always partially broken, and users should never see it."
+> "Netflix is the definitive case study for why you need to plan for failure at the architecture level. Not 'log errors nicely' level - 'assume every single dependency WILL fail' level. Their architecture decisions come from one core belief: your system is always partially broken, and users should never see it."
 
 ---
 
-## Phase 1: The Monolith (1997–2008)
+## Phase 1: The Monolith (1997-2008)
 
 **The DVD-era monolith:**
 - Java monolith called the "NCCP" (Netflix Content Delivery Platform)
@@ -39,23 +39,23 @@ This 2008 outage changed software architecture forever.
 
 ---
 
-## Phase 2: Migration to AWS + Microservices (2008–2016)
+## Phase 2: Migration to AWS + Microservices (2008-2016)
 
 **The 7-year migration:**
 - Gradually extracted features from the NCCP
 - Each extracted feature became a microservice on AWS
-- Used the Strangler Fig pattern — NCCP shrank as services were extracted
+- Used the Strangler Fig pattern - NCCP shrank as services were extracted
 - By 2016: fully on AWS, 700+ microservices, NCCP decommissioned
 
 **Key services extracted:**
 ```
-User Service          → account management, authentication
-Viewing History       → what you've watched
-Recommendation Engine → what to watch next (ML models)
-Search Service        → find content
-Streaming Delivery    → actual video bytes (Open Connect CDN)
-Billing Service       → payment processing
-Content Service       → metadata (title, description, ratings)
+User Service -> account management, authentication
+Viewing History -> what you've watched
+Recommendation Engine -> what to watch next (ML models)
+Search Service -> find content
+Streaming Delivery -> actual video bytes (Open Connect CDN)
+Billing Service -> payment processing
+Content Service -> metadata (title, description, ratings)
 ```
 
 ---
@@ -63,18 +63,18 @@ Content Service       → metadata (title, description, ratings)
 ## The Chaos Engineering Revolution
 
 **The problem with "test for success":**
-> "We'd test that everything worked. But in production, things fail in ways you never imagined. A network partition between the recommendation service and the streaming service — our test suite never covered that. Chaos Monkey was born."
+> "We'd test that everything worked. But in production, things fail in ways you never imagined. A network partition between the recommendation service and the streaming service - our test suite never covered that. Chaos Monkey was born."
 
 **Chaos Monkey (2011):**
 Netflix built a tool that randomly kills production servers. Every day. On purpose.
 
 ```
-Chaos Monkey → randomly terminates EC2 instances
-Chaos Gorilla → kills entire Availability Zones
-Chaos Kong   → kills entire AWS Regions
+Chaos Monkey -> randomly terminates EC2 instances
+Chaos Gorilla -> kills entire Availability Zones
+Chaos Kong -> kills entire AWS Regions
 
 If your system can survive random component death,
-it's truly resilient — not just theoretically resilient.
+it's truly resilient - not just theoretically resilient.
 ```
 
 **Result:** Netflix's architecture is designed around "what happens when THIS breaks" not "what happens when this works."
@@ -111,25 +111,25 @@ class GetRecommendationsUseCase {
 // but they ALWAYS see something. Netflix never shows an error.
 ```
 
-**This is the Bulkhead Pattern** — like compartments in a ship, isolate failures so they don't sink the whole vessel.
+**This is the Bulkhead Pattern** - like compartments in a ship, isolate failures so they don't sink the whole vessel.
 
 ### Circuit Breaker Pattern (Hystrix)
 
-Netflix invented Hystrix — the most widely used circuit breaker library:
+Netflix invented Hystrix - the most widely used circuit breaker library:
 
 ```
 State: CLOSED (normal)
   All requests flow through
-  If failure rate > 50% in 10 seconds → OPEN
+  If failure rate > 50% in 10 seconds -> OPEN
 
 State: OPEN (tripped)
   All requests immediately return fallback
-  After 5 seconds → HALF-OPEN
+  After 5 seconds -> HALF-OPEN
 
 State: HALF-OPEN (testing recovery)
   One request allowed through
-  If success → CLOSED
-  If failure → OPEN again
+  If success -> CLOSED
+  If failure -> OPEN again
 ```
 
 > "Without circuit breakers, one slow downstream service blocks all threads waiting for its response. Eventually ALL your threads are waiting, your service runs out of threads, and YOU become the slow service for your upstreams. The failure cascades. With circuit breakers, you detect the problem and stop calling the broken service immediately."
@@ -138,31 +138,31 @@ State: HALF-OPEN (testing recovery)
 
 ## CQRS for Content Delivery
 
-**The problem:** Netflix catalog has 15,000+ titles. Reading catalog data (search, browse) is 1000× more frequent than writing it (adding new titles).
+**The problem:** Netflix catalog has 15,000+ titles. Reading catalog data (search, browse) is 1000x more frequent than writing it (adding new titles).
 
 **Solution: CQRS**
 
 ```
 Write side (Content Team uploads new movie):
-  AdminService → ContentMetadataService → PostgreSQL (normalized)
-                                       → Triggers event: ContentPublished
+  AdminService -> ContentMetadataService -> PostgreSQL (normalized)
+ -> Triggers event: ContentPublished
 
 Read side (Users searching/browsing):
-  ContentPublished event → fan out to:
-    ElasticsearchProjection  → search index (fast full-text search)
-    RedisProjection          → most-viewed cache
-    S3Projection             → CDN-ready JSON files per region
-    PersonalizationProjection → ML training data
+  ContentPublished event -> fan out to:
+    ElasticsearchProjection -> search index (fast full-text search)
+    RedisProjection -> most-viewed cache
+    S3Projection -> CDN-ready JSON files per region
+    PersonalizationProjection -> ML training data
 
 User searches for "action movies":
-  → Elasticsearch (pre-built search index)
-  → Returns in 50ms
-  → No join to PostgreSQL needed
+ -> Elasticsearch (pre-built search index)
+ -> Returns in 50ms
+ -> No join to PostgreSQL needed
 ```
 
 ---
 
-## Open Connect CDN — The Real Secret
+## Open Connect CDN - The Real Secret
 
 **The problem no one talks about:** 15% of global internet traffic. Moving video bytes from Netflix data centers to your TV through the public internet = unacceptably high latency and cost.
 
@@ -170,8 +170,8 @@ User searches for "action movies":
 
 ```
 You press Play on a movie:
-  Netflix API → determines nearest Open Connect Appliance (OCA)
-  Your ISP (True, AIS, DTAC in Thailand) → has a Netflix OCA in their network
+  Netflix API -> determines nearest Open Connect Appliance (OCA)
+  Your ISP (True, AIS, DTAC in Thailand) -> has a Netflix OCA in their network
   Video bytes come from the OCA in your ISP's building
   Round trip: <5ms instead of 200ms+ to California
 ```
@@ -187,8 +187,8 @@ You press Play on a movie:
 Netflix's VOD architecture was NOT designed for live streaming. Problems:
 
 1. **Manifest management:** VOD has a pre-generated playlist. Live has a constantly updating manifest that 65M clients are polling simultaneously.
-2. **CDN caching:** VOD segments are cacheable. Live segments are unique per second — CDN can't help.
-3. **Real-time encoding:** Must encode 4K → 8 quality levels in <2 seconds.
+2. **CDN caching:** VOD segments are cacheable. Live segments are unique per second - CDN can't help.
+3. **Real-time encoding:** Must encode 4K -> 8 quality levels in <2 seconds.
 
 **Resolution:** The microservices architecture meant live streaming issues didn't affect VOD. Subscribers watching normal content experienced no degradation. Only live viewers were affected.
 
@@ -207,9 +207,9 @@ Each microservice:
   adapters/     REST controllers + Cassandra/DynamoDB repos + Kafka publishers
   infra/        Hystrix circuit breaker, Ribbon load balancer, Eureka discovery
 
-Hystrix = infrastructure layer — use cases never call Hystrix directly
-Eureka (service discovery) = framework layer — services don't know about it
-Ribbon (load balancing) = framework layer — transparent to business logic
+Hystrix = infrastructure layer - use cases never call Hystrix directly
+Eureka (service discovery) = framework layer - services don't know about it
+Ribbon (load balancing) = framework layer - transparent to business logic
 ```
 
 ---
@@ -233,19 +233,19 @@ Ribbon (load balancing) = framework layer — transparent to business logic
 
 ## Lessons for Your Architecture
 
-1. **Design for failure first** — assume every dependency will fail; build fallbacks
-2. **Circuit breakers are mandatory** — not optional — in microservices
-3. **Read/write separation (CQRS)** — 1000:1 read/write ratio = separate models
-4. **Chaos testing in production** — theoretical resilience ≠ actual resilience
-5. **Graceful degradation** — less personalized > no content; always show something
-6. **Infrastructure is a product** — Netflix open-sourced Hystrix, Eureka, Ribbon because they built them as reusable tools, not hacks
+1. **Design for failure first** - assume every dependency will fail; build fallbacks
+2. **Circuit breakers are mandatory** - not optional - in microservices
+3. **Read/write separation (CQRS)** - 1000:1 read/write ratio = separate models
+4. **Chaos testing in production** - theoretical resilience != actual resilience
+5. **Graceful degradation** - less personalized > no content; always show something
+6. **Infrastructure is a product** - Netflix open-sourced Hystrix, Eureka, Ribbon because they built them as reusable tools, not hacks
 
 ---
 
 ## Sources
-- [A Brief History of Scaling Netflix — ByteByteGo](https://blog.bytebytego.com/p/a-brief-history-of-scaling-netflix)
+- [A Brief History of Scaling Netflix - ByteByteGo](https://blog.bytebytego.com/p/a-brief-history-of-scaling-netflix)
 - [Netflix Microservices Engineering Blog](https://netflixtechblog.com/)
-- [Netflix Architecture Case Study — Clustox](https://www.clustox.com/blog/netflix-case-study/)
+- [Netflix Architecture Case Study - Clustox](https://www.clustox.com/blog/netflix-case-study/)
 - [How Discord Scaled Elixir to 5M Concurrent Users](https://discord.com/blog/how-discord-scaled-elixir-to-5-000-000-concurrent-users)
 
 

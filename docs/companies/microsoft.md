@@ -1,6 +1,6 @@
-# Microsoft — Architecture Case Study
+# Microsoft - Architecture Case Study
 
-> "Azure was built because Microsoft realized: if you don't eat your own dog food at cloud scale, someone else will eat your lunch." — Microsoft Engineering culture
+> "Azure was built because Microsoft realized: if you don't eat your own dog food at cloud scale, someone else will eat your lunch." - Microsoft Engineering culture
 
 ---
 
@@ -16,7 +16,7 @@
 
 ---
 
-## Phase 1: The Windows/Office Monolith Era (1975–2008)
+## Phase 1: The Windows/Office Monolith Era (1975-2008)
 
 **The original Microsoft architecture:**
 Desktop software. Monolithic. No internet connectivity required. The "ship it on a CD" model.
@@ -27,13 +27,13 @@ Desktop software. Monolithic. No internet connectivity required. The "ship it on
 
 ---
 
-## Phase 2: Azure — The Platform Bet (2008–2014)
+## Phase 2: Azure - The Platform Bet (2008-2014)
 
 **The decision:** Build a cloud platform competitive with AWS, from scratch, in a company that had never run cloud services.
 
 **The architecture challenge:**
 
-> "Microsoft had to build the equivalent of Amazon's entire AWS from scratch — but faster. We had one advantage: Windows Server, SQL Server, .NET, and Active Directory were already inside every enterprise. We made Azure deeply integrated with all of them. That was our differentiation: 'Azure works with your existing Microsoft investment.'"
+> "Microsoft had to build the equivalent of Amazon's entire AWS from scratch - but faster. We had one advantage: Windows Server, SQL Server, .NET, and Active Directory were already inside every enterprise. We made Azure deeply integrated with all of them. That was our differentiation: 'Azure works with your existing Microsoft investment.'"
 
 **Azure Service Fabric (2014):**
 
@@ -45,9 +45,9 @@ Service Fabric vs Kubernetes:
   Service Fabric: stateful service orchestration (actors with persistent state)
 
   Azure's use case: Azure SQL Database has state (your database!)
-    → Service Fabric actor model: each SQL database instance = one actor
-    → Actor knows its state (which rows, which transactions)
-    → Service Fabric handles placement, failover, scaling
+ -> Service Fabric actor model: each SQL database instance = one actor
+ -> Actor knows its state (which rows, which transactions)
+ -> Service Fabric handles placement, failover, scaling
 
   Microsoft's pattern: Reliable Actors = Erlang processes in .NET
     Stateful, isolated, addressable, supervised
@@ -60,7 +60,7 @@ Service Fabric vs Kubernetes:
 
 **The problem:**
 
-Teams launched in 2017. Microsoft Teams had 32 million daily users in March 2020. By April 2020 (COVID lockdowns): **75 million daily users — 2.3× in 3 weeks.**
+Teams launched in 2017. Microsoft Teams had 32 million daily users in March 2020. By April 2020 (COVID lockdowns): **75 million daily users - 2.3x in 3 weeks.**
 
 ```
 The scaling challenge:
@@ -71,7 +71,7 @@ The scaling challenge:
   Each user: 5-10 open WebSocket connections
     (presence, chat, notifications, meetings)
 
-  75M users × 7 connections = 525M persistent connections
+  75M users x 7 connections = 525M persistent connections
 
   Mitigation:
     Azure Kubernetes Service: auto-scale horizontally
@@ -84,11 +84,11 @@ The scaling challenge:
 
 ```
 Teams message flow:
-  User sends message → Teams WebSocket API Gateway
-    → Azure Event Hub (Kafka-compatible stream)
-      → Message Processing Service (Azure Functions)
-        → Azure Cosmos DB (message storage, global consistency)
-          → Notification Service → push to all participants' connections
+  User sends message -> Teams WebSocket API Gateway
+ -> Azure Event Hub (Kafka-compatible stream)
+ -> Message Processing Service (Azure Functions)
+ -> Azure Cosmos DB (message storage, global consistency)
+ -> Notification Service -> push to all participants' connections
 
 Why Cosmos DB for Teams:
   Messages are global (Tokyo user in meeting with Paris user)
@@ -115,14 +115,14 @@ Cosmos DB multi-model:
 
 All backed by the same Cosmos DB infrastructure:
   Global distribution: replicate to 60+ Azure regions
-  Multiple consistency levels: Strong → Bounded Staleness → Session → Eventual
+  Multiple consistency levels: Strong -> Bounded Staleness -> Session -> Eventual
   Auto-sharding: horizontal scaling is invisible to the application
 ```
 
 **In Clean Architecture terms:**
 
 ```typescript
-// Teams Message Service — use case
+// Teams Message Service - use case
 class SendMessageUseCase {
   constructor(
     private messageRepo: IMessageRepository,  // port
@@ -132,8 +132,8 @@ class SendMessageUseCase {
 
   async execute(req: SendMessageRequest) {
     const message = Message.create(req.channelId, req.text, req.senderId);
-    await this.messageRepo.save(message);  // → Cosmos DB adapter
-    await this.eventBus.publish(new MessageSentEvent(message));  // → Event Hub adapter
+    await this.messageRepo.save(message);  // -> Cosmos DB adapter
+    await this.eventBus.publish(new MessageSentEvent(message));  // -> Event Hub adapter
     return { messageId: message.id };
   }
 }
@@ -150,7 +150,7 @@ class EventHubEventBus implements IEventBus { /* Event Hub SDK */ }
 **GitHub at acquisition:**
 - 85M+ repositories
 - 30M+ developers
-- Ruby on Rails monolith ("Ghe" — GitHub Enterprise)
+- Ruby on Rails monolith ("Ghe" - GitHub Enterprise)
 - MySQL for core data
 - Elasticsearch for code search
 
@@ -158,16 +158,16 @@ class EventHubEventBus implements IEventBus { /* Event Hub SDK */ }
 
 ```
 The code search problem:
-  GitHub had 200M+ repositories × average 100K lines = 20 quadrillion lines
+  GitHub had 200M+ repositories x average 100K lines = 20 quadrillion lines
   Finding all uses of a function across all open source code:
-    Old: grep through all repos serially → impossible at scale
+    Old: grep through all repos serially -> impossible at scale
     New: Blackbird (GitHub's code search engine, 2022)
 
 Blackbird architecture:
   Trigram index: every 3-character sequence in every file indexed
   Custom inverted index: stored in memory for speed
   Distributed across 100s of machines
-  Query: "HttpClient usage" → trigrams → candidate files → grep → results
+  Query: "HttpClient usage" -> trigrams -> candidate files -> grep -> results
   Result: search 500M+ code files in <1 second
 ```
 
@@ -179,14 +179,14 @@ GitHub Actions: runs CI/CD for 100M+ repositories
   Runners: Azure VMs that spin up on demand
 
   Scale: 1M+ concurrent CI/CD jobs during peak
-  (Every developer pushes code → CI runs → 1M simultaneous builds)
+  (Every developer pushes code -> CI runs -> 1M simultaneous builds)
 
   Architecture:
-    Push to GitHub → webhook → Actions queue (Azure Service Bus)
-    → Runner picker (finds available runner) → runner assigned
-    → Container started with workflow YAML
-    → Logs streamed back to GitHub (WebSocket)
-    → Status updated in GitHub commit
+    Push to GitHub -> webhook -> Actions queue (Azure Service Bus)
+ -> Runner picker (finds available runner) -> runner assigned
+ -> Container started with workflow YAML
+ -> Logs streamed back to GitHub (WebSocket)
+ -> Status updated in GitHub commit
 ```
 
 ---
@@ -207,17 +207,17 @@ GitHub Actions: runs CI/CD for 100M+ repositories
 
 ## Lessons for Your Architecture
 
-1. **Existing customer base is an architectural constraint** — Azure's deepest differentiation: works with existing Microsoft investments (Active Directory, SQL Server, .NET)
-2. **COVID-scale events are planning problems** — Teams survived 2.3× growth in 3 weeks because of elastic cloud architecture designed for it
-3. **Multi-model databases reduce operational complexity** — Cosmos DB's multiple APIs mean one ops team instead of five
-4. **Code search at GitHub scale requires custom solutions** — Blackbird replaced Elasticsearch because no off-the-shelf tool handles 20 quadrillion lines
+1. **Existing customer base is an architectural constraint** - Azure's deepest differentiation: works with existing Microsoft investments (Active Directory, SQL Server, .NET)
+2. **COVID-scale events are planning problems** - Teams survived 2.3x growth in 3 weeks because of elastic cloud architecture designed for it
+3. **Multi-model databases reduce operational complexity** - Cosmos DB's multiple APIs mean one ops team instead of five
+4. **Code search at GitHub scale requires custom solutions** - Blackbird replaced Elasticsearch because no off-the-shelf tool handles 20 quadrillion lines
 
 ---
 
 ## Sources
-- [Cloud Design Patterns — Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/patterns/)
+- [Cloud Design Patterns - Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/patterns/)
 - [Reinventing hybrid cloud integration at Microsoft](https://www.microsoft.com/insidetrack/blog/reinventing-hybrid-cloud-integration-at-microsoft-from-months-to-one-day/)
-- [Design patterns for microservices — Microsoft Azure Blog](https://azure.microsoft.com/en-us/blog/design-patterns-for-microservices/)
+- [Design patterns for microservices - Microsoft Azure Blog](https://azure.microsoft.com/en-us/blog/design-patterns-for-microservices/)
 
 
 ---

@@ -1,6 +1,6 @@
 # 3-Layer Model + Clean Code + Functional Programming
 
-> "Clean Architecture tells you WHERE code lives. Clean Code tells you HOW code is written. Functional Programming tells you WHAT style of code is best for each layer. Together they create code that is correct, readable, testable, and maintainable." — Senior architect
+> "Clean Architecture tells you WHERE code lives. Clean Code tells you HOW code is written. Functional Programming tells you WHAT style of code is best for each layer. Together they create code that is correct, readable, testable, and maintainable." - Senior architect
 
 ---
 
@@ -8,29 +8,30 @@
 
 | | |
 |---|---|
-| **3-Layer Model** | Presentation → Business Logic → Data Access |
-| **Clean Architecture** | Entities → Use Cases → Adapters → Frameworks |
+| **3-Layer Model** | Presentation -> Business Logic -> Data Access |
+| **Clean Architecture** | Entities -> Use Cases -> Adapters -> Frameworks |
 | **Clean Code** | Principles for writing readable, maintainable code |
 | **Functional Programming** | Pure functions, immutability, function composition |
 | **How they relate** | FP style applied to Clean Architecture layers = maximum quality |
 
 ---
 
-## The Three Layers — Simplified Mental Model
+## The Three Layers - Simplified Mental Model
 
 Before Clean Architecture (4 rings), every developer learns 3 layers:
 
-```
-┌─────────────────────────────────┐
-│  Presentation Layer             │  ← "What the user sees"
-│  (UI, Controllers, API routes)  │
-├─────────────────────────────────┤
-│  Business Logic Layer           │  ← "What the app does"
-│  (Services, Use Cases, Rules)   │
-├─────────────────────────────────┤
-│  Data Access Layer              │  ← "Where data lives"
-│  (Repositories, ORM, Queries)   │
-└─────────────────────────────────┘
+The three layers stacked top to bottom. Each layer only calls the layer directly below it.
+
+```mermaid
+flowchart TD
+    P["Presentation Layer - what the user sees - UI, Controllers, API routes"]
+    B["Business Logic Layer - what the app does - Services, Use Cases, Rules"]
+    D["Data Access Layer - where data lives - Repositories, ORM, Queries"]
+    DB[("Database")]
+
+    P -->|calls| B
+    B -->|calls| D
+    D -->|reads/writes| DB
 ```
 
 **The rule:** Each layer only talks to the layer directly below it.
@@ -39,11 +40,11 @@ Before Clean Architecture (4 rings), every developer learns 3 layers:
 - Data Access calls the Database
 
 **Clean Architecture adds precision:**
-- Presentation Layer → Interface Adapters + Frameworks & Drivers
-- Business Logic → Use Cases + Entities
-- Data Access → Interface Adapters (Repositories) + Frameworks & Drivers (DB driver)
+- Presentation Layer -> Interface Adapters + Frameworks & Drivers
+- Business Logic -> Use Cases + Entities
+- Data Access -> Interface Adapters (Repositories) + Frameworks & Drivers (DB driver)
 
-**The key improvement:** Dependency Inversion — Business Logic defines interfaces, Data Access implements them.
+**The key improvement:** Dependency Inversion - Business Logic defines interfaces, Data Access implements them.
 
 ---
 
@@ -54,7 +55,7 @@ Before Clean Architecture (4 rings), every developer learns 3 layers:
 > - **Business Logic Layer** = the chef. Knows HOW to make the food. The recipe is the business rule. The chef doesn't care if you're a customer or just walked into the kitchen.
 > - **Data Access Layer** = the pantry/storage. Stores and retrieves ingredients. Doesn't care what dish is being cooked.
 >
-> The problem with bad code: the waiter sometimes cooks (business logic in controllers), and the chef sometimes talks to customers (database queries in service methods that also return HTTP responses). Clean Code means every layer does exactly its job — nothing more."
+> The problem with bad code: the waiter sometimes cooks (business logic in controllers), and the chef sometimes talks to customers (database queries in service methods that also return HTTP responses). Clean Code means every layer does exactly its job - nothing more."
 
 ---
 
@@ -63,7 +64,7 @@ Before Clean Architecture (4 rings), every developer learns 3 layers:
 ### Presentation Layer (Controller)
 
 ```typescript
-// ✅ CLEAN: Controller only translates HTTP ↔ Use Case
+// [OK] CLEAN: Controller only translates HTTP <-> Use Case
 // No business logic. No database access.
 @Controller('/orders')
 class OrderController {
@@ -92,12 +93,12 @@ class OrderController {
   }
 }
 
-// ❌ BAD: Business logic in controller
+// [X] BAD: Business logic in controller
 @Post('/')
 async create(@Body() dto: any) {
-  if (dto.items.length === 0) throw new Error('Empty order'); // ← business rule in controller!
-  const order = await this.db.query('INSERT INTO orders...'); // ← DB access in controller!
-  await this.stripe.charges.create({ amount: total }); // ← payment logic in controller!
+  if (dto.items.length === 0) throw new Error('Empty order'); // <- business rule in controller!
+  const order = await this.db.query('INSERT INTO orders...'); // <- DB access in controller!
+  await this.stripe.charges.create({ amount: total }); // <- payment logic in controller!
   return order;
 }
 ```
@@ -105,14 +106,14 @@ async create(@Body() dto: any) {
 ### Business Logic Layer (Use Case)
 
 ```typescript
-// ✅ CLEAN: Use Case contains ONLY business rules
+// [OK] CLEAN: Use Case contains ONLY business rules
 // No HTTP. No SQL. Depends on interfaces, not implementations.
 class PlaceOrderUseCase {
   constructor(
-    private readonly orders: IOrderRepository,    // interface ← not Postgres
-    private readonly inventory: IInventoryService, // interface ← not SQL
-    private readonly payments: IPaymentGateway,   // interface ← not Stripe
-    private readonly events: IEventBus,           // interface ← not Kafka
+    private readonly orders: IOrderRepository,    // interface <- not Postgres
+    private readonly inventory: IInventoryService, // interface <- not SQL
+    private readonly payments: IPaymentGateway,   // interface <- not Stripe
+    private readonly events: IEventBus,           // interface <- not Kafka
   ) {}
 
   async execute(request: PlaceOrderRequest): Promise<PlaceOrderResponse> {
@@ -147,7 +148,7 @@ class PlaceOrderUseCase {
 ### Data Access Layer (Repository)
 
 ```typescript
-// ✅ CLEAN: Repository implements the interface, handles all DB concerns
+// [OK] CLEAN: Repository implements the interface, handles all DB concerns
 class OrderRepositoryPostgres implements IOrderRepository {
   constructor(private db: DatabasePool) {}
 
@@ -177,7 +178,7 @@ class OrderRepositoryPostgres implements IOrderRepository {
     `, [id]);
 
     if (rows.length === 0) return null;
-    return OrderMapper.toDomain(rows);  // DB rows → Domain entity
+    return OrderMapper.toDomain(rows);  // DB rows -> Domain entity
   }
 }
 ```
@@ -189,17 +190,17 @@ class OrderRepositoryPostgres implements IOrderRepository {
 ### 1. Meaningful Names (No Abbreviations)
 
 ```typescript
-// ❌ BAD: cryptic abbreviations
+// [X] BAD: cryptic abbreviations
 const usrSvc = new UserSvc();
 const ord = await ordRepo.fndById(req.params.id);
 const amt = calcTotal(ord.itms);
 
-// ✅ GOOD: reads like English
+// [OK] GOOD: reads like English
 const userService = new UserService();
 const order = await orderRepository.findById(request.params.orderId);
 const totalAmount = calculateOrderTotal(order.items);
 
-// ✅ GOOD: boolean names should sound like questions
+// [OK] GOOD: boolean names should sound like questions
 const isActive = user.active;
 const hasPermission = user.canEdit(resource);
 const isEmpty = cart.items.length === 0;
@@ -208,7 +209,7 @@ const isEmpty = cart.items.length === 0;
 ### 2. Single Responsibility at Every Level
 
 ```typescript
-// ❌ BAD: function does multiple things
+// [X] BAD: function does multiple things
 async function processOrder(orderId: string, userId: string) {
   const order = await db.query('SELECT * FROM orders WHERE id = $1', [orderId]);
   if (order.user_id !== userId) throw new Error('Forbidden');  // auth check
@@ -220,7 +221,7 @@ async function processOrder(orderId: string, userId: string) {
   // This function has 5 responsibilities = 5 reasons to change
 }
 
-// ✅ GOOD: each function does ONE thing
+// [OK] GOOD: each function does ONE thing
 class PlaceOrderUseCase {
   async execute(req: PlaceOrderRequest) {
     this.authorizeUser(req);           // delegates to auth
@@ -235,7 +236,7 @@ class PlaceOrderUseCase {
 ### 3. Small Functions (Do One Thing Well)
 
 ```typescript
-// ❌ BAD: 80-line function with nested conditionals
+// [X] BAD: 80-line function with nested conditionals
 function validateAndProcessPayment(order, user, card, currency) {
   if (order !== null) {
     if (order.items.length > 0) {
@@ -250,7 +251,7 @@ function validateAndProcessPayment(order, user, card, currency) {
   }
 }
 
-// ✅ GOOD: small, flat, guard-clause style
+// [OK] GOOD: small, flat, guard-clause style
 function processPayment(order: Order, user: User, card: PaymentCard): void {
   assertOrderNotEmpty(order);
   assertUserActive(user);
@@ -269,12 +270,12 @@ function assertOrderNotEmpty(order: Order): void {
 ### 4. No Magic Numbers or Strings
 
 ```typescript
-// ❌ BAD: magic numbers
+// [X] BAD: magic numbers
 if (user.trialDays > 14) { /* ... */ }
 await redis.setex(key, 3600, value);
 if (order.items.length > 100) { /* ... */ }
 
-// ✅ GOOD: named constants
+// [OK] GOOD: named constants
 const TRIAL_PERIOD_DAYS = 14;
 const PRODUCT_CACHE_TTL_SECONDS = 60 * 60;  // 1 hour
 const MAX_ITEMS_PER_ORDER = 100;
@@ -287,11 +288,11 @@ if (order.items.length > MAX_ITEMS_PER_ORDER) { /* ... */ }
 ### 5. Error Handling: Be Explicit
 
 ```typescript
-// ❌ BAD: generic errors that lose context
+// [X] BAD: generic errors that lose context
 throw new Error('Something went wrong');
 return null;  // instead of throwing
 
-// ✅ GOOD: domain-specific errors with context
+// [OK] GOOD: domain-specific errors with context
 class DomainError extends Error {
   constructor(
     public readonly code: string,
@@ -311,7 +312,7 @@ if (available < requested) {
     { productId, available, requested }
   );
 }
-// The controller catches DomainError → maps to 422 Unprocessable Entity
+// The controller catches DomainError -> maps to 422 Unprocessable Entity
 // The use case never knows what HTTP status code to use
 ```
 
@@ -323,7 +324,7 @@ if (available < requested) {
 
 **Entities should be pure functions:**
 ```typescript
-// ✅ FP: Entity methods are pure — same input → same output, no side effects
+// [OK] FP: Entity methods are pure - same input -> same output, no side effects
 class Order {
   // Pure: doesn't modify state, returns new value
   calculateTotal(): Money {
@@ -348,17 +349,17 @@ class Order {
 ### Immutability in Practice
 
 ```typescript
-// ❌ Mutable (hard to reason about, causes bugs)
+// [X] Mutable (hard to reason about, causes bugs)
 class Cart {
   items: CartItem[] = [];
 
   addItem(item: CartItem) {
-    this.items.push(item);   // mutates in place — what was items before?
+    this.items.push(item);   // mutates in place - what was items before?
     this.recalculateTotal(); // side effect
   }
 }
 
-// ✅ Immutable (easy to reason about, thread-safe, testable)
+// [OK] Immutable (easy to reason about, thread-safe, testable)
 class Cart {
   constructor(
     private readonly items: ReadonlyArray<CartItem>,
@@ -366,7 +367,7 @@ class Cart {
   ) {}
 
   addItem(item: CartItem): Cart {
-    // Returns NEW Cart — original unchanged
+    // Returns NEW Cart - original unchanged
     const newItems = [...this.items, item];
     const newTotal = this.total.add(item.subtotal());
     return new Cart(newItems, newTotal);
@@ -382,10 +383,10 @@ const cartWithBoth = cartWithApple.addItem(book); // cartWithApple unchanged!
 ### Pure Functions for Business Rules
 
 ```typescript
-// All business rules as pure functions — easy to test, impossible to have side effects
+// All business rules as pure functions - easy to test, impossible to have side effects
 // Lives in Domain / Entity layer
 
-// Pure function: same inputs → same output, no external state
+// Pure function: same inputs -> same output, no external state
 const calculateOrderTotal = (items: OrderItem[]): Money =>
   items.reduce((total, item) => total.add(item.subtotal()), Money.ZERO);
 
@@ -412,7 +413,7 @@ describe('calculateOrderTotal', () => {
 // No database needed. No HTTP server. Runs in <1ms.
 ```
 
-### Function Composition — Building Pipelines
+### Function Composition - Building Pipelines
 
 ```typescript
 // Compose small pure functions into larger workflows
@@ -450,15 +451,15 @@ const savedUser = prepareUserForSave(rawUser);
 // Clean, testable, each step independently verifiable
 ```
 
-### Option/Result Types — Eliminating null Checks
+### Option/Result Types - Eliminating null Checks
 
 ```typescript
-// ❌ BAD: null everywhere — causes NullPointerException
+// [X] BAD: null everywhere - causes NullPointerException
 const user = await userRepo.findById(id); // might be null
 const address = user.address; // ERROR if user is null!
 const city = address.city;    // ERROR if address is null!
 
-// ✅ GOOD: Option type — null is explicit
+// [OK] GOOD: Option type - null is explicit
 type Option<T> = { kind: 'some', value: T } | { kind: 'none' };
 
 class UserRepository {
@@ -469,7 +470,7 @@ class UserRepository {
   }
 }
 
-// In use case — must handle both cases explicitly:
+// In use case - must handle both cases explicitly:
 const userOption = await userRepo.findById(id);
 if (userOption.kind === 'none') {
   throw new DomainError('USER_NOT_FOUND', `User ${id} not found`);
@@ -477,16 +478,16 @@ if (userOption.kind === 'none') {
 const user = userOption.value; // TypeScript knows this is User, not User | null
 ```
 
-### Result Type — Making Errors Explicit
+### Result Type - Making Errors Explicit
 
 ```typescript
-// ❌ BAD: exceptions for expected failures
+// [X] BAD: exceptions for expected failures
 async function chargeCard(amount: Money): Promise<void> {
   const result = await stripe.charge(amount);
   if (result.status === 'declined') throw new Error('Card declined'); // exception for control flow
 }
 
-// ✅ GOOD: Result type — success or failure is explicit in the type
+// [OK] GOOD: Result type - success or failure is explicit in the type
 type Result<T, E> =
   | { success: true; value: T }
   | { success: false; error: E };
@@ -511,30 +512,43 @@ const payment = chargeResult.value;
 
 ---
 
-## Putting It All Together — A Complete Feature
+## Putting It All Together - A Complete Feature
 
-```
-User Story: "As a customer, I want to place an order with items in my cart."
+User story: "As a customer, I want to place an order with items in my cart." The flow moves top to bottom through each layer, with the FP style noted per component.
 
-Layer            Component                FP Style
-──────────────── ──────────────────────── ────────────────────────────────────
-Presentation     OrderController          Thin adapter (translates HTTP ↔ DTO)
-                 PlaceOrderDto            Immutable data transfer object
-                 ↓
-Use Case         PlaceOrderUseCase        Orchestrates domain + ports
-                                          No side effects in business logic
-                 ↓
-Domain/Entity    Order.create()           Pure function (returns new Order)
-                 Order.calculateTotal()   Pure function (same input → same output)
-                 Money.add()              Immutable value object
-                 ↓
-Interface        IOrderRepository         Port (interface) defined here
-Adapters         IPaymentGateway          Port (interface) defined here
-                 OrderMapper.toDomain()   Pure function (DB row → Domain entity)
-                 ↓
-Infrastructure   OrderRepositoryPostgres  Implements IOrderRepository
-                 StripePaymentGateway     Implements IPaymentGateway
-                 KafkaEventBus            Implements IEventBus
+```mermaid
+flowchart TD
+    subgraph Presentation["Presentation - thin adapter"]
+        OC["OrderController - translates HTTP to DTO"]
+        DTO["PlaceOrderDto - immutable data transfer object"]
+    end
+
+    subgraph UseCase["Use Case - orchestration, no side effects"]
+        UC["PlaceOrderUseCase - orchestrates domain plus ports"]
+    end
+
+    subgraph Domain["Domain / Entity - pure and immutable"]
+        OCreate["Order.create - pure, returns new Order"]
+        OTotal["Order.calculateTotal - pure, same input same output"]
+        MAdd["Money.add - immutable value object"]
+    end
+
+    subgraph Adapters["Interface Adapters - ports defined here"]
+        IOR["IOrderRepository - port interface"]
+        IPG["IPaymentGateway - port interface"]
+        OM["OrderMapper.toDomain - pure, DB row to entity"]
+    end
+
+    subgraph Infra["Infrastructure - port implementations"]
+        ORP["OrderRepositoryPostgres - implements IOrderRepository"]
+        SPG["StripePaymentGateway - implements IPaymentGateway"]
+        KEB["KafkaEventBus - implements IEventBus"]
+    end
+
+    Presentation --> UseCase
+    UseCase --> Domain
+    Domain --> Adapters
+    Adapters --> Infra
 ```
 
 ---
@@ -543,13 +557,13 @@ Infrastructure   OrderRepositoryPostgres  Implements IOrderRepository
 
 | Layer | Test type | Speed | What's tested |
 |---|---|---|---|
-| **Pure functions** (entity) | Unit test | ⚡ <1ms | Business rules (pure functions, no mocks needed) |
-| **Use Cases** | Unit test + mocks | ⚡ <10ms | Orchestration (mock all ports) |
-| **Adapters** | Integration test | 🐢 ~200ms | DB queries, HTTP calls |
-| **E2E** | System test | 🐌 ~2s | Full user journey |
+| **Pure functions** (entity) | Unit test |  <1ms | Business rules (pure functions, no mocks needed) |
+| **Use Cases** | Unit test + mocks |  <10ms | Orchestration (mock all ports) |
+| **Adapters** | Integration test |  ~200ms | DB queries, HTTP calls |
+| **E2E** | System test |  ~2s | Full user journey |
 
 ```typescript
-// Pure entity test — zero infrastructure, zero mocks
+// Pure entity test - zero infrastructure, zero mocks
 describe('Order', () => {
   it('calculates total correctly', () => {
     const order = Order.create('user-1', [
@@ -565,7 +579,7 @@ describe('Order', () => {
   });
 });
 
-// Use case test — mock all ports, test orchestration
+// Use case test - mock all ports, test orchestration
 describe('PlaceOrderUseCase', () => {
   it('charges payment and saves order', async () => {
     const mockOrders = { save: jest.fn(), findById: jest.fn() };
@@ -590,4 +604,4 @@ describe('PlaceOrderUseCase', () => {
 >
 > Functional Programming is the style that achieves this: pure functions are testable by definition (no hidden state), immutability prevents a whole class of bugs (you can't accidentally modify something), and function composition lets you build complex behavior from simple, verified building blocks.
 >
-> Applied to Clean Architecture: pure functions in the Entity layer, functional composition in Use Cases, and side effects pushed to the edges (adapters). This is not a theoretical ideal — it's what Netflix, Stripe, and Airbnb actually write."
+> Applied to Clean Architecture: pure functions in the Entity layer, functional composition in Use Cases, and side effects pushed to the edges (adapters). This is not a theoretical ideal - it's what Netflix, Stripe, and Airbnb actually write."

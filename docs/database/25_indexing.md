@@ -1,6 +1,6 @@
-# Database Indexing — Complete Guide
+# Database Indexing - Complete Guide
 
-> "An index is a promise to the database engine: 'I will pay the cost of maintaining this structure so you don't have to scan the table every time.'" — Database internals
+> "An index is a promise to the database engine: 'I will pay the cost of maintaining this structure so you don't have to scan the table every time.'" - Database internals
 
 ---
 
@@ -9,33 +9,33 @@
 | | |
 |---|---|
 | **What it solves** | Slow queries due to full table scans |
-| **Trade-off** | Faster reads ↔ Slower writes, more storage |
+| **Trade-off** | Faster reads <-> Slower writes, more storage |
 | **Most important skill** | Reading EXPLAIN plans to know IF an index is being used |
 
 ---
 
 ## Senior to Junior: Why Indexes Matter
 
-> "Your app works perfectly with 100 rows in the database. You launch, get 1M users, and suddenly everything is slow. You look at the database: one query is doing a full table scan on 50M rows. That's your missing index. The query is functionally correct — it returns the right data. It's just doing it the hard way: checking every single row instead of jumping directly to what it needs. One index, added in 30 seconds, fixes it completely."
+> "Your app works perfectly with 100 rows in the database. You launch, get 1M users, and suddenly everything is slow. You look at the database: one query is doing a full table scan on 50M rows. That's your missing index. The query is functionally correct - it returns the right data. It's just doing it the hard way: checking every single row instead of jumping directly to what it needs. One index, added in 30 seconds, fixes it completely."
 
 ```sql
 -- Without index (full table scan):
 SELECT * FROM orders WHERE user_id = 12345;
 -- Database engine: "I need to check all 50M rows to find user 12345's orders"
--- Time: O(n) — proportional to table size
+-- Time: O(n) - proportional to table size
 -- 1M rows: 50ms. 50M rows: 2500ms. 500M rows: 25 seconds.
 
 -- With index on user_id:
 CREATE INDEX idx_orders_user_id ON orders(user_id);
 -- Database engine: "I'll use the index to jump directly to user 12345's rows"
--- Time: O(log n) — proportional to LOG of table size
+-- Time: O(log n) - proportional to LOG of table size
 -- 1M rows: 0.5ms. 50M rows: 0.6ms. 500M rows: 0.7ms.
--- Log(n) barely grows as n grows — this is the power of indexes
+-- Log(n) barely grows as n grows - this is the power of indexes
 ```
 
 ---
 
-## B-Tree Indexes — The Default (PostgreSQL, MySQL InnoDB)
+## B-Tree Indexes - The Default (PostgreSQL, MySQL InnoDB)
 
 **How it works:**
 
@@ -49,17 +49,17 @@ B-Tree for user_id column:
     [100]      [300]   [600]    [900]
    /    \      /   \    /  \    /   \
  [50] [150] [250] [350] [550][650] [850][950]
-  ↓     ↓     ↓     ↓     ↓    ↓     ↓    ↓
+   v       v       v       v       v      v       v      v 
  rows  rows  rows  rows  rows  rows  rows rows
 
 Looking for user_id = 650:
-  Check root: 650 > 500? yes → go right
-  Check 800: 650 < 800? yes → go left
-  Check 600: 650 > 600? yes → go right
-  Found 650 → jump to data rows
+  Check root: 650 > 500? yes -> go right
+  Check 800: 650 < 800? yes -> go left
+  Check 600: 650 > 600? yes -> go right
+  Found 650 -> jump to data rows
 
 Total comparisons: 4 (for 950 rows)
-log₂(950) ≈ 10 comparisons for ANY row in 950 row table
+log2(950) ~= 10 comparisons for ANY row in 950 row table
 ```
 
 **B-Tree supports:**
@@ -69,29 +69,29 @@ log₂(950) ≈ 10 comparisons for ANY row in 950 row table
 - ORDER BY (if sorted same as index)
 
 **B-Tree does NOT support:**
-- Contains: `WHERE email LIKE '%gmail%'` → full scan
+- Contains: `WHERE email LIKE '%gmail%'` -> full scan
 - Case-insensitive by default (use functional index)
 
 ---
 
-## LSM Tree Indexes — Write-Optimized (Cassandra, RocksDB, LevelDB)
+## LSM Tree Indexes - Write-Optimized (Cassandra, RocksDB, LevelDB)
 
 **The problem with B-Trees at high write volume:**
 
 ```
 B-Tree write problem:
-  Insert row with user_id = 123 → find correct leaf node → insert in place
-  If the page is full → SPLIT: rearrange two pages
+  Insert row with user_id = 123 -> find correct leaf node -> insert in place
+  If the page is full -> SPLIT: rearrange two pages
   Split might cascade up the tree
   Random I/O: the leaf page might be anywhere on disk
-  High write load: 100K inserts/sec → 100K random I/O → disk can't keep up
+  High write load: 100K inserts/sec -> 100K random I/O -> disk can't keep up
 
 LSM Tree solution: convert random writes to sequential writes
   All writes go to: in-memory buffer (MemTable)
   When buffer full: flush as sorted SSTable (Sequential String Table) to disk
-  Sequential write: 10-100× faster than random write on SSD/HDD
+  Sequential write: 10-100x faster than random write on SSD/HDD
 
-Read: check MemTable → L0 SSTables → L1 SSTables → ... (most recent first)
+Read: check MemTable -> L0 SSTables -> L1 SSTables -> ... (most recent first)
 Compaction: background process merges and sorts SSTables
 ```
 
@@ -111,7 +111,7 @@ Use LSM Tree (Cassandra, RocksDB): high write throughput, simple lookups
 ### Single Column Index
 ```sql
 CREATE INDEX idx_users_email ON users(email);
--- Used for: WHERE email = 'x' · WHERE email LIKE 'x%' · ORDER BY email
+-- Used for: WHERE email = 'x' - WHERE email LIKE 'x%' - ORDER BY email
 ```
 
 ### Composite Index (Multi-Column)
@@ -119,12 +119,12 @@ CREATE INDEX idx_users_email ON users(email);
 -- CRITICAL: Order matters! The leftmost columns must be in the WHERE clause
 CREATE INDEX idx_orders_user_status ON orders(user_id, status, created_at);
 
--- ✅ Uses the index (leftmost columns present):
+-- [OK] Uses the index (leftmost columns present):
 SELECT * FROM orders WHERE user_id = 1 AND status = 'pending';
 SELECT * FROM orders WHERE user_id = 1;
 SELECT * FROM orders WHERE user_id = 1 ORDER BY created_at;
 
--- ❌ Does NOT use the index (missing leftmost column):
+-- [X] Does NOT use the index (missing leftmost column):
 SELECT * FROM orders WHERE status = 'pending';  -- status is not the first column
 SELECT * FROM orders WHERE created_at > '2024-01-01';  -- created_at is third
 
@@ -168,7 +168,7 @@ CREATE INDEX idx_posts_content_fts ON posts USING GIN(to_tsvector('english', con
 SELECT * FROM posts WHERE to_tsvector('english', content) @@ plainto_tsquery('clean architecture');
 ```
 
-### GiST / GIN — Spatial and Full-Text
+### GiST / GIN - Spatial and Full-Text
 ```sql
 -- GiST: for geometric, range, and nearest-neighbor queries
 CREATE INDEX idx_restaurants_location ON restaurants USING GIST(location);
@@ -180,7 +180,7 @@ SELECT * FROM products WHERE metadata @> '{"brand": "Apple"}';
 
 ---
 
-## Reading EXPLAIN Plans — Your Most Important Skill
+## Reading EXPLAIN Plans - Your Most Important Skill
 
 ```sql
 -- PostgreSQL EXPLAIN ANALYZE
@@ -191,7 +191,7 @@ Seq Scan on orders  (cost=0.00..45231.00 rows=23 width=156) (actual time=0.123..
   Filter: (user_id = 12345)
   Rows Removed by Filter: 5000000
 Planning Time: 0.234 ms
-Execution Time: 2341.456 ms  ← 2.3 SECONDS = BAD
+Execution Time: 2341.456 ms <- 2.3 SECONDS = BAD
 
 -- Key terms to understand:
 -- Seq Scan = full table scan = NO INDEX USED (usually bad for large tables)
@@ -205,28 +205,28 @@ Index Scan using idx_orders_user_id on orders  (cost=0.56..12.23 rows=23 width=1
   (actual time=0.045..0.123 rows=23 loops=1)
   Index Cond: (user_id = 12345)
 Planning Time: 0.456 ms
-Execution Time: 0.178 ms  ← 0.2ms = 13,000× faster!
+Execution Time: 0.178 ms <- 0.2ms = 13,000x faster!
 ```
 
 **What to look for in EXPLAIN:**
 
 ```
 RED FLAGS (investigate these):
-  Seq Scan on large table  → might need an index
-  Rows Removed by Filter: 5000000  → checking many rows to find few
+  Seq Scan on large table -> might need an index
+  Rows Removed by Filter: 5000000 -> checking many rows to find few
   Execution Time: > 100ms for simple queries
 
 GREEN FLAGS (working well):
-  Index Scan  → using B-tree index
-  Bitmap Index Scan  → using index efficiently
-  Index Only Scan  → data from index itself, no table access needed!
+  Index Scan -> using B-tree index
+  Bitmap Index Scan -> using index efficiently
+  Index Only Scan -> data from index itself, no table access needed!
   Execution Time: < 10ms
 
 OPERATIONS (cost breakdown):
-  Nested Loop  → good for small result sets
-  Hash Join  → good for larger joins
-  Merge Join  → good for pre-sorted data
-  Sort  → sort needed (check if index can eliminate it)
+  Nested Loop -> good for small result sets
+  Hash Join -> good for larger joins
+  Merge Join -> good for pre-sorted data
+  Sort -> sort needed (check if index can eliminate it)
 ```
 
 ---
@@ -242,29 +242,29 @@ OPERATIONS (cost breakdown):
 -- Bad: index only on user_id, but SELECT needs status and total
 CREATE INDEX idx_orders_user ON orders(user_id);
 SELECT status, total FROM orders WHERE user_id = 123;
--- → Index Scan (finds rows) + heap fetch (reads table for status, total)
+-- -> Index Scan (finds rows) + heap fetch (reads table for status, total)
 
 -- Good: covering index includes queried columns
 CREATE INDEX idx_orders_user_covering ON orders(user_id) INCLUDE (status, total);
 SELECT status, total FROM orders WHERE user_id = 123;
--- → Index Only Scan (never touches table = fastest possible)
+-- -> Index Only Scan (never touches table = fastest possible)
 ```
 
 ### The Cardinality Rule
 
 ```sql
--- High cardinality column = many distinct values → good index candidate
--- Low cardinality column = few distinct values → poor index candidate
+-- High cardinality column = many distinct values -> good index candidate
+-- Low cardinality column = few distinct values -> poor index candidate
 
 -- HIGH cardinality (good for index):
-  user_id: 10M distinct values in 10M rows → index is very selective
-  email: unique per user → perfect
-  order_id: unique → perfect
+  user_id: 10M distinct values in 10M rows -> index is very selective
+  email: unique per user -> perfect
+  order_id: unique -> perfect
 
 -- LOW cardinality (poor index candidate):
-  status: ('pending', 'completed', 'cancelled') → 3 distinct values
-  country: 10-200 distinct values → might be useful if specific country is rare
-  boolean: 2 values → useless as a standalone index
+  status: ('pending', 'completed', 'cancelled') -> 3 distinct values
+  country: 10-200 distinct values -> might be useful if specific country is rare
+  boolean: 2 values -> useless as a standalone index
 
 -- Combining low+high cardinality:
   CREATE INDEX ON orders(status, user_id);  -- status first filters, user_id narrows
@@ -279,8 +279,8 @@ CREATE INDEX idx_orders_created_desc ON orders(created_at DESC);
 
 -- Now this query needs NO SORT:
 SELECT * FROM orders ORDER BY created_at DESC LIMIT 20;
--- Without index: sorts 50M rows to get top 20 → slow
--- With index: walks index backward, takes first 20 → instant
+-- Without index: sorts 50M rows to get top 20 -> slow
+-- With index: walks index backward, takes first 20 -> instant
 ```
 
 ---
@@ -291,8 +291,8 @@ SELECT * FROM orders ORDER BY created_at DESC LIMIT 20;
 -- Indexes have costs: every INSERT/UPDATE/DELETE must also update all indexes
 
 -- Table with 5 indexes:
-  INSERT → write to table + update 5 indexes = 6 I/O operations
-  UPDATE → modify table + update changed columns' indexes
+  INSERT -> write to table + update 5 indexes = 6 I/O operations
+  UPDATE -> modify table + update changed columns' indexes
 
 -- Don't index:
 -- 1. Small tables (< 10K rows): full scan is faster than index + random heap fetch
@@ -342,7 +342,7 @@ WHERE status = 'pending';
 CREATE INDEX idx_orders_user_list ON orders(user_id, created_at DESC)
 INCLUDE (status, total_cents);
 -- Query: SELECT id, status, total_cents FROM orders WHERE user_id = ? ORDER BY created_at DESC;
--- → Index Only Scan: gets all needed data from index alone
+-- -> Index Only Scan: gets all needed data from index alone
 ```
 
 ---
@@ -358,8 +358,8 @@ The Use Case calls:
 The Repository adapter decides HOW to execute this:
   OrderRepositoryPostgres:
     SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC LIMIT 20
-    → The INDEX exists or not — this is infrastructure
-    → The use case never knows
+ -> The INDEX exists or not - this is infrastructure
+ -> The use case never knows
 
 The business rule "get latest 20 orders" lives in Use Case layer
 The performance of that query lives in Infrastructure layer

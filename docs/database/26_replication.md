@@ -1,6 +1,6 @@
-# Database Replication — Complete Guide
+# Database Replication - Complete Guide
 
-> "Replication solves two problems: availability (if the primary dies, promote a replica) and scalability (spread reads across replicas). Never confuse these two — they require different designs." — Senior DBA
+> "Replication solves two problems: availability (if the primary dies, promote a replica) and scalability (spread reads across replicas). Never confuse these two - they require different designs." - Senior DBA
 
 ---
 
@@ -30,62 +30,66 @@
 ### How It Works
 
 ```
-All WRITES → Primary (Leader)
-All READS → Can go to Primary or Replica(s)
+All WRITES -> Primary (Leader)
+All READS -> Can go to Primary or Replica(s)
 
 Primary writes WAL (Write-Ahead Log):
   INSERT INTO orders (user_id, total) VALUES (123, 9900)
-  → WAL entry: {table: orders, op: INSERT, data: {...}}
-  → Applied to primary's storage
-  → WAL shipped to all replicas
+ -> WAL entry: {table: orders, op: INSERT, data: {...}}
+ -> Applied to primary's storage
+ -> WAL shipped to all replicas
 
 Replica receives WAL:
-  → Applies same operations in same order
-  → Eventually has identical data to primary
+ -> Applies same operations in same order
+ -> Eventually has identical data to primary
 ```
 
-```
-               WRITE
-Client ─────────────────► [Primary DB]
-                               │
-         ┌─────────────────────┤ WAL streaming
-         │                     │ (replication log)
-         ▼                     ▼
-[Read Replica 1]        [Read Replica 2]
+Writes go to the primary; the primary ships its WAL to replicas, which serve load-balanced reads.
 
-Client ──READ──► [Replica 1 or 2] (load balanced)
+```mermaid
+flowchart TD
+    Client["Client"]
+    Primary["Primary DB"]
+    R1["Read Replica 1"]
+    R2["Read Replica 2"]
+
+    Client -->|write| Primary
+    Primary -->|WAL streaming| R1
+    Primary -->|WAL streaming| R2
+    R1 -->|read, load balanced| Client
+    R2 -->|read, load balanced| Client
 ```
 
 ### Synchronous vs Asynchronous Replication
 
 ```
 Synchronous (strong consistency):
-  Primary writes → waits for replica to confirm → commits
+  Primary writes -> waits for replica to confirm -> commits
 
   Timeline:
     t=0ms:  Primary receives INSERT
     t=5ms:  Primary writes to WAL
     t=10ms: Replica receives WAL, writes to its storage
     t=11ms: Replica sends ACK to primary
-    t=12ms: Primary acknowledges to client → WRITE COMMITTED
+    t=12ms: Primary acknowledges to client -> WRITE COMMITTED
 
-  ✓ No data loss: replica always has latest data
-  ✗ Write latency increased (wait for replica ACK)
-  ✗ If replica is slow/down: primary is also slowed
+  [OK] No data loss: replica always has latest data
+  [X] Write latency increased (wait for replica ACK)
+  [X] If replica is slow/down: primary is also slowed
   Use when: financial systems, anything where data loss is unacceptable
 
 Asynchronous (higher throughput):
-  Primary writes → commits immediately → sends WAL to replica "eventually"
+  Primary writes -> commits immediately -> sends WAL to replica "eventually"
 
   Timeline:
     t=0ms:  Primary receives INSERT
-    t=5ms:  Primary writes to WAL + commits → WRITE COMMITTED to client
+    t=5ms:  Primary writes to WAL + commits -> WRITE COMMITTED to client
     t=15ms: WAL shipped to replica
     t=20ms: Replica applies WAL
 
-  ✓ Write latency not affected by replica speed
-  ✗ Replication lag: replica may be 10-500ms behind
-  ✗ Data loss if primary crashes before WAL ships to replica
+  [OK] Write latency not affected by replica speed
+  [X] Replication lag: replica may be 10-500ms behind
+  [X] Data loss if primary crashes before WAL ships to replica
   Use when: social apps, blogs, read-heavy apps where eventual consistency is OK
 
 PostgreSQL: synchronous_commit = 'on' (sync) or 'off' (async) per transaction
@@ -94,23 +98,20 @@ MySQL: semi-synchronous (at least one replica must confirm)
 
 ### Failover: When Primary Dies
 
-```
-Automatic failover with Patroni (PostgreSQL) / MHA (MySQL):
+Automatic failover with Patroni (PostgreSQL) or MHA (MySQL) walks through these steps in order.
 
-                    Primary dies
-                         │
-    Health monitor detects failure (30s timeout)
-                         │
-    Promotion: Replica 1 becomes new primary
-                         │
-    DNS update: db-write.internal → Replica 1's IP
-                         │
-    Replica 2 now follows new primary
-                         │
-    Application reconnects → continues working
+```mermaid
+flowchart TD
+    A["Primary dies"] --> B["Health monitor detects failure, 30s timeout"]
+    B --> C["Promotion: Replica 1 becomes new primary"]
+    C --> D["DNS update: db-write.internal points to Replica 1 IP"]
+    D --> E["Replica 2 now follows new primary"]
+    E --> F["Application reconnects, continues working"]
+```
 
 Total downtime: typically 30-60 seconds
 
+```
 Managed services (AWS RDS Multi-AZ, Google Cloud SQL):
   Automatic failover built in, ~60s
   No manual intervention needed
@@ -150,8 +151,8 @@ class OrderRepositoryPostgres implements IOrderRepository {
 }
 
 // WARNING: Read-after-write consistency issue
-// User submits order → written to primary
-// User immediately sees order list → reads from replica (lagged by 100ms)
+// User submits order -> written to primary
+// User immediately sees order list -> reads from replica (lagged by 100ms)
 // User might not see their own order!
 
 // Solution: read your own writes from primary
@@ -167,18 +168,21 @@ async findMyOrders(userId: string, justWrote: boolean = false) {
 
 ### How It Works
 
-```
-WRITES can go to ANY node
-Each node replicates to all others
+Writes can go to any node, and every node replicates its changes to all the others.
 
-              WRITE              WRITE
-Client A ──────────► [Master 1] ◄──────── Client B
-                         │  ↕  bidirectional
-                    [Master 2]
+```mermaid
+flowchart TD
+    CA["Client A"]
+    CB["Client B"]
+    M1["Master 1"]
+    M2["Master 2"]
 
-Both masters accept writes simultaneously
-Each replicates its changes to the other
+    CA -->|write| M1
+    CB -->|write| M1
+    M1 <-->|bidirectional replication| M2
 ```
+
+Both masters accept writes simultaneously, and each replicates its changes to the other.
 
 ### The Write Conflict Problem
 
@@ -198,8 +202,8 @@ Now:
   INCONSISTENT! Two masters, two different answers.
 
 Conflict resolution strategies:
-  1. Last Write Wins (LWW): timestamp comparison → highest timestamp wins
-     Risk: clock skew between nodes → wrong winner
+  1. Last Write Wins (LWW): timestamp comparison -> highest timestamp wins
+     Risk: clock skew between nodes -> wrong winner
 
   2. Application-level resolution: expose conflict to application to decide
      Complex but most flexible
@@ -214,24 +218,24 @@ Conflict resolution strategies:
 ### When to Use Multi-Master
 
 ```
-✓ You MUST write from multiple geographic regions (latency requirement)
+[OK] You MUST write from multiple geographic regions (latency requirement)
   Example: EU users must write to EU datacenter, US users to US datacenter
 
-✓ High availability (any node can handle writes, no single point of write failure)
+[OK] High availability (any node can handle writes, no single point of write failure)
 
-✗ Same data written by multiple users simultaneously (conflict resolution needed)
-✗ Financial transactions (never use eventual consistency for money)
+[X] Same data written by multiple users simultaneously (conflict resolution needed)
+[X] Financial transactions (never use eventual consistency for money)
 
 Real-world multi-master:
   - Amazon DynamoDB (global tables): multi-region, eventual consistency
-  - CockroachDB: distributed consensus (not true multi-master — uses Raft)
+  - CockroachDB: distributed consensus (not true multi-master - uses Raft)
   - Cassandra: multi-master with configurable consistency levels
   - MongoDB: primary in each region, eventual consistency across regions
 ```
 
 ---
 
-## Replication Lag — The Hidden Problem
+## Replication Lag - The Hidden Problem
 
 ```
 Replication lag = the delay between a write on primary and when it's visible on replicas
@@ -258,9 +262,9 @@ Acceptable lag:
   During heavy load: can spike to seconds
 
 The read-your-own-writes problem:
-  User creates post → written to primary
-  User refreshes page → reads from replica (100ms lagged)
-  User's own post not visible yet → confusing UX
+  User creates post -> written to primary
+  User refreshes page -> reads from replica (100ms lagged)
+  User's own post not visible yet -> confusing UX
 
 Solutions:
   1. Always read from primary for the creating user (session-based routing)
@@ -271,27 +275,27 @@ Solutions:
 
 ---
 
-## Change Data Capture (CDC) — Replication as Events
+## Change Data Capture (CDC) - Replication as Events
 
 ```
 CDC treats the database log (WAL in PostgreSQL) as an event stream.
 Every INSERT, UPDATE, DELETE = one event.
 
 Debezium + Kafka:
-  PostgreSQL WAL → Debezium connector → Kafka topic → any consumer
+  PostgreSQL WAL -> Debezium connector -> Kafka topic -> any consumer
 
 Use cases:
   1. Sync to Elasticsearch for search
-     orders table → CDC → Kafka → Elasticsearch indexer
+     orders table -> CDC -> Kafka -> Elasticsearch indexer
 
   2. Invalidate Redis cache when data changes
-     products table → CDC → Kafka → Cache invalidation service
+     products table -> CDC -> Kafka -> Cache invalidation service
 
   3. CQRS read model updates
-     orders table → CDC → Kafka → OrderSummaryProjection (denormalized read model)
+     orders table -> CDC -> Kafka -> OrderSummaryProjection (denormalized read model)
 
   4. Audit log
-     ANY table → CDC → audit log service → immutable audit store
+     ANY table -> CDC -> audit log service -> immutable audit store
 
 Why CDC beats polling:
   Polling: SELECT * FROM orders WHERE updated_at > last_poll_time
@@ -310,9 +314,9 @@ Why CDC beats polling:
 | High-read web app | Primary + 3 read replicas (async) | Scale reads without write overhead |
 | Financial system | Primary + 1 synchronous replica | Zero data loss, automatic failover |
 | Multi-region app | Multi-master with conflict resolution | Write locally, replicate globally |
-| CQRS read model | CDC → Kafka → projection | Decouple read model from write model |
-| Full-text search | CDC → Elasticsearch | Keep search index in sync automatically |
-| Cache invalidation | CDC → Kafka → cache flush | Never serve stale cache after write |
+| CQRS read model | CDC -> Kafka -> projection | Decouple read model from write model |
+| Full-text search | CDC -> Elasticsearch | Keep search index in sync automatically |
+| Cache invalidation | CDC -> Kafka -> cache flush | Never serve stale cache after write |
 | Analytics | Async replica for OLAP queries | Don't let analytics queries slow production |
 
 ---
@@ -351,7 +355,7 @@ are isolated to the Infrastructure layer.
 | **Instagram** | PostgreSQL primary + 5 replicas | All writes to primary; read replicas for feed, explore |
 | **Shopify** | MySQL primary + replicas per pod | Per-merchant pods with read replicas |
 | **GitHub** | MySQL + ProxySQL read routing | ProxySQL routes reads to replicas automatically |
-| **Airbnb** | MySQL async replication + CDC | Debezium → Kafka for search index and cache updates |
+| **Airbnb** | MySQL async replication + CDC | Debezium -> Kafka for search index and cache updates |
 | **Discord** | ScyllaDB multi-datacenter | Cassandra replication factor 3 across 3 DCs |
 | **Netflix** | Cassandra multi-region | Each region has full copy, eventual consistency |
 | **Stripe** | PostgreSQL sync replica | Financial data: zero tolerance for replication lag |

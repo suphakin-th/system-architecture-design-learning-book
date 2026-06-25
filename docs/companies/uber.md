@@ -1,6 +1,6 @@
-# Uber — Architecture Case Study
+# Uber - Architecture Case Study
 
-> "We went from a monolith to microservices, then realized we had too many microservices, then invented DOMA. Architecture is iterative." — Uber Engineering
+> "We went from a monolith to microservices, then realized we had too many microservices, then invented DOMA. Architecture is iterative." - Uber Engineering
 
 ---
 
@@ -21,24 +21,22 @@
 
 ---
 
-## Phase 1: The Monolith (2009–2014)
+## Phase 1: The Monolith (2009-2014)
 
 **The original monolith: written in Python**
 
-```
-UberApp (iOS/Android)
-      │
-      ▼
-Uber Python Monolith
-  ├── Driver matching logic
-  ├── Pricing (surge pricing algorithm)
-  ├── Trip management
-  ├── Payment processing
-  ├── Push notifications
-  └── Maps & routing
-      │
-      ▼
-PostgreSQL (one database)
+The mobile app talked to a single Python process that owned every concern, backed by one database.
+
+```mermaid
+flowchart TD
+    App["UberApp iOS and Android"] --> Mono["Uber Python Monolith"]
+    Mono --> M1["Driver matching logic"]
+    Mono --> M2["Pricing - surge algorithm"]
+    Mono --> M3["Trip management"]
+    Mono --> M4["Payment processing"]
+    Mono --> M5["Push notifications"]
+    Mono --> M6["Maps and routing"]
+    Mono --> DB[("PostgreSQL - one database")]
 ```
 
 **Why Python?** Fast to prototype, startup speed, small team.
@@ -49,33 +47,32 @@ PostgreSQL (one database)
    The core of Uber is matching drivers to riders. In Python, the matching algorithm ran 4,000 matches per second. At peak in San Francisco, they needed 20,000 per second. Python's GIL (Global Interpreter Lock) prevented true parallelism.
 
 2. **Deployment risk:**
-   Changing the pricing algorithm required deploying the entire Python monolith. If the deploy had a bug, ALL of Uber went down — not just pricing.
+   Changing the pricing algorithm required deploying the entire Python monolith. If the deploy had a bug, ALL of Uber went down - not just pricing.
 
 3. **Database lock contention:**
    Driver location updates hit the PostgreSQL driver table 15M times/second. Row-level locks + MVCC overhead brought Postgres to its knees.
 
 ---
 
-## Phase 2: Microservices (2014–2018)
+## Phase 2: Microservices (2014-2018)
 
 **Extracted core services:**
 
-```
-Mobile API
-      │
-      ▼
-API Gateway (custom Go-based)
-      │
-      ├──► Dispatch Service (Go)      — match drivers to riders
-      ├──► Pricing Service (Go)       — surge pricing calculation
-      ├──► Trip Service (Python/Go)   — trip lifecycle management
-      ├──► Payment Service (Java)     — Stripe/Braintree integration
-      ├──► Notification Service (Go)  — push notifications
-      ├──► Maps Service (Go)          — routing, ETAs
-      └──► Driver Location Service (Go) — real-time GPS updates
+A custom Go API gateway fans requests out to single-purpose services, each owned independently.
+
+```mermaid
+flowchart TD
+    API["Mobile API"] --> GW["API Gateway - custom Go"]
+    GW --> Dispatch["Dispatch Service Go - match drivers to riders"]
+    GW --> Pricing["Pricing Service Go - surge calculation"]
+    GW --> Trip["Trip Service Python and Go - trip lifecycle"]
+    GW --> Payment["Payment Service Java - Stripe and Braintree"]
+    GW --> Notify["Notification Service Go - push notifications"]
+    GW --> Maps["Maps Service Go - routing and ETAs"]
+    GW --> Location["Driver Location Service Go - real-time GPS"]
 ```
 
-**The driver location problem — solved with geospatial indexing:**
+**The driver location problem - solved with geospatial indexing:**
 
 ```
 Problem: 6M drivers, each updating location every 4 seconds
@@ -84,9 +81,9 @@ Problem: 6M drivers, each updating location every 4 seconds
 
 Solution: H3 geospatial indexing (hexagonal hierarchical)
   Earth divided into hexagonal cells at different resolutions
-  Level 9 hex cell ≈ 0.1 km² (neighborhood-sized)
+  Level 9 hex cell ~= 0.1 km^2 (neighborhood-sized)
 
-  Driver update: store driver_id → H3 cell mapping
+  Driver update: store driver_id -> H3 cell mapping
   Rider request: find all drivers in my H3 cell + adjacent cells
 
   Instead of: "Find all drivers within 2km radius" (slow polygon query)
@@ -97,7 +94,7 @@ Solution: H3 geospatial indexing (hexagonal hierarchical)
 
 ```
 Traditional approach (would not work at scale):
-  Every ride request → query all drivers in area → calculate supply/demand → price
+  Every ride request -> query all drivers in area -> calculate supply/demand -> price
 
 Uber's approach:
   Kafka stream of ride requests and driver locations
@@ -105,7 +102,7 @@ Uber's approach:
   Pre-compute surge multiplier per H3 hex cell every 30 seconds
   Store surge map in Redis (expires after 60 seconds)
 
-  Ride request: lookup hex cell → read surge multiplier from Redis
+  Ride request: lookup hex cell -> read surge multiplier from Redis
   = one Redis read = sub-millisecond pricing
   = surge pricing is a read, not a calculation
 ```
@@ -121,59 +118,70 @@ Uber's approach:
 **The specific problems:**
 
 1. **No clear ownership:** A bug in the dispatch flow touched code owned by 5 teams. Who debugs it?
-2. **Circular dependencies:** Service A calls B calls C calls A → deadlock, impossible to reason about
+2. **Circular dependencies:** Service A calls B calls C calls A -> deadlock, impossible to reason about
 3. **"Networked monolith":** Services that appeared independent had to deploy together because of tight coupling via API contracts
 
 ---
 
-## Phase 4: DOMA — Domain-Oriented Microservice Architecture (2020)
+## Phase 4: DOMA - Domain-Oriented Microservice Architecture (2020)
 
 **The insight:**
 
-> "Microservices became our Big Ball of Mud — just distributed. DOMA says: group services by business domain, not by technical function. Define strict ownership. Create explicit layers. Enforce boundaries."
+> "Microservices became our Big Ball of Mud - just distributed. DOMA says: group services by business domain, not by technical function. Define strict ownership. Create explicit layers. Enforce boundaries."
 
 **DOMA Structure:**
 
+Services are grouped into three layers and into domains within each layer. A layer may call only the layers below it.
+
+```mermaid
+flowchart TD
+    subgraph L3["Layer 3: Product Services - specific to one Uber product"]
+        subgraph Rides["UberRides Domain"]
+            DispatchService
+            TripService
+            PricingService
+        end
+        subgraph Eats["UberEats Domain"]
+            OrderService
+            RestaurantService
+            DeliveryService
+        end
+    end
+    subgraph L2["Layer 2: Business Services - Uber-wide"]
+        subgraph Payments["Payments Domain"]
+            PaymentMethodService
+            ChargeService
+            RefundService
+        end
+        subgraph Identity["Identity Domain"]
+            UserService
+            DriverService
+        end
+        subgraph MapsD["Maps Domain"]
+            RoutingService
+            GeofenceService
+            LocationService
+        end
+    end
+    subgraph L1["Layer 1: Infrastructure - used by everyone"]
+        LoggingService
+        MonitoringService
+        AuthService
+        ConfigService
+    end
+    L3 --> L2
+    L2 --> L1
 ```
-Layer 1: Infrastructure (used by everyone)
-  ├── Logging Service
-  ├── Monitoring Service
-  ├── Auth Service
-  └── Config Service
 
-Layer 2: Business Services (Uber-wide, used across products)
-  ├── Payments Domain
-  │   ├── PaymentMethodService
-  │   ├── ChargeService
-  │   └── RefundService
-  ├── Identity Domain
-  │   ├── UserService
-  │   └── DriverService
-  └── Maps Domain
-      ├── RoutingService
-      ├── GeofenceService
-      └── LocationService
-
-Layer 3: Product Services (specific to one Uber product)
-  ├── UberRides Domain
-  │   ├── DispatchService
-  │   ├── TripService
-  │   └── PricingService
-  └── UberEats Domain
-      ├── OrderService
-      ├── RestaurantService
-      └── DeliveryService
-
-Rule: Layer N can call Layer N-1 and lower, but NEVER higher
-Rule: Same layer services should NOT call each other (go through domain gateway)
-```
+Rule: Layer N can call Layer N-1 and lower, but NEVER higher.
+Rule: Same-layer services should NOT call each other - they go through a domain gateway.
 
 **DOMA Gateway Pattern:**
 
 Each domain exposes a single Gateway API that all external callers use:
 
 ```
-External caller → RidesGateway → internal dispatch to DispatchService/TripService
+External caller -> RidesGateway -> internal dispatch to DispatchService/TripService
                                    (callers don't know which internal service handles it)
 
 This is the Facade design pattern at the domain level.
@@ -181,9 +189,9 @@ This is the Facade design pattern at the domain level.
 
 ---
 
-## Cadence — Workflow Orchestration for the Saga Pattern
+## Cadence - Workflow Orchestration for the Saga Pattern
 
-**Problem:** A trip involves: matching driver → pricing → payment auth → trip start → trip end → payment charge → driver payout. Any step can fail. The saga pattern requires compensating transactions.
+**Problem:** A trip involves: matching driver -> pricing -> payment auth -> trip start -> trip end -> payment charge -> driver payout. Any step can fail. The saga pattern requires compensating transactions.
 
 **Cadence (now Temporal.io):**
 
@@ -205,7 +213,7 @@ func TripWorkflow(ctx workflow.Context, tripId string) error {
     return err
   }
 
-  // Step 3: Run trip (waits for trip completion — could be hours)
+  // Step 3: Run trip (waits for trip completion - could be hours)
   err = workflow.ExecuteActivity(ctx, runTrip, tripId).Get(ctx, nil)
 
   // Step 4: Capture payment
@@ -218,27 +226,29 @@ func TripWorkflow(ctx workflow.Context, tripId string) error {
 ```
 
 **Why Cadence/Temporal was invented at Uber:**
-> "Long-running workflows (a trip is 20 minutes; waiting for human approval is days) can't run in-process — the server restarts. Cadence persists workflow state as events, replays them on restart. It's event sourcing for workflow orchestration."
+> "Long-running workflows (a trip is 20 minutes; waiting for human approval is days) can't run in-process - the server restarts. Cadence persists workflow state as events, replays them on restart. It's event sourcing for workflow orchestration."
 
 ---
 
 ## Real-Time Data Architecture
 
-```
-Driver Location Update (every 4 seconds per driver)
-  │
-  ▼
-Kafka (kafka.location.updates topic)
-  │
-  ├──► Flink (stream processing) → surge pricing calculation → Redis
-  ├──► Cassandra (location history for trip replay/audit)
-  └──► H3 GeoIndex Service → dispatch lookup
+Location updates stream through Kafka to three consumers; a rider request then reads the precomputed index and drives the trip flow.
 
-Rider requests a trip:
-  → DispatchService reads H3 index from Redis (nearest drivers)
-  → Sends trip offer to N nearest drivers via WebSocket
-  → First driver to accept → TripService creates trip
-  → Saga workflow starts
+```mermaid
+flowchart TD
+    Loc["Driver Location Update - every 4s per driver"] --> Kafka["Kafka - location.updates topic"]
+    Kafka --> Flink["Flink stream processing"]
+    Flink -->|surge calculation| Redis[("Redis")]
+    Kafka --> Cassandra[("Cassandra - location history for replay and audit")]
+    Kafka --> H3["H3 GeoIndex Service - dispatch lookup"]
+
+    Req["Rider requests a trip"] --> Read["DispatchService reads H3 index from Redis - nearest drivers"]
+    Read --> Offer["Send trip offer to N nearest drivers via WebSocket"]
+    Offer --> Accept["First driver to accept"]
+    Accept --> TripSvc["TripService creates trip"]
+    TripSvc --> Saga["Saga workflow starts"]
+    Redis -.-> Read
+    H3 -.-> Read
 ```
 
 ---
@@ -269,18 +279,18 @@ DOMA Layer Rule = Clean Architecture's Dependency Rule
 
 ## Lessons for Your Architecture
 
-1. **Microservices is a people problem** — 1000 services × 1000 engineers works; 1000 services × 100 engineers = chaos
-2. **Domain boundaries must match team boundaries** — Conway's Law is real; your architecture mirrors your org chart
-3. **Event streaming solves real-time scale** — 15M location updates/second requires Kafka, not REST calls
-4. **Geospatial indexing is a specialized problem** — H3 hexagons beat lat/lon polygon queries at Uber's scale
-5. **Long-running workflows need Saga/Temporal** — a trip is 20 minutes; you can't hold a DB transaction that long
+1. **Microservices is a people problem** - 1000 services x 1000 engineers works; 1000 services x 100 engineers = chaos
+2. **Domain boundaries must match team boundaries** - Conway's Law is real; your architecture mirrors your org chart
+3. **Event streaming solves real-time scale** - 15M location updates/second requires Kafka, not REST calls
+4. **Geospatial indexing is a specialized problem** - H3 hexagons beat lat/lon polygon queries at Uber's scale
+5. **Long-running workflows need Saga/Temporal** - a trip is 20 minutes; you can't hold a DB transaction that long
 
 ---
 
 ## Sources
-- [Introducing Domain-Oriented Microservice Architecture — Uber Blog](https://www.uber.com/blog/microservice-architecture/)
+- [Introducing Domain-Oriented Microservice Architecture - Uber Blog](https://www.uber.com/blog/microservice-architecture/)
 - [Service-Oriented Architecture: Scaling the Uber Engineering Codebase](https://www.uber.com/blog/service-oriented-architecture/)
-- [Uber System Design Deep Dive — Grokking](https://grokkingthesystemdesign.com/guides/uber-system-design/)
+- [Uber System Design Deep Dive - Grokking](https://grokkingthesystemdesign.com/guides/uber-system-design/)
 
 
 ---

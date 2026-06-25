@@ -1,6 +1,6 @@
 # Database Schema Patterns
 
-> "Your schema is your API to the database. A well-designed schema makes impossible states unrepresentable. A poorly designed schema makes bugs inevitable." — Senior DBA
+> "Your schema is your API to the database. A well-designed schema makes impossible states unrepresentable. A poorly designed schema makes bugs inevitable." - Senior DBA
 
 ---
 
@@ -19,7 +19,7 @@
 **Problem:** A comment can belong to a Post OR a Video OR a Photo. How do you store this?
 
 ```sql
--- ❌ Naive approach: nullable foreign keys (bad design)
+-- [X] Naive approach: nullable foreign keys (bad design)
 CREATE TABLE comments (
   id BIGINT PRIMARY KEY,
   body TEXT NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE comments (
 -- Problem: lots of NULLs, no way to enforce "exactly one parent"
 -- Can't have FK constraint when the target varies
 
--- ✅ Option A: Separate join tables (cleanest)
+-- [OK] Option A: Separate join tables (cleanest)
 CREATE TABLE post_comments (
   comment_id BIGINT REFERENCES comments(id),
   post_id    BIGINT REFERENCES posts(id),
@@ -44,7 +44,7 @@ CREATE TABLE video_comments (
 -- Pros: proper FK constraints, clear ownership
 -- Cons: more tables, need UNION to get all comments
 
--- ✅ Option B: STI (Single Table Inheritance) with type discriminator
+-- [OK] Option B: STI (Single Table Inheritance) with type discriminator
 CREATE TABLE commentables (
   id          BIGINT PRIMARY KEY,
   entity_type VARCHAR(20) NOT NULL,  -- 'post', 'video', 'photo'
@@ -63,7 +63,7 @@ CREATE TABLE comments (
 
 ## Pattern 2: Hierarchical Data (Trees and Graphs in SQL)
 
-**Problem:** Categories with subcategories: Electronics → Phones → Smartphones
+**Problem:** Categories with subcategories: Electronics -> Phones -> Smartphones
 
 ### Adjacency List (Simple, slow for deep trees)
 ```sql
@@ -104,7 +104,7 @@ SELECT * FROM categories WHERE path LIKE '/1/3/7/%';
 -- Insert new category as child of 7:
 INSERT INTO categories (id, name, path)
 VALUES (99, 'New Sub', '/1/3/7/99/');
--- Update path if parent changes → must update all descendants
+-- Update path if parent changes -> must update all descendants
 
 -- Used by: Django's django-treebeard, many CMS systems
 ```
@@ -131,7 +131,7 @@ SELECT * FROM categories WHERE lft > 2 AND rgt < 11;
 -- Good when: read-heavy category tree that rarely changes
 ```
 
-### Closure Table (Best balance — recommended)
+### Closure Table (Best balance - recommended)
 ```sql
 CREATE TABLE categories (id BIGINT PRIMARY KEY, name VARCHAR(100));
 CREATE TABLE category_paths (
@@ -305,7 +305,7 @@ SELECT * FROM orders;  -- searches tenant_123.orders first
 ```sql
 -- Each tenant gets their own database
 -- Shopify uses this: one MySQL pod per ~500K merchants
--- Shard by tenant ID: merchant_123 → Pod 3
+-- Shard by tenant ID: merchant_123 -> Pod 3
 
 -- Pros: complete isolation, easier compliance (GDPR per tenant)
 -- Cons: more databases to manage, no cross-tenant queries
@@ -316,10 +316,10 @@ SELECT * FROM orders;  -- searches tenant_123.orders first
 
 ## Pattern 6: The EAV Anti-Pattern (and When It's OK)
 
-**EAV = Entity-Attribute-Value** — the temptation to make everything flexible:
+**EAV = Entity-Attribute-Value** - the temptation to make everything flexible:
 
 ```sql
--- ❌ EAV anti-pattern:
+-- [X] EAV anti-pattern:
 CREATE TABLE product_attributes (
   product_id BIGINT NOT NULL,
   name       VARCHAR(100) NOT NULL,  -- 'color', 'size', 'weight'
@@ -337,7 +337,7 @@ LEFT JOIN product_attributes a ON p.id = a.product_id
 GROUP BY p.id;
 -- vs just: SELECT id, color, size FROM products;
 
--- ✅ Better alternatives:
+-- [OK] Better alternatives:
 
 -- Option 1: Separate tables for different product types
 CREATE TABLE electronics (color VARCHAR(20), battery_mah INT);
@@ -412,8 +412,8 @@ The Infrastructure layer decides:
     Whether to use a materialized view
 
 Domain Entity (Product):
-  currentPrice(): Money → business concept
-  priceAt(date: Date): Money → business concept
+  currentPrice(): Money -> business concept
+  priceAt(date: Date): Money -> business concept
 
 Repository Implementation:
   Decides whether to use temporal table, bi-temporal, or materialized view

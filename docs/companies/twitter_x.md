@@ -1,6 +1,6 @@
-# Twitter/X — Architecture Case Study
+# Twitter/X - Architecture Case Study
 
-> "The Fail Whale was not a design choice. It was a warning that our architecture couldn't survive our own success." — Twitter Engineering
+> "The Fail Whale was not a design choice. It was a warning that our architecture couldn't survive our own success." - Twitter Engineering
 
 ---
 
@@ -21,12 +21,12 @@
 
 ---
 
-## Phase 1: The Ruby on Rails Monolith (2006–2011) — The Fail Whale Era
+## Phase 1: The Ruby on Rails Monolith (2006-2011) - The Fail Whale Era
 
 **The original architecture:**
 
 ```
-Web Client → Ruby on Rails app → MySQL (tweets table, users table, follows table)
+Web Client -> Ruby on Rails app -> MySQL (tweets table, users table, follows table)
 ```
 
 **Why it was catastrophically bad at scale:**
@@ -44,14 +44,14 @@ LIMIT 20;
 -- Joins the tweets table (100M+ rows)
 -- With the follows table (1B+ rows)
 -- Sorts by timestamp
--- At 250M users all opening Twitter simultaneously → DEAD
+-- At 250M users all opening Twitter simultaneously -> DEAD
 ```
 
-**The "Fail Whale":** When MySQL couldn't keep up, the entire site went down. Twitter displayed a cartoon whale being held up by birds — the "Fail Whale" became a cultural symbol of a company growing faster than its architecture.
+**The "Fail Whale":** When MySQL couldn't keep up, the entire site went down. Twitter displayed a cartoon whale being held up by birds - the "Fail Whale" became a cultural symbol of a company growing faster than its architecture.
 
 ---
 
-## Phase 2: The Fanout Decision — Push vs Pull
+## Phase 2: The Fanout Decision - Push vs Pull
 
 **The fundamental architecture choice:**
 
@@ -62,7 +62,7 @@ Option A: Fanout on Read (Pull)
     Get their recent tweets
     Sort and return
 
-  Problem: 500 queries per timeline open × 250M users = billions of queries/second
+  Problem: 500 queries per timeline open x 250M users = billions of queries/second
   Benefit: Writing a tweet is fast (one insert)
 
 Option B: Fanout on Write (Push)
@@ -71,7 +71,7 @@ Option B: Fanout on Write (Push)
     Write the tweet ID to each follower's timeline cache
     Timeline open = one Redis read
 
-  Problem: Lady Gaga tweets → write to 70M follower caches simultaneously
+  Problem: Lady Gaga tweets -> write to 70M follower caches simultaneously
   Benefit: Reading a timeline is a single Redis lookup = fast
 ```
 
@@ -79,7 +79,7 @@ Option B: Fanout on Write (Push)
 
 ```
 Regular users (< ~10,000 followers):
-  Fanout on write: tweet → push tweet_id to all followers' Redis sorted sets
+  Fanout on write: tweet -> push tweet_id to all followers' Redis sorted sets
   Timeline read: fetch from Redis (one operation)
 
 "Celebrity" users (@taylorswift13, @elonmusk, etc., > 10,000 followers):
@@ -105,14 +105,14 @@ Your timeline is pre-computed and stored in Redis as a sorted set:
 
 When you open Twitter:
   ZREVRANGE timeline:YOUR_USER_ID 0 19  # get 20 most recent tweets
-  → Redis returns 20 tweet IDs in <1ms
-  → Parallel fetch of tweet content from Manhattan (key-value store)
-  → Returned to you
+ -> Redis returns 20 tweet IDs in <1ms
+ -> Parallel fetch of tweet content from Manhattan (key-value store)
+ -> Returned to you
 
 When your friend tweets:
   ZADD timeline:YOUR_USER_ID {timestamp} {tweet_id}
-  → Repeated for all 500 of your friend's followers
-  → ZREMRANGEBYSCORE to trim to 800 most recent (memory management)
+ -> Repeated for all 500 of your friend's followers
+ -> ZREMRANGEBYSCORE to trim to 800 most recent (memory management)
 ```
 
 **The Elon Musk problem (2023):**
@@ -120,13 +120,13 @@ When your friend tweets:
 > "Elon tweets. 150M followers. Fanout service gets backed up. Tweets delayed 10-30 minutes to reach all followers. The system was NOT designed for someone with 150M followers who also owns the company and tweets constantly."
 
 **The actual solution in 2023:**
-Twitter (under Elon's ownership) gave @elonmusk's tweets priority processing in the ranking algorithm. His tweets were force-ranked to the top of follower timelines — bypassing the normal fanout queue.
+Twitter (under Elon's ownership) gave @elonmusk's tweets priority processing in the ranking algorithm. His tweets were force-ranked to the top of follower timelines - bypassing the normal fanout queue.
 
 This caused significant negative press but solved the technical problem of Elon seeing his own tweets' metrics be slower than other accounts.
 
 ---
 
-## Phase 4: From Ruby to JVM — The Finagle RPC Framework
+## Phase 4: From Ruby to JVM - The Finagle RPC Framework
 
 **Why Twitter rewrote everything in Scala/Java:**
 
@@ -140,16 +140,16 @@ Twitter's answer: Finagle (open-sourced 2011)
   - RPC library for Scala/Java services
   - Built-in: load balancing, circuit breaking, retry, timeout
   - Designed for composing distributed services
-  - "Service" in Finagle is a function: Request → Future[Response]
+  - "Service" in Finagle is a function: Request -> Future[Response]
 ```
 
 **The Twitter service architecture:**
 
 ```
-User Request → Routing (Finagle) → TweetService (Scala)
+User Request -> Routing (Finagle) -> TweetService (Scala)
                                    UserService (Scala)
                                    TimelineService (Scala)
-                                   SearchService (Scala — ElasticSearch)
+                                   SearchService (Scala - ElasticSearch)
                                    TrendService (Scala)
 ```
 
@@ -160,20 +160,20 @@ User Request → Routing (Finagle) → TweetService (Scala)
 **Problem:** 500M+ tweets per day, all searchable, in real-time.
 
 ```
-Tweet written → Kafka → EarlyBird (Lucene-based indexer)
+Tweet written -> Kafka -> EarlyBird (Lucene-based indexer)
 EarlyBird: keeps last 7 days of tweets in memory for real-time search
   Index per shard: most recent tweets for ~1/N of users
   Search: fan out to all EarlyBird shards, merge results, return
 
 For historical search (older than 7 days):
-  Manhattan → periodic export → Hadoop → offline search index
+  Manhattan -> periodic export -> Hadoop -> offline search index
 ```
 
 **Why in-memory:** Disk-based search for 500M tweets/day is too slow. EarlyBird keeps the recent index entirely in RAM.
 
 ---
 
-## Manhattan — Twitter's Distributed Key-Value Store
+## Manhattan - Twitter's Distributed Key-Value Store
 
 **Why Twitter built their own DB:**
 
@@ -206,19 +206,19 @@ Twitter's Architecture:
 
 Timeline Service = Use Case layer
   GetTimeline use case: reads from ITimelineRepository
-  ITimelineRepository → RedisTimelineRepository (pre-computed) OR
-                      → RealTimeComputedTimelineRepository (fallback)
+  ITimelineRepository -> RedisTimelineRepository (pre-computed) OR
+ -> RealTimeComputedTimelineRepository (fallback)
   Use case doesn't know which implementation is used
 
 Fanout Service = Use Case with side effects
-  PublishTweet use case → calls IFanoutPort → fans out to followers
-  IFanoutPort → RedisTimelineFanout (for regular users) OR
-              → CelebrityTweetStore (for celebrity users)
+  PublishTweet use case -> calls IFanoutPort -> fans out to followers
+  IFanoutPort -> RedisTimelineFanout (for regular users) OR
+ -> CelebrityTweetStore (for celebrity users)
   Strategy pattern: fanout strategy selected based on follower count
 
 Manhattan = Infrastructure layer (outbound adapter)
-  ITweetRepository → ManhattanTweetRepository
-  Use case: storeTweet(tweet) → ITweetRepository.save(tweet)
+  ITweetRepository -> ManhattanTweetRepository
+  Use case: storeTweet(tweet) -> ITweetRepository.save(tweet)
   Manhattan details (LSM tree, sharding) hidden in adapter
 
 Finagle = Framework & Drivers layer
@@ -231,18 +231,18 @@ Finagle = Framework & Drivers layer
 
 ## Lessons for Your Architecture
 
-1. **The fanout problem is universal** — any "one-to-many notification" system faces it; hybrid push/pull is the standard answer
-2. **Pre-computed reads beat real-time reads at scale** — Twitter's Redis cache: one read; MySQL join: system crash
-3. **Celebrity users break your assumptions** — design for power-law distributions; 1% of users drive 99% of load
-4. **Language/runtime choice matters for concurrency** — Ruby GIL prevented true parallelism; Scala/JVM solved it
-5. **Sometimes you build your own DB** — when existing options don't meet your SLAs, build specialized storage
+1. **The fanout problem is universal** - any "one-to-many notification" system faces it; hybrid push/pull is the standard answer
+2. **Pre-computed reads beat real-time reads at scale** - Twitter's Redis cache: one read; MySQL join: system crash
+3. **Celebrity users break your assumptions** - design for power-law distributions; 1% of users drive 99% of load
+4. **Language/runtime choice matters for concurrency** - Ruby GIL prevented true parallelism; Scala/JVM solved it
+5. **Sometimes you build your own DB** - when existing options don't meet your SLAs, build specialized storage
 
 ---
 
 ## Sources
-- [The Architecture Twitter Uses to Deal with 150M Active Users — High Scalability](http://highscalability.com/blog/2013/7/8/the-architecture-twitter-uses-to-deal-with-150m-active-users.html)
-- [Twitter's Fanout Strategy at Scale — DEV Community](https://dev.to/gabrielanhaia/twitters-fanout-strategy-at-scale-the-trade-off-most-designs-miss-55oa)
-- [Twitter Engineering — Tough Architectural Decisions](https://softwareengineeringwk.substack.com/p/twitter-architecture)
+- [The Architecture Twitter Uses to Deal with 150M Active Users - High Scalability](http://highscalability.com/blog/2013/7/8/the-architecture-twitter-uses-to-deal-with-150m-active-users.html)
+- [Twitter's Fanout Strategy at Scale - DEV Community](https://dev.to/gabrielanhaia/twitters-fanout-strategy-at-scale-the-trade-off-most-designs-miss-55oa)
+- [Twitter Engineering - Tough Architectural Decisions](https://softwareengineeringwk.substack.com/p/twitter-architecture)
 
 
 ---

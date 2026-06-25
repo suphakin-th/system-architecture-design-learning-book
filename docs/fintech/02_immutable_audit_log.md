@@ -1,6 +1,6 @@
-# Immutable Audit Log — Tamper-Evident Financial Records
+# Immutable Audit Log - Tamper-Evident Financial Records
 
-> "The audit log is not a feature. It is the evidence that your system operated correctly. In a court of law, in a regulatory audit, in a fraud investigation — the audit log is all that matters." — Banking compliance officer
+> "The audit log is not a feature. It is the evidence that your system operated correctly. In a court of law, in a regulatory audit, in a fraud investigation - the audit log is all that matters." - Banking compliance officer
 
 ---
 
@@ -17,9 +17,9 @@
 
 ## Senior Explains to Junior
 
-> "Imagine you're a police investigator. You need to prove that a transaction happened — exactly $9,900 THB was transferred from account A to account B at 14:32:01.234 on January 15, 2024, by user ID 12345, from IP 203.x.x.x. If your database has an UPDATE or DELETE anywhere in that data's history, the defense lawyer will argue the data was tampered with. You can't prove it wasn't.
+> "Imagine you're a police investigator. You need to prove that a transaction happened - exactly $9,900 THB was transferred from account A to account B at 14:32:01.234 on January 15, 2024, by user ID 12345, from IP 203.x.x.x. If your database has an UPDATE or DELETE anywhere in that data's history, the defense lawyer will argue the data was tampered with. You can't prove it wasn't.
 >
-> The immutable audit log solves this: every record is created once and never changed. The only operation allowed is INSERT. And each record contains a cryptographic hash of the previous record — if anyone changes record #500, record #501's hash won't match anymore. Tampering is detectable."
+> The immutable audit log solves this: every record is created once and never changed. The only operation allowed is INSERT. And each record contains a cryptographic hash of the previous record - if anyone changes record #500, record #501's hash won't match anymore. Tampering is detectable."
 
 ---
 
@@ -137,7 +137,7 @@ async function recordEvent(params: {
     const prevHash = last?.entry_hash ?? 'GENESIS'; // first record uses 'GENESIS'
     const now = new Date();
 
-    // Insert the new event (without id, since it's SERIAL — get it after insert)
+    // Insert the new event (without id, since it's SERIAL - get it after insert)
     const { rows: [inserted] } = await trx.query(
       `INSERT INTO financial_events
        (event_type, entity_type, entity_id, event_data, occurred_at, actor_type, actor_id, entry_hash, prev_hash)
@@ -152,7 +152,7 @@ async function recordEvent(params: {
       inserted.id, params.eventType, params.eventData, now, prevHash
     );
 
-    // Update the hash (this is the ONLY update allowed — setting the hash we just computed)
+    // Update the hash (this is the ONLY update allowed - setting the hash we just computed)
     await trx.query(
       `UPDATE financial_events SET entry_hash = $1 WHERE id = $2`,
       [hash, inserted.id]
@@ -180,7 +180,7 @@ async function verifyChainIntegrity(fromId: number = 1): Promise<VerificationRes
         eventId: event.id,
         expected: expectedHash,
         actual: event.entry_hash,
-        message: `Chain broken at event ${event.id} — possible tampering!`,
+        message: `Chain broken at event ${event.id} - possible tampering!`,
       });
     }
 
@@ -189,7 +189,7 @@ async function verifyChainIntegrity(fromId: number = 1): Promise<VerificationRes
         eventId: event.id,
         expected: prevHash,
         actual: event.prev_hash,
-        message: `prev_hash mismatch at event ${event.id} — records may have been deleted or reordered!`,
+        message: `prev_hash mismatch at event ${event.id} - records may have been deleted or reordered!`,
       });
     }
 
@@ -206,13 +206,13 @@ async function verifyChainIntegrity(fromId: number = 1): Promise<VerificationRes
 
 ---
 
-## Write-Ahead Log (WAL) — PostgreSQL's Built-in Safety
+## Write-Ahead Log (WAL) - PostgreSQL's Built-in Safety
 
 ```
 PostgreSQL already has its own immutable WAL (Write-Ahead Log):
   Every change to the database is written to the WAL FIRST
   Then applied to the actual data files
-  If the server crashes: replay the WAL → recover all committed changes
+  If the server crashes: replay the WAL -> recover all committed changes
   WAL = the source of truth for durability
 
 For financial systems, we use the WAL in two ways:
@@ -220,8 +220,8 @@ For financial systems, we use the WAL in two ways:
   2. Change Data Capture (CDC): read the WAL to build audit streams
 
 Streaming WAL via logical replication:
-  PostgreSQL logical replication → Debezium → Kafka topic: 'financial.events'
-  Every INSERT to journal_entries → event published to Kafka
+  PostgreSQL logical replication -> Debezium -> Kafka topic: 'financial.events'
+  Every INSERT to journal_entries -> event published to Kafka
   Consumers: audit service, analytics, compliance reporting
 
 Benefits:
@@ -255,7 +255,7 @@ Bank of Thailand (BOT) / SEC Thailand:
 GDPR (EU General Data Protection Regulation):
   Right to be forgotten: conflicts with immutable audit logs!
   Resolution: pseudonymize PII in audit logs (user_id hash, not name+email)
-  Keep financial records (amounts, transaction IDs) — delete PII link
+  Keep financial records (amounts, transaction IDs) - delete PII link
 ```
 
 ---
@@ -280,7 +280,7 @@ Amazon QLDB (Quantum Ledger Database):
   Purpose-built for financial audit logs
   Built-in cryptographic hash chain (similar to what we built above)
   Immutable by design: no UPDATE or DELETE
-  Owned by: Amazon Managed Service — no DBA can tamper
+  Owned by: Amazon Managed Service - no DBA can tamper
   Used by: Amazon Pay internally
 
 Azure Immutable Blob Storage:
@@ -289,10 +289,10 @@ Azure Immutable Blob Storage:
 
 Architecture for maximum immutability:
   PostgreSQL (primary source of truth)
-    → WAL → Debezium → Kafka
-    → Kafka → Audit Consumer → PostgreSQL audit table (with rules preventing delete)
-    → Audit Consumer → S3 Object Lock (true immutability, 7 years)
-    → Audit Consumer → QLDB (cryptographic verification)
+ -> WAL -> Debezium -> Kafka
+ -> Kafka -> Audit Consumer -> PostgreSQL audit table (with rules preventing delete)
+ -> Audit Consumer -> S3 Object Lock (true immutability, 7 years)
+ -> Audit Consumer -> QLDB (cryptographic verification)
 ```
 
 ---
@@ -365,8 +365,8 @@ const FINANCIAL_EVENTS = [
 Audit Log = Cross-cutting concern spanning all layers
 
 Domain Events (generated by Entities/Use Cases):
-  Order.place() → emits OrderPlacedEvent
-  Transfer.execute() → emits MoneyTransferredEvent
+  Order.place() -> emits OrderPlacedEvent
+  Transfer.execute() -> emits MoneyTransferredEvent
   These events carry all audit data
 
 Event Publisher (Interface Adapter outbound):
@@ -376,10 +376,10 @@ Event Publisher (Interface Adapter outbound):
   S3AuditArchiver (adapter in infrastructure)
 
 Use Case pattern:
-  PlaceOrderUseCase.execute() →
-    calls domain methods →
-    domain emits events →
-    IAuditEventPublisher.publish(events) →
+  PlaceOrderUseCase.execute() -> 
+    calls domain methods -> 
+    domain emits events -> 
+    IAuditEventPublisher.publish(events) -> 
     Events stored in immutable log
 
 Key principle: the Use Case never imports Kafka, S3, or PostgreSQL

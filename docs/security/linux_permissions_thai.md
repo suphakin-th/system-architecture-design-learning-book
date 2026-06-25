@@ -1,4 +1,4 @@
-# Linux/Unix Permission — คู่มือฉบับสมบูรณ์ (ภาษาไทย)
+# Linux/Unix Permission - คู่มือฉบับสมบูรณ์ (ภาษาไทย)
 
 > สำหรับ Server ที่รัน Microservices หลายตัว และต้องการความปลอดภัยสูงสุด ผ่าน Pentest ได้
 
@@ -8,10 +8,10 @@
 
 ```
 ถ้า Pentest เจอ:
-  world-writable file ใน system → CRITICAL finding → ต้องแก้ก่อน go-live
-  SUID bit ที่ไม่จำเป็น → HIGH finding → privilege escalation ได้
-  Service รันด้วย root → HIGH finding → ถ้า exploit ได้ = เสียทั้ง server
-  Permission 777 → MEDIUM finding → ข้อมูล leak ได้
+  world-writable file ใน system -> CRITICAL finding -> ต้องแก้ก่อน go-live
+  SUID bit ที่ไม่จำเป็น -> HIGH finding -> privilege escalation ได้
+  Service รันด้วย root -> HIGH finding -> ถ้า exploit ได้ = เสียทั้ง server
+  Permission 777 -> MEDIUM finding -> ข้อมูล leak ได้
 
 สำหรับ Fintech / Payment System:
   PCI DSS ต้องการ: least privilege principle (Requirement 7)
@@ -32,15 +32,20 @@ Others        = คนอื่นทั้งหมดที่ไม่ใช�
 
 ### อ่านค่า Permission
 
+แผนผังการแยกความหมายของแต่ละส่วนใน permission string `-rwxr-xr--`:
+
+```mermaid
+flowchart TD
+    Str["-rwxr-xr--"]
+    Str --> Type["ประเภท: - = file, d = directory, l = symlink"]
+    Str --> Owner["Owner: rwx (read + write + execute)"]
+    Str --> Group["Group: r-x (read + execute)"]
+    Str --> Others["Others: r-- (read only)"]
+```
+
 ```bash
 ls -la /var/www/html/index.php
 # -rwxr-xr-- 1 www-data www-data 1234 Jan 15 10:00 index.php
-#  ↑↑↑↑↑↑↑↑↑
-#  │└──┬──┘└──┬──┘└──┬──┘
-#  │   │      │      └── Others: r-- (read only)
-#  │   │      └── Group: r-x (read + execute)
-#  │   └── Owner: rwx (read + write + execute)
-#  └── ประเภท: - = file, d = directory, l = symlink
 
 # Permission แต่ละตัว:
 # r = read    (4) = อ่านได้
@@ -97,21 +102,21 @@ chmod 644 /home/deploy/.ssh/id_rsa.pub # Public key: อ่านได้ทั
 ### ปัญหาที่ Pentest มักเจอ
 
 ```bash
-# ❌ BAD: ทุก service รันด้วย root
+# [X] BAD: ทุก service รันด้วย root
 ps aux | grep "root.*java"
-# root  1234  java -jar payment-service.jar   ← อันตราย!
+# root  1234  java -jar payment-service.jar <- อันตราย!
 
-# ❌ BAD: service file เปิด write ให้ทุกคน
+# [X] BAD: service file เปิด write ให้ทุกคน
 ls -la /opt/payment-service/config.yml
 # -rw-rw-rw- 1 root root 2048 Jan 15 /opt/payment-service/config.yml
 # (world-writable = attacker แก้ config ได้!)
 
-# ❌ BAD: log directory ที่ทุกคน write ได้
+# [X] BAD: log directory ที่ทุกคน write ได้
 ls -la /var/log/
-# drwxrwxrwx 2 root root /var/log/payment/  ← อันตราย!
+# drwxrwxrwx 2 root root /var/log/payment/ <- อันตราย!
 ```
 
-### ✅ วิธีที่ถูกต้อง: User แยกต่างหากต่อ Service
+### [OK] วิธีที่ถูกต้อง: User แยกต่างหากต่อ Service
 
 ```bash
 # สร้าง dedicated user สำหรับแต่ละ service (ไม่มี home, ไม่มี shell)
@@ -125,7 +130,7 @@ sudo useradd --system --no-create-home --shell /bin/false notification-service
 
 # ตรวจสอบ:
 grep "payment-service" /etc/passwd
-# payment-service:x:998:998::/:/bin/false  ← ถูกต้อง: shell = /bin/false
+# payment-service:x:998:998::/:/bin/false <- ถูกต้อง: shell = /bin/false
 ```
 
 ### กำหนด Ownership และ Permission สำหรับ Service
@@ -151,12 +156,12 @@ sudo chmod 750 /opt/payment-service/payment-service.jar
 ls -la /opt/payment-service/
 # drwxr-x--- 3 payment-service payment-service 4096 Jan 15 /opt/payment-service/
 # -rw-r----- 1 payment-service payment-service 2048 Jan 15 config.yml
-# -r-------- 1 payment-service payment-service  512 Jan 15 secrets.env  ← 400!
+# -r-------- 1 payment-service payment-service  512 Jan 15 secrets.env <- 400!
 ```
 
 ---
 
-## Systemd Service — รัน Service ด้วย User ที่กำหนด
+## Systemd Service - รัน Service ด้วย User ที่กำหนด
 
 ```ini
 # /etc/systemd/system/payment-service.service
@@ -167,7 +172,7 @@ Requires=postgresql.service
 
 [Service]
 Type=simple
-User=payment-service           # ← รันด้วย user นี้ ไม่ใช่ root!
+User=payment-service           # <- รันด้วย user นี้ ไม่ใช่ root!
 Group=payment-service
 WorkingDirectory=/opt/payment-service
 
@@ -201,14 +206,14 @@ sudo systemctl status payment-service
 
 # ตรวจสอบว่ารันด้วย user ที่ถูกต้อง:
 ps aux | grep payment-service
-# payment-service  1234  java -jar payment-service.jar  ← ถูกต้อง!
+# payment-service  1234  java -jar payment-service.jar <- ถูกต้อง!
 ```
 
 ---
 
 ## Special Permissions: SUID, SGID, Sticky Bit
 
-### SUID (Set User ID) — อันตราย!
+### SUID (Set User ID) - อันตราย!
 
 ```bash
 # SUID = รัน executable ด้วย permission ของ owner แทน user ที่รัน
@@ -216,10 +221,10 @@ ps aux | grep payment-service
 
 # หา SUID files (Pentest จะทำสิ่งนี้):
 find / -perm -4000 -type f 2>/dev/null
-# -rwsr-xr-x 1 root root /usr/bin/sudo    ← จำเป็น (sudo ต้องเป็น root)
-# -rwsr-xr-x 1 root root /usr/bin/passwd  ← จำเป็น (เปลี่ยน password)
-# -rwsr-xr-x 1 root root /usr/bin/ping    ← ส่วนใหญ่จำเป็น
-# -rwsr-xr-x 1 root root /opt/myapp/tool  ← อันตราย! เอาออก!
+# -rwsr-xr-x 1 root root /usr/bin/sudo <- จำเป็น (sudo ต้องเป็น root)
+# -rwsr-xr-x 1 root root /usr/bin/passwd <- จำเป็น (เปลี่ยน password)
+# -rwsr-xr-x 1 root root /usr/bin/ping <- ส่วนใหญ่จำเป็น
+# -rwsr-xr-x 1 root root /opt/myapp/tool <- อันตราย! เอาออก!
 
 # ลบ SUID ที่ไม่จำเป็น:
 sudo chmod u-s /opt/myapp/tool
@@ -242,7 +247,7 @@ sudo chmod 2770 /var/log/shared-services  # 2 = SGID, 770 = rwxrwx---
 find / -perm -2000 -type f 2>/dev/null
 ```
 
-### Sticky Bit — สำหรับ Shared Directories
+### Sticky Bit - สำหรับ Shared Directories
 
 ```bash
 # Sticky bit: ใน directory ที่ทุกคนเขียนได้
@@ -250,7 +255,7 @@ find / -perm -2000 -type f 2>/dev/null
 
 # /tmp มี sticky bit:
 ls -la / | grep tmp
-# drwxrwxrwt 20 root root /tmp  ← t = sticky bit
+# drwxrwxrwt 20 root root /tmp <- t = sticky bit
 
 # ทุกคนสร้างได้ใน /tmp แต่ลบได้เฉพาะ file ของตัวเอง
 chmod 1777 /var/www/uploads  # sticky bit สำหรับ upload directory
@@ -258,7 +263,7 @@ chmod 1777 /var/www/uploads  # sticky bit สำหรับ upload directory
 
 ---
 
-## ACL — Access Control Lists (กรณีต้องการ Permission ละเอียดกว่า)
+## ACL - Access Control Lists (กรณีต้องการ Permission ละเอียดกว่า)
 
 ```bash
 # ACL ให้กำหนด permission สำหรับ user/group เพิ่มเติมได้
@@ -280,9 +285,9 @@ getfacl /var/log/payment-service/app.log
 # owner: payment-service
 # group: payment-service
 # user::rw-
-# user:jenkins:r--   ← ACL: jenkins อ่านได้
+# user:jenkins:r-- <- ACL: jenkins อ่านได้
 # group::---
-# group:monitoring:r-- ← ACL: monitoring group อ่านได้
+# group:monitoring:r-- <- ACL: monitoring group อ่านได้
 # mask::r--
 # other::---
 
@@ -295,14 +300,14 @@ sudo setfacl -d -m u:jenkins:r /var/log/payment-service/
 
 ---
 
-## umask — ค่า Default Permission สำหรับ Files ใหม่
+## umask - ค่า Default Permission สำหรับ Files ใหม่
 
 ```bash
 # umask กำหนด permission ที่ "ถูกลบออก" เมื่อสร้าง file/directory ใหม่
 
 # ค่า default ของ Linux:
 umask
-# 0022  ← ลบ write permission ออกจาก group และ others
+# 0022 <- ลบ write permission ออกจาก group และ others
 
 # อธิบาย (umask ใช้ bitwise AND-NOT ไม่ใช่การลบธรรมดา แต่ผลลัพธ์เหมือนกันในกรณีนี้):
 #
@@ -327,7 +332,7 @@ cat /proc/$(pgrep payment-service)/status | grep Umask
 
 ---
 
-## ตรวจสอบ Security — สิ่งที่ Pentest จะทำ
+## ตรวจสอบ Security - สิ่งที่ Pentest จะทำ
 
 ```bash
 # 1. หา world-writable files (Pentest จะทำก่อน):
@@ -363,33 +368,35 @@ find /opt /srv -perm -o+x -type d 2>/dev/null
 
 ---
 
-## Server ที่รัน Microservices หลายตัว — Best Practice
+## Server ที่รัน Microservices หลายตัว - Best Practice
 
-```
-Architecture: แยก User สำหรับแต่ละ Service
+แผนผังโครงสร้างไฟล์ของ Server ที่แยก user/permission ให้แต่ละ service:
 
-Server
-├── /opt/
-│   ├── payment-service/          ← owned: payment-service:payment-service, chmod 750
-│   │   ├── payment-service.jar   ← chmod 750
-│   │   ├── config.yml            ← chmod 640
-│   │   └── secrets.env           ← chmod 400 ← sensitive!
-│   ├── order-service/            ← owned: order-service:order-service, chmod 750
-│   └── notification-service/     ← owned: notification-service, chmod 750
-│
-├── /var/log/
-│   ├── payment-service/          ← owned: payment-service, chmod 750
-│   ├── order-service/            ← owned: order-service, chmod 750
-│   └── audit/                    ← owned: root:audit-group, chmod 750
-│                                    (append-only: chmod a+t หรือใช้ chattr +a)
-│
-├── /etc/
-│   ├── payment-service.conf      ← owned: root:payment-service, chmod 640
-│   └── nginx/                    ← owned: root:www-data, chmod 750
-│
-└── /var/run/
-    ├── payment-service.pid       ← owned: payment-service, chmod 644
-    └── payment-service.sock      ← owned: payment-service:www-data, chmod 660
+```mermaid
+flowchart TD
+    Server["Server: แยก User สำหรับแต่ละ Service"]
+
+    Server --> Opt["/opt/"]
+    Server --> Log["/var/log/"]
+    Server --> Etc["/etc/"]
+    Server --> Run["/var/run/"]
+
+    Opt --> Pay["payment-service/ owned payment-service chmod 750"]
+    Pay --> PayJar["payment-service.jar chmod 750"]
+    Pay --> PayCfg["config.yml chmod 640"]
+    Pay --> PaySec["secrets.env chmod 400 sensitive"]
+    Opt --> Ord["order-service/ owned order-service chmod 750"]
+    Opt --> Notif["notification-service/ owned notification-service chmod 750"]
+
+    Log --> LogPay["payment-service/ owned payment-service chmod 750"]
+    Log --> LogOrd["order-service/ owned order-service chmod 750"]
+    Log --> Audit["audit/ owned root:audit-group chmod 750 append-only chattr +a"]
+
+    Etc --> EtcConf["payment-service.conf owned root:payment-service chmod 640"]
+    Etc --> Nginx["nginx/ owned root:www-data chmod 750"]
+
+    Run --> Pid["payment-service.pid owned payment-service chmod 644"]
+    Run --> Sock["payment-service.sock owned payment-service:www-data chmod 660"]
 ```
 
 ```bash
@@ -426,7 +433,7 @@ setup_microservice "notification-service" 8082
 
 ---
 
-## chattr — Make Files Truly Immutable (สำหรับ Audit Log)
+## chattr - Make Files Truly Immutable (สำหรับ Audit Log)
 
 ```bash
 # chattr +a = append-only: เพิ่มได้อย่างเดียว ลบ/แก้ไม่ได้ (แม้แต่ root!)
@@ -434,14 +441,14 @@ sudo chattr +a /var/log/payment-service/audit.log
 
 # ลอง rm:
 sudo rm /var/log/payment-service/audit.log
-# rm: cannot remove 'audit.log': Operation not permitted ← สำเร็จ!
+# rm: cannot remove 'audit.log': Operation not permitted <- สำเร็จ!
 
 # ลอง truncate:
 > /var/log/payment-service/audit.log
-# bash: /var/log/payment-service/audit.log: Operation not permitted ← สำเร็จ!
+# bash: /var/log/payment-service/audit.log: Operation not permitted <- สำเร็จ!
 
 # แต่เพิ่มได้:
-echo "new log entry" >> /var/log/payment-service/audit.log  ← OK
+echo "new log entry" >> /var/log/payment-service/audit.log <- OK
 
 # ดู attribute:
 lsattr /var/log/payment-service/audit.log
@@ -449,7 +456,7 @@ lsattr /var/log/payment-service/audit.log
 # a = append only!
 
 # chattr +i = immutable: แก้ไขไม่ได้เลย (แม้แต่เพิ่ม)
-sudo chattr +i /etc/passwd  # ← ทำได้ใน emergency lock-down
+sudo chattr +i /etc/passwd  # <- ทำได้ใน emergency lock-down
 
 # ลบ attribute:
 sudo chattr -a /var/log/payment-service/audit.log
@@ -458,59 +465,59 @@ sudo chattr -i /etc/passwd
 
 ---
 
-## Pentest Checklist — สิ่งที่ต้องผ่านทุกข้อ
+## Pentest Checklist - สิ่งที่ต้องผ่านทุกข้อ
 
 ```
 Category: File Permissions
-□ ไม่มี world-writable files นอก /tmp
-□ ไม่มี world-writable directories ที่ไม่ควรมี
-□ SUID files มีเฉพาะที่จำเป็น (sudo, passwd, ping, etc.)
-□ SGID files มีเฉพาะที่จำเป็น
-□ /etc ไม่มี world-readable sensitive files (เช่น .env, secrets)
-□ SSH private keys: chmod 600 เท่านั้น
-□ ~/.ssh directory: chmod 700 เท่านั้น
+[ ] ไม่มี world-writable files นอก /tmp
+[ ] ไม่มี world-writable directories ที่ไม่ควรมี
+[ ] SUID files มีเฉพาะที่จำเป็น (sudo, passwd, ping, etc.)
+[ ] SGID files มีเฉพาะที่จำเป็น
+[ ] /etc ไม่มี world-readable sensitive files (เช่น .env, secrets)
+[ ] SSH private keys: chmod 600 เท่านั้น
+[ ] ~/.ssh directory: chmod 700 เท่านั้น
 
 Category: Process Permissions
-□ ไม่มี web server/app server รันด้วย root
-□ แต่ละ service มี dedicated system user
-□ Service users: shell = /bin/false หรือ /usr/sbin/nologin
-□ Service users: no home directory
-□ systemd service file: User= และ Group= กำหนดแล้ว
+[ ] ไม่มี web server/app server รันด้วย root
+[ ] แต่ละ service มี dedicated system user
+[ ] Service users: shell = /bin/false หรือ /usr/sbin/nologin
+[ ] Service users: no home directory
+[ ] systemd service file: User= และ Group= กำหนดแล้ว
 
 Category: Configuration Files
-□ Database passwords: chmod 400 หรือ 600
-□ API keys/secrets: chmod 400
-□ Application config: chmod 640 (owner rw-, group r--)
-□ ไม่มี secrets ใน environment variables ที่ readable ด้วย /proc/PID/environ
+[ ] Database passwords: chmod 400 หรือ 600
+[ ] API keys/secrets: chmod 400
+[ ] Application config: chmod 640 (owner rw-, group r--)
+[ ] ไม่มี secrets ใน environment variables ที่ readable ด้วย /proc/PID/environ
   (ใช้ secrets management เช่น HashiCorp Vault แทน)
 
 Category: Logging
-□ Log files: chmod 640 (service user เขียน, log group อ่าน)
-□ Audit log: chattr +a (append-only)
-□ Log rotation: configured (logrotate) ไม่ให้ log ใหญ่เกินไป
-□ Log ไม่บันทึก passwords, card numbers, tokens ใน plaintext
+[ ] Log files: chmod 640 (service user เขียน, log group อ่าน)
+[ ] Audit log: chattr +a (append-only)
+[ ] Log rotation: configured (logrotate) ไม่ให้ log ใหญ่เกินไป
+[ ] Log ไม่บันทึก passwords, card numbers, tokens ใน plaintext
 
 Category: Network
-□ firewalld/ufw: เปิดเฉพาะ port ที่จำเป็น
-□ Service bind to localhost ถ้าไม่ต้อง expose ออก
-□ Redis/PostgreSQL: ไม่ bind to 0.0.0.0 (ใช้ 127.0.0.1 หรือ Unix socket)
+[ ] firewalld/ufw: เปิดเฉพาะ port ที่จำเป็น
+[ ] Service bind to localhost ถ้าไม่ต้อง expose ออก
+[ ] Redis/PostgreSQL: ไม่ bind to 0.0.0.0 (ใช้ 127.0.0.1 หรือ Unix socket)
 ```
 
 ---
 
-## Quick Reference — Permission Numbers ที่ใช้บ่อย
+## Quick Reference - Permission Numbers ที่ใช้บ่อย
 
 ```
-400  r--------  ← Secrets, private keys (อ่านได้เฉพาะ owner)
-440  r--r-----  ← อ่านได้ owner + group
-600  rw-------  ← Config, credentials (อ่าน/เขียนเฉพาะ owner)
-640  rw-r-----  ← Application config (owner rw, group r)
-644  rw-r--r--  ← Public files, static content
-700  rwx------  ← Scripts เฉพาะ owner
-750  rwxr-x---  ← Service binary (owner rwx, group r-x)
-755  rwxr-xr-x  ← Public executables, public directories
-770  rwxrwx---  ← Shared team directories (owner + group full)
-777  rwxrwxrwx  ← ❌ อย่าใช้! อันตรายมาก
+400  r-------- <- Secrets, private keys (อ่านได้เฉพาะ owner)
+440  r--r----- <- อ่านได้ owner + group
+600  rw------- <- Config, credentials (อ่าน/เขียนเฉพาะ owner)
+640  rw-r----- <- Application config (owner rw, group r)
+644  rw-r--r-- <- Public files, static content
+700  rwx------ <- Scripts เฉพาะ owner
+750  rwxr-x--- <- Service binary (owner rwx, group r-x)
+755  rwxr-xr-x <- Public executables, public directories
+770  rwxrwx--- <- Shared team directories (owner + group full)
+777  rwxrwxrwx <- [X] อย่าใช้! อันตรายมาก
 ```
 
 ---

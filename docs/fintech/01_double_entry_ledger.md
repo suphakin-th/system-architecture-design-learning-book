@@ -1,8 +1,8 @@
-# Double-Entry Ledger — The Foundation of Financial Systems
+# Double-Entry Ledger - The Foundation of Financial Systems
 
-> "Double-entry bookkeeping is the only invention that can claim to have changed the world more than gunpowder." — Johann Wolfgang von Goethe (1795)
+> "Double-entry bookkeeping is the only invention that can claim to have changed the world more than gunpowder." - Johann Wolfgang von Goethe (1795)
 >
-> "It's 500 years old and we use it every day. Because it works." — Modern fintech architect
+> "It's 500 years old and we use it every day. Because it works." - Modern fintech architect
 
 ---
 
@@ -21,7 +21,7 @@
 
 > "Forget how banks traditionally teach accounting. Here's the programmer's view:
 >
-> Your database has ACCOUNTS (buckets that hold money) and JOURNAL ENTRIES (records of money moving between buckets). Money never appears or disappears — it only moves. Every movement has two sides: money leaves one bucket (debit) and enters another (credit). If the sum of debits ≠ sum of credits, something is wrong — mathematically impossible to balance the books with an error."
+> Your database has ACCOUNTS (buckets that hold money) and JOURNAL ENTRIES (records of money moving between buckets). Money never appears or disappears - it only moves. Every movement has two sides: money leaves one bucket (debit) and enters another (credit). If the sum of debits != sum of credits, something is wrong - mathematically impossible to balance the books with an error."
 
 ```
 Old way (single-entry, what most beginners code):
@@ -34,7 +34,7 @@ Double-entry way:
     DR Alice:    -100  (Alice's account debited)
     CR Bob:      +100  (Bob's account credited)
   Total debit = Total credit = ZERO NET CHANGE TO SYSTEM
-  If system crashes: replay the journal entry → consistent state restored
+  If system crashes: replay the journal entry -> consistent state restored
 ```
 
 ---
@@ -119,11 +119,11 @@ GROUP BY a.id, a.code, a.name, a.type, a.currency;
 
 ---
 
-## The Transfer Function — The Most Important Code You'll Write
+## The Transfer Function - The Most Important Code You'll Write
 
 ```typescript
 // This function moves money between accounts
-// It MUST be atomic — all entries recorded or none
+// It MUST be atomic - all entries recorded or none
 async function transfer(params: {
   fromAccountId: string;
   toAccountId:   string;
@@ -132,7 +132,7 @@ async function transfer(params: {
   description:   string;
   idempotencyKey: string;
 }): Promise<Transaction> {
-  // Step 1: Check idempotency — already processed?
+  // Step 1: Check idempotency - already processed?
   const existing = await db.query<Transaction>(
     `SELECT * FROM transactions WHERE idempotency_key = $1`,
     [params.idempotencyKey]
@@ -185,13 +185,13 @@ async function transfer(params: {
 
     return { id: txnId, status: 'completed' };
   });
-  // If ANY step fails → entire transaction rolled back → no partial state
+  // If ANY step fails -> entire transaction rolled back -> no partial state
 }
 ```
 
 ---
 
-## System Accounts — The Hidden Accounts
+## System Accounts - The Hidden Accounts
 
 Real financial systems have internal "system accounts" that represent money in transit or system-held funds:
 
@@ -248,7 +248,7 @@ WHERE d.total != c.total;
 ## Real Companies Using Double-Entry Ledger
 
 ### Stripe
-- Built "Ledger" — their internal double-entry accounting system
+- Built "Ledger" - their internal double-entry accounting system
 - Processes $1T+ annually through double-entry journal entries
 - Every PaymentIntent, Charge, Refund, Transfer = journal entries
 - 5 billion events per day ingested into the ledger

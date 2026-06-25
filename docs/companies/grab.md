@@ -1,6 +1,6 @@
-# Grab — Architecture Case Study
+# Grab - Architecture Case Study
 
-> "Building a super app for Southeast Asia is harder than building one for Silicon Valley. Unreliable networks, 600+ million users across 10 countries, 8 languages, and 40+ currencies." — Grab Engineering
+> "Building a super app for Southeast Asia is harder than building one for Silicon Valley. Unreliable networks, 600+ million users across 10 countries, 8 languages, and 40+ currencies." - Grab Engineering
 
 ---
 
@@ -55,26 +55,26 @@ BUT: must share:
 GrabRide at peak (Southeast Asia rush hour):
   5M+ active rides simultaneously across 8 countries
   Each ride: driver GPS updates every 2 seconds
-  5M drivers × 0.5 updates/sec = 2.5M location updates/second
+  5M drivers x 0.5 updates/sec = 2.5M location updates/second
 
 Architecture for driver location:
-  Driver app → TCP connection → Location Gateway (Go)
-    → Kafka (locations.updates topic)
-      → Flink: compute driver position in H3 hex cells
-      → Redis: store driver_id → current H3 cell (TTL: 10 seconds)
-      → Cassandra: store location history (for route replay)
+  Driver app -> TCP connection -> Location Gateway (Go)
+ -> Kafka (locations.updates topic)
+ -> Flink: compute driver position in H3 hex cells
+ -> Redis: store driver_id -> current H3 cell (TTL: 10 seconds)
+ -> Cassandra: store location history (for route replay)
 
 Rider requests a GrabCar:
-  → RideService: find drivers in same H3 cell as rider
-  → Redis lookup: O(1), returns list of driver_ids in that cell
-  → Returns 5 nearest drivers in <10ms
+ -> RideService: find drivers in same H3 cell as rider
+ -> Redis lookup: O(1), returns list of driver_ids in that cell
+ -> Returns 5 nearest drivers in <10ms
 ```
 
 **The network quality problem (Southeast Asia specific):**
 
 ```
-Singapore: 5G, WiFi → driver location updates every 2 seconds: fine
-Rural Indonesia: 2G, 200ms latency → every-2-second update drops frequently
+Singapore: 5G, WiFi -> driver location updates every 2 seconds: fine
+Rural Indonesia: 2G, 200ms latency -> every-2-second update drops frequently
 
 Solution: adaptive location updates
   Signal quality detected by driver app
@@ -94,12 +94,12 @@ Solution: adaptive location updates
 
 ```
 Country-by-country compliance:
-  Singapore: MAS (Monetary Authority of Singapore) — strict fintech licensing
-  Indonesia: OJK + BI regulations — separate license from Singapore
-  Malaysia: BNM regulations — different from Indonesia
-  Vietnam: SBV regulations — foreign payment restrictions
-  Philippines: BSP regulations — separate wallet regulations
-  Thailand: BOT regulations — KYC requirements differ
+  Singapore: MAS (Monetary Authority of Singapore) - strict fintech licensing
+  Indonesia: OJK + BI regulations - separate license from Singapore
+  Malaysia: BNM regulations - different from Indonesia
+  Vietnam: SBV regulations - foreign payment restrictions
+  Philippines: BSP regulations - separate wallet regulations
+  Thailand: BOT regulations - KYC requirements differ
 
 Each country requires:
   - Separate legal entity
@@ -112,17 +112,17 @@ Each country requires:
 **Architecture solution:**
 
 ```
-Payment Request → PaymentRouter
+Payment Request -> PaymentRouter
   PaymentRouter: which country is this transaction in?
-  → Routes to country-specific PaymentProcessor
+ -> Routes to country-specific PaymentProcessor
 
 PaymentProcessorSG (Singapore):
-  → DBS Bank API → MAS-compliant transaction
-  → Data stored in Singapore AWS region
+ -> DBS Bank API -> MAS-compliant transaction
+ -> Data stored in Singapore AWS region
 
 PaymentProcessorID (Indonesia):
-  → BCA Bank API → OJK-compliant transaction
-  → Data stored in Jakarta AWS region
+ -> BCA Bank API -> OJK-compliant transaction
+ -> Data stored in Jakarta AWS region
 
 Shared:
   Common interface: IPaymentProcessor
@@ -155,13 +155,13 @@ Solution approach:
 
   2. R class optimization:
      Large R classes (Android resource IDs) from 1500+ modules
-     Solution: R8 shrinking + dependency cleanup → 25% app size reduction
+     Solution: R8 shrinking + dependency cleanup -> 25% app size reduction
 
   3. WebP images (replace PNG/JPG):
      WebP: 30% smaller than PNG, 25% smaller than JPEG
-     → Significant reduction in image assets
+ -> Significant reduction in image assets
 
-Result: App size reduced by 25% → meaningful improvement for 2G users
+Result: App size reduced by 25% -> meaningful improvement for 2G users
 ```
 
 ---
@@ -206,8 +206,8 @@ IPaymentProcessor = Port (interface) defined in PaymentUseCase
   Use case never knows which country's banking partner it's using
 
 Location Service = Use Case
-  Depends on IDriverLocationStore (port) → Redis adapter
-  Depends on IH3IndexService (port) → custom H3 geo-index adapter
+  Depends on IDriverLocationStore (port) -> Redis adapter
+  Depends on IH3IndexService (port) -> custom H3 geo-index adapter
   Business rule: "find all drivers within 2km" implemented in use case
   H3 indexing details: hidden in adapter
 
@@ -225,19 +225,19 @@ Istio/Envoy = Framework & Drivers layer
 
 ## Lessons for Your Architecture
 
-1. **Regulatory compliance shapes architecture** — Grab's per-country payment processors aren't over-engineering; they're legal requirements
-2. **Network quality is a first-class concern in developing markets** — adaptive location updates, offline-first, progressive loading
-3. **App size is a feature** — for 2G markets, a 25% size reduction increases your addressable user base
-4. **Service mesh solves security uniformly** — mTLS across 1000+ services without changing service code
-5. **Strategy Pattern scales to country-level** — same interface, different implementation per country/regulation/currency
+1. **Regulatory compliance shapes architecture** - Grab's per-country payment processors aren't over-engineering; they're legal requirements
+2. **Network quality is a first-class concern in developing markets** - adaptive location updates, offline-first, progressive loading
+3. **App size is a feature** - for 2G markets, a 25% size reduction increases your addressable user base
+4. **Service mesh solves security uniformly** - mTLS across 1000+ services without changing service code
+5. **Strategy Pattern scales to country-level** - same interface, different implementation per country/regulation/currency
 
 ---
 
 ## Sources
-- [Engineering — Grab Tech Blog](https://engineering.grab.com/)
-- [Driving Southeast Asia Forward with AWS — Grab Engineering](https://engineering.grab.com/driving-southeast-asia-forward-with-aws)
+- [Engineering - Grab Tech Blog](https://engineering.grab.com/)
+- [Driving Southeast Asia Forward with AWS - Grab Engineering](https://engineering.grab.com/driving-southeast-asia-forward-with-aws)
 - [Asian superapp Grab shrank its app by a quarter to survive](https://www.theregister.com/2024/03/05/grab_downsized_app/)
-- [DoorDash Uses Service Mesh and Cell-Based Architecture — InfoQ](https://www.infoq.com/news/2024/01/doordash-service-mesh/)
+- [DoorDash Uses Service Mesh and Cell-Based Architecture - InfoQ](https://www.infoq.com/news/2024/01/doordash-service-mesh/)
 
 
 ---

@@ -1,6 +1,6 @@
-# Google — Architecture Case Study
+# Google - Architecture Case Study
 
-> "Google's architecture papers changed how the entire industry thinks about distributed systems. MapReduce, Bigtable, Spanner, Borg — each paper created a new category." — Industry observation
+> "Google's architecture papers changed how the entire industry thinks about distributed systems. MapReduce, Bigtable, Spanner, Borg - each paper created a new category." - Industry observation
 
 ---
 
@@ -18,18 +18,18 @@
 
 ## The Senior Architect Explains Google's Contribution
 
-> "Google didn't just build a search engine. They invented the software infrastructure that runs the modern internet. Every major architecture idea since 2003 — distributed file systems, MapReduce, key-value stores, distributed SQL, container orchestration — Google invented it to solve their own problems and then published papers that let the world copy them."
+> "Google didn't just build a search engine. They invented the software infrastructure that runs the modern internet. Every major architecture idea since 2003 - distributed file systems, MapReduce, key-value stores, distributed SQL, container orchestration - Google invented it to solve their own problems and then published papers that let the world copy them."
 
 ---
 
-## Problem 1: Storing the Entire Web — GFS (2003)
+## Problem 1: Storing the Entire Web - GFS (2003)
 
 **The problem:**
 Google needed to store and process a copy of the ENTIRE internet. In 2003, that was ~20 petabytes. No existing file system could handle this.
 
 **The constraints:**
-- Files are HUGE (terabytes each — one crawl of the web)
-- Failures are NORMAL — at 1M+ machines, dozens fail every day
+- Files are HUGE (terabytes each - one crawl of the web)
+- Failures are NORMAL - at 1M+ machines, dozens fail every day
 - Reads are sequential (MapReduce reads files from start to end)
 - Writes are append-only (no random writes to middle of a file)
 - Need to process the file in parallel (split into chunks)
@@ -43,18 +43,18 @@ GFS Architecture:
 
 File stored as chunks:
   web_crawl_2003.txt (100TB)
-  → Chunk 1 (64MB): on Chunkserver 3, 7, 12
-  → Chunk 2 (64MB): on Chunkserver 1, 5, 9
-  → ...
+ -> Chunk 1 (64MB): on Chunkserver 3, 7, 12
+ -> Chunk 2 (64MB): on Chunkserver 1, 5, 9
+ -> ...
 
 Reading:
-  Client → Master: "I want chunk 1 of file X"
-  Master → Client: "Chunk 1 is on Chunkservers 3, 7, 12"
-  Client → Chunkserver 3: reads directly (Master not in data path)
+  Client -> Master: "I want chunk 1 of file X"
+  Master -> Client: "Chunk 1 is on Chunkservers 3, 7, 12"
+  Client -> Chunkserver 3: reads directly (Master not in data path)
 
 If Chunkserver 3 fails:
-  Client tries Chunkserver 7 → same data, 3 replicas = tolerates 2 failures
-  Master detects Chunkserver 3 is gone → orders new replica creation
+  Client tries Chunkserver 7 -> same data, 3 replicas = tolerates 2 failures
+  Master detects Chunkserver 3 is gone -> orders new replica creation
   Automatic self-healing
 ```
 
@@ -66,14 +66,14 @@ If Chunkserver 3 fails:
 
 ---
 
-## Problem 2: Processing Petabytes of Data — MapReduce (2004)
+## Problem 2: Processing Petabytes of Data - MapReduce (2004)
 
 **The problem:**
 
 Google needed to build the inverted index for web search. Given a web page "cats are great", generate:
 ```
-"cats" → [page_1, page_5, page_100, ...]
-"great" → [page_1, page_7, page_42, ...]
+"cats" -> [page_1, page_5, page_100, ...]
+"great" -> [page_1, page_7, page_42, ...]
 ```
 
 This requires reading the ENTIRE internet and computing the index. On one machine: impossible. On 1,000 machines: how do you coordinate them?
@@ -83,18 +83,18 @@ This requires reading the ENTIRE internet and computing the index. On one machin
 ```
 Map phase (embarrassingly parallel):
   Input: split the 100TB crawl across 1,000 machines
-  Each machine processes its chunk: word → (word, 1) pairs
-    Machine 1: "cats are great cats" → (cats,1), (are,1), (great,1), (cats,1)
-    Machine 2: "dogs are great"     → (dogs,1), (are,1), (great,1)
+  Each machine processes its chunk: word -> (word, 1) pairs
+    Machine 1: "cats are great cats" -> (cats,1), (are,1), (great,1), (cats,1)
+    Machine 2: "dogs are great" -> (dogs,1), (are,1), (great,1)
 
 Shuffle phase (automatic):
   Framework collects all (word, count) pairs and groups by word
-  All (cats, *) pairs → to one reducer
-  All (are, *)  pairs → to another reducer
+  All (cats, *) pairs -> to one reducer
+  All (are, *)  pairs -> to another reducer
 
 Reduce phase (aggregate):
-  Reducer for "cats": [(cats,1),(cats,1),(cats,1)] → (cats, 3)
-  Reducer for "are":  [(are,1),(are,1)]            → (are, 2)
+  Reducer for "cats": [(cats,1),(cats,1),(cats,1)] -> (cats, 3)
+  Reducer for "are":  [(are,1),(are,1)] -> (are, 2)
 
 Result: inverted index for every word on the internet
 ```
@@ -122,7 +122,7 @@ def reduce(key, values):
 
 ---
 
-## Problem 3: Storing Structured Web Data — Bigtable (2006)
+## Problem 3: Storing Structured Web Data - Bigtable (2006)
 
 **The problem:**
 
@@ -156,11 +156,11 @@ Access patterns:
 
 **Why it was revolutionary:**
 
-> "SQL requires a schema — every row has the same columns. Bigtable has flexible columns — each row can have different columns. This is perfect for web data: every URL has different metadata. HBase (Hadoop) and Cassandra are direct descendants of Bigtable."
+> "SQL requires a schema - every row has the same columns. Bigtable has flexible columns - each row can have different columns. This is perfect for web data: every URL has different metadata. HBase (Hadoop) and Cassandra are direct descendants of Bigtable."
 
 ---
 
-## Problem 4: Running 1M+ Machines — Borg (2003–present)
+## Problem 4: Running 1M+ Machines - Borg (2003-present)
 
 **The problem:**
 
@@ -170,8 +170,8 @@ Google runs 2M+ servers. Every second, thousands of jobs need to be scheduled on
 
 ```
 Borg Components:
-  Borgmaster: the brain — accepts job requests, schedules tasks
-  Borglet: agent on every machine — executes tasks, reports status
+  Borgmaster: the brain - accepts job requests, schedules tasks
+  Borglet: agent on every machine - executes tasks, reports status
 
 Job types:
   Prod (high priority):  web serving, requires <100ms latency
@@ -183,7 +183,7 @@ Scheduling:
   Borglet: starts containers on each assigned machine
 
 Failure handling:
-  Machine dies → Borglet stops responding
+  Machine dies -> Borglet stops responding
   Borgmaster detects: reschedules tasks on other machines
   MapReduce task retried on different machine: progress preserved
 
@@ -198,13 +198,13 @@ Priority preemption:
 
 ---
 
-## Problem 5: Global Consistent SQL — Spanner (2012)
+## Problem 5: Global Consistent SQL - Spanner (2012)
 
 **The problem:**
 
 Google needed a database for:
-- Google Ads (financial transactions — must be ACID)
-- Google F1 (MySQL replacement — billions of rows)
+- Google Ads (financial transactions - must be ACID)
+- Google F1 (MySQL replacement - billions of rows)
 - Must span multiple data centers globally (can't have outages)
 - Must have strong consistency (no stale reads)
 - Must support SQL (too many engineers depend on SQL)
@@ -214,13 +214,13 @@ Google needed a database for:
 
 **Google's answer: use physics**
 
-> "We solved the consistency problem with atomic clocks and GPS receivers. Every Google data center has GPS receivers and atomic clocks. This gives us TrueTime — an API that returns a time interval [earliest, latest] within which the true current time falls. If we ensure commit timestamps are always outside this interval, we can guarantee order of transactions globally."
+> "We solved the consistency problem with atomic clocks and GPS receivers. Every Google data center has GPS receivers and atomic clocks. This gives us TrueTime - an API that returns a time interval [earliest, latest] within which the true current time falls. If we ensure commit timestamps are always outside this interval, we can guarantee order of transactions globally."
 
 ```
 TrueTime API:
-  TT.now() → [earliest: t-7ms, latest: t+7ms]
-  TT.after(t) → True if t has definitely passed
-  TT.before(t) → True if t has definitely not passed
+  TT.now() -> [earliest: t-7ms, latest: t+7ms]
+  TT.after(t) -> True if t has definitely passed
+  TT.before(t) -> True if t has definitely not passed
 
 Spanner transaction commit protocol:
   1. Generate commit timestamp = TT.now().latest
@@ -238,7 +238,7 @@ Spanner transaction commit protocol:
 
 ---
 
-## Problem 6: Service-to-Service Communication — gRPC (2016)
+## Problem 6: Service-to-Service Communication - gRPC (2016)
 
 **The problem:**
 
@@ -258,13 +258,13 @@ Protocol Buffers (data format):
   Protocol Buffers (binary, compact):
     0x0A 0x05 31 32 33 34 35  // user_id: 12345
     0x12 0x04 4A 6F 68 6E      // name: "John"
-    (3-10× smaller than JSON)
+    (3-10x smaller than JSON)
 
 gRPC benefits:
   - HTTP/2: multiplexed connections (multiple requests on one TCP connection)
   - Binary Protocol Buffers: smaller, faster to parse than JSON
   - Streaming: server can push multiple responses for one request
-  - Generated code: .proto file → auto-generate client + server in any language
+  - Generated code: .proto file -> auto-generate client + server in any language
   - Type safety: Proto schema enforces message structure at compile time
 ```
 
@@ -300,22 +300,22 @@ response, err := client.PlaceOrder(ctx, &pb.PlaceOrderRequest{
 Google's Architecture = Clean Architecture at planetary scale
 
 GFS/Colossus = Infrastructure layer
-  IFileSystem → GFSClient
+  IFileSystem -> GFSClient
   Use cases write files through IFileSystem
   GFS handles replication, failure recovery transparently
 
 Bigtable/Spanner = Infrastructure layer (database adapters)
-  IUserRepository → BigtableUserRepository OR SpannerUserRepository
-  Use cases call IUserRepository — never import Bigtable SDK directly
+  IUserRepository -> BigtableUserRepository OR SpannerUserRepository
+  Use cases call IUserRepository - never import Bigtable SDK directly
 
 Borg/Kubernetes = Frameworks & Drivers layer
-  Container runtime — runs the services
+  Container runtime - runs the services
   Services have no code that knows they're in a container
 
 Stubby/gRPC = Interface Adapter (both inbound and outbound)
   Inbound: gRPC handler = Controller layer
   Outbound: gRPC client = the adapter implementing a service interface
-  IOrderService (port) → OrderServiceGrpcClient (adapter calling gRPC)
+  IOrderService (port) -> OrderServiceGrpcClient (adapter calling gRPC)
 
 MapReduce/Dataflow = Use Cases for data processing
   Each MapReduce job = a use case applied to a dataset
@@ -341,20 +341,20 @@ MapReduce/Dataflow = Use Cases for data processing
 
 ## Lessons for Your Architecture
 
-1. **Design for failure at the machine level** — at Google's scale, 10 machines fail every minute; make the system work despite this
-2. **Simple abstractions hide enormous complexity** — MapReduce's map/reduce functions hide 100K lines of distributed systems code
-3. **Physics can solve computer science problems** — atomic clocks solved distributed consistency (Spanner)
-4. **Publish your solutions** — Google's papers created the industry's infrastructure; the goodwill and talent attraction were worth more than the competitive advantage
-5. **The same architecture patterns apply at every scale** — Clean Architecture works whether you have 10 or 2 million servers
+1. **Design for failure at the machine level** - at Google's scale, 10 machines fail every minute; make the system work despite this
+2. **Simple abstractions hide enormous complexity** - MapReduce's map/reduce functions hide 100K lines of distributed systems code
+3. **Physics can solve computer science problems** - atomic clocks solved distributed consistency (Spanner)
+4. **Publish your solutions** - Google's papers created the industry's infrastructure; the goodwill and talent attraction were worth more than the competitive advantage
+5. **The same architecture patterns apply at every scale** - Clean Architecture works whether you have 10 or 2 million servers
 
 ---
 
 ## Sources
 - [Inside Google's AI Powerhouse: Distributed Systems Lessons from Jeff Dean](https://www.klover.ai/inside-googles-ai-powerhouse-distributed-systems-lessons-from-jeff-dean/)
-- [Spanner: Google's Globally Distributed Database — Cornell](https://www.cs.cornell.edu/courses/cs5414/2017fa/papers/Spanner.pdf)
-- [The Production Environment at Google — Medium](https://medium.com/@jerub/the-production-environment-at-google-8a1aaece3767)
-- [Google SRE Book — Production Environment](https://sre.google/sre-book/production-environment/)
-- [Inside Google's Engineering Culture — Pragmatic Engineer](https://newsletter.pragmaticengineer.com/p/google-part-2)
+- [Spanner: Google's Globally Distributed Database - Cornell](https://www.cs.cornell.edu/courses/cs5414/2017fa/papers/Spanner.pdf)
+- [The Production Environment at Google - Medium](https://medium.com/@jerub/the-production-environment-at-google-8a1aaece3767)
+- [Google SRE Book - Production Environment](https://sre.google/sre-book/production-environment/)
+- [Inside Google's Engineering Culture - Pragmatic Engineer](https://newsletter.pragmaticengineer.com/p/google-part-2)
 
 
 ---

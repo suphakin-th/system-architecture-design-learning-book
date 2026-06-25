@@ -1,6 +1,6 @@
-# Stripe — Architecture Case Study
+# Stripe - Architecture Case Study
 
-> "Our job is to abstract away the complexity of payments so developers never have to think about banking infrastructure again." — Patrick Collison
+> "Our job is to abstract away the complexity of payments so developers never have to think about banking infrastructure again." - Patrick Collison
 
 ---
 
@@ -29,12 +29,12 @@ The engineering problem behind this simplicity is enormous.
 **The fundamental constraint of financial systems:**
 
 ```
-A regular web app: user submits form → if request fails → user retries → harmless
+A regular web app: user submits form -> if request fails -> user retries -> harmless
 
-A payments app: user pays $100 → if request fails → retry?
-  Case 1: First request failed before charging → retry = charge once ✓
-  Case 2: First request charged but response lost → retry = charge TWICE ✗
-  Case 3: First request charged, user already has receipt → retry = confuse user ✗
+A payments app: user pays $100 -> if request fails -> retry?
+  Case 1: First request failed before charging -> retry = charge once [OK]
+  Case 2: First request charged but response lost -> retry = charge TWICE [X]
+  Case 3: First request charged, user already has receipt -> retry = confuse user [X]
 
 The dual-write problem:
   Action: charge $100
@@ -51,10 +51,10 @@ The dual-write problem:
 
 **Stripe's answer to these problems:**
 
-1. **Idempotency Keys** — solve the retry problem
-2. **Event Sourcing** — solve the dual-write problem
-3. **Distributed Locking** — prevent concurrent operations on the same object
-4. **Reconciliation Jobs** — catch and fix any inconsistencies
+1. **Idempotency Keys** - solve the retry problem
+2. **Event Sourcing** - solve the dual-write problem
+3. **Distributed Locking** - prevent concurrent operations on the same object
+4. **Reconciliation Jobs** - catch and fix any inconsistencies
 
 ---
 
@@ -68,7 +68,7 @@ The dual-write problem:
 
 ```
 Client generates a unique idempotency key:
-  key = UUID() → "idem_2XjA8mNpQrL4wBvZ"
+  key = UUID() -> "idem_2XjA8mNpQrL4wBvZ"
 
 API call:
   POST /v1/charges
@@ -82,15 +82,15 @@ API call:
 Stripe server:
   1. Hash the Idempotency-Key
   2. Check Redis: does key idem_2XjA8mNpQrL4wBvZ exist?
-     - Yes → return the stored response (do NOT process again)
-     - No  → acquire distributed lock for this key
-             → process the charge
-             → store result in Redis with key
-             → release lock
-             → return result
+     - Yes -> return the stored response (do NOT process again)
+     - No -> acquire distributed lock for this key
+ -> process the charge
+ -> store result in Redis with key
+ -> release lock
+ -> return result
 
 Client network timeout, retries:
-  Same Idempotency-Key → Stripe returns stored result
+  Same Idempotency-Key -> Stripe returns stored result
   Card charged EXACTLY once, regardless of how many retries
 ```
 
@@ -107,7 +107,7 @@ class ChargeCardUseCase {
   async execute(req: ChargeRequest): Promise<ChargeResponse> {
     // Check idempotency key
     const existing = await this.idempotencyStore.get(req.idempotencyKey);
-    if (existing) return existing;  // Already processed — return cached result
+    if (existing) return existing;  // Already processed - return cached result
 
     // Acquire distributed lock
     await this.idempotencyStore.lock(req.idempotencyKey);
@@ -143,7 +143,7 @@ Traditional DB approach for payments:
   - Was there a failed attempt before it succeeded?
   - Was it refunded and re-charged?
   - What was the authorization code?
-  - Regulators need 7 years of history — you can't just show current state.
+  - Regulators need 7 years of history - you can't just show current state.
 
 Event Sourcing approach (Stripe's reality):
   payment_intent_events:
@@ -165,25 +165,25 @@ Full audit trail: every cent, every action, forever
 
 ```
 Old Charges API (pre-2019):
-  POST /charges → tries to charge immediately
+  POST /charges -> tries to charge immediately
   Problem: 3D Secure, bank authentication, SCA compliance require
            asynchronous flows that don't fit request/response
 
 PaymentIntents API (event-sourced workflow):
-  POST /payment_intents → creates a PaymentIntent
+  POST /payment_intents -> creates a PaymentIntent
     State: requires_payment_method
 
-  Attach payment method →
+  Attach payment method -> 
     State: requires_confirmation
 
-  Confirm →
+  Confirm -> 
     State: requires_action (3D Secure needed)
-    → Redirect user to bank for authentication
+ -> Redirect user to bank for authentication
 
-  User authenticates at bank →
+  User authenticates at bank -> 
     State: processing
 
-  Bank processes charge →
+  Bank processes charge -> 
     State: succeeded OR payment_failed
 
 Each state transition = one event appended to the event log
@@ -250,19 +250,19 @@ Result: Customer is charged, Stripe thinks the payment failed
 Every hour:
   For each charge in state "unknown":
     Query Visa/Mastercard directly via batch API
-    If Visa says "yes, we charged it" → update to "succeeded"
-    If Visa says "no charge" → update to "failed" → unblock refund
+    If Visa says "yes, we charged it" -> update to "succeeded"
+    If Visa says "no charge" -> update to "failed" -> unblock refund
 
 Every day:
   Compare Stripe's ledger with bank's settlement files (CSV dumps)
-  If any discrepancy → alert and investigate
+  If any discrepancy -> alert and investigate
 
 Every month:
   Full reconciliation with all payment networks
-  Any unclaimed money → held in reserve → returned via regulatory process
+  Any unclaimed money -> held in reserve -> returned via regulatory process
 ```
 
-This is "defensive architecture" — assume events will be lost and build a correction mechanism.
+This is "defensive architecture" - assume events will be lost and build a correction mechanism.
 
 ---
 
@@ -279,37 +279,37 @@ ChargeCardUseCase = Use Case
   Depends on: IPaymentGateway, IEventStore, IIdempotencyStore (all interfaces)
   Publishes domain events: ChargeAttempted, ChargeSucceeded, ChargeFailed
 
-IEventStore → StripeEventStorePostgres = Interface Adapter
+IEventStore -> StripeEventStorePostgres = Interface Adapter
   Stores events in PostgreSQL
   Use case never imports PostgreSQL directly
 
 API versioning = Interface Adapter (inbound)
-  HTTP request (v1 format) → adapter → internal DTO → use case
-  Use case response → adapter → HTTP response (v1 format)
+  HTTP request (v1 format) -> adapter -> internal DTO -> use case
+  Use case response -> adapter -> HTTP response (v1 format)
   Different adapters per API version; same use case
 
 Reconciliation Jobs = Use Cases triggered by scheduler
   ReconcileUnknownChargesUseCase.execute()
   Depends on: IPaymentNetworkClient (Visa/Mastercard interface)
-  Use case doesn't know if it's querying Visa or Mastercard — just the interface
+  Use case doesn't know if it's querying Visa or Mastercard - just the interface
 ```
 
 ---
 
 ## Lessons for Your Architecture
 
-1. **Idempotency is not optional for money** — every payment operation must be idempotent; no exceptions
-2. **Event Sourcing is the natural fit for financial systems** — regulators need history; events give you that for free
-3. **Design APIs to last decades** — Stripe's version pinning means customers never need to upgrade
-4. **Reconciliation catches what events miss** — distributed systems lie; reconcile against ground truth regularly
-5. **The PaymentIntent pattern** — when an operation has async steps (3D Secure, bank auth), model it as a state machine driven by events
+1. **Idempotency is not optional for money** - every payment operation must be idempotent; no exceptions
+2. **Event Sourcing is the natural fit for financial systems** - regulators need history; events give you that for free
+3. **Design APIs to last decades** - Stripe's version pinning means customers never need to upgrade
+4. **Reconciliation catches what events miss** - distributed systems lie; reconcile against ground truth regularly
+5. **The PaymentIntent pattern** - when an operation has async steps (3D Secure, bank auth), model it as a state machine driven by events
 
 ---
 
 ## Sources
-- [Stripe's Payments APIs: The First 10 Years — Stripe Dev Blog](https://stripe.dev/blog/payment-api-design)
-- [The First 10-Year Evolution of Stripe's Payments API — ByteByteGo](https://blog.bytebytego.com/p/the-first-10-year-evolution-of-stripes)
-- [Engineering — Stripe Blog](https://stripe.com/blog/engineering)
+- [Stripe's Payments APIs: The First 10 Years - Stripe Dev Blog](https://stripe.dev/blog/payment-api-design)
+- [The First 10-Year Evolution of Stripe's Payments API - ByteByteGo](https://blog.bytebytego.com/p/the-first-10-year-evolution-of-stripes)
+- [Engineering - Stripe Blog](https://stripe.com/blog/engineering)
 - [Stripe System Design Interview Guide](https://www.systemdesignhandbook.com/guides/stripe-system-design-interview/)
 
 

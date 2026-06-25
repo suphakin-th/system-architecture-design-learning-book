@@ -1,6 +1,6 @@
-# Database — The 3-Layer Model (ANSI/SPARC Architecture)
+# Database - The 3-Layer Model (ANSI/SPARC Architecture)
 
-> "The three-schema architecture separates the users from the physical database. Change the disk storage, and users see nothing. Change the user view, and the disk doesn't care." — ANSI/SPARC Committee, 1975
+> "The three-schema architecture separates the users from the physical database. Change the disk storage, and users see nothing. Change the user view, and the disk doesn't care." - ANSI/SPARC Committee, 1975
 
 ---
 
@@ -8,10 +8,10 @@
 
 | | |
 |---|---|
-| **Standard** | ANSI/SPARC (1975) — the foundation of all modern DBMS |
+| **Standard** | ANSI/SPARC (1975) - the foundation of all modern DBMS |
 | **Purpose** | Separate HOW data is stored from WHAT data means from WHO sees what |
 | **Also called** | 3-schema architecture, 3-tier DBMS architecture |
-| **Key benefit** | Data independence — change one layer without breaking others |
+| **Key benefit** | Data independence - change one layer without breaking others |
 
 ---
 
@@ -21,23 +21,23 @@
 
 ```
 Scenario 1: You change the disk storage format
-→ Every application that reads the data BREAKS
-→ Need to update 50 application files
+ -> Every application that reads the data BREAKS
+ -> Need to update 50 application files
 
 Scenario 2: You add a new column to a table
-→ Every user view that shows that table BREAKS
-→ Need to notify all 200 users
+ -> Every user view that shows that table BREAKS
+ -> Need to notify all 200 users
 
 Scenario 3: A junior developer can see salary data for all employees
-→ No access control at the data level
-→ Security nightmare
+ -> No access control at the data level
+ -> Security nightmare
 ```
 
 **With the 3-layer model:**
 ```
-Change disk storage format → Only Internal Layer changes → Applications unaffected ✓
-Add new column → Only Conceptual Layer changes → Views adapt, apps unaffected ✓
-Junior developer → Gets External View without salary column → Security enforced ✓
+Change disk storage format -> Only Internal Layer changes -> Applications unaffected [OK]
+Add new column -> Only Conceptual Layer changes -> Views adapt, apps unaffected [OK]
+Junior developer -> Gets External View without salary column -> Security enforced [OK]
 ```
 
 ---
@@ -47,28 +47,28 @@ Junior developer → Gets External View without salary column → Security enfor
 There are actually **two important 3-layer models** for databases. Both matter:
 
 ```
-Model 1: ANSI/SPARC (Schema Architecture) — How a DBMS organizes itself internally
+Model 1: ANSI/SPARC (Schema Architecture) - How a DBMS organizes itself internally
   External Schema (View Level)
   Conceptual Schema (Logical Level)
   Internal Schema (Physical Level)
-  → This is about DATA ABSTRACTION inside the database system
+ -> This is about DATA ABSTRACTION inside the database system
 
-Model 2: Data Modeling Levels — How you DESIGN a database
+Model 2: Data Modeling Levels - How you DESIGN a database
   Conceptual Model (business concepts, no tech)
   Logical Model (tables, relationships, no DB-specific)
   Physical Model (actual SQL for a specific DB)
-  → This is about DATABASE DESIGN PROCESS
+ -> This is about DATABASE DESIGN PROCESS
 
 Both use 3 layers. Both call them different names. This document covers BOTH.
 ```
 
 ---
 
-## Model 1: ANSI/SPARC — The 3-Schema Architecture
+## Model 1: ANSI/SPARC - The 3-Schema Architecture
 
-### Layer 1 — External Schema (View Level) — "What each user sees"
+### Layer 1 - External Schema (View Level) - "What each user sees"
 
-The outermost layer. Each user or application gets its own **custom view** of the database — showing only the data they need, in the format they need it.
+The outermost layer. Each user or application gets its own **custom view** of the database - showing only the data they need, in the format they need it.
 
 ```
 Different users, different views of the SAME underlying data:
@@ -89,7 +89,7 @@ Junior Developer View:
 All views come from the SAME data. Each user sees only what they should.
 ```
 
-**In SQL — External Schema = Views:**
+**In SQL - External Schema = Views:**
 
 ```sql
 -- HR Manager gets full employee view (authorized)
@@ -105,7 +105,7 @@ FROM employees;
 -- salary, bank_account, performance_score NOT included
 
 -- Applications query the VIEW, never the raw table directly
--- Change the underlying table → update the view → app sees nothing
+-- Change the underlying table -> update the view -> app sees nothing
 ```
 
 **Why it matters:**
@@ -113,9 +113,9 @@ FROM employees;
 - **Simplicity:** Each user sees exactly what they need (no 50-column tables)
 - **Flexibility:** Reshape data for each consumer without changing storage
 
-### Layer 2 — Conceptual Schema (Logical Level) — "What data exists and how it relates"
+### Layer 2 - Conceptual Schema (Logical Level) - "What data exists and how it relates"
 
-The middle layer. The **single, unified description** of the ENTIRE database — all entities, all relationships, all business rules — independent of how it's stored or who views it.
+The middle layer. The **single, unified description** of the ENTIRE database - all entities, all relationships, all business rules - independent of how it's stored or who views it.
 
 ```
 Conceptual Schema answers:
@@ -130,7 +130,7 @@ Does NOT answer:
   - WHAT application sees it? (not user views)
 ```
 
-**In SQL — Conceptual Schema = Table Definitions + Constraints:**
+**In SQL - Conceptual Schema = Table Definitions + Constraints:**
 
 ```sql
 -- The conceptual schema: what exists and what rules apply
@@ -161,7 +161,7 @@ CREATE TABLE employee_departments (
 -- No physical storage decisions here
 ```
 
-### Layer 3 — Internal Schema (Physical Level) — "How data is stored on disk"
+### Layer 3 - Internal Schema (Physical Level) - "How data is stored on disk"
 
 The innermost layer. The **physical implementation details**: how data is stored, where indexes are, how files are organized. Completely hidden from users and applications.
 
@@ -178,7 +178,7 @@ Does NOT answer:
   - WHO can see what? (that's external)
 ```
 
-**In SQL/PostgreSQL — Internal Schema = Physical Storage Settings:**
+**In SQL/PostgreSQL - Internal Schema = Physical Storage Settings:**
 
 ```sql
 -- Index (internal: how to find rows quickly)
@@ -202,23 +202,23 @@ ALTER TABLE employees SET (fillfactor = 90);  -- leave 10% free for updates
 
 ---
 
-## Data Independence — The Key Benefit
+## Data Independence - The Key Benefit
 
 ```
 Physical Data Independence:
   Change HOW data is stored (add index, move to SSD, change file format)
-  → Conceptual and External layers UNCHANGED
-  → Applications continue working without modification
+ -> Conceptual and External layers UNCHANGED
+ -> Applications continue working without modification
 
 Logical Data Independence:
   Change WHAT data is stored (add column, rename table, split table)
-  → Internal layer needs updating, but can be done
-  → External views can be updated to hide the change from apps
-  → Applications may not need to change at all
+ -> Internal layer needs updating, but can be done
+ -> External views can be updated to hide the change from apps
+ -> Applications may not need to change at all
 
 Example:
   You split the employees table into employees + employee_details
-  (performance optimization — less data loaded for common queries)
+  (performance optimization - less data loaded for common queries)
 
   Before: employees (emp_id, name, dept, salary, skills, projects, notes)
   After:  employees (emp_id, name, dept, salary)
@@ -229,21 +229,21 @@ Example:
   SELECT e.*, ed.skills, ed.projects
   FROM employees e JOIN employee_details ed ON e.emp_id = ed.emp_id;
 
-  HR Manager application: still queries employee_hr_view → unchanged ✓
-  Physical change: table split → hidden ✓
-  Logical change: schema changed → managed by view update ✓
+  HR Manager application: still queries employee_hr_view -> unchanged [OK]
+  Physical change: table split -> hidden [OK]
+  Logical change: schema changed -> managed by view update [OK]
 ```
 
 ---
 
-## Model 2: Data Modeling Levels — How to Design a Database
+## Model 2: Data Modeling Levels - How to Design a Database
 
 This is what you use when **building** a database from business requirements.
 
-### Step 1 — Conceptual Model (Business Level)
+### Step 1 - Conceptual Model (Business Level)
 
 **Who:** Business analysts + domain experts + developers together
-**Tool:** Entity-Relationship (ER) diagram — no technical terms
+**Tool:** Entity-Relationship (ER) diagram - no technical terms
 **Goal:** Capture WHAT exists in the business, not HOW to store it
 
 ```
@@ -256,32 +256,39 @@ Pantip Conceptual Model:
     Tag         (a label attached to posts)
 
   RELATIONSHIPS:
-    User CREATES Post          (one User → many Posts)
-    Post BELONGS TO Board      (many Posts → one Board)
-    User WRITES Comment        (one User → many Comments)
-    Comment REPLIES TO Post    (many Comments → one Post)
-    Post HAS Tag               (many-to-many: Post ↔ Tag)
-    User UPVOTES Post          (many-to-many: User ↔ Post)
+    User CREATES Post          (one User -> many Posts)
+    Post BELONGS TO Board      (many Posts -> one Board)
+    User WRITES Comment        (one User -> many Comments)
+    Comment REPLIES TO Post    (many Comments -> one Post)
+    Post HAS Tag               (many-to-many: Post <-> Tag)
+    User UPVOTES Post          (many-to-many: User <-> Post)
 
 No SQL yet. No column names yet. No data types yet.
 Just: what are the things? how do they relate?
 ```
 
-**ER Diagram (text representation):**
-```
-[USER] ──creates──► [POST] ──belongsTo──► [BOARD]
-  │                    │
-  └──writes──► [COMMENT] ──repliesTo──► [POST]
+**ER Diagram - entities and how they relate:**
+```mermaid
+flowchart TD
+    USER["USER"]
+    POST["POST"]
+    BOARD["BOARD"]
+    COMMENT["COMMENT"]
+    TAG["TAG"]
 
-[POST] ←──has──► [TAG] (many-to-many junction table needed)
-[USER] ←──upvotes──► [POST] (many-to-many junction table needed)
+    USER -->|creates| POST
+    POST -->|belongsTo| BOARD
+    USER -->|writes| COMMENT
+    COMMENT -->|repliesTo| POST
+    POST <-->|has, many-to-many junction| TAG
+    USER <-->|upvotes, many-to-many junction| POST
 ```
 
-### Step 2 — Logical Model (Technical Design, DB-Agnostic)
+### Step 2 - Logical Model (Technical Design, DB-Agnostic)
 
 **Who:** Database designers / backend developers
 **Tool:** Relational schema (table names, columns, data types, keys)
-**Goal:** Translate business concepts into table structure — but NOT for any specific DB
+**Goal:** Translate business concepts into table structure - but NOT for any specific DB
 
 ```sql
 -- Logical model: table structure, relationships, constraints
@@ -300,15 +307,15 @@ boards (
   id: INTEGER [PK]
   name: VARCHAR(100) [NOT NULL, UNIQUE]
   description: TEXT
-  parent_id: INTEGER [FK → boards.id]  -- for sub-boards
+  parent_id: INTEGER [FK -> boards.id]  -- for sub-boards
 )
 
 posts (
   id: BIGINT [PK]
   title: VARCHAR(300) [NOT NULL]
   body: TEXT [NOT NULL]
-  user_id: INTEGER [NOT NULL, FK → users.id]
-  board_id: INTEGER [NOT NULL, FK → boards.id]
+  user_id: INTEGER [NOT NULL, FK -> users.id]
+  board_id: INTEGER [NOT NULL, FK -> boards.id]
   created_at: TIMESTAMP [NOT NULL]
   view_count: INTEGER [NOT NULL, DEFAULT 0]
   status: ENUM('published','draft','deleted') [NOT NULL]
@@ -317,27 +324,27 @@ posts (
 comments (
   id: BIGINT [PK]
   body: TEXT [NOT NULL]
-  user_id: INTEGER [NOT NULL, FK → users.id]
-  post_id: BIGINT [NOT NULL, FK → posts.id]
-  parent_id: BIGINT [FK → comments.id]  -- for nested replies
+  user_id: INTEGER [NOT NULL, FK -> users.id]
+  post_id: BIGINT [NOT NULL, FK -> posts.id]
+  parent_id: BIGINT [FK -> comments.id]  -- for nested replies
   created_at: TIMESTAMP [NOT NULL]
 )
 
 post_tags (  -- junction table for many-to-many
-  post_id: BIGINT [NOT NULL, FK → posts.id]
-  tag_id: INTEGER [NOT NULL, FK → tags.id]
+  post_id: BIGINT [NOT NULL, FK -> posts.id]
+  tag_id: INTEGER [NOT NULL, FK -> tags.id]
   PRIMARY KEY (post_id, tag_id)
 )
 
 post_upvotes (  -- junction table for many-to-many
-  user_id: INTEGER [NOT NULL, FK → users.id]
-  post_id: BIGINT [NOT NULL, FK → posts.id]
+  user_id: INTEGER [NOT NULL, FK -> users.id]
+  post_id: BIGINT [NOT NULL, FK -> posts.id]
   voted_at: TIMESTAMP [NOT NULL]
   PRIMARY KEY (user_id, post_id)
 )
 ```
 
-### Step 3 — Physical Model (DB-Specific Implementation)
+### Step 3 - Physical Model (DB-Specific Implementation)
 
 **Who:** Database administrators + senior developers
 **Tool:** Actual SQL DDL for the specific database system
@@ -400,17 +407,28 @@ USING GIN (to_tsvector('simple', title || ' ' || body));
 
 ## Summary: The Two 3-Layer Models Side by Side
 
-```
-ANSI/SPARC (HOW DBMS works):           Data Modeling (HOW you design):
-─────────────────────────────           ──────────────────────────────
-External Schema (Views)                 [not directly equivalent]
-  ↕ logical independence
-Conceptual Schema (Logical tables)  ←→  Logical Model (DB-agnostic tables)
-  ↕ physical independence
-Internal Schema (Storage, indexes)  ←→  Physical Model (DB-specific SQL)
+The two 3-layer models side by side: the ANSI/SPARC schema levels (left) and the data-modeling design levels (right), with the independence boundaries between them and the equivalences across them.
 
-                                        Conceptual Model (ER diagram)
-                                          ↑ this extra step = purely business language
+```mermaid
+flowchart TD
+    subgraph ANSI["ANSI/SPARC - how a DBMS works"]
+        direction TB
+        EXT["External Schema (Views)"]
+        CON["Conceptual Schema (Logical tables)"]
+        INT["Internal Schema (Storage, indexes)"]
+        EXT ---|logical independence| CON
+        CON ---|physical independence| INT
+    end
+
+    subgraph DM["Data Modeling - how you design"]
+        direction TB
+        DML["Logical Model (DB-agnostic tables)"]
+        DMP["Physical Model (DB-specific SQL)"]
+        DMC["Conceptual Model (ER diagram, purely business language)"]
+    end
+
+    CON <-->|equivalent| DML
+    INT <-->|equivalent| DMP
 ```
 
 ---
@@ -421,16 +439,16 @@ Internal Schema (Storage, indexes)  ←→  Physical Model (DB-specific SQL)
 ANSI/SPARC maps to Clean Architecture layers:
 
 External Schema (Views)
-  = Interface Adapters — each view is shaped for its consumer
+  = Interface Adapters - each view is shaped for its consumer
   = Different DTOs for different controllers/consumers
 
 Conceptual Schema (Logical tables)
-  = Entities — the domain model, independent of storage details
-  = IOrderRepository (interface) — defines what operations exist
+  = Entities - the domain model, independent of storage details
+  = IOrderRepository (interface) - defines what operations exist
 
 Internal Schema (Indexes, storage)
-  = Frameworks & Drivers — PostgreSQL, MySQL, physical implementation
-  = OrderRepositoryPostgres — concrete adapter, storage decisions
+  = Frameworks & Drivers - PostgreSQL, MySQL, physical implementation
+  = OrderRepositoryPostgres - concrete adapter, storage decisions
 
 Data Modeling Maps to Clean Architecture Design Process:
   Conceptual Model (business concepts)
@@ -451,7 +469,7 @@ That's the physical model's concern.
 
 ## Real-World Application: Design a Pantip Post Feed
 
-**Step 1 — Conceptual (Business language):**
+**Step 1 - Conceptual (Business language):**
 ```
 "A user can write posts in a board.
 A post has a title, a body, and belongs to one board.
@@ -459,14 +477,14 @@ Other users can comment on the post.
 Users can upvote posts but only once per post."
 ```
 
-**Step 2 — Logical (Table design, DB-agnostic):**
+**Step 2 - Logical (Table design, DB-agnostic):**
 ```
-posts (id PK, title, body, user_id FK→users, board_id FK→boards, created_at, status)
-comments (id PK, body, user_id FK→users, post_id FK→posts, parent_id FK→comments)
-post_upvotes (user_id FK→users, post_id FK→posts, PK: both) -- junction, UNIQUE enforced
+posts (id PK, title, body, user_id FK -> users, board_id FK -> boards, created_at, status)
+comments (id PK, body, user_id FK -> users, post_id FK -> posts, parent_id FK -> comments)
+post_upvotes (user_id FK -> users, post_id FK -> posts, PK: both) -- junction, UNIQUE enforced
 ```
 
-**Step 3 — Physical (PostgreSQL specific + Pantip's traffic pattern):**
+**Step 3 - Physical (PostgreSQL specific + Pantip's traffic pattern):**
 ```sql
 -- Partition posts by board_id (Pantip's traffic is board-concentrated)
 -- Index: board_id + created_at DESC (most common query: "latest posts in board")
@@ -479,19 +497,19 @@ post_upvotes (user_id FK→users, post_id FK→posts, PK: both) -- junction, UNI
 
 ## Key Takeaways
 
-1. **ANSI/SPARC gives data independence** — change storage without breaking apps; change views without touching disk
-2. **External Schema = security boundary** — users only see what they should see (SQL Views)
-3. **Conceptual Schema = the truth** — one consistent picture of what data exists and what rules apply
-4. **Internal Schema = performance decisions** — indexes, partitions, tablespaces, storage
-5. **Data modeling process** (Conceptual→Logical→Physical) is how you BUILD a database correctly
-6. **Never jump to physical first** — juniors write `CREATE TABLE` before they understand the domain; seniors write ER diagrams first
-7. **Both maps to Clean Architecture** — Conceptual = Entities, Logical = Interfaces, Physical = Adapters/Infrastructure
+1. **ANSI/SPARC gives data independence** - change storage without breaking apps; change views without touching disk
+2. **External Schema = security boundary** - users only see what they should see (SQL Views)
+3. **Conceptual Schema = the truth** - one consistent picture of what data exists and what rules apply
+4. **Internal Schema = performance decisions** - indexes, partitions, tablespaces, storage
+5. **Data modeling process** (Conceptual -> Logical -> Physical) is how you BUILD a database correctly
+6. **Never jump to physical first** - juniors write `CREATE TABLE` before they understand the domain; seniors write ER diagrams first
+7. **Both maps to Clean Architecture** - Conceptual = Entities, Logical = Interfaces, Physical = Adapters/Infrastructure
 
 ---
 
 **Sources:**
-- [Three-Level DBMS Architecture — Medium](https://medium.com/@saisindujaa200603/three-level-dbms-architecture-external-conceptual-internal-a2efe89c7f3c)
-- [ANSI-SPARC Architecture — Wikipedia](https://en.wikipedia.org/wiki/ANSI-SPARC_Architecture)
-- [The 3-level DBMS schema architecture — TheServerSide](https://www.theserverside.com/tip/The-3-level-DBMS-schema-architecture)
-- [Conceptual, Logical, Physical Data Models — DEV Community](https://dev.to/alexmercedcoder/conceptual-logical-and-physical-data-models-explained-h10)
-- [Three-Level Architecture of DBMS — GeeksforGeeks](https://www.geeksforgeeks.org/dbms/introduction-of-3-tier-architecture-in-dbms-set-2/)
+- [Three-Level DBMS Architecture - Medium](https://medium.com/@saisindujaa200603/three-level-dbms-architecture-external-conceptual-internal-a2efe89c7f3c)
+- [ANSI-SPARC Architecture - Wikipedia](https://en.wikipedia.org/wiki/ANSI-SPARC_Architecture)
+- [The 3-level DBMS schema architecture - TheServerSide](https://www.theserverside.com/tip/The-3-level-DBMS-schema-architecture)
+- [Conceptual, Logical, Physical Data Models - DEV Community](https://dev.to/alexmercedcoder/conceptual-logical-and-physical-data-models-explained-h10)
+- [Three-Level Architecture of DBMS - GeeksforGeeks](https://www.geeksforgeeks.org/dbms/introduction-of-3-tier-architecture-in-dbms-set-2/)

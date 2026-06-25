@@ -1,6 +1,6 @@
-# Distributed Transactions — 2PC vs Saga
+# Distributed Transactions - 2PC vs Saga
 
-> "In a distributed system, the only thing worse than a failed transaction is a half-completed one. Money left in limbo between services." — Senior fintech architect
+> "In a distributed system, the only thing worse than a failed transaction is a half-completed one. Money left in limbo between services." - Senior fintech architect
 
 ---
 
@@ -8,9 +8,9 @@
 
 | | |
 |---|---|
-| **Problem** | A business operation spans multiple microservices — each with its own DB |
-| **Old solution** | Two-Phase Commit (2PC) — works, but blocks; not suitable for microservices |
-| **Modern solution** | Saga Pattern — sequence of local transactions with compensating actions |
+| **Problem** | A business operation spans multiple microservices - each with its own DB |
+| **Old solution** | Two-Phase Commit (2PC) - works, but blocks; not suitable for microservices |
+| **Modern solution** | Saga Pattern - sequence of local transactions with compensating actions |
 
 ---
 
@@ -18,18 +18,18 @@
 
 ```
 PlaceOrder needs to:
-  1. Deduct inventory   → InventoryDB (PostgreSQL)
-  2. Charge payment     → PaymentDB   (PostgreSQL)
-  3. Create order       → OrderDB     (PostgreSQL)
+  1. Deduct inventory -> InventoryDB (PostgreSQL)
+  2. Charge payment -> PaymentDB   (PostgreSQL)
+  3. Create order -> OrderDB     (PostgreSQL)
 
 Normal SQL transaction:
   BEGIN;
-    UPDATE inventory ...  ← on InventoryDB
-    INSERT INTO payments  ← on PaymentDB (DIFFERENT server!)
-    INSERT INTO orders    ← on OrderDB   (DIFFERENT server!)
+    UPDATE inventory ... <- on InventoryDB
+    INSERT INTO payments <- on PaymentDB (DIFFERENT server!)
+    INSERT INTO orders <- on OrderDB   (DIFFERENT server!)
   COMMIT;
 
-This is IMPOSSIBLE — a SQL transaction cannot span different database servers.
+This is IMPOSSIBLE - a SQL transaction cannot span different database servers.
 The COMMIT must be atomic, but each DB is independent.
 ```
 
@@ -40,22 +40,22 @@ The COMMIT must be atomic, but each DB is independent.
 ### How It Works
 
 ```
-Phase 1 — PREPARE:
-  Coordinator → InventoryDB:  "Can you deduct stock? Lock it."
+Phase 1 - PREPARE:
+  Coordinator -> InventoryDB:  "Can you deduct stock? Lock it."
   InventoryDB: locks the row, replies "PREPARED"
 
-  Coordinator → PaymentDB:    "Can you charge $99? Lock it."
+  Coordinator -> PaymentDB:    "Can you charge $99? Lock it."
   PaymentDB:   holds the auth, replies "PREPARED"
 
-  Coordinator → OrderDB:      "Can you create the order? Lock it."
+  Coordinator -> OrderDB:      "Can you create the order? Lock it."
   OrderDB:     locks, replies "PREPARED"
 
-Phase 2 — COMMIT (all said PREPARED):
-  Coordinator → all three: "COMMIT"
+Phase 2 - COMMIT (all said PREPARED):
+  Coordinator -> all three: "COMMIT"
   All three commit their local transactions simultaneously.
 
 If any said "ABORT" in Phase 1:
-  Coordinator → all three: "ROLLBACK"
+  Coordinator -> all three: "ROLLBACK"
   All three roll back.
 ```
 
@@ -74,7 +74,7 @@ Problem 2: Latency
 
 Problem 3: Not Partition-Tolerant
   If network partition occurs during commit:
-    Participants wait indefinitely — entire system stalls.
+    Participants wait indefinitely - entire system stalls.
 
 Real-world verdict:
   2PC is used in: traditional enterprise software (Java EE, IBM MQ XA)
@@ -92,16 +92,16 @@ A Saga splits a distributed transaction into a sequence of local transactions. E
 
 ```
 SagaOrchestrator (a Use Case):
-  Step 1: Send "ReserveInventory" command → InventoryService
-          Success → proceed   Failure → end (nothing to undo)
+  Step 1: Send "ReserveInventory" command -> InventoryService
+          Success -> proceed   Failure -> end (nothing to undo)
 
-  Step 2: Send "ChargePayment" command → PaymentService
-          Success → proceed
-          Failure → send "ReleaseInventory" (compensate Step 1)
+  Step 2: Send "ChargePayment" command -> PaymentService
+          Success -> proceed
+          Failure -> send "ReleaseInventory" (compensate Step 1)
 
-  Step 3: Send "CreateOrder" command → OrderService
-          Success → Saga complete ✓
-          Failure → send "CancelPayment" + "ReleaseInventory" (compensate both)
+  Step 3: Send "CreateOrder" command -> OrderService
+          Success -> Saga complete [OK]
+          Failure -> send "CancelPayment" + "ReleaseInventory" (compensate both)
 
 Each step:
   - Is a LOCAL ACID transaction (within one service's DB)
@@ -115,7 +115,7 @@ Each step:
 // Compensating transaction for "charge payment"
 async function cancelPayment(orderId: string): Promise<void> {
   // This is a NEW transaction that REVERSES the charge
-  // NOT a database ROLLBACK — the original charge is already committed
+  // NOT a database ROLLBACK - the original charge is already committed
   const payment = await paymentRepo.findByOrderId(orderId);
   const refund = Refund.create(payment.id, payment.amount, 'saga_compensation');
   await paymentRepo.saveRefund(refund);
@@ -129,7 +129,7 @@ async function cancelPayment(orderId: string): Promise<void> {
 
 ```typescript
 // Temporal workflow = Saga Orchestrator with durability
-// If server crashes mid-saga → Temporal replays from last checkpoint
+// If server crashes mid-saga -> Temporal replays from last checkpoint
 import { defineWorkflow } from '@temporalio/workflow';
 
 export const placeOrderWorkflow = defineWorkflow(async (orderId: string) => {
@@ -176,10 +176,10 @@ export const placeOrderWorkflow = defineWorkflow(async (orderId: string) => {
 
 | Company | Saga Type | Details |
 |---|---|---|
-| **Uber** | Orchestration | Trip saga: match → price → authorize → start → end → charge → payout |
-| **Amazon** | Choreography (SQS/SNS) | Order saga: placed → payment → inventory → shipping |
-| **Airbnb** | Orchestration | Booking saga: hold listing → auth payment → confirm → notify host |
-| **Klarna** | Orchestration | BNPL saga: credit check → merchant payment → create loan → schedule repayment |
+| **Uber** | Orchestration | Trip saga: match -> price -> authorize -> start -> end -> charge -> payout |
+| **Amazon** | Choreography (SQS/SNS) | Order saga: placed -> payment -> inventory -> shipping |
+| **Airbnb** | Orchestration | Booking saga: hold listing -> auth payment -> confirm -> notify host |
+| **Klarna** | Orchestration | BNPL saga: credit check -> merchant payment -> create loan -> schedule repayment |
 
 ---
 
@@ -189,14 +189,14 @@ export const placeOrderWorkflow = defineWorkflow(async (orderId: string) => {
 SagaOrchestrator = Use Case (spans multiple service ports)
 
 PlaceOrderSaga depends on:
-  IInventoryService (port) → InventoryServiceClient (adapter → HTTP/gRPC)
-  IPaymentService   (port) → PaymentServiceClient   (adapter → HTTP/gRPC)
-  IShippingService  (port) → ShippingServiceClient  (adapter → HTTP/gRPC)
-  ISagaRepository   (port) → SagaRepositoryPostgres (adapter → DB for saga state)
+  IInventoryService (port) -> InventoryServiceClient (adapter -> HTTP/gRPC)
+  IPaymentService   (port) -> PaymentServiceClient   (adapter -> HTTP/gRPC)
+  IShippingService  (port) -> ShippingServiceClient  (adapter -> HTTP/gRPC)
+  ISagaRepository   (port) -> SagaRepositoryPostgres (adapter -> DB for saga state)
 
 The saga state (current step, which compensations ran) is persisted.
-If the orchestrator restarts: reload state → continue from last step.
+If the orchestrator restarts: reload state -> continue from last step.
 
 Business rule "inventory must be reserved before payment is charged"
-lives in the saga use case — not in the infrastructure adapters.
+lives in the saga use case - not in the infrastructure adapters.
 ```

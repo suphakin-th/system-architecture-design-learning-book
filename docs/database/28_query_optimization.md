@@ -1,7 +1,7 @@
 # Database Query Optimization
 
-> "The fastest query is the one that never hits the database." — Cache-first mindset
-> "The second fastest query is the one that reads the fewest rows." — Index mindset
+> "The fastest query is the one that never hits the database." - Cache-first mindset
+> "The second fastest query is the one that reads the fewest rows." - Index mindset
 
 ---
 
@@ -11,7 +11,7 @@
 |---|---|
 | **Goal** | Reduce query time from seconds to milliseconds |
 | **Primary tools** | EXPLAIN ANALYZE, indexes, query rewriting |
-| **Process** | Measure first, then optimize — never assume |
+| **Process** | Measure first, then optimize - never assume |
 
 ---
 
@@ -23,21 +23,21 @@
 
 ```
 1. IDENTIFY: Which queries are slow?
-   → pg_stat_statements (PostgreSQL): shows all queries ranked by total time
+ -> pg_stat_statements (PostgreSQL): shows all queries ranked by total time
 
 2. MEASURE: How slow exactly?
-   → EXPLAIN ANALYZE SELECT ...
-   → Look for: Seq Scan on large tables, high row counts, slow execution time
+ -> EXPLAIN ANALYZE SELECT ...
+ -> Look for: Seq Scan on large tables, high row counts, slow execution time
 
 3. UNDERSTAND: Why is it slow?
-   → Missing index? Bad query structure? Wrong join order? N+1?
+ -> Missing index? Bad query structure? Wrong join order? N+1?
 
 4. FIX: Apply the specific fix
-   → Add index / rewrite query / add cache / denormalize
+ -> Add index / rewrite query / add cache / denormalize
 
 5. VERIFY: Is it actually faster?
-   → EXPLAIN ANALYZE again
-   → Production metrics (p50, p99 latency)
+ -> EXPLAIN ANALYZE again
+ -> Production metrics (p50, p99 latency)
 ```
 
 ---
@@ -77,7 +77,7 @@ LIMIT 10;
 -- Slow: full scan
 EXPLAIN ANALYZE
 SELECT * FROM orders WHERE user_id = 12345;
--- → Seq Scan, 2.3 seconds
+-- -> Seq Scan, 2.3 seconds
 
 -- Fix:
 CREATE INDEX CONCURRENTLY idx_orders_user_id ON orders(user_id);
@@ -86,14 +86,14 @@ CREATE INDEX CONCURRENTLY idx_orders_user_id ON orders(user_id);
 -- Fast: index scan
 EXPLAIN ANALYZE
 SELECT * FROM orders WHERE user_id = 12345;
--- → Index Scan, 0.18ms
+-- -> Index Scan, 0.18ms
 ```
 
 ### Pattern 2: Fix the N+1 Query
 
 ```sql
 -- N+1 anti-pattern (100 separate queries):
-SELECT id FROM orders LIMIT 100;  -- 1 query → 100 order IDs
+SELECT id FROM orders LIMIT 100;  -- 1 query -> 100 order IDs
 -- For each order:
 SELECT * FROM users WHERE id = ?;  -- 100 queries!
 
@@ -116,12 +116,12 @@ SELECT * FROM users WHERE id IN (1, 2, 3, ..., 100);
 SELECT * FROM products;
 -- Fetches: id, name, description (TEXT, 10KB), metadata (JSONB, 5KB),
 --          images_json (20KB), ...
--- Total: maybe 40KB per row × 1000 rows = 40MB transferred
+-- Total: maybe 40KB per row x 1000 rows = 40MB transferred
 
 -- Good: SELECT only columns you need
 SELECT id, name, price_cents, thumbnail_url FROM products;
--- Fetches: maybe 200 bytes per row × 1000 rows = 200KB
--- 200× less data transferred and processed
+-- Fetches: maybe 200 bytes per row x 1000 rows = 200KB
+-- 200x less data transferred and processed
 
 -- Very good: covering index means no table access at all
 CREATE INDEX idx_products_list ON products(category_id)
@@ -145,7 +145,7 @@ SELECT * FROM orders
 WHERE created_at < '2024-01-15 10:30:00'  -- last item from previous page
 ORDER BY created_at DESC
 LIMIT 20;
--- Uses index on created_at → O(log n) regardless of page depth
+-- Uses index on created_at -> O(log n) regardless of page depth
 -- This is how Twitter, Instagram, and Facebook paginate feeds
 ```
 
@@ -173,21 +173,21 @@ WHERE u.country = 'TH';
 -- Bad: function on column prevents index usage
 SELECT * FROM users WHERE UPPER(email) = 'SUPHAKIN@EXAMPLE.COM';
 SELECT * FROM orders WHERE DATE(created_at) = '2024-01-15';
--- → Seq Scan: can't use index when function applied to column
+-- -> Seq Scan: can't use index when function applied to column
 
 -- Fix 1: Store in normalized form
--- Always store email as lowercase on insert → index on lowercase column works
+-- Always store email as lowercase on insert -> index on lowercase column works
 
 -- Fix 2: Functional index
 CREATE INDEX idx_users_email_upper ON users(UPPER(email));
 SELECT * FROM users WHERE UPPER(email) = 'SUPHAKIN@EXAMPLE.COM';
--- → Index Scan: now uses functional index
+-- -> Index Scan: now uses functional index
 
 -- Fix 3: Rewrite to avoid function on column
 SELECT * FROM orders
 WHERE created_at >= '2024-01-15 00:00:00'
   AND created_at < '2024-01-16 00:00:00';
--- → Index Scan on created_at (range query, no function)
+-- -> Index Scan on created_at (range query, no function)
 ```
 
 ### Pattern 7: Batch Operations
@@ -204,7 +204,7 @@ INSERT INTO logs (user_id, event, timestamp) VALUES
   (2, 'purchase', '2024-01-15'),
   (3, 'logout', '2024-01-15'),
   ...  -- 1000 rows in one statement;
--- 100-1000× faster
+-- 100-1000x faster
 
 -- Good: COPY for bulk data loading
 COPY logs FROM '/tmp/data.csv' WITH (FORMAT CSV, HEADER true);
@@ -224,7 +224,7 @@ CREATE INDEX idx_orders_pending ON orders(created_at)
 WHERE status = 'pending';
 -- Size: only 10K pending orders
 -- Query: WHERE status = 'pending' ORDER BY created_at
--- 5000× smaller index → faster scan, less memory
+-- 5000x smaller index -> faster scan, less memory
 
 -- When to use partial indexes:
 -- Active records only (soft-deleted rows excluded)
@@ -241,11 +241,11 @@ WHERE created_at > NOW() - INTERVAL '30 days';
 ### Pagination
 
 ```sql
--- ❌ SLOW: traditional LIMIT/OFFSET degrades with depth
--- Page 1: OFFSET 0   → fast (reads 20 rows)
--- Page 1000: OFFSET 19980 → reads 20,000 rows, returns 20
+-- [X] SLOW: traditional LIMIT/OFFSET degrades with depth
+-- Page 1: OFFSET 0 -> fast (reads 20 rows)
+-- Page 1000: OFFSET 19980 -> reads 20,000 rows, returns 20
 
--- ✅ FAST: Keyset pagination
+-- [OK] FAST: Keyset pagination
 -- First page:
 SELECT id, title, created_at FROM posts ORDER BY created_at DESC LIMIT 20;
 
@@ -261,14 +261,14 @@ LIMIT 20;
 ### Counting
 
 ```sql
--- ❌ SLOW: COUNT(*) on large tables (full scan)
-SELECT COUNT(*) FROM orders;  -- scans all 50M rows → slow
+-- [X] SLOW: COUNT(*) on large tables (full scan)
+SELECT COUNT(*) FROM orders;  -- scans all 50M rows -> slow
 
--- ✅ FAST: Use estimates for large counts
+-- [OK] FAST: Use estimates for large counts
 SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname = 'orders';
--- PostgreSQL keeps approximate row count → instant, not exact
+-- PostgreSQL keeps approximate row count -> instant, not exact
 
--- ✅ FAST: Maintain a counter table
+-- [OK] FAST: Maintain a counter table
 CREATE TABLE counters (
   name VARCHAR(50) PRIMARY KEY,
   value BIGINT NOT NULL DEFAULT 0
@@ -282,14 +282,14 @@ INSERT INTO counters (name, value) ON CONFLICT (name) DO UPDATE SET value = coun
 ### Aggregations at Scale
 
 ```sql
--- ❌ SLOW: Real-time aggregation over 50M rows
+-- [X] SLOW: Real-time aggregation over 50M rows
 SELECT user_id, SUM(total_cents) AS lifetime_value
 FROM orders
 GROUP BY user_id
 ORDER BY lifetime_value DESC
 LIMIT 100;  -- scan 50M rows every time
 
--- ✅ FAST: Pre-computed table (materialized view or explicit table)
+-- [OK] FAST: Pre-computed table (materialized view or explicit table)
 -- Option 1: PostgreSQL Materialized View
 CREATE MATERIALIZED VIEW user_lifetime_value AS
 SELECT user_id, SUM(total_cents) AS lifetime_value
@@ -343,7 +343,7 @@ class ProductRepository implements IProductRepository {
 
 ---
 
-## EXPLAIN ANALYZE — Reading the Output
+## EXPLAIN ANALYZE - Reading the Output
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
@@ -356,29 +356,29 @@ LIMIT 20;
 
 -- Sample output:
 Limit  (cost=0.99..153.04 rows=20 width=24) (actual time=0.234..2.341 rows=20 loops=1)
-  ->  Nested Loop  (cost=0.99..40234.56 rows=5249 width=24) (actual time=0.229..2.334 rows=20 loops=1)
-        ->  Index Scan Backward using idx_orders_status_created on orders o
+ -> Nested Loop  (cost=0.99..40234.56 rows=5249 width=24) (actual time=0.229..2.334 rows=20 loops=1)
+ -> Index Scan Backward using idx_orders_status_created on orders o
               (cost=0.56..35234.45 rows=5249 width=16)
               (actual time=0.215..0.845 rows=20 loops=1)
               Index Cond: ((status)::text = 'pending')
-        ->  Index Scan using users_pkey on users u
+ -> Index Scan using users_pkey on users u
               (cost=0.43..0.95 rows=1 width=16)
               (actual time=0.073..0.073 rows=1 loops=20)
               Index Cond: (id = o.user_id)
   Buffers: shared hit=66
 Planning Time: 1.234 ms
-Execution Time: 2.456 ms  ← FAST!
+Execution Time: 2.456 ms <- FAST!
 
 -- What this tells us:
--- ✅ Using Index Scan Backward (our index + backward order = no sort needed)
--- ✅ Nested Loop (good for small result sets from index)
--- ✅ Users table: index scan by primary key (fast)
--- ✅ Buffers: shared hit=66 (all from cache, no disk reads)
--- ✅ 2.456ms total (excellent)
+-- [OK] Using Index Scan Backward (our index + backward order = no sort needed)
+-- [OK] Nested Loop (good for small result sets from index)
+-- [OK] Users table: index scan by primary key (fast)
+-- [OK] Buffers: shared hit=66 (all from cache, no disk reads)
+-- [OK] 2.456ms total (excellent)
 
--- If you saw Seq Scan instead of Index Scan → missing index
--- If you saw Sort → add ORDER BY to your index
--- If you saw Hash Join instead of Nested Loop → larger result set (may be OK)
+-- If you saw Seq Scan instead of Index Scan -> missing index
+-- If you saw Sort -> add ORDER BY to your index
+-- If you saw Hash Join instead of Nested Loop -> larger result set (may be OK)
 ```
 
 ---
@@ -406,7 +406,7 @@ OrderRepositoryPostgres.findPendingOrders(limit: number) = adapter
 Business logic: "I need the 20 most recent pending orders" = Use Case concern
 How to get them efficiently = Infrastructure concern
 
-Changing query optimization strategy → change the adapter only
+Changing query optimization strategy -> change the adapter only
 Business logic never changes
 = Clean Architecture in practice
 ```

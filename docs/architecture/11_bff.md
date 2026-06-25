@@ -1,4 +1,4 @@
-# Architecture 11 — BFF (Backend for Frontend)
+# Architecture 11 - BFF (Backend for Frontend)
 
 ---
 
@@ -28,32 +28,58 @@ BFF (coined by Sam Newman, 2015) creates a **dedicated backend for each frontend
 
 ## Structure
 
-```
-[Browser]         ──► Web BFF (Node.js)     ──► User Service
-                                             ──► Order Service
-                                             ──► Product Service
+Each client type talks to its own BFF, and the BFFs call the shared downstream services.
 
-[iOS App]         ──► Mobile BFF (Node.js)  ──► User Service
-[Android App]                               ──► Order Service
-                                             (smaller payloads, fewer fields)
+```mermaid
+flowchart LR
+    Browser["Browser"]
+    iOS["iOS App"]
+    Android["Android App"]
+    TV["TV App"]
+    Partner["Partner API"]
 
-[TV App]          ──► TV BFF (Node.js)      ──► Streaming Service
-                                             ──► Recommendation Service
+    WebBFF["Web BFF (Node.js)"]
+    MobileBFF["Mobile BFF (Node.js)"]
+    TVBFF["TV BFF (Node.js)"]
+    Gateway["Public API Gateway"]
 
-[Partner API]     ──► Public API Gateway    ──► All Services (versioned)
+    User["User Service"]
+    Order["Order Service"]
+    Product["Product Service"]
+    Streaming["Streaming Service"]
+    Recommendation["Recommendation Service"]
+    AllServices["All Services (versioned)"]
+
+    Browser --> WebBFF
+    iOS --> MobileBFF
+    Android --> MobileBFF
+    TV --> TVBFF
+    Partner --> Gateway
+
+    WebBFF --> User
+    WebBFF --> Order
+    WebBFF --> Product
+
+    MobileBFF --> User
+    MobileBFF -->|smaller payloads, fewer fields| Order
+
+    TVBFF --> Streaming
+    TVBFF --> Recommendation
+
+    Gateway --> AllServices
 ```
 
 ---
 
 ## In Clean Architecture Terms
 
-Each BFF is its own **Interface Adapter** layer — an aggregating adapter that:
+Each BFF is its own **Interface Adapter** layer - an aggregating adapter that:
 1. Receives client-specific requests
 2. Calls multiple downstream service APIs (through interfaces/ports)
 3. Aggregates, transforms, and returns client-optimized responses
 
 ```typescript
-// Mobile BFF — Use Case: GetOrderSummaryForMobile
+// Mobile BFF - Use Case: GetOrderSummaryForMobile
 class GetOrderSummaryMobileUseCase {
   constructor(
     private orderClient: IOrderServiceClient,    // port
@@ -69,7 +95,7 @@ class GetOrderSummaryMobileUseCase {
       this.productClient.getProductNames(order.items.map(i => i.productId)),
     ]);
 
-    // Return ONLY what mobile needs — minimal payload
+    // Return ONLY what mobile needs - minimal payload
     return {
       id: order.id,
       status: order.status,
@@ -80,7 +106,7 @@ class GetOrderSummaryMobileUseCase {
   }
 }
 
-// Web BFF — SAME services, but returns MUCH more data for rich dashboard
+// Web BFF - SAME services, but returns MUCH more data for rich dashboard
 class GetOrderSummaryWebUseCase {
   async execute(orderId: string): Promise<WebOrderDetail> {
     // Returns full order details + customer address + all product details + history
@@ -105,12 +131,12 @@ class GetOrderSummaryWebUseCase {
 
 ## Benefits
 
-1. **Client-optimized responses** — mobile gets small payload; web gets rich data
-2. **Frontend team autonomy** — frontend team owns and deploys their own BFF
-3. **Parallel fetching** — BFF fetches from multiple services concurrently (Promise.all)
-4. **Protocol flexibility** — mobile BFF uses REST, web BFF uses GraphQL — same backends
-5. **Performance** — mobile saves bandwidth + battery; web reduces waterfall requests
-6. **Security isolation** — mobile API can expose different fields than partner API
+1. **Client-optimized responses** - mobile gets small payload; web gets rich data
+2. **Frontend team autonomy** - frontend team owns and deploys their own BFF
+3. **Parallel fetching** - BFF fetches from multiple services concurrently (Promise.all)
+4. **Protocol flexibility** - mobile BFF uses REST, web BFF uses GraphQL - same backends
+5. **Performance** - mobile saves bandwidth + battery; web reduces waterfall requests
+6. **Security isolation** - mobile API can expose different fields than partner API
 
 ---
 
@@ -128,11 +154,11 @@ class GetOrderSummaryWebUseCase {
 
 ## Costs / Tradeoffs
 
-1. **Code duplication** — some aggregation logic duplicated across BFFs
-2. **N BFFs to maintain** — more deployments, more monitoring
-3. **BFF sprawl** — without discipline, every team creates a BFF for everything
-4. **Latency from fan-out** — BFF must wait for slowest downstream service
-5. **Ownership ambiguity** — who owns the BFF when frontend and backend teams merge?
+1. **Code duplication** - some aggregation logic duplicated across BFFs
+2. **N BFFs to maintain** - more deployments, more monitoring
+3. **BFF sprawl** - without discipline, every team creates a BFF for everything
+4. **Latency from fan-out** - BFF must wait for slowest downstream service
+5. **Ownership ambiguity** - who owns the BFF when frontend and backend teams merge?
 
 ---
 
@@ -143,7 +169,7 @@ class GetOrderSummaryWebUseCase {
 - **Web BFF:** Returns full movie details, reviews, trailers, recommendations
 - **Mobile BFF:** Returns thumbnail, title, brief description, 30-second trailer
 - **TV BFF:** Returns content optimized for 10-foot interface (large tiles, minimal text)
-- **Good at:** Netflix's device footprint spans 2000+ device types — BFF per device category
+- **Good at:** Netflix's device footprint spans 2000+ device types - BFF per device category
 
 ### Airbnb
 - **Architecture:** "Gatekeeper" BFF serving iOS, Android, and web separately
@@ -169,4 +195,4 @@ class GetOrderSummaryWebUseCase {
 
 ## Key Takeaway
 
-> BFF is a specialized Interface Adapter in Clean Architecture — one that aggregates and transforms data from multiple downstream services into a client-optimal response. Its power comes from team autonomy: the frontend team owns their BFF, controls its evolution, and can ship features without coordinating with backend teams on API shape.
+> BFF is a specialized Interface Adapter in Clean Architecture - one that aggregates and transforms data from multiple downstream services into a client-optimal response. Its power comes from team autonomy: the frontend team owns their BFF, controls its evolution, and can ship features without coordinating with backend teams on API shape.

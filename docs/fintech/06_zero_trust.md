@@ -1,6 +1,6 @@
 # Zero Trust Network Architecture for Financial Systems
 
-> "In the old model, if you were inside the network, you were trusted. The 2016 Bangladesh Bank SWIFT heist proved this wrong — attackers inside the network sent fraudulent SWIFT messages and stole $81 million. Zero Trust: never trust, always verify — even from inside." — Financial cybersecurity expert
+> "In the old model, if you were inside the network, you were trusted. The 2016 Bangladesh Bank SWIFT heist proved this wrong - attackers inside the network sent fraudulent SWIFT messages and stole $81 million. Zero Trust: never trust, always verify - even from inside." - Financial cybersecurity expert
 
 ---
 
@@ -8,7 +8,7 @@
 
 | | |
 |---|---|
-| **Zero Trust principle** | "Never trust, always verify" — no implicit trust based on network location |
+| **Zero Trust principle** | "Never trust, always verify" - no implicit trust based on network location |
 | **mTLS** | Both sides of every connection must authenticate |
 | **Microsegmentation** | Each service can only talk to explicitly authorized services |
 | **BeyondCorp** | Google's zero trust model (all traffic through identity-aware proxy) |
@@ -34,15 +34,15 @@ The Bangladesh Bank Heist (2016):
   Even if attacker controls the workstation:
     - SWIFT terminal needs to authenticate to SWIFT service (mTLS certificate)
     - SWIFT service checks: is this request from an authorized user? (identity verification)
-    - Unusual pattern detected: transfers to Philippines (never done before) → block + alert
-    - Risk-based authentication: high-value transfer → requires additional approval
+    - Unusual pattern detected: transfers to Philippines (never done before) -> block + alert
+    - Risk-based authentication: high-value transfer -> requires additional approval
 ```
 
 ---
 
 ## The Five Pillars of Zero Trust for Financial Systems
 
-### Pillar 1: Identity — "Who are you, prove it"
+### Pillar 1: Identity - "Who are you, prove it"
 
 ```
 Traditional: username + password = trusted
@@ -61,7 +61,7 @@ Implementation:
   No service trusts another without verified identity
 ```
 
-### Pillar 2: Device — "Is your machine trustworthy"
+### Pillar 2: Device - "Is your machine trustworthy"
 
 ```
 Zero Trust requires device verification before granting access:
@@ -81,11 +81,11 @@ Financial services implementation:
 
 ```
 Traditional:
-  Payment Service → [internal network] → Database
-  → Any service inside the network can reach the database
+  Payment Service -> [internal network] -> Database
+ -> Any service inside the network can reach the database
 
 Zero Trust microsegmentation:
-  Payment Service → [policy engine: is this allowed?] → Database
+  Payment Service -> [policy engine: is this allowed?] -> Database
   Policy: "Only PaymentService can connect to PaymentDB on port 5432"
 
   Kubernetes Network Policies (example):
@@ -129,31 +129,31 @@ spec:
     # ONLY the api-gateway service account can call payment-service
 ```
 
-### Pillar 4: mTLS — Mutual TLS Between All Services
+### Pillar 4: mTLS - Mutual TLS Between All Services
 
 ```
 Normal TLS (one-way):
-  Client → (verifies server cert) → Server
+  Client -> (verifies server cert) -> Server
   Server: "I have a valid certificate, trust me"
   Client: "OK, I trust you"
   Problem: Server doesn't know who the CLIENT is
 
 mTLS (mutual TLS):
-  Client → (presents client cert) → Server
-  Server → (verifies client cert) → Client
+  Client -> (presents client cert) -> Server
+  Server -> (verifies client cert) -> Client
   Server: "Who are you?" Client: "I'm PaymentService, here's my cert"
-  Server: "cert is valid and PaymentService is authorized → proceed"
+  Server: "cert is valid and PaymentService is authorized -> proceed"
 
   Now: even if a malicious service inside the cluster tries to call PaymentService,
        it must have a valid certificate issued by your internal CA.
-       No cert → rejected → attack stopped.
+       No cert -> rejected -> attack stopped.
 
 Istio handles mTLS automatically:
   All sidecar proxies (Envoy) in the mesh:
     - Issue certificates to each service automatically
     - Rotate certificates every 24 hours (no manual rotation)
     - Enforce mTLS between all pods by default
-    - Service code doesn't need to implement mTLS — the sidecar handles it
+    - Service code doesn't need to implement mTLS - the sidecar handles it
 ```
 
 ```yaml
@@ -171,13 +171,13 @@ spec:
 ### Pillar 5: Continuous Verification and Monitoring
 
 ```
-Zero Trust is not a one-time check — it's continuous:
-  Initial auth: user logs in, passes MFA → granted access
+Zero Trust is not a one-time check - it's continuous:
+  Initial auth: user logs in, passes MFA -> granted access
   During session: behavior analysis continues
-    - Unusual access pattern? → step-up authentication required
-    - Accessing resources never accessed before? → alert
-    - Multiple simultaneous logins from different geographies? → block
-    - High-value transfer at 3am? → require additional approval
+    - Unusual access pattern? -> step-up authentication required
+    - Accessing resources never accessed before? -> alert
+    - Multiple simultaneous logins from different geographies? -> block
+    - High-value transfer at 3am? -> require additional approval
 
 Risk-based authentication in financial systems:
   Transaction risk score (0-100):
@@ -189,7 +189,7 @@ Risk-based authentication in financial systems:
   Risk factors:
     - New device never seen before (+30)
     - Different IP/location than usual (+20)
-    - Amount 10× normal transaction (+25)
+    - Amount 10x normal transaction (+25)
     - Destination account never transferred to before (+15)
     - Unusual time of day (+10)
     - VPN/Tor detected (+40)
@@ -199,66 +199,75 @@ Risk-based authentication in financial systems:
 
 ## Network Architecture for a Payment Microservices System
 
-```
-Internet
-    │
-    ▼ TLS 1.3 only
-[WAF - Web Application Firewall] ← blocks SQL injection, XSS, rate limits
-    │
-    ▼
-[Load Balancer + DDoS Protection] ← AWS Shield / Cloudflare
-    │
-    ▼ TLS 1.3
-[API Gateway] ← JWT validation, rate limiting, routing
-    │
-    ▼ mTLS (all internal)
-┌───────────────────────────────────────────────────────────────────┐
-│  Kubernetes Cluster (Zero Trust Mesh — Istio)                     │
-│                                                                    │
-│  [Payment Service]   ←mTLS→   [Ledger Service]                   │
-│         │                           │                             │
-│         └────mTLS────→ [HSM Adapter Service]                     │
-│                                     │                             │
-│  [Fraud Detection] ←──mTLS──→ [Risk Engine]                     │
-│                                                                    │
-│  All services: Envoy sidecar = mTLS + authz policy enforcement    │
-│  Network Policies: each service only talks to approved services    │
-└───────────────────────────────────────────────────────────────────┘
-    │
-    ▼ Private subnet, no internet access
-[Databases] ← PostgreSQL, Redis (encrypted at rest, mTLS connections)
-    │
-    ▼
-[HSM] ← Physical hardware, air-gapped key storage
-    │
-    ▼
-[Immutable Audit Storage] ← S3 Object Lock, 7-year retention
+This shows traffic flowing inward from the internet through each trust zone - edge defense, the identity-aware gateway, the zero-trust service mesh, and the locked-down data tier. Each boundary re-verifies; nothing is trusted by location.
+
+```mermaid
+flowchart TD
+    Internet["Internet"]
+
+    subgraph edge["Edge defense zone"]
+        WAF["WAF - blocks SQLi, XSS, rate limits"]
+        LB["Load Balancer plus DDoS Protection - AWS Shield or Cloudflare"]
+    end
+
+    subgraph identity["Identity and policy zone"]
+        GW["API Gateway - JWT validation, rate limiting, routing"]
+    end
+
+    subgraph mesh["Kubernetes Cluster - Zero Trust Mesh - Istio"]
+        PAY["Payment Service"]
+        LED["Ledger Service"]
+        HSMA["HSM Adapter Service"]
+        FRAUD["Fraud Detection"]
+        RISK["Risk Engine"]
+        NOTE["Every service: Envoy sidecar enforces mTLS plus authz policy. Network Policies: each service only talks to approved services"]
+    end
+
+    subgraph data["Data tier - private subnet, no internet access"]
+        DB["Databases - PostgreSQL, Redis, encrypted at rest, mTLS connections"]
+        HSM["HSM - physical hardware, air-gapped key storage"]
+        AUDIT["Immutable Audit Storage - S3 Object Lock, 7-year retention"]
+    end
+
+    Internet -->|TLS 1.3 only| WAF
+    WAF --> LB
+    LB -->|TLS 1.3| GW
+    GW -->|mTLS, all internal| PAY
+
+    PAY <-->|mTLS| LED
+    PAY -->|mTLS| HSMA
+    LED -->|mTLS| HSMA
+    FRAUD <-->|mTLS| RISK
+
+    mesh -->|private subnet| DB
+    DB --> HSM
+    HSM --> AUDIT
 ```
 
 ---
 
-## The Real Bangladesh Bank Attack — What Zero Trust Would Have Prevented
+## The Real Bangladesh Bank Attack - What Zero Trust Would Have Prevented
 
 ```
 Attack timeline (February 2016):
 
 Feb 4, 01:30 AM: Attackers (inside network) send SWIFT messages to Fed New York
-                 → Zero Trust: SWIFT terminal must authenticate to SWIFT service
-                 ← Zero Trust check: is this terminal's certificate valid? YES (stolen)
-                 ← Zero Trust check: is this request from a known authorized user? NO!
-                 → BLOCKED by identity verification ✓
+ -> Zero Trust: SWIFT terminal must authenticate to SWIFT service
+ <- Zero Trust check: is this terminal's certificate valid? YES (stolen)
+ <- Zero Trust check: is this request from a known authorized user? NO!
+ -> BLOCKED by identity verification [OK]
 
 Feb 4, 05:00 AM: First $20M transfer
-                 → Zero Trust: risk score calculation
+ -> Zero Trust: risk score calculation
                    - New destination account: +30
                    - Amount: largest single transfer ever: +50
                    - Unusual time (Bangladesh business hours): -10
-                   → RISK SCORE: 70 → STEP-UP AUTHENTICATION REQUIRED ✓
-                   Attacker can't complete step-up → BLOCKED ✓
+ -> RISK SCORE: 70 -> STEP-UP AUTHENTICATION REQUIRED [OK]
+                   Attacker can't complete step-up -> BLOCKED [OK]
 
 Feb 5: Multiple transfers detected as automated pattern
-       → Behavioral analytics: 35 transfers in 24 hours (never before)
-       → ANOMALY ALERT → Freeze SWIFT access → INVESTIGATION ✓
+ -> Behavioral analytics: 35 transfers in 24 hours (never before)
+ -> ANOMALY ALERT -> Freeze SWIFT access -> INVESTIGATION [OK]
 
 What actually happened (no zero trust):
   Once attacker was "inside the network": trusted
@@ -302,13 +311,13 @@ Your use cases DO implement:
 The Clean Architecture principle:
   Infrastructure security (mTLS, network policies) = Framework layer
   Business security (authorization rules) = Use Case layer
-  These must BOTH exist — one is not a substitute for the other
+  These must BOTH exist - one is not a substitute for the other
 ```
 
 ---
 
 ## Sources
 - [Zero Trust Architecture in Payment Systems](https://oceanobe.com/news/zero-trust-architecture-in-payment-systems/1654)
-- [mTLS and Zero Trust — Buoyant.io](https://www.buoyant.io/blog/zero-trust-mtls-and-the-service-mesh-explained)
-- [Zero Trust with mTLS — DEV Community](https://dev.to/dleedev365/zero-trust-security-mtls-cfa)
-- [Putting Zero Trust into Financial Institutions — Cloud Security Alliance](https://cloudsecurityalliance.org/blog/2023/09/27/putting-zero-trust-architecture-into-financial-institutions)
+- [mTLS and Zero Trust - Buoyant.io](https://www.buoyant.io/blog/zero-trust-mtls-and-the-service-mesh-explained)
+- [Zero Trust with mTLS - DEV Community](https://dev.to/dleedev365/zero-trust-security-mtls-cfa)
+- [Putting Zero Trust into Financial Institutions - Cloud Security Alliance](https://cloudsecurityalliance.org/blog/2023/09/27/putting-zero-trust-architecture-into-financial-institutions)

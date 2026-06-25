@@ -1,6 +1,6 @@
-# WhatsApp — Architecture Case Study
+# WhatsApp - Architecture Case Study
 
-> "50 engineers. 2 billion users. The most efficient engineering team in the history of technology." — Industry observation
+> "50 engineers. 2 billion users. The most efficient engineering team in the history of technology." - Industry observation
 
 ---
 
@@ -26,7 +26,7 @@
 
 **Why 50 engineers for 2 billion users?**
 
-Most apps scale engineers linearly with users. WhatsApp didn't — because their technology choices were optimal for the problem.
+Most apps scale engineers linearly with users. WhatsApp didn't - because their technology choices were optimal for the problem.
 
 **The connection problem:**
 
@@ -38,12 +38,12 @@ Email: client polls the server every few minutes
   Simple but creates massive polling load
 
 WhatsApp's approach: push model via persistent TCP connections
-  Client connects → TCP socket stays open
+  Client connects -> TCP socket stays open
   Server pushes messages to the client immediately
-  No polling needed — server knows exactly where the client is
+  No polling needed - server knows exactly where the client is
 
 The challenge:
-  2 billion users × 1 persistent TCP connection each
+  2 billion users x 1 persistent TCP connection each
   = 2 billion simultaneous open TCP sockets
   = most systems crash long before this
 ```
@@ -54,7 +54,7 @@ The challenge:
 Traditional web server (Java, Node.js, etc.):
   1 thread or 1 event loop per server
   Java thread: ~1MB stack, ~10K threads max per server
-  10K threads × 1 connection each = 10K concurrent connections max
+  10K threads x 1 connection each = 10K concurrent connections max
 
 Erlang BEAM VM:
   Erlang process: ~2KB of memory
@@ -75,25 +75,24 @@ WhatsApp used FreeBSD (not Linux) because:
 
 ### Message Delivery Flow
 
-```
-User A (Bangkok, iPhone)
-  │ TCP connection (persistent)
-  ▼
-WhatsApp Ejabberd Server (XMPP)
-  │ Is User B online? → Check presence database
-  │ Yes → Push message directly via User B's connection
-  │ No  → Store in offline queue (Mnesia)
-  │
-  │ Message delivered → send delivery receipt to User A
-  │ User B opens app → receives message + marks as read
-  │ Read receipt → sent back to User A
-  │
-  │ Store in message log (for multi-device support)
+How a message travels from sender to recipient through the Ejabberd server, including the online and offline paths.
+
+```mermaid
+flowchart TD
+    A["User A - Bangkok, iPhone"] -->|"persistent TCP connection"| S["WhatsApp Ejabberd Server - XMPP"]
+    S -->|"check presence database"| Q{"Is User B online?"}
+    Q -->|"Yes"| P["Push directly via User B connection"]
+    Q -->|"No"| O["Store in offline queue - Mnesia"]
+    P --> D["Send delivery receipt to User A"]
+    O --> D
+    D --> R["User B opens app, receives message, marks as read"]
+    R --> RR["Read receipt sent back to User A"]
+    RR --> L["Store in message log for multi-device support"]
 ```
 
 ### XMPP Protocol
 
-WhatsApp built on XMPP (Extensible Messaging and Presence Protocol) — the open standard for real-time messaging:
+WhatsApp built on XMPP (Extensible Messaging and Presence Protocol) - the open standard for real-time messaging:
 
 ```xml
 <message from="user_a@s.whatsapp.net" to="user_b@s.whatsapp.net">
@@ -130,8 +129,8 @@ handle_message(FromUser, ToUser, Message) ->
 ```
 
 **Erlang's supervision trees handle failures:**
-- One user's session crashes → only that Erlang process dies
-- Supervisor restarts it → user reconnects automatically
+- One user's session crashes -> only that Erlang process dies
+- Supervisor restarts it -> user reconnects automatically
 - Other 1,999,999 sessions on the same server unaffected
 
 ---
@@ -145,14 +144,14 @@ handle_message(FromUser, ToUser, Message) ->
 ```
 Shard by phone number (hashed):
   hash(+66812345678) % N = shard 7
-  All messages to/from this number → shard 7
+  All messages to/from this number -> shard 7
   All phone number data: same phone number = same shard
 
 Geographic sharding layer:
-  EU numbers → EU shards (GDPR compliance)
-  US numbers → US shards
-  APAC numbers → APAC shards
-  India numbers → India shards (India has own data localization laws)
+  EU numbers -> EU shards (GDPR compliance)
+  US numbers -> US shards
+  APAC numbers -> APAC shards
+  India numbers -> India shards (India has own data localization laws)
 
 Each shard:
   Primary + 2 replicas
@@ -197,7 +196,7 @@ When A wants to message B:
 
 **Architecture implication:**
 
-WhatsApp's servers now became message relay nodes — they forward encrypted bytes from A to B. They have no idea what's inside. This changed the entire architecture from "message store" to "encrypted relay."
+WhatsApp's servers now became message relay nodes - they forward encrypted bytes from A to B. They have no idea what's inside. This changed the entire architecture from "message store" to "encrypted relay."
 
 ---
 
@@ -217,11 +216,11 @@ How is this possible?
 5. Operational stability: Erlang systems run for years without restart
 
 Their tech stack did the heavy lifting:
-  Erlang → concurrency + fault tolerance
-  FreeBSD → connection efficiency
-  XMPP → messaging protocol (no need to invent)
-  Mnesia → fast in-memory DB (no need to invent)
-  Signal Protocol → E2E encryption (no need to invent)
+  Erlang -> concurrency + fault tolerance
+  FreeBSD -> connection efficiency
+  XMPP -> messaging protocol (no need to invent)
+  Mnesia -> fast in-memory DB (no need to invent)
+  Signal Protocol -> E2E encryption (no need to invent)
 
 Everything is building on proven shoulders. Very little custom work.
 ```
@@ -238,12 +237,12 @@ Ejabberd GenServer = Entity + Use Case
   Message delivery logic = the use case inside that process
 
 Mnesia/MySQL = Interface Adapters (outbound repositories)
-  IMessageStore → Mnesia (hot messages) + MySQL (history)
-  IPresenceStore → Mnesia (real-time online status)
+  IMessageStore -> Mnesia (hot messages) + MySQL (history)
+  IPresenceStore -> Mnesia (real-time online status)
   Use cases never interact with storage directly
 
 XMPP Protocol Handler = Interface Adapter (inbound)
-  Receives XMPP stanzas → translates to use case calls
+  Receives XMPP stanzas -> translates to use case calls
   Returns results as XMPP stanzas
 
 Erlang Supervisor Tree = Framework & Drivers
@@ -255,18 +254,18 @@ Erlang Supervisor Tree = Framework & Drivers
 
 ## Lessons for Your Architecture
 
-1. **Use boring, proven technology** — XMPP + Erlang existed; WhatsApp didn't invent them
-2. **Actor model for persistent connections** — for anything where state must survive across multiple requests, actors beat REST
-3. **Shard by the thing you most commonly query by** — phone number is the shard key because every WhatsApp operation starts with a phone number
-4. **50 engineers beat 5,000 with the right technology** — technology choice multiplies engineering productivity
-5. **E2E encryption changes your architecture** — you become a relay, not a store; embrace the simplicity
+1. **Use boring, proven technology** - XMPP + Erlang existed; WhatsApp didn't invent them
+2. **Actor model for persistent connections** - for anything where state must survive across multiple requests, actors beat REST
+3. **Shard by the thing you most commonly query by** - phone number is the shard key because every WhatsApp operation starts with a phone number
+4. **50 engineers beat 5,000 with the right technology** - technology choice multiplies engineering productivity
+5. **E2E encryption changes your architecture** - you become a relay, not a store; embrace the simplicity
 
 ---
 
 ## Sources
-- [WhatsApp's Secret Weapon: Erlang — Medium](https://ritik-chopra28.medium.com/whatsapps-secret-weapon-erlang-why-50-engineers-handle-2-billion-users-b19129a01ec9)
+- [WhatsApp's Secret Weapon: Erlang - Medium](https://ritik-chopra28.medium.com/whatsapps-secret-weapon-erlang-why-50-engineers-handle-2-billion-users-b19129a01ec9)
 - [How WhatsApp Scaled to Billions of Users with Just 50 Engineers](https://singhajit.com/whatsapp-scaling-secrets/)
-- [WhatsApp Erlang Architecture — ScaleWithChintan](https://scalewithchintan.com/blog/whatsapp-erlang-architecture-2-billion-users)
+- [WhatsApp Erlang Architecture - ScaleWithChintan](https://scalewithchintan.com/blog/whatsapp-erlang-architecture-2-billion-users)
 - [Ericsson to WhatsApp: The Story of Erlang](https://thechipletter.substack.com/p/ericsson-to-whatsapp-the-story-of)
 
 

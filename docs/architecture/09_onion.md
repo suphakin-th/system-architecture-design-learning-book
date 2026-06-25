@@ -1,4 +1,4 @@
-# Architecture 09 — Onion Architecture
+# Architecture 09 - Onion Architecture
 
 ---
 
@@ -9,7 +9,7 @@
 | **Type** | Layered dependency inversion (same as Clean Arch / Hexagonal) |
 | **Complexity** | Medium |
 | **Best for** | Domain-heavy enterprise apps, DDD (Domain-Driven Design) |
-| **Relationship** | Same concept as Clean Architecture and Hexagonal — DDD-flavored naming |
+| **Relationship** | Same concept as Clean Architecture and Hexagonal - DDD-flavored naming |
 
 ---
 
@@ -18,8 +18,8 @@
 Onion Architecture (Jeffrey Palermo, 2008) organizes code into concentric layers like an onion. The innermost layers are the most stable; the outermost layers are the most volatile.
 
 **Key difference from Clean Architecture naming:**
-- Clean Arch: Entities → Use Cases → Adapters → Frameworks
-- Onion: Domain Model → Domain Services → Application Services → Infrastructure
+- Clean Arch: Entities -> Use Cases -> Adapters -> Frameworks
+- Onion: Domain Model -> Domain Services -> Application Services -> Infrastructure
 
 The dependency rule is identical: **dependencies point inward only.**
 
@@ -32,7 +32,7 @@ The dependency rule is identical: **dependencies point inward only.**
 
 ## The Four Onion Layers
 
-### Layer 1 — Domain Model (Innermost)
+### Layer 1 - Domain Model (Innermost)
 Pure domain objects: entities, value objects, domain events, aggregates.
 No dependencies on anything.
 
@@ -55,14 +55,14 @@ class Order {
 }
 ```
 
-### Layer 2 — Domain Services
+### Layer 2 - Domain Services
 Business logic that doesn't naturally belong in one entity.
 Depends only on Domain Model.
 
 ```typescript
 class PricingService {
   applyVolumeDiscount(order: Order, catalogue: ProductCatalogue): Money {
-    // Logic spanning Order and ProductCatalogue — belongs in a domain service
+    // Logic spanning Order and ProductCatalogue - belongs in a domain service
     const baseTotal = order.total();
     const discount = catalogue.getVolumeDiscount(order.itemCount());
     return baseTotal.multiply(1 - discount);
@@ -70,7 +70,7 @@ class PricingService {
 }
 ```
 
-### Layer 3 — Application Services
+### Layer 3 - Application Services
 Orchestrates domain model and domain services to fulfil use cases.
 Defines interfaces (ports) for infrastructure.
 Corresponds to Use Cases in Clean Architecture.
@@ -96,7 +96,7 @@ class PlaceOrderApplicationService {
 }
 ```
 
-### Layer 4 — Infrastructure (Outermost)
+### Layer 4 - Infrastructure (Outermost)
 Implements all interfaces (ports) from layer 3.
 Contains: repositories, HTTP controllers, DB adapters, external API clients.
 
@@ -142,7 +142,7 @@ Onion Architecture is the natural home for DDD concepts:
 
 ## Resource Consumption
 
-Same as Hexagonal / Clean Architecture — purely organizational:
+Same as Hexagonal / Clean Architecture - purely organizational:
 
 | Resource | Impact |
 |---|---|
@@ -154,11 +154,11 @@ Same as Hexagonal / Clean Architecture — purely organizational:
 
 ## Benefits
 
-1. **DDD-aligned** — onion layers map directly to DDD tactical patterns
-2. **Maximum testability** — domain model layer testable with zero dependencies
-3. **Business logic isolated** — framework changes never touch domain model
-4. **Explicit domain services** — cross-entity logic has a clear home
-5. **Rich domain model** — encourages putting behavior IN domain objects, not anemic models
+1. **DDD-aligned** - onion layers map directly to DDD tactical patterns
+2. **Maximum testability** - domain model layer testable with zero dependencies
+3. **Business logic isolated** - framework changes never touch domain model
+4. **Explicit domain services** - cross-entity logic has a clear home
+5. **Rich domain model** - encourages putting behavior IN domain objects, not anemic models
 
 ---
 
@@ -175,10 +175,10 @@ Same as Hexagonal / Clean Architecture — purely organizational:
 
 ## Costs / Tradeoffs
 
-1. **Overhead for simple apps** — CRUD apps don't benefit; onion adds structure without value
-2. **DDD learning curve** — team must understand aggregates, value objects, bounded contexts
-3. **More files** — domain model, domain services, application services, infrastructure all separate
-4. **Anti-patterns can slip in** — "anemic domain model" (entities with no behavior) defeats the purpose
+1. **Overhead for simple apps** - CRUD apps don't benefit; onion adds structure without value
+2. **DDD learning curve** - team must understand aggregates, value objects, bounded contexts
+3. **More files** - domain model, domain services, application services, infrastructure all separate
+4. **Anti-patterns can slip in** - "anemic domain model" (entities with no behavior) defeats the purpose
 
 ---
 
@@ -188,7 +188,7 @@ Same as Hexagonal / Clean Architecture — purely organizational:
 
 **ABN AMRO Bank (Netherlands)**
 - **Architecture:** Onion Architecture + CQRS + Event Sourcing (Axon Framework)
-- **Domain:** Banking — Account, Transaction, Loan, Customer aggregates
+- **Domain:** Banking - Account, Transaction, Loan, Customer aggregates
 - **Good at:** Banking regulations change frequently; infrastructure (cloud provider, DB) can be swapped without touching domain logic
 
 **ING Bank (Global)**
@@ -210,4 +210,4 @@ Same as Hexagonal / Clean Architecture — purely organizational:
 
 ## Key Takeaway
 
-> Onion Architecture is Clean Architecture with DDD vocabulary. If your domain is complex — banking, insurance, healthcare, e-commerce with complex pricing — use Onion Architecture to give every DDD concept a clear, stable home. The "richer" the domain, the more value the onion layers provide.
+> Onion Architecture is Clean Architecture with DDD vocabulary. If your domain is complex - banking, insurance, healthcare, e-commerce with complex pricing - use Onion Architecture to give every DDD concept a clear, stable home. The "richer" the domain, the more value the onion layers provide.

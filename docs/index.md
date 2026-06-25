@@ -1,12 +1,12 @@
-# System Architecture Design — Learning Book
+# System Architecture Design - Learning Book
 
-> **"The goal of software architecture is to minimize the human resources required to build and maintain the required system."** — Robert C. Martin
+> **"The goal of software architecture is to minimize the human resources required to build and maintain the required system."** - Robert C. Martin
 
 ---
 
 ## What Is This?
 
-A complete, self-contained learning library for software and system architecture — built from scratch using real research, big-tech engineering blogs, and production battle-tested patterns.
+A complete, self-contained learning library for software and system architecture - built from scratch using real research, big-tech engineering blogs, and production battle-tested patterns.
 
 **Written as a senior architect explaining to a junior/mid developer.** Not just "what" a pattern is, but **why it exists**, **what problem it solves**, **what it costs**, and **how real companies use it**.
 
@@ -14,8 +14,8 @@ A complete, self-contained learning library for software and system architecture
 
 ## Who Is This For?
 
-- Junior → Mid developers who want to understand how large systems are built
-- Mid → Senior developers preparing for system design interviews
+- Junior -> Mid developers who want to understand how large systems are built
+- Mid -> Senior developers preparing for system design interviews
 - Anyone studying for **ByteByteGo**, **Designing Data-Intensive Applications**, or **Clean Architecture**
 - Thai developers looking for resources in both Thai and English
 
@@ -26,12 +26,12 @@ A complete, self-contained learning library for software and system architecture
 === "Learning Path (Recommended)"
 
     ```
-    Week 1–2:   Clean Architecture Foundation → Monolith → Layered N-Tier
-    Week 3–4:   CQRS → Event-Driven → Event Sourcing
-    Week 5–6:   Microservices → Saga → API Gateway → BFF
-    Week 7–8:   Database Fundamentals → Indexing → Replication → Transactions
-    Week 9–10:  Fintech Architecture (Ledger → Audit → Payments → Security)
-    Week 11+:   Company Case Studies (Amazon → Netflix → Google → ...)
+    Week 1-2:   Clean Architecture Foundation -> Monolith -> Layered N-Tier
+    Week 3-4:   CQRS -> Event-Driven -> Event Sourcing
+    Week 5-6:   Microservices -> Saga -> API Gateway -> BFF
+    Week 7-8:   Database Fundamentals -> Indexing -> Replication -> Transactions
+    Week 9-10:  Fintech Architecture (Ledger -> Audit -> Payments -> Security)
+    Week 11+:   Company Case Studies (Amazon -> Netflix -> Google -> ...)
     ```
 
 === "Quick Reference"
@@ -39,11 +39,11 @@ A complete, self-contained learning library for software and system architecture
     Use the **search bar** (top right) to find any concept instantly.
 
     Examples to try:
-    - `fanout` → Twitter's hybrid fanout solution
-    - `idempotency` → Stripe's payment safety
-    - `MVCC` → PostgreSQL concurrency control
-    - `PromptPay` → Thailand's real-time payment system
-    - `สิทธิ์` → Linux permissions in Thai
+    - `fanout` -> Twitter's hybrid fanout solution
+    - `idempotency` -> Stripe's payment safety
+    - `MVCC` -> PostgreSQL concurrency control
+    - `PromptPay` -> Thailand's real-time payment system
+    - `สิทธิ์` -> Linux permissions in Thai
 
 === "By Problem"
 
@@ -85,7 +85,7 @@ A complete, self-contained learning library for software and system architecture
 -   :material-shield-lock: **Linux Security**
 
     ---
-    Permissions, SUID/SGID, ACL, systemd hardening — written in Thai 🇹🇭 for microservice server setup.
+    Permissions, SUID/SGID, ACL, systemd hardening - written in Thai for microservice server setup.
 
 -   :material-school: **Zero to Hero**
 
@@ -98,25 +98,24 @@ A complete, self-contained learning library for software and system architecture
 
 ## The One Diagram That Rules Them All
 
-```
-┌─────────────────────────────────────────────┐
-│         Frameworks & Drivers                │  ← Express, PostgreSQL, Kafka
-│  ┌───────────────────────────────────────┐  │
-│  │       Interface Adapters              │  │  ← Controllers, Repositories
-│  │  ┌─────────────────────────────────┐  │  │
-│  │  │         Use Cases               │  │  │  ← Business operations
-│  │  │  ┌───────────────────────────┐  │  │  │
-│  │  │  │        Entities           │  │  │  │  ← Business rules (pure)
-│  │  │  └───────────────────────────┘  │  │  │
-│  │  └─────────────────────────────────┘  │  │
-│  └───────────────────────────────────────┘  │
-└─────────────────────────────────────────────┘
+The four Clean Architecture layers nest inside one another. Dependencies point inward only - inner layers know nothing about outer layers.
 
-      Dependencies point INWARD only →
-      Inner layers know NOTHING about outer layers.
+```mermaid
+flowchart TD
+    subgraph FD["Frameworks and Drivers - Express, PostgreSQL, Kafka"]
+        subgraph IA["Interface Adapters - Controllers, Repositories"]
+            subgraph UC["Use Cases - Business operations"]
+                E["Entities - Business rules, pure"]
+            end
+        end
+    end
+
+    FD -->|depends inward| IA
+    IA -->|depends inward| UC
+    UC -->|depends inward| E
 ```
 
-**This is Clean Architecture.** Every pattern in this book is a variation on this diagram at a different scale — from a single module to 1,000 microservices.
+**This is Clean Architecture.** Every pattern in this book is a variation on this diagram at a different scale - from a single module to 1,000 microservices.
 
 ---
 
@@ -124,11 +123,11 @@ A complete, self-contained learning library for software and system architecture
 
 This library synthesizes knowledge from:
 
-- [ByteByteGo](https://bytebytego.com) — Alex Xu's system design resources
-- [Netflix Tech Blog](https://netflixtechblog.com) · [Uber Engineering](https://www.uber.com/blog/engineering/) · [Shopify Engineering](https://shopify.engineering)
-- [LinkedIn Engineering](https://engineering.linkedin.com) · [Discord Engineering](https://discord.com/blog/engineering) · [Stripe Dev Blog](https://stripe.dev/blog)
-- [Designing Data-Intensive Applications](https://dataintensive.net) — Martin Kleppmann
-- [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164) — Robert C. Martin
+- [ByteByteGo](https://bytebytego.com) - Alex Xu's system design resources
+- [Netflix Tech Blog](https://netflixtechblog.com) - [Uber Engineering](https://www.uber.com/blog/engineering/) - [Shopify Engineering](https://shopify.engineering)
+- [LinkedIn Engineering](https://engineering.linkedin.com) - [Discord Engineering](https://discord.com/blog/engineering) - [Stripe Dev Blog](https://stripe.dev/blog)
+- [Designing Data-Intensive Applications](https://dataintensive.net) - Martin Kleppmann
+- [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164) - Robert C. Martin
 - [Google SRE Book](https://sre.google/sre-book/table-of-contents/)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 - [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/)

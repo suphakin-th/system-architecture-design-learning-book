@@ -1,8 +1,8 @@
-# MVC, MVP, MVVM — UI Architecture Patterns
+# MVC, MVP, MVVM - UI Architecture Patterns
 
 > **IMPORTANT CLARIFICATION FIRST:**
-> - **MVC** = Model-View-Controller → a UI architecture pattern (how you organize application code)
-> - **MVCC** = Multiversion Concurrency Control → a DATABASE internal mechanism (how PostgreSQL handles concurrent reads/writes)
+> - **MVC** = Model-View-Controller -> a UI architecture pattern (how you organize application code)
+> - **MVCC** = Multiversion Concurrency Control -> a DATABASE internal mechanism (how PostgreSQL handles concurrent reads/writes)
 >
 > These are completely unrelated. This file covers MVC/MVP/MVVM. See `33_mvcc_database_concurrency/` for MVCC.
 
@@ -23,7 +23,7 @@
 **Without any pattern (spaghetti code):**
 
 ```javascript
-// Everything mixed together — impossible to test or maintain
+// Everything mixed together - impossible to test or maintain
 document.getElementById('buy-btn').onclick = function() {
   const qty = parseInt(document.getElementById('qty').value);
   if (qty <= 0) {
@@ -40,8 +40,8 @@ document.getElementById('buy-btn').onclick = function() {
   });
 };
 // Problems: UI logic + business logic + network calls all in one event handler
-// Can't unit test — needs a real browser DOM
-// Change the API → change this handler → change the UI display → all tangled
+// Can't unit test - needs a real browser DOM
+// Change the API -> change this handler -> change the UI display -> all tangled
 ```
 
 **With separation of concerns (MVC/MVP/MVVM):**
@@ -51,26 +51,23 @@ document.getElementById('buy-btn').onclick = function() {
 
 ---
 
-## MVC — Model View Controller
+## MVC - Model View Controller
 
 ### How It Works
 
-```
-User clicks "Place Order"
-        │
-        ▼
-[View] — just shows the HTML/UI
-        │ user action (form submit, button click)
-        ▼
-[Controller] — receives input, decides what to do
-        │ updates model               │ selects view to show
-        ▼                             ▼
-[Model] — data + business rules    [View] — rendered with new data
+Control flow when a user submits an action: the View forwards the input to the Controller, which updates the Model and then selects a View to render with the new data.
+
+```mermaid
+flowchart TD
+    U["User clicks Place Order"] --> V["View: shows the HTML or UI"]
+    V -->|user action: submit or click| C["Controller: receives input, decides what to do"]
+    C -->|updates| M["Model: data and business rules"]
+    C -->|selects view to show| V2["View: rendered with new data"]
 ```
 
 ### The Three Components in Detail
 
-**Model — "What the app knows"**
+**Model - "What the app knows"**
 ```typescript
 // Model: data + business logic, no UI concerns
 class OrderModel {
@@ -96,7 +93,7 @@ class OrderModel {
 // Testable with zero browser
 ```
 
-**Controller — "What happens when user does X"**
+**Controller - "What happens when user does X"**
 ```typescript
 // Controller: receives user input, coordinates Model + View
 class OrderController {
@@ -129,9 +126,9 @@ class OrderController {
 }
 ```
 
-**View — "What the user sees"**
+**View - "What the user sees"**
 ```typescript
-// View: ONLY rendering logic — no business rules, no API calls
+// View: ONLY rendering logic - no business rules, no API calls
 class OrderView {
   private form = document.getElementById('order-form')!;
   private successMsg = document.getElementById('success')!;
@@ -175,9 +172,9 @@ view.bindPlaceOrder((data) => controller.handlePlaceOrder(data));
 **Rails (Ruby):**
 ```
 app/
-├── models/order.rb           ← Model: ActiveRecord, business rules
-├── views/orders/show.html.erb ← View: ERB template
-└── controllers/orders_controller.rb ← Controller: routes HTTP → model → view
+  models/order.rb                     Model: ActiveRecord, business rules
+  views/orders/show.html.erb          View: ERB template
+  controllers/orders_controller.rb    Controller: routes HTTP to model to view
 ```
 
 **Django (Python):**
@@ -211,28 +208,47 @@ Problem 1: Massive Controllers ("Fat Controllers")
 
 Problem 2: View and Model coupling
   In classic MVC, View can observe Model directly
-  → Model changes → View updates itself
-  → View has direct reference to Model
-  → Tightly coupled → hard to test View without Model
+ -> Model changes -> View updates itself
+ -> View has direct reference to Model
+ -> Tightly coupled -> hard to test View without Model
 
 Problem 3: Not suitable for modern reactive UIs
-  React, Vue: "UI = f(state)" — UI is a function of data
+  React, Vue: "UI = f(state)" - UI is a function of data
   This doesn't fit the imperative "update the view" style of MVC
 ```
 
 ---
 
-## MVP — Model View Presenter
+## MVP - Model View Presenter
 
 ### How It Differs from MVC
 
-```
-MVC: View can directly observe Model (coupling)
-MVP: View ONLY talks to Presenter. Presenter mediates everything.
+In MVC the View can observe the Model directly (coupling). In MVP the View only talks to the Presenter, which mediates everything. The two flows below are ordered interactions; note the View never touches the Model directly in MVP.
 
-MVC flow: User → Controller → Model → (Model notifies) View
-MVP flow: User → View → Presenter → Model → Presenter → View
-          (View never touches Model directly)
+```mermaid
+sequenceDiagram
+    actor User
+    participant View
+    participant Controller
+    participant Model
+    Note over User,Model: MVC flow
+    User->>Controller: action
+    Controller->>Model: update
+    Model-->>View: Model notifies View
+```
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant View
+    participant Presenter
+    participant Model
+    Note over User,Model: MVP flow (View never touches Model directly)
+    User->>View: action
+    View->>Presenter: forward input
+    Presenter->>Model: update
+    Model-->>Presenter: result
+    Presenter-->>View: update display
 ```
 
 ### The Presenter Pattern
@@ -281,7 +297,7 @@ class OrderViewImpl implements IOrderView {
   getFormData() { /* read from DOM */ }
 }
 
-// Test View (implements same interface — no DOM needed for testing!)
+// Test View (implements same interface - no DOM needed for testing!)
 class MockOrderView implements IOrderView {
   public shownSuccess = false;
   public shownError: string | null = null;
@@ -307,17 +323,18 @@ expect(mockView.shownSuccess).toBe(true);
 
 ---
 
-## MVVM — Model View ViewModel
+## MVVM - Model View ViewModel
 
 ### The Big Idea: Data Binding
 
-```
-MVC/MVP: Presenter/Controller manually calls view.update() after every model change
-MVVM:    ViewModel exposes "reactive" data. View automatically updates when data changes.
-         The View BINDS to ViewModel properties. No manual "tell the view to update".
+In MVC/MVP the Presenter or Controller manually calls `view.update()` after every model change. In MVVM the ViewModel exposes reactive data and the View binds to its properties, so the View re-renders automatically with no manual "tell the view to update". The flow below traces a user interaction through the round trip back to the re-render.
 
-ViewModel property changes → View automatically re-renders
-User interacts with View → ViewModel's command runs → Model updates → ViewModel updates → View re-renders
+```mermaid
+flowchart TD
+    U["User interacts with View"] --> CMD["ViewModel command runs"]
+    CMD --> M["Model updates"]
+    M --> VM["ViewModel updates"]
+    VM -->|reactive binding| V["View automatically re-renders"]
 ```
 
 ### MVVM in React (the most common MVVM implementation today)
@@ -331,9 +348,9 @@ interface Order {
   status: 'pending' | 'placed' | 'failed';
 }
 
-// ViewModel: React custom hook — exposes state + commands
+// ViewModel: React custom hook - exposes state + commands
 function useOrderViewModel() {
-  // State (the "View Model" — what the View binds to)
+  // State (the "View Model" - what the View binds to)
   const [items, setItems] = useState<OrderItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -391,7 +408,7 @@ function OrderPage() {
 }
 ```
 
-**Key MVVM advantage:** The View is a pure function of ViewModel state. No imperative DOM updates. No "go find the button and change its text". Just: "if `isLoading` is true, show spinner" — React handles the rest.
+**Key MVVM advantage:** The View is a pure function of ViewModel state. No imperative DOM updates. No "go find the button and change its text". Just: "if `isLoading` is true, show spinner" - React handles the rest.
 
 ### MVVM in Vue.js
 
@@ -425,14 +442,14 @@ async function placeOrder() {
     isLoading.value = false;
   }
 }
-// Vue's reactivity system: when items/isLoading/error change → template auto-updates
+// Vue's reactivity system: when items/isLoading/error change -> template auto-updates
 </script>
 ```
 
 ### MVVM in Mobile (SwiftUI / Jetpack Compose)
 
 ```swift
-// iOS — SwiftUI + MVVM
+// iOS - SwiftUI + MVVM
 // ViewModel: ObservableObject = ViewModel
 class OrderViewModel: ObservableObject {
   @Published var items: [OrderItem] = []      // @Published = triggers View update
@@ -471,7 +488,7 @@ struct OrderView: View {
 
 ---
 
-## MVC vs MVP vs MVVM — Complete Comparison
+## MVC vs MVP vs MVVM - Complete Comparison
 
 | Aspect | MVC | MVP | MVVM |
 |---|---|---|---|
@@ -488,41 +505,28 @@ struct OrderView: View {
 
 ## How All Three Map to Clean Architecture
 
+All three patterns live in the Interface Adapters layer of Clean Architecture. The nesting below shows containment: each outer layer wraps the inner ones, with Entities at the core.
+
+```mermaid
+flowchart TD
+    subgraph FD["Frameworks and Drivers (Express, React runtime, SwiftUI)"]
+        subgraph IA["Interface Adapters - MVC/MVP/MVVM live here"]
+            ADAPTERS["MVC Controller, MVP Presenter, MVVM ViewModel: all just different styles of Interface Adapter"]
+        end
+        subgraph UC["Use Cases"]
+            subgraph ENT["Entities - Model equals domain here"]
+                E["Entities"]
+            end
+        end
+    end
 ```
-All three patterns = Interface Adapters layer of Clean Architecture
 
-                ┌─────────────────────────────────────────┐
-                │  Frameworks & Drivers                    │
-                │  (Express, React runtime, SwiftUI)       │
-                │  ┌───────────────────────────────────┐   │
-                │  │  Interface Adapters                │   │
-                │  │  ┌─────────────────────────────┐  │   │
-                │  │  │  MVC Controller              │  │   │
-                │  │  │  MVP Presenter               │  │   │  ← MVC/MVP/MVVM live here
-                │  │  │  MVVM ViewModel              │  │   │
-                │  │  │                              │  │   │
-                │  │  │  These are all just          │  │   │
-                │  │  │  different styles of         │  │   │
-                │  │  │  Interface Adapter           │  │   │
-                │  │  └─────────────────────────────┘  │   │
-                │  └───────────────────────────────────┘   │
-                │  ┌─────────────────────────┐             │
-                │  │  Use Cases              │             │
-                │  │  ┌─────────────────┐   │             │
-                │  │  │  Entities       │   │             │  ← Model = domain here
-                │  │  └─────────────────┘   │             │
-                │  └─────────────────────────┘             │
-                └─────────────────────────────────────────┘
+!!! warning "The word 'Model' means different things"
+    The "Model" in MVC/MVVM is not the same as an Entity in Clean Architecture.
 
-Model in MVC/MVVM ≠ Entities in Clean Architecture
-  MVC "Model" often includes: business rules + data access (too much)
-  Clean Architecture splits it:
-    Business rules → Entity layer
-    Data access → Repository adapter (Infrastructure)
-
-  Clean Architecture's "Model" for a View would be the ViewModel/DTO
-  returned by the Use Case — a data transfer object shaped for the UI
-```
+    - MVC's "Model" often bundles business rules *and* data access together (too much).
+    - Clean Architecture splits that apart: business rules go in the Entity layer, data access goes in a Repository adapter (Infrastructure).
+    - The "Model" a View should receive is really a ViewModel/DTO returned by the Use Case - a data transfer object shaped for the UI.
 
 ---
 
@@ -536,12 +540,12 @@ Model in MVC/MVVM ≠ Entities in Clean Architecture
 > - SwiftUI? MVVM. `ObservableObject` + `@Published`.
 > - Old Android? MVP or MVVM (both work).
 >
-> The pattern should disappear into the framework. If you're fighting the framework's conventions to implement a different pattern, you've made the wrong choice. Pick the pattern that fits naturally — then invest the saved time in making the Model layer (business logic) clean and testable."
+> The pattern should disappear into the framework. If you're fighting the framework's conventions to implement a different pattern, you've made the wrong choice. Pick the pattern that fits naturally - then invest the saved time in making the Model layer (business logic) clean and testable."
 
 ---
 
 ## Sources
-- [The Model View Controller Pattern — freeCodeCamp](https://www.freecodecamp.org/news/the-model-view-controller-pattern-mvc-architecture-and-frameworks-explained/)
-- [Architecture Patterns for Beginners: MVC, MVP, MVVM — DEV Community](https://dev.to/chiragagg5k/architecture-patterns-for-beginners-mvc-mvp-and-mvvm-2pe7)
-- [MVC vs MVP vs MVVM — Bacancy Technology](https://www.bacancytechnology.com/blog/mvc-vs-mvp-vs-mvvm)
-- [UI Architecture Patterns: MVC and MVVM — Medium](https://medium.com/@a.kago1988/mvc-vs-mvvm-understanding-the-pros-and-cons-in-real-world-projects-efdb2544d450)
+- [The Model View Controller Pattern - freeCodeCamp](https://www.freecodecamp.org/news/the-model-view-controller-pattern-mvc-architecture-and-frameworks-explained/)
+- [Architecture Patterns for Beginners: MVC, MVP, MVVM - DEV Community](https://dev.to/chiragagg5k/architecture-patterns-for-beginners-mvc-mvp-and-mvvm-2pe7)
+- [MVC vs MVP vs MVVM - Bacancy Technology](https://www.bacancytechnology.com/blog/mvc-vs-mvp-vs-mvvm)
+- [UI Architecture Patterns: MVC and MVVM - Medium](https://medium.com/@a.kago1988/mvc-vs-mvvm-understanding-the-pros-and-cons-in-real-world-projects-efdb2544d450)

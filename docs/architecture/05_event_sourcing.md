@@ -1,4 +1,4 @@
-# Architecture 05 — Event Sourcing
+# Architecture 05 - Event Sourcing
 
 ---
 
@@ -19,7 +19,7 @@ In traditional systems, you store the **current state**: `order.status = 'SHIPPE
 
 In Event Sourcing, you store the **events that led to that state**:
 ```
-OrderCreated → ItemAdded → ItemAdded → OrderPlaced → PaymentCharged → OrderShipped
+OrderCreated -> ItemAdded -> ItemAdded -> OrderPlaced -> PaymentCharged -> OrderShipped
 ```
 
 The current state is derived by **replaying** all events from the beginning.
@@ -75,7 +75,7 @@ class Order {
 
 The **event store** is an outbound adapter (implements `IEventStore` port).
 The **entity reconstitution** is pure domain logic.
-**Projections** (read models) are built by consuming events — exactly like CQRS read models.
+**Projections** (read models) are built by consuming events - exactly like CQRS read models.
 
 ```typescript
 // Port (defined in use case layer)
@@ -123,7 +123,7 @@ class OrderProjection {
 }
 ```
 
-You can **replay all events** to rebuild any projection from scratch — powerful for debugging and new feature rollout.
+You can **replay all events** to rebuild any projection from scratch - powerful for debugging and new feature rollout.
 
 ---
 
@@ -141,21 +141,21 @@ You can **replay all events** to rebuild any projection from scratch — powerfu
 ### Snapshots (Performance Optimization)
 For aggregates with 10,000+ events, storing a snapshot avoids full replay:
 ```
-Snapshot at v1000 + events 1001-1050 → rebuilt state
-Instead of: events 1-1050 → rebuilt state
+Snapshot at v1000 + events 1001-1050 -> rebuilt state
+Instead of: events 1-1050 -> rebuilt state
 ```
 
 ---
 
 ## Benefits
 
-1. **Complete audit trail** — every state change is recorded with WHO, WHAT, WHEN, WHY
-2. **Time travel** — rebuild the state as it was at any point in time
-3. **No update/delete** — append-only is the simplest possible DB operation
-4. **Debug production bugs** — replay exact event sequence that caused the bug
-5. **Multiple projections** — rebuild any view of the data from the same events
-6. **Natural integration** — events are publishable to other services (EDA built-in)
-7. **Optimistic concurrency** — version-based conflict detection without locks
+1. **Complete audit trail** - every state change is recorded with WHO, WHAT, WHEN, WHY
+2. **Time travel** - rebuild the state as it was at any point in time
+3. **No update/delete** - append-only is the simplest possible DB operation
+4. **Debug production bugs** - replay exact event sequence that caused the bug
+5. **Multiple projections** - rebuild any view of the data from the same events
+6. **Natural integration** - events are publishable to other services (EDA built-in)
+7. **Optimistic concurrency** - version-based conflict detection without locks
 
 ---
 
@@ -173,12 +173,12 @@ Instead of: events 1-1050 → rebuilt state
 
 ## Costs / Tradeoffs
 
-1. **Complexity** — significantly harder to reason about than "just update the row"
-2. **Event schema evolution** — events are immutable; changing schema requires versioning strategy
-3. **Storage growth** — event log grows forever; need retention policies and snapshots
-4. **Performance for long histories** — replay of 10,000 events is slow without snapshots
-5. **Querying is hard** — can't do `SELECT * FROM orders WHERE status='placed'`; need projections
-6. **Not good for simple CRUD** — massive overhead for create/read/update/delete with no history needed
+1. **Complexity** - significantly harder to reason about than "just update the row"
+2. **Event schema evolution** - events are immutable; changing schema requires versioning strategy
+3. **Storage growth** - event log grows forever; need retention policies and snapshots
+4. **Performance for long histories** - replay of 10,000 events is slow without snapshots
+5. **Querying is hard** - can't do `SELECT * FROM orders WHERE status='placed'`; need projections
+6. **Not good for simple CRUD** - massive overhead for create/read/update/delete with no history needed
 
 ---
 
@@ -210,4 +210,4 @@ Instead of: events 1-1050 → rebuilt state
 
 ## Key Takeaway
 
-> Event Sourcing is the ultimate application of Clean Architecture's principle that "entities contain business rules." The entity doesn't store state — it accumulates events and derives state from them. The event store is just a port+adapter. The result is a complete audit trail and time-travel capability at the cost of significant complexity.
+> Event Sourcing is the ultimate application of Clean Architecture's principle that "entities contain business rules." The entity doesn't store state - it accumulates events and derives state from them. The event store is just a port+adapter. The result is a complete audit trail and time-travel capability at the cost of significant complexity.

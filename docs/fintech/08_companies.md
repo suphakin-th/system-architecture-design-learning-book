@@ -1,10 +1,10 @@
-# Fintech Companies — Architecture Case Studies
+# Fintech Companies - Architecture Case Studies
 
-## Stripe — The Ledger System
+## Stripe - The Ledger System
 
 **Scale:** $1T+ annually, 5 billion events/day
 
-**Core innovation:** Stripe built "Ledger" — an internal double-entry accounting system that every dollar at Stripe flows through.
+**Core innovation:** Stripe built "Ledger" - an internal double-entry accounting system that every dollar at Stripe flows through.
 
 ```
 Stripe Ledger architecture:
@@ -18,12 +18,12 @@ Stripe Ledger architecture:
     Reconciliation: automated comparison vs payment networks
 
   PostgreSQL: primary data store (ACID transactions for journal entries)
-  Kafka: event streaming (charge events → ledger entries)
-  Idempotency: every API call has idempotency key → processed exactly once
+  Kafka: event streaming (charge events -> ledger entries)
+  Idempotency: every API call has idempotency key -> processed exactly once
 
 Payment API evolution:
-  2011: Charges API — simple, one-step charge
-  2019: PaymentIntents — event-sourced multi-step flow (3DS, SCA)
+  2011: Charges API - simple, one-step charge
+  2019: PaymentIntents - event-sourced multi-step flow (3DS, SCA)
   Today: 100B+ API calls/day, 13-year backward compatibility
 ```
 
@@ -35,7 +35,7 @@ Payment API evolution:
 
 ---
 
-## Monzo — The Modern Bank (1500 Microservices)
+## Monzo - The Modern Bank (1500 Microservices)
 
 **Scale:** 10M+ customers UK, real-time banking
 
@@ -45,8 +45,8 @@ Payment API evolution:
 Monzo's ledger service:
   Single service responsible for ALL money movements at Monzo
   Cassandra-backed (write-heavy, append-only ideal)
-  Every debit/credit → immutable journal entry in Cassandra
-  No UPDATE, no DELETE — only INSERT
+  Every debit/credit -> immutable journal entry in Cassandra
+  No UPDATE, no DELETE - only INSERT
   Balance = computed from journal at read time
 
 "Modern Banking in 1500 Microservices" (InfoQ talk):
@@ -55,40 +55,40 @@ Monzo's ledger service:
   Kafka: event bus between all 1500 services
 
 Core banking pattern:
-  Customer pays merchant → PaymentService →
-    publishes PaymentAuthorized event → Kafka
-    LedgerService subscribes → records journal entries
-    NotificationService subscribes → sends push notification
-    FraudService subscribes → runs fraud check
+  Customer pays merchant -> PaymentService -> 
+    publishes PaymentAuthorized event -> Kafka
+    LedgerService subscribes -> records journal entries
+    NotificationService subscribes -> sends push notification
+    FraudService subscribes -> runs fraud check
 
-  No synchronous calls for these — all async events
+  No synchronous calls for these - all async events
   If notification service is down: payment still succeeds (decoupled)
 ```
 
-**Key lesson from Monzo:** Each microservice has its own database (Cassandra). No shared databases. Boundaries enforced. The Ledger Service is the source of truth — everything else is a projection of ledger events.
+**Key lesson from Monzo:** Each microservice has its own database (Cassandra). No shared databases. Boundaries enforced. The Ledger Service is the source of truth - everything else is a projection of ledger events.
 
 ---
 
-## Wise (formerly TransferWise) — Cross-Border Money Movement
+## Wise (formerly TransferWise) - Cross-Border Money Movement
 
-**Scale:** £10B+ moved monthly, 170+ countries
+**Scale:** GBP 10B+ moved monthly, 170+ countries
 
 **Core problem solved:** Banks charged 4-5% for international transfers. Wise charges 0.3-1%.
 
 ```
 How Wise works (the "clever trick"):
-  Traditional SWIFT transfer Alice (UK) → Bob (Thailand):
-    Alice → UK bank → Correspondent bank → Thai bank → Bob
-    Cost: £25 fee + 2-3% exchange rate markup
+  Traditional SWIFT transfer Alice (UK) -> Bob (Thailand):
+    Alice -> UK bank -> Correspondent bank -> Thai bank -> Bob
+    Cost: GBP 25 fee + 2-3% exchange rate markup
     Time: 2-3 business days
 
   Wise "local matching":
-    Alice pays £1000 into Wise's UK pool account (local transfer, free)
+    Alice pays GBP 1000 into Wise's UK pool account (local transfer, free)
     Wise uses its existing Thai Baht pool to pay Bob in Thailand
     Net: Alice's GBP pool grows, Wise's THB pool shrinks
     Rebalancing: Wise uses FX market when pools are imbalanced
 
-  No money crosses borders → no SWIFT fees → 0.3% fee instead of 4%
+  No money crosses borders -> no SWIFT fees -> 0.3% fee instead of 4%
 
 Database architecture:
   Multi-currency ledger: tracks pools in 50+ currencies simultaneously
@@ -97,7 +97,7 @@ Database architecture:
 
   Balance invariant:
     SUM(customer liabilities in currency X) = Wise's pool in currency X
-    Monitored every minute → alert if imbalanced
+    Monitored every minute -> alert if imbalanced
 
 Regulatory:
   Money Service Business licenses in 170+ countries
@@ -136,7 +136,7 @@ Stripe Ledger:
 Monzo:
   Domain: Balance, Payment, Account (entities per microservice)
   Use Cases: AuthorizePayment, TransferFunds (one per service)
-  Event Bus: IEventBus (port) → KafkaEventBus (adapter)
+  Event Bus: IEventBus (port) -> KafkaEventBus (adapter)
   Services: each is an independent Clean Architecture application
 
 Wise:

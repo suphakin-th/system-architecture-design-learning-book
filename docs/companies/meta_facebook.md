@@ -1,6 +1,6 @@
-# Meta (Facebook) — Architecture Case Study
+# Meta (Facebook) - Architecture Case Study
 
-> "Move fast and break things — but don't break the social graph." — Meta engineering culture
+> "Move fast and break things - but don't break the social graph." - Meta engineering culture
 
 ---
 
@@ -18,7 +18,7 @@
 
 ## The Senior Architect Tells the Story
 
-> "Meta's hardest problem is unique in the world: a social graph with 3 billion nodes (people) and trillions of edges (friendships, likes, follows, comments). Every user action touches this graph. The entire architecture — TAO, GraphQL, React — was built to answer one question: how do you read and write a graph of 3 billion people efficiently?"
+> "Meta's hardest problem is unique in the world: a social graph with 3 billion nodes (people) and trillions of edges (friendships, likes, follows, comments). Every user action touches this graph. The entire architecture - TAO, GraphQL, React - was built to answer one question: how do you read and write a graph of 3 billion people efficiently?"
 
 ---
 
@@ -49,12 +49,12 @@ TAO was built to make it milliseconds.
 
 ---
 
-## Phase 1: The PHP Monolith (2004–2009)
+## Phase 1: The PHP Monolith (2004-2009)
 
-**What they had:** LAMP stack — Linux, Apache, MySQL, PHP
+**What they had:** LAMP stack - Linux, Apache, MySQL, PHP
 
 ```
-Browser → Apache → PHP (the entire Facebook logic) → MySQL (one DB)
+Browser -> Apache -> PHP (the entire Facebook logic) -> MySQL (one DB)
 ```
 
 **Problems:**
@@ -68,15 +68,15 @@ Browser → Apache → PHP (the entire Facebook logic) → MySQL (one DB)
 
 ---
 
-## Phase 2: TAO — The Social Graph Engine (2013)
+## Phase 2: TAO - The Social Graph Engine (2013)
 
-**TAO** = "The Associations and Objects" — Meta's purpose-built graph data store.
+**TAO** = "The Associations and Objects" - Meta's purpose-built graph data store.
 
 **What TAO solves:**
 ```
 Traditional cache-aside pattern (what they had):
   1. App reads from Memcache
-  2. Cache miss → read from MySQL
+  2. Cache miss -> read from MySQL
   3. Write to Memcache + MySQL separately
   Problem: List updates are wrong; read-after-write inconsistency; thundering herd
 
@@ -87,15 +87,12 @@ TAO pattern:
   Result: Consistent reads, no thundering herd, automatic cache management
 ```
 
-**TAO Architecture:**
-```
-TAO Follower (read cache, per datacenter)
-      │ cache miss
-      ▼
-TAO Leader (write-through cache, per region)
-      │ cache miss
-      ▼
-MySQL Database (source of truth)
+**TAO Architecture:** reads flow down through cache tiers on a miss, ending at MySQL as the source of truth.
+
+```mermaid
+flowchart TD
+    A["TAO Follower (read cache, per datacenter)"] -->|cache miss| B["TAO Leader (write-through cache, per region)"]
+    B -->|cache miss| C["MySQL Database (source of truth)"]
 ```
 
 **Why TAO uses MySQL as the source of truth:**
@@ -129,7 +126,7 @@ Problems:
 
 **GraphQL solution:**
 ```graphql
-# Client asks for EXACTLY what it needs — no more, no less
+# Client asks for EXACTLY what it needs - no more, no less
 query NewsFeed {
   user(id: "123") {
     name
@@ -151,9 +148,9 @@ query NewsFeed {
 - **One request** fetches the entire news feed with nested data
 - **Client specifies exactly what fields** it needs
 - **Type system** documents the API automatically
-- **Server handles joins** — client doesn't do sequential API calls
+- **Server handles joins** - client doesn't do sequential API calls
 
-> "GraphQL removed the negotiation between mobile and backend teams. Before: 'I need a new field in the API' → file a ticket → backend team adds field → 2 weeks. After GraphQL: 'I need this field' → add it to my query → the API already has it if the data exists. Self-documenting, self-serving."
+> "GraphQL removed the negotiation between mobile and backend teams. Before: 'I need a new field in the API' -> file a ticket -> backend team adds field -> 2 weeks. After GraphQL: 'I need this field' -> add it to my query -> the API already has it if the data exists. Self-documenting, self-serving."
 
 ---
 
@@ -161,7 +158,7 @@ query NewsFeed {
 
 **The problem:**
 
-Facebook's homepage was a PHP template that server-rendered HTML. When you liked a post, the count would update — but only after a page refresh. The user experience was terrible.
+Facebook's homepage was a PHP template that server-rendered HTML. When you liked a post, the count would update - but only after a page refresh. The user experience was terrible.
 
 **The insight:**
 
@@ -171,7 +168,7 @@ Facebook's homepage was a PHP template that server-rendered HTML. When you liked
 ```jsx
 // Old way (jQuery):
 $('#like-count-' + postId).text(newCount);
-// Manual DOM manipulation — what if the element doesn't exist yet? Race conditions?
+// Manual DOM manipulation - what if the element doesn't exist yet? Race conditions?
 
 // React way:
 function Post({ post }) {
@@ -193,7 +190,7 @@ function Post({ post }) {
 
 **Problem:** 60,000 engineers push code 100+ times per day. How do you know if a deployment broke something?
 
-**Solution: Scuba** — Facebook's in-memory time-series database
+**Solution: Scuba** - Facebook's in-memory time-series database
 
 ```
 Every metric sampled: CPU, memory, error rate, latency per endpoint
@@ -217,7 +214,7 @@ Meta's architecture = Clean Architecture applied to social graph scale
 
 TAO = Repository implementation (IGraphRepository)
   Use cases call IGraphRepository.getEdges(userId, 'friends', limit: 10)
-  TAO decides: check follower cache → leader cache → MySQL
+  TAO decides: check follower cache -> leader cache -> MySQL
   Use case doesn't know about this 3-tier caching
 
 GraphQL = Interface Adapter (inbound)
@@ -234,19 +231,19 @@ React = Framework & Drivers layer
 
 ## Lessons for Your Architecture
 
-1. **Data model drives architecture** — Facebook's social graph problem required TAO; your CRUD app doesn't need it
-2. **Over-fetching/under-fetching is real** — GraphQL is the right answer when clients have diverse data needs
-3. **Design for observability** — Scuba lets 60K engineers deploy safely because they can see metrics in real-time
-4. **Cache invalidation is hard** — TAO solved it; understand the problem before rolling your own cache
-5. **Declarative > Imperative** — React's "describe what you want" beats jQuery's "describe how to get there"
+1. **Data model drives architecture** - Facebook's social graph problem required TAO; your CRUD app doesn't need it
+2. **Over-fetching/under-fetching is real** - GraphQL is the right answer when clients have diverse data needs
+3. **Design for observability** - Scuba lets 60K engineers deploy safely because they can see metrics in real-time
+4. **Cache invalidation is hard** - TAO solved it; understand the problem before rolling your own cache
+5. **Declarative > Imperative** - React's "describe what you want" beats jQuery's "describe how to get there"
 
 ---
 
 ## Sources
-- [TAO: The Power of the Graph — Engineering at Meta](https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/)
-- [GraphQL: A Data Query Language — Engineering at Meta](https://engineering.fb.com/2015/09/14/core-infra/graphql-a-data-query-language/)
+- [TAO: The Power of the Graph - Engineering at Meta](https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/)
+- [GraphQL: A Data Query Language - Engineering at Meta](https://engineering.fb.com/2015/09/14/core-infra/graphql-a-data-query-language/)
 - [Tech Stack Rebuild for Facebook.com](https://engineering.fb.com/2020/05/08/web/facebook-redesign/)
-- [TAO — Meta's Scalable Architecture](https://engineeringatscale.substack.com/p/tao-metas-scalable-architecture-powering)
+- [TAO - Meta's Scalable Architecture](https://engineeringatscale.substack.com/p/tao-metas-scalable-architecture-powering)
 
 
 ---

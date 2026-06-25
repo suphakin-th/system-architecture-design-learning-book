@@ -1,4 +1,4 @@
-# Architecture 06 — Saga Pattern
+# Architecture 06 - Saga Pattern
 
 ---
 
@@ -20,8 +20,8 @@ When an operation spans multiple microservices (each with their own DB), a tradi
 A Saga is a **use case** that spans service boundaries.
 
 **Two styles:**
-1. **Choreography** — each service reacts to events; no central coordinator
-2. **Orchestration** — a dedicated Saga Orchestrator tells each service what to do
+1. **Choreography** - each service reacts to events; no central coordinator
+2. **Orchestration** - a dedicated Saga Orchestrator tells each service what to do
 
 ---
 
@@ -35,21 +35,21 @@ A Saga is a **use case** that spans service boundaries.
 ### Choreography (Event-driven)
 ```
 Order Svc: OrderCreated event published
-  → Payment Svc: PaymentReserved event published
-    → Inventory Svc: StockReserved event published
-      → Shipping Svc: ShipmentCreated event published
-        → Order Svc: OrderConfirmed event published ✓
+ -> Payment Svc: PaymentReserved event published
+ -> Inventory Svc: StockReserved event published
+ -> Shipping Svc: ShipmentCreated event published
+ -> Order Svc: OrderConfirmed event published [OK]
 
-If any step fails → publish compensating events:
-  StockReservationFailed → Payment Svc: PaymentCancelled → Order Svc: OrderCancelled
+If any step fails -> publish compensating events:
+  StockReservationFailed -> Payment Svc: PaymentCancelled -> Order Svc: OrderCancelled
 ```
 
 ### Orchestration (Command-driven)
 ```
 SagaOrchestrator:
-  1. Send Reserve Payment command → await PaymentReserved or PaymentFailed
-  2. If OK: Send Reserve Stock command → await StockReserved or StockFailed
-  3. If OK: Send Create Shipment command → await ShipmentCreated or ShipmentFailed
+  1. Send Reserve Payment command -> await PaymentReserved or PaymentFailed
+  2. If OK: Send Reserve Stock command -> await StockReserved or StockFailed
+  3. If OK: Send Create Shipment command -> await ShipmentCreated or ShipmentFailed
   4. If any fail: send compensating commands in reverse order
 ```
 
@@ -119,11 +119,11 @@ class PlaceOrderSaga {
 ## Benefits
 
 1. **Distributed transaction management** without two-phase commit (2PC) locks
-2. **Each service stays autonomous** — no shared lock across service boundaries
-3. **Long-running transactions** — saga can span hours (e.g., hotel booking + flight + payment)
-4. **Visibility** — saga state shows exactly where a transaction is stuck
-5. **Recovery** — can resume a failed saga from its last known-good step
-6. **Compensating actions** — clean rollback without DB-level rollback
+2. **Each service stays autonomous** - no shared lock across service boundaries
+3. **Long-running transactions** - saga can span hours (e.g., hotel booking + flight + payment)
+4. **Visibility** - saga state shows exactly where a transaction is stuck
+5. **Recovery** - can resume a failed saga from its last known-good step
+6. **Compensating actions** - clean rollback without DB-level rollback
 
 ---
 
@@ -131,21 +131,21 @@ class PlaceOrderSaga {
 
 | Problem | Why Saga Wins |
 |---|---|
-| "Booking a flight requires reserving seat + charging card + notifying airline — any can fail" | Saga with compensation undoes each step |
-| "Order requires payment + inventory + shipping — all three must succeed" | Orchestration saga coordinates all three |
-| "Payment succeeded but inventory failed — we must refund" | Compensating transaction: cancelPayment() |
+| "Booking a flight requires reserving seat + charging card + notifying airline - any can fail" | Saga with compensation undoes each step |
+| "Order requires payment + inventory + shipping - all three must succeed" | Orchestration saga coordinates all three |
+| "Payment succeeded but inventory failed - we must refund" | Compensating transaction: cancelPayment() |
 | "Transaction takes 10 minutes (waiting for human approval)" | Long-running saga stores state between steps |
 
 ---
 
 ## Costs / Tradeoffs
 
-1. **No atomicity** — steps succeed at different times; data is temporarily inconsistent
-2. **Complex compensating logic** — every step needs a corresponding undo
-3. **Idempotency required** — steps may be retried; must be safe to run twice
-4. **Saga state management** — need a DB table or event store for saga state
-5. **Debugging is hard** — where in the saga did it fail? Need distributed tracing
-6. **Testing is very hard** — need to simulate partial failures across services
+1. **No atomicity** - steps succeed at different times; data is temporarily inconsistent
+2. **Complex compensating logic** - every step needs a corresponding undo
+3. **Idempotency required** - steps may be retried; must be safe to run twice
+4. **Saga state management** - need a DB table or event store for saga state
+5. **Debugging is hard** - where in the saga did it fail? Need distributed tracing
+6. **Testing is very hard** - need to simulate partial failures across services
 
 ---
 
@@ -153,26 +153,26 @@ class PlaceOrderSaga {
 
 ### Uber (Trip Booking Saga)
 - **Architecture:** Orchestration-based saga for trip lifecycle
-- **Steps:** Match driver → Calculate price → Reserve trip → Process payment → Start trip
-- **Compensation:** If payment fails → release driver reservation → cancel trip
+- **Steps:** Match driver -> Calculate price -> Reserve trip -> Process payment -> Start trip
+- **Compensation:** If payment fails -> release driver reservation -> cancel trip
 - **Good at:** Handles driver cancellation mid-saga gracefully with compensation
 
 ### Amazon (Order Fulfillment Saga)
 - **Architecture:** Choreography-based saga via SQS/SNS
-- **Steps:** OrderPlaced → PaymentCharged → InventoryReserved → ShipmentCreated
-- **Compensation:** If stock unavailable → PaymentRefunded → OrderCancelled
+- **Steps:** OrderPlaced -> PaymentCharged -> InventoryReserved -> ShipmentCreated
+- **Compensation:** If stock unavailable -> PaymentRefunded -> OrderCancelled
 - **Good at:** Handles millions of sagas/day with individual step retries
 
 ### Airbnb (Booking Saga)
 - **Architecture:** Orchestration saga for accommodation booking
-- **Steps:** Hold listing → Authorize payment → Confirm booking → Notify host
-- **Compensation:** If host declines → release hold → full refund
+- **Steps:** Hold listing -> Authorize payment -> Confirm booking -> Notify host
+- **Compensation:** If host declines -> release hold -> full refund
 - **Good at:** Multi-day hold periods between authorization and confirmation
 
 ### Klarna (Buy Now Pay Later Saga)
 - **Architecture:** Saga for BNPL transaction
-- **Steps:** Credit check → Merchant payment → Create loan → Set repayment schedule
-- **Compensation:** If credit check fails → decline → notify merchant
+- **Steps:** Credit check -> Merchant payment -> Create loan -> Set repayment schedule
+- **Compensation:** If credit check fails -> decline -> notify merchant
 - **Good at:** Complex financial flow spanning 4 separate microservices atomically
 
 ---
@@ -181,9 +181,9 @@ class PlaceOrderSaga {
 
 | | Choreography | Orchestration |
 |---|---|---|
-| **Coordinator** | None — services react to events | Dedicated saga orchestrator |
+| **Coordinator** | None - services react to events | Dedicated saga orchestrator |
 | **Coupling** | Services know about events, not each other | Services know only their commands |
-| **Visibility** | Hard — must trace events across services | Easy — orchestrator has full picture |
+| **Visibility** | Hard - must trace events across services | Easy - orchestrator has full picture |
 | **Best for** | Simple sagas with 3-4 steps | Complex sagas with many branches |
 | **Risk** | Cyclic dependencies between events | Single point of failure (orchestrator) |
 

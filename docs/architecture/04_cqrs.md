@@ -1,4 +1,4 @@
-# Architecture 04 — CQRS (Command Query Responsibility Segregation)
+# Architecture 04 - CQRS (Command Query Responsibility Segregation)
 
 ---
 
@@ -20,8 +20,8 @@ CQRS separates **Commands** (write operations that change state) from **Queries*
 **Core insight:** In most systems, reads outnumber writes by 10:1 to 100:1. They have very different optimization needs. Why use the same model for both?
 
 ```
-Command: PlaceOrder  → changes state → writes to write model DB
-Query:   GetOrderById → reads state → reads from read model DB (optimized for fast reads)
+Command: PlaceOrder -> changes state -> writes to write model DB
+Query:   GetOrderById -> reads state -> reads from read model DB (optimized for fast reads)
 ```
 
 ---
@@ -33,24 +33,38 @@ Query:   GetOrderById → reads state → reads from read model DB (optimized fo
 
 ## Levels of CQRS
 
-### Level 1 — Same DB, Separate Models (Simple)
-```
-                    ┌── CommandHandler → Domain Entities → Write Model (normalized DB)
-Application ───────┤
-                    └── QueryHandler → Query DTO → Read Model (same DB, different view/table)
+### Level 1 - Same DB, Separate Models (Simple)
+
+The application splits into a command path and a query path; both hit the same database but use separate models.
+
+```mermaid
+flowchart LR
+    App["Application"]
+    App --> CH["CommandHandler"]
+    App --> QH["QueryHandler"]
+    CH --> DE["Domain Entities"]
+    DE --> WM["Write Model (normalized DB)"]
+    QH --> QD["Query DTO"]
+    QD --> RM["Read Model (same DB, different view/table)"]
 ```
 
-### Level 2 — Separate Read DB (Full CQRS)
-```
-                    ┌── CommandHandler → Domain Entities → Write DB (PostgreSQL, normalized)
-Application ───────┤                          │
-                    │                    [Event / Sync]
-                    │                          │
-                    └── QueryHandler → Read DB (Elasticsearch, Redis, denormalized views)
+### Level 2 - Separate Read DB (Full CQRS)
+
+The command path writes to its own DB, which then syncs to a separate read DB that the query path serves from.
+
+```mermaid
+flowchart LR
+    App["Application"]
+    App --> CH["CommandHandler"]
+    App --> QH["QueryHandler"]
+    CH --> DE["Domain Entities"]
+    DE --> WDB["Write DB (PostgreSQL, normalized)"]
+    WDB -->|Event / Sync| RDB["Read DB (Elasticsearch, Redis, denormalized views)"]
+    QH --> RDB
 ```
 
-### Level 3 — CQRS + Event Sourcing (Advanced)
-Commands → Events → Event Store → projections → Read Models
+### Level 3 - CQRS + Event Sourcing (Advanced)
+Commands -> Events -> Event Store -> projections -> Read Models
 (see Pattern 05)
 
 ---
@@ -60,7 +74,7 @@ Commands → Events → Event Store → projections → Read Models
 CQRS splits Use Cases into two types:
 
 ```typescript
-// Command Use Case — WRITES, returns minimal data (just ID or void)
+// Command Use Case - WRITES, returns minimal data (just ID or void)
 class PlaceOrderCommand {
   constructor(
     public readonly customerId: string,
@@ -82,7 +96,7 @@ class PlaceOrderCommandHandler {
   }
 }
 
-// Query Use Case — READS, never changes state, optimized DTO
+// Query Use Case - READS, never changes state, optimized DTO
 class GetOrderDetailsQuery {
   constructor(public readonly orderId: string) {}
 }
@@ -91,7 +105,7 @@ class GetOrderDetailsQueryHandler {
   constructor(private readDb: IOrderReadRepository) {} // read model interface
 
   async execute(query: GetOrderDetailsQuery): Promise<OrderDetailsDto> {
-    // Goes directly to read model — may be a denormalized view, Redis, or Elasticsearch
+    // Goes directly to read model - may be a denormalized view, Redis, or Elasticsearch
     return this.readDb.getOrderDetails(query.orderId);
   }
 }
@@ -130,7 +144,7 @@ order_details_view (
 |---|---|---|
 | **CPU** | Low-Medium | Commands: entity validation; Queries: simple DB lookups |
 | **Memory** | Low-Medium | Read model can be cached aggressively (Redis) |
-| **Network** | Medium | Sync between write → read DB adds network hops |
+| **Network** | Medium | Sync between write -> read DB adds network hops |
 | **Disk** | 2x+ | Separate write + read databases; data duplication |
 | **Read latency** | Very Low | Read model is purpose-built; often sub-millisecond with Redis |
 | **Write latency** | Low | Write model is normalized, simple writes |
@@ -140,12 +154,12 @@ order_details_view (
 
 ## Benefits
 
-1. **Independent scaling** — scale read replicas ×10; write DB stays ×1
-2. **Optimized queries** — read model is shaped exactly for the UI; no joins, no transforms
-3. **Clear separation** — can't accidentally write in a read handler; impossible by design
-4. **Audit-friendly** — commands are explicit intents; log them all
-5. **Multiple read models** — OrderDetailsView for web, OrderSummaryView for mobile, both from same write commands
-6. **Caching is easy** — read models are immutable until next command; easy to cache
+1. **Independent scaling** - scale read replicas x10; write DB stays x1
+2. **Optimized queries** - read model is shaped exactly for the UI; no joins, no transforms
+3. **Clear separation** - can't accidentally write in a read handler; impossible by design
+4. **Audit-friendly** - commands are explicit intents; log them all
+5. **Multiple read models** - OrderDetailsView for web, OrderSummaryView for mobile, both from same write commands
+6. **Caching is easy** - read models are immutable until next command; easy to cache
 
 ---
 
@@ -163,11 +177,11 @@ order_details_view (
 
 ## Costs / Tradeoffs
 
-1. **Eventual consistency** — read model may lag; "I just placed an order but it doesn't show yet"
-2. **Complexity** — two models, two DBs, synchronization logic
-3. **More code** — separate command handlers, query handlers, DTOs for each direction
-4. **Sync mechanism** — need to sync write → read DB (events, CDC, polling)
-5. **Not worth it for CRUD** — if reads and writes have similar load, CQRS is overhead
+1. **Eventual consistency** - read model may lag; "I just placed an order but it doesn't show yet"
+2. **Complexity** - two models, two DBs, synchronization logic
+3. **More code** - separate command handlers, query handlers, DTOs for each direction
+4. **Sync mechanism** - need to sync write -> read DB (events, CDC, polling)
+5. **Not worth it for CRUD** - if reads and writes have similar load, CQRS is overhead
 
 ---
 
@@ -192,7 +206,7 @@ order_details_view (
 
 ### LinkedIn
 - **Architecture:** CQRS for activity streams (feed)
-- **Write model:** User action (post, like, connect) → normalized event store
+- **Write model:** User action (post, like, connect) -> normalized event store
 - **Read model:** Pre-computed feed per user (Redis sorted sets)
 - **Good at:** Reading your feed = one Redis lookup; writing a post = async fan-out
 
@@ -200,4 +214,4 @@ order_details_view (
 
 ## Key Takeaway
 
-> CQRS takes the Clean Architecture principle of "use cases are the app's verbs" and splits those verbs into two kinds: Commands (change state) and Queries (read state). This split allows each side to be optimized independently — writes for consistency and correctness, reads for speed and flexibility.
+> CQRS takes the Clean Architecture principle of "use cases are the app's verbs" and splits those verbs into two kinds: Commands (change state) and Queries (read state). This split allows each side to be optimized independently - writes for consistency and correctness, reads for speed and flexibility.

@@ -1,6 +1,6 @@
-# TikTok / ByteDance — Architecture Case Study
+# TikTok / ByteDance - Architecture Case Study
 
-> "TikTok's recommendation system is so effective that the average user spends 95 minutes per day on the platform — not because of content quality, but because of algorithmic precision." — Industry analysis
+> "TikTok's recommendation system is so effective that the average user spends 95 minutes per day on the platform - not because of content quality, but because of algorithmic precision." - Industry analysis
 
 ---
 
@@ -26,12 +26,12 @@
 YouTube/Instagram (follow-based):
   Content pool = videos from people you follow
   Algorithm: rank this pool by engagement probability
-  Cold start: follow people first → only then get good content
+  Cold start: follow people first -> only then get good content
 
 TikTok (interest-based):
   Content pool = ALL videos (filtered by quality)
   Algorithm: predict which video you'll finish watching
-  Cold start: first video is random popular → algorithm learns immediately
+  Cold start: first video is random popular -> algorithm learns immediately
 
   After 10 videos: TikTok knows more about your taste than YouTube
                    knows after 100 follow-choices
@@ -83,98 +83,69 @@ Stage 3: Filtering and Deduplication
 
 **The Monolith Paper (ByteDance's recommendation engine):**
 
-> "ByteDance published a paper: 'Monolith: Real Time Recommendation System With Collisionless Embedding Table' (RecSys 2022). The key innovation: their embedding table (the dictionary mapping video IDs to their learned feature vectors) must be updated in real-time as videos go viral. Traditional ML systems train in batch — update the model every few hours. Monolith trains continuously: every view → update embeddings → model improves immediately."
+> "ByteDance published a paper: 'Monolith: Real Time Recommendation System With Collisionless Embedding Table' (RecSys 2022). The key innovation: their embedding table (the dictionary mapping video IDs to their learned feature vectors) must be updated in real-time as videos go viral. Traditional ML systems train in batch - update the model every few hours. Monolith trains continuously: every view -> update embeddings -> model improves immediately."
 
 ```
 Traditional recommendation pipeline:
   Collect events (batch, every few hours)
-  → Retrain model (hours)
-  → Deploy new model
-  → Model is now 6 hours out of date
+ -> Retrain model (hours)
+ -> Deploy new model
+ -> Model is now 6 hours out of date
 
 Monolith (online training):
-  User watches video → event immediately → model parameters update
-  New viral video → TikTok adapts to it in minutes, not hours
+  User watches video -> event immediately -> model parameters update
+  New viral video -> TikTok adapts to it in minutes, not hours
 
   The "collisionless" part: embedding tables using hash tables
   without collisions means two different videos never share
-  the same feature vector → more accurate representations
+  the same feature vector -> more accurate representations
 ```
 
 ---
 
 ## The Video Processing Pipeline
 
-**From upload to feed in <60 seconds:**
+**From upload to feed in under 60 seconds.** A single upload fans out into five parallel processing services off one Kafka event:
 
-```
-Creator uploads video (MP4, 500MB)
-      │
-      ▼
-Object Storage (S3-compatible)
-      │
-      ▼
-Kafka: VideoUploaded event
-      │
-      ├──► Transcoding Service (FFmpeg)
-      │    → 2160p (4K), 1080p, 720p, 480p, 270p versions
-      │    → HEVC, H.264, VP9 codecs (different device support)
-      │    → HLS segments (10-second chunks for adaptive streaming)
-      │    → CDN upload for each quality/segment
-      │
-      ├──► Thumbnail Service
-      │    → Auto-select best frame (ML: "which frame has most visual interest?")
-      │    → Generate 5 candidate thumbnails
-      │    → Store in CDN
-      │
-      ├──► Content Safety Service
-      │    → Computer vision: detect nudity, violence, hate symbols
-      │    → NLP: analyze caption text and speech
-      │    → Score: safe/review/remove
-      │
-      ├──► Metadata Extraction
-      │    → Audio fingerprinting (identify background music → license)
-      │    → Speech-to-text (for captions)
-      │    → Object detection (what's in the video)
-      │
-      └──► Embedding Generation
-           → Run video through ML model → 256-dimensional feature vector
-           → Store in Monolith embedding table
-           → Video is now searchable and recommendable
+```mermaid
+flowchart TD
+    Upload["Creator uploads video, MP4 500MB"] --> Storage["Object Storage, S3-compatible"]
+    Storage --> Kafka["Kafka: VideoUploaded event"]
+    Kafka --> Transcode["Transcoding Service, FFmpeg"]
+    Kafka --> Thumb["Thumbnail Service"]
+    Kafka --> Safety["Content Safety Service"]
+    Kafka --> Meta["Metadata Extraction"]
+    Kafka --> Embed["Embedding Generation"]
 
-Total time: <60 seconds from upload to appearing in feeds
+    Transcode --> TranscodeOut["Renditions 2160p to 270p, HEVC H.264 VP9, HLS segments, CDN upload"]
+    Thumb --> ThumbOut["Auto-select best frame, 5 candidates, store in CDN"]
+    Safety --> SafetyOut["Computer vision and NLP, score safe review or remove"]
+    Meta --> MetaOut["Audio fingerprinting, speech-to-text, object detection"]
+    Embed --> EmbedOut["256-dim feature vector into Monolith table, now recommendable"]
 ```
+
+Total time: under 60 seconds from upload to appearing in feeds.
 
 ---
 
 ## The Real-Time Engagement Architecture
 
-**The feedback loop that makes TikTok addictive:**
+**The feedback loop that makes TikTok addictive.** Watch events flow through Flink into Redis, and the recommendation service closes the loop by pushing trending videos to more feeds:
 
+```mermaid
+flowchart TD
+    Watch["User watches 8s of 10s video, 80% completion"] --> Event["Event: user_id, video_id, watch_percentage 0.80, timestamp"]
+    Event --> Kafka["Kafka"]
+    Kafka --> Flink["Flink Stream Processing"]
+    Flink --> Agg["Aggregate completions, bump trending score, write scores to Redis"]
+    Agg --> Redis[("Redis trending scores")]
+    Redis --> Rec["Recommendation Service reads trending"]
+    Rec -->|pushes to more feeds| Watch
+    Rec --> Viral["Video goes viral"]
+    Viral -.->|completion rate drops as audience saturates| ScoreDrop["Trending score drops"]
 ```
-User watches video for 8 seconds (video is 10s) → 80% completion
-      │
-      ▼
-Event: { user_id, video_id, watch_percentage: 0.80, timestamp }
-      │
-      ▼
-Kafka → Flink Stream Processing
-  Flink aggregates: video 12345 has 1M 80%+ completions in last hour
-  Flink updates: video 12345 trending score += 100
-  Flink writes: updated trending scores to Redis
-      │
-      ▼
-Recommendation Service reads Redis: "video 12345 is trending"
-  → Pushes video 12345 to more feeds
-  → Video goes viral
 
-Loop:
-  More people see it → more completions → higher trending score → more feeds
-  Until: completion rate drops (audience is saturated) → trending score drops
-
-Time from "good video" to "going viral": minutes
-Time this would take on YouTube: hours-to-days
-```
+Time from "good video" to "going viral": minutes. The same on YouTube: hours to days.
 
 ---
 
@@ -208,7 +179,7 @@ TikTok's Architecture:
 
 Recommendation Engine = Use Case layer
   GetFeedUseCase: depends on IUserInterestModel (interface)
-  IUserInterestModel → MonolithRecommendationModel (adapter)
+  IUserInterestModel -> MonolithRecommendationModel (adapter)
   Use case doesn't import ML model code directly
 
 Monolith Embedding Table = Infrastructure layer
@@ -221,13 +192,13 @@ Kafka = Event bus (Interface Adapter)
   Each service publishes/subscribes via IEventBus interface
 
 Flink Jobs = Specialized Use Cases for stream processing
-  TrendingVideoAggregationJob: processes view events → updates trending scores
-  UserInterestUpdateJob: processes completions → updates user preference vector
-  These ARE use cases — they transform domain events into domain state
+  TrendingVideoAggregationJob: processes view events -> updates trending scores
+  UserInterestUpdateJob: processes completions -> updates user preference vector
+  These ARE use cases - they transform domain events into domain state
 
 CDN + Transcoding = Infrastructure / Framework layer
   Video Service calls IStorageAdapter.store(video)
-  IStorageAdapter → CDNStorageAdapter (handles CDN upload)
+  IStorageAdapter -> CDNStorageAdapter (handles CDN upload)
   Use case doesn't know about CDN infrastructure
 ```
 
@@ -235,18 +206,18 @@ CDN + Transcoding = Infrastructure / Framework layer
 
 ## Lessons for Your Architecture
 
-1. **Optimize for the right signal** — TikTok optimizes completion rate, not likes; choose what actually measures value
-2. **Online ML beats batch ML for personalization** — real-time feedback loop = algorithm improves in minutes, not hours
-3. **Cold start is a design problem, not a data problem** — TikTok's solution: show popular content → learn immediately
-4. **Pre-fetch aggressively** — preloading the next 5 videos makes infinite scroll feel instant
-5. **Trending is a stream processing problem** — Flink aggregates engagement events in real-time → trending scores update continuously
+1. **Optimize for the right signal** - TikTok optimizes completion rate, not likes; choose what actually measures value
+2. **Online ML beats batch ML for personalization** - real-time feedback loop = algorithm improves in minutes, not hours
+3. **Cold start is a design problem, not a data problem** - TikTok's solution: show popular content -> learn immediately
+4. **Pre-fetch aggressively** - preloading the next 5 videos makes infinite scroll feel instant
+5. **Trending is a stream processing problem** - Flink aggregates engagement events in real-time -> trending scores update continuously
 
 ---
 
 ## Sources
 - [How TikTok Works: Decoding System Design & Architecture](https://dev.to/techahead/how-tiktok-works-decoding-system-design-architecture-with-recommendation-system-ok3)
-- [Monolith: ByteDance's Recommendation System — Aaron Abraham](https://www.aaronabraham.ca/technical-writing/tiktok-monolith-system)
-- [What Makes TikTok's Algorithms So Effective? — The New Stack](https://thenewstack.io/what-makes-tiktoks-algorithms-so-effective/)
+- [Monolith: ByteDance's Recommendation System - Aaron Abraham](https://www.aaronabraham.ca/technical-writing/tiktok-monolith-system)
+- [What Makes TikTok's Algorithms So Effective? - The New Stack](https://thenewstack.io/what-makes-tiktoks-algorithms-so-effective/)
 - [ByteDance System Design Interview Guide](https://www.systemdesignhandbook.com/guides/bytedance-system-design-interview/)
 
 
