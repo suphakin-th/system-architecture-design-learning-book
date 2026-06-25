@@ -1308,6 +1308,8 @@
       
         
       
+        
+      
     
     
     
@@ -1622,6 +1624,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2867,7 +2897,7 @@
   
 
 
-<h1 id="architecture-06-saga-pattern">Architecture 06 — Saga Pattern<a class="headerlink" href="#architecture-06-saga-pattern" title="Permanent link">¶</a></h1>
+<h1 id="architecture-06-saga-pattern">Architecture 06 - Saga Pattern<a class="headerlink" href="#architecture-06-saga-pattern" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2901,8 +2931,8 @@
 <p>When an operation spans multiple microservices (each with their own DB), a traditional ACID transaction is impossible. The Saga pattern manages <strong>distributed transactions</strong> as a sequence of local transactions, with <strong>compensating transactions</strong> to undo steps if something fails.</p>
 <p>A Saga is a <strong>use case</strong> that spans service boundaries.</p>
 <p><strong>Two styles:</strong>
-1. <strong>Choreography</strong> — each service reacts to events; no central coordinator
-2. <strong>Orchestration</strong> — a dedicated Saga Orchestrator tells each service what to do</p>
+1. <strong>Choreography</strong> - each service reacts to events; no central coordinator
+2. <strong>Orchestration</strong> - a dedicated Saga Orchestrator tells each service what to do</p>
 <hr>
 <h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
 <p><code>./diagram.svg</code></p>
@@ -2910,19 +2940,19 @@
 <h2 id="example-place-order-saga">Example: Place Order Saga<a class="headerlink" href="#example-place-order-saga" title="Permanent link">¶</a></h2>
 <h3 id="choreography-event-driven">Choreography (Event-driven)<a class="headerlink" href="#choreography-event-driven" title="Permanent link">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Order Svc: OrderCreated event published
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  → Payment Svc: PaymentReserved event published
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    → Inventory Svc: StockReserved event published
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      → Shipping Svc: ShipmentCreated event published
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        → Order Svc: OrderConfirmed event published ✓
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a> -&gt; Payment Svc: PaymentReserved event published
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a> -&gt; Inventory Svc: StockReserved event published
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a> -&gt; Shipping Svc: ShipmentCreated event published
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a> -&gt; Order Svc: OrderConfirmed event published [OK]
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>If any step fails → publish compensating events:
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  StockReservationFailed → Payment Svc: PaymentCancelled → Order Svc: OrderCancelled
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>If any step fails -&gt; publish compensating events:
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  StockReservationFailed -&gt; Payment Svc: PaymentCancelled -&gt; Order Svc: OrderCancelled
 </span></code></pre></div>
 <h3 id="orchestration-command-driven">Orchestration (Command-driven)<a class="headerlink" href="#orchestration-command-driven" title="Permanent link">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SagaOrchestrator:
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  1. Send Reserve Payment command → await PaymentReserved or PaymentFailed
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  2. If OK: Send Reserve Stock command → await StockReserved or StockFailed
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  3. If OK: Send Create Shipment command → await ShipmentCreated or ShipmentFailed
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  1. Send Reserve Payment command -&gt; await PaymentReserved or PaymentFailed
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  2. If OK: Send Reserve Stock command -&gt; await StockReserved or StockFailed
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  3. If OK: Send Create Shipment command -&gt; await ShipmentCreated or ShipmentFailed
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  4. If any fail: send compensating commands in reverse order
 </span></code></pre></div>
 <hr>
@@ -3015,11 +3045,11 @@
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
 <li><strong>Distributed transaction management</strong> without two-phase commit (2PC) locks</li>
-<li><strong>Each service stays autonomous</strong> — no shared lock across service boundaries</li>
-<li><strong>Long-running transactions</strong> — saga can span hours (e.g., hotel booking + flight + payment)</li>
-<li><strong>Visibility</strong> — saga state shows exactly where a transaction is stuck</li>
-<li><strong>Recovery</strong> — can resume a failed saga from its last known-good step</li>
-<li><strong>Compensating actions</strong> — clean rollback without DB-level rollback</li>
+<li><strong>Each service stays autonomous</strong> - no shared lock across service boundaries</li>
+<li><strong>Long-running transactions</strong> - saga can span hours (e.g., hotel booking + flight + payment)</li>
+<li><strong>Visibility</strong> - saga state shows exactly where a transaction is stuck</li>
+<li><strong>Recovery</strong> - can resume a failed saga from its last known-good step</li>
+<li><strong>Compensating actions</strong> - clean rollback without DB-level rollback</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3032,15 +3062,15 @@
 </thead>
 <tbody>
 <tr>
-<td>"Booking a flight requires reserving seat + charging card + notifying airline — any can fail"</td>
+<td>"Booking a flight requires reserving seat + charging card + notifying airline - any can fail"</td>
 <td>Saga with compensation undoes each step</td>
 </tr>
 <tr>
-<td>"Order requires payment + inventory + shipping — all three must succeed"</td>
+<td>"Order requires payment + inventory + shipping - all three must succeed"</td>
 <td>Orchestration saga coordinates all three</td>
 </tr>
 <tr>
-<td>"Payment succeeded but inventory failed — we must refund"</td>
+<td>"Payment succeeded but inventory failed - we must refund"</td>
 <td>Compensating transaction: cancelPayment()</td>
 </tr>
 <tr>
@@ -3052,41 +3082,41 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>No atomicity</strong> — steps succeed at different times; data is temporarily inconsistent</li>
-<li><strong>Complex compensating logic</strong> — every step needs a corresponding undo</li>
-<li><strong>Idempotency required</strong> — steps may be retried; must be safe to run twice</li>
-<li><strong>Saga state management</strong> — need a DB table or event store for saga state</li>
-<li><strong>Debugging is hard</strong> — where in the saga did it fail? Need distributed tracing</li>
-<li><strong>Testing is very hard</strong> — need to simulate partial failures across services</li>
+<li><strong>No atomicity</strong> - steps succeed at different times; data is temporarily inconsistent</li>
+<li><strong>Complex compensating logic</strong> - every step needs a corresponding undo</li>
+<li><strong>Idempotency required</strong> - steps may be retried; must be safe to run twice</li>
+<li><strong>Saga state management</strong> - need a DB table or event store for saga state</li>
+<li><strong>Debugging is hard</strong> - where in the saga did it fail? Need distributed tracing</li>
+<li><strong>Testing is very hard</strong> - need to simulate partial failures across services</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
 <h3 id="uber-trip-booking-saga">Uber (Trip Booking Saga)<a class="headerlink" href="#uber-trip-booking-saga" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Orchestration-based saga for trip lifecycle</li>
-<li><strong>Steps:</strong> Match driver → Calculate price → Reserve trip → Process payment → Start trip</li>
-<li><strong>Compensation:</strong> If payment fails → release driver reservation → cancel trip</li>
+<li><strong>Steps:</strong> Match driver -&gt; Calculate price -&gt; Reserve trip -&gt; Process payment -&gt; Start trip</li>
+<li><strong>Compensation:</strong> If payment fails -&gt; release driver reservation -&gt; cancel trip</li>
 <li><strong>Good at:</strong> Handles driver cancellation mid-saga gracefully with compensation</li>
 </ul>
 <h3 id="amazon-order-fulfillment-saga">Amazon (Order Fulfillment Saga)<a class="headerlink" href="#amazon-order-fulfillment-saga" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Choreography-based saga via SQS/SNS</li>
-<li><strong>Steps:</strong> OrderPlaced → PaymentCharged → InventoryReserved → ShipmentCreated</li>
-<li><strong>Compensation:</strong> If stock unavailable → PaymentRefunded → OrderCancelled</li>
+<li><strong>Steps:</strong> OrderPlaced -&gt; PaymentCharged -&gt; InventoryReserved -&gt; ShipmentCreated</li>
+<li><strong>Compensation:</strong> If stock unavailable -&gt; PaymentRefunded -&gt; OrderCancelled</li>
 <li><strong>Good at:</strong> Handles millions of sagas/day with individual step retries</li>
 </ul>
 <h3 id="airbnb-booking-saga">Airbnb (Booking Saga)<a class="headerlink" href="#airbnb-booking-saga" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Orchestration saga for accommodation booking</li>
-<li><strong>Steps:</strong> Hold listing → Authorize payment → Confirm booking → Notify host</li>
-<li><strong>Compensation:</strong> If host declines → release hold → full refund</li>
+<li><strong>Steps:</strong> Hold listing -&gt; Authorize payment -&gt; Confirm booking -&gt; Notify host</li>
+<li><strong>Compensation:</strong> If host declines -&gt; release hold -&gt; full refund</li>
 <li><strong>Good at:</strong> Multi-day hold periods between authorization and confirmation</li>
 </ul>
 <h3 id="klarna-buy-now-pay-later-saga">Klarna (Buy Now Pay Later Saga)<a class="headerlink" href="#klarna-buy-now-pay-later-saga" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Saga for BNPL transaction</li>
-<li><strong>Steps:</strong> Credit check → Merchant payment → Create loan → Set repayment schedule</li>
-<li><strong>Compensation:</strong> If credit check fails → decline → notify merchant</li>
+<li><strong>Steps:</strong> Credit check -&gt; Merchant payment -&gt; Create loan -&gt; Set repayment schedule</li>
+<li><strong>Compensation:</strong> If credit check fails -&gt; decline -&gt; notify merchant</li>
 <li><strong>Good at:</strong> Complex financial flow spanning 4 separate microservices atomically</li>
 </ul>
 <hr>
@@ -3102,7 +3132,7 @@
 <tbody>
 <tr>
 <td><strong>Coordinator</strong></td>
-<td>None — services react to events</td>
+<td>None - services react to events</td>
 <td>Dedicated saga orchestrator</td>
 </tr>
 <tr>
@@ -3112,8 +3142,8 @@
 </tr>
 <tr>
 <td><strong>Visibility</strong></td>
-<td>Hard — must trace events across services</td>
-<td>Easy — orchestrator has full picture</td>
+<td>Hard - must trace events across services</td>
+<td>Easy - orchestrator has full picture</td>
 </tr>
 <tr>
 <td><strong>Best for</strong></td>

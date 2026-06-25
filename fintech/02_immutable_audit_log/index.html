@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1375,6 +1377,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1638,7 +1668,7 @@
   <a href="#write-ahead-log-wal-postgresqls-built-in-safety" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Write-Ahead Log (WAL) — PostgreSQL's Built-in Safety
+        Write-Ahead Log (WAL) - PostgreSQL's Built-in Safety
       
     </span>
   </a>
@@ -2596,7 +2626,7 @@
   <a href="#write-ahead-log-wal-postgresqls-built-in-safety" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Write-Ahead Log (WAL) — PostgreSQL's Built-in Safety
+        Write-Ahead Log (WAL) - PostgreSQL's Built-in Safety
       
     </span>
   </a>
@@ -2667,9 +2697,9 @@
   
 
 
-<h1 id="immutable-audit-log-tamper-evident-financial-records">Immutable Audit Log — Tamper-Evident Financial Records<a class="headerlink" href="#immutable-audit-log-tamper-evident-financial-records" title="Permanent link">¶</a></h1>
+<h1 id="immutable-audit-log-tamper-evident-financial-records">Immutable Audit Log - Tamper-Evident Financial Records<a class="headerlink" href="#immutable-audit-log-tamper-evident-financial-records" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"The audit log is not a feature. It is the evidence that your system operated correctly. In a court of law, in a regulatory audit, in a fraud investigation — the audit log is all that matters." — Banking compliance officer</p>
+<p>"The audit log is not a feature. It is the evidence that your system operated correctly. In a court of law, in a regulatory audit, in a fraud investigation - the audit log is all that matters." - Banking compliance officer</p>
 </blockquote>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
@@ -2702,8 +2732,8 @@
 <hr>
 <h2 id="senior-explains-to-junior">Senior Explains to Junior<a class="headerlink" href="#senior-explains-to-junior" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"Imagine you're a police investigator. You need to prove that a transaction happened — exactly $9,900 THB was transferred from account A to account B at 14:32:01.234 on January 15, 2024, by user ID 12345, from IP 203.x.x.x. If your database has an UPDATE or DELETE anywhere in that data's history, the defense lawyer will argue the data was tampered with. You can't prove it wasn't.</p>
-<p>The immutable audit log solves this: every record is created once and never changed. The only operation allowed is INSERT. And each record contains a cryptographic hash of the previous record — if anyone changes record #500, record #501's hash won't match anymore. Tampering is detectable."</p>
+<p>"Imagine you're a police investigator. You need to prove that a transaction happened - exactly $9,900 THB was transferred from account A to account B at 14:32:01.234 on January 15, 2024, by user ID 12345, from IP 203.x.x.x. If your database has an UPDATE or DELETE anywhere in that data's history, the defense lawyer will argue the data was tampered with. You can't prove it wasn't.</p>
+<p>The immutable audit log solves this: every record is created once and never changed. The only operation allowed is INSERT. And each record contains a cryptographic hash of the previous record - if anyone changes record #500, record #501's hash won't match anymore. Tampering is detectable."</p>
 </blockquote>
 <hr>
 <h2 id="the-three-types-of-audit-log">The Three Types of Audit Log<a class="headerlink" href="#the-three-types-of-audit-log" title="Permanent link">¶</a></h2>
@@ -2810,7 +2840,7 @@
 </span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">prevHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">last</span><span class="o">?</span><span class="p">.</span><span class="nx">entry_hash</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="s1">'GENESIS'</span><span class="p">;</span><span class="w"> </span><span class="c1">// first record uses 'GENESIS'</span>
 </span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">();</span>
 </span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>
-</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">    </span><span class="c1">// Insert the new event (without id, since it's SERIAL — get it after insert)</span>
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">    </span><span class="c1">// Insert the new event (without id, since it's SERIAL - get it after insert)</span>
 </span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">rows</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">inserted</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">trx</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
 </span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">      </span><span class="sb">`INSERT INTO financial_events</span>
 </span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="sb">       (event_type, entity_type, entity_id, event_data, occurred_at, actor_type, actor_id, entry_hash, prev_hash)</span>
@@ -2825,7 +2855,7 @@
 </span><span id="__span-2-52"><a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a><span class="w">      </span><span class="nx">inserted</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">params</span><span class="p">.</span><span class="nx">eventType</span><span class="p">,</span><span class="w"> </span><span class="nx">params</span><span class="p">.</span><span class="nx">eventData</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">,</span><span class="w"> </span><span class="nx">prevHash</span>
 </span><span id="__span-2-53"><a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a><span class="w">    </span><span class="p">);</span>
 </span><span id="__span-2-54"><a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>
-</span><span id="__span-2-55"><a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">    </span><span class="c1">// Update the hash (this is the ONLY update allowed — setting the hash we just computed)</span>
+</span><span id="__span-2-55"><a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">    </span><span class="c1">// Update the hash (this is the ONLY update allowed - setting the hash we just computed)</span>
 </span><span id="__span-2-56"><a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">trx</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
 </span><span id="__span-2-57"><a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="w">      </span><span class="sb">`UPDATE financial_events SET entry_hash = $1 WHERE id = $2`</span><span class="p">,</span>
 </span><span id="__span-2-58"><a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="w">      </span><span class="p">[</span><span class="nx">hash</span><span class="p">,</span><span class="w"> </span><span class="nx">inserted</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span>
@@ -2853,7 +2883,7 @@
 </span><span id="__span-2-80"><a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a><span class="w">        </span><span class="nx">eventId</span><span class="o">:</span><span class="w"> </span><span class="kt">event.id</span><span class="p">,</span>
 </span><span id="__span-2-81"><a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a><span class="w">        </span><span class="nx">expected</span><span class="o">:</span><span class="w"> </span><span class="kt">expectedHash</span><span class="p">,</span>
 </span><span id="__span-2-82"><a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a><span class="w">        </span><span class="nx">actual</span><span class="o">:</span><span class="w"> </span><span class="kt">event.entry_hash</span><span class="p">,</span>
-</span><span id="__span-2-83"><a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a><span class="w">        </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="sb">`Chain broken at event </span><span class="si">${</span><span class="nx">event</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb"> — possible tampering!`</span><span class="p">,</span>
+</span><span id="__span-2-83"><a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a><span class="w">        </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="sb">`Chain broken at event </span><span class="si">${</span><span class="nx">event</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb"> - possible tampering!`</span><span class="p">,</span>
 </span><span id="__span-2-84"><a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a><span class="w">      </span><span class="p">});</span>
 </span><span id="__span-2-85"><a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-2-86"><a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a>
@@ -2862,7 +2892,7 @@
 </span><span id="__span-2-89"><a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a><span class="w">        </span><span class="nx">eventId</span><span class="o">:</span><span class="w"> </span><span class="kt">event.id</span><span class="p">,</span>
 </span><span id="__span-2-90"><a id="__codelineno-2-90" name="__codelineno-2-90" href="#__codelineno-2-90"></a><span class="w">        </span><span class="nx">expected</span><span class="o">:</span><span class="w"> </span><span class="kt">prevHash</span><span class="p">,</span>
 </span><span id="__span-2-91"><a id="__codelineno-2-91" name="__codelineno-2-91" href="#__codelineno-2-91"></a><span class="w">        </span><span class="nx">actual</span><span class="o">:</span><span class="w"> </span><span class="kt">event.prev_hash</span><span class="p">,</span>
-</span><span id="__span-2-92"><a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a><span class="w">        </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="sb">`prev_hash mismatch at event </span><span class="si">${</span><span class="nx">event</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb"> — records may have been deleted or reordered!`</span><span class="p">,</span>
+</span><span id="__span-2-92"><a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a><span class="w">        </span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="sb">`prev_hash mismatch at event </span><span class="si">${</span><span class="nx">event</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb"> - records may have been deleted or reordered!`</span><span class="p">,</span>
 </span><span id="__span-2-93"><a id="__codelineno-2-93" name="__codelineno-2-93" href="#__codelineno-2-93"></a><span class="w">      </span><span class="p">});</span>
 </span><span id="__span-2-94"><a id="__codelineno-2-94" name="__codelineno-2-94" href="#__codelineno-2-94"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-2-95"><a id="__codelineno-2-95" name="__codelineno-2-95" href="#__codelineno-2-95"></a>
@@ -2877,11 +2907,11 @@
 </span><span id="__span-2-104"><a id="__codelineno-2-104" name="__codelineno-2-104" href="#__codelineno-2-104"></a><span class="p">}</span>
 </span></code></pre></div>
 <hr>
-<h2 id="write-ahead-log-wal-postgresqls-built-in-safety">Write-Ahead Log (WAL) — PostgreSQL's Built-in Safety<a class="headerlink" href="#write-ahead-log-wal-postgresqls-built-in-safety" title="Permanent link">¶</a></h2>
+<h2 id="write-ahead-log-wal-postgresqls-built-in-safety">Write-Ahead Log (WAL) - PostgreSQL's Built-in Safety<a class="headerlink" href="#write-ahead-log-wal-postgresqls-built-in-safety" title="Permanent link">¶</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>PostgreSQL already has its own immutable WAL (Write-Ahead Log):
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Every change to the database is written to the WAL FIRST
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Then applied to the actual data files
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  If the server crashes: replay the WAL → recover all committed changes
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  If the server crashes: replay the WAL -&gt; recover all committed changes
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  WAL = the source of truth for durability
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>For financial systems, we use the WAL in two ways:
@@ -2889,8 +2919,8 @@
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  2. Change Data Capture (CDC): read the WAL to build audit streams
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Streaming WAL via logical replication:
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  PostgreSQL logical replication → Debezium → Kafka topic: 'financial.events'
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  Every INSERT to journal_entries → event published to Kafka
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  PostgreSQL logical replication -&gt; Debezium -&gt; Kafka topic: 'financial.events'
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  Every INSERT to journal_entries -&gt; event published to Kafka
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  Consumers: audit service, analytics, compliance reporting
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
 </span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>Benefits:
@@ -2920,7 +2950,7 @@
 </span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>GDPR (EU General Data Protection Regulation):
 </span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>  Right to be forgotten: conflicts with immutable audit logs!
 </span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  Resolution: pseudonymize PII in audit logs (user_id hash, not name+email)
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>  Keep financial records (amounts, transaction IDs) — delete PII link
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>  Keep financial records (amounts, transaction IDs) - delete PII link
 </span></code></pre></div>
 <hr>
 <h2 id="immutable-storage-beyond-the-database">Immutable Storage: Beyond the Database<a class="headerlink" href="#immutable-storage-beyond-the-database" title="Permanent link">¶</a></h2>
@@ -2941,7 +2971,7 @@
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>  Purpose-built for financial audit logs
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>  Built-in cryptographic hash chain (similar to what we built above)
 </span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>  Immutable by design: no UPDATE or DELETE
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>  Owned by: Amazon Managed Service — no DBA can tamper
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>  Owned by: Amazon Managed Service - no DBA can tamper
 </span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>  Used by: Amazon Pay internally
 </span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
 </span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>Azure Immutable Blob Storage:
@@ -2950,10 +2980,10 @@
 </span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
 </span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>Architecture for maximum immutability:
 </span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>  PostgreSQL (primary source of truth)
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    → WAL → Debezium → Kafka
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    → Kafka → Audit Consumer → PostgreSQL audit table (with rules preventing delete)
-</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    → Audit Consumer → S3 Object Lock (true immutability, 7 years)
-</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    → Audit Consumer → QLDB (cryptographic verification)
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a> -&gt; WAL -&gt; Debezium -&gt; Kafka
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a> -&gt; Kafka -&gt; Audit Consumer -&gt; PostgreSQL audit table (with rules preventing delete)
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a> -&gt; Audit Consumer -&gt; S3 Object Lock (true immutability, 7 years)
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a> -&gt; Audit Consumer -&gt; QLDB (cryptographic verification)
 </span></code></pre></div>
 <hr>
 <h2 id="practical-implementation-what-to-log">Practical Implementation: What to Log<a class="headerlink" href="#practical-implementation-what-to-log" title="Permanent link">¶</a></h2>
@@ -3018,8 +3048,8 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Audit Log = Cross-cutting concern spanning all layers
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Domain Events (generated by Entities/Use Cases):
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  Order.place() → emits OrderPlacedEvent
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  Transfer.execute() → emits MoneyTransferredEvent
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  Order.place() -&gt; emits OrderPlacedEvent
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  Transfer.execute() -&gt; emits MoneyTransferredEvent
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  These events carry all audit data
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Event Publisher (Interface Adapter outbound):
@@ -3029,10 +3059,10 @@
 </span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  S3AuditArchiver (adapter in infrastructure)
 </span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
 </span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>Use Case pattern:
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>  PlaceOrderUseCase.execute() →
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    calls domain methods →
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    domain emits events →
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    IAuditEventPublisher.publish(events) →
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>  PlaceOrderUseCase.execute() -&gt; 
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    calls domain methods -&gt; 
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    domain emits events -&gt; 
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    IAuditEventPublisher.publish(events) -&gt; 
 </span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    Events stored in immutable log
 </span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>
 </span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>Key principle: the Use Case never imports Kafka, S3, or PostgreSQL

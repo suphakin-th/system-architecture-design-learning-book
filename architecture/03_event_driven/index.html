@@ -1341,6 +1341,8 @@
       
         
       
+        
+      
     
     
     
@@ -1655,6 +1657,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2933,7 +2963,7 @@
   
 
 
-<h1 id="architecture-03-event-driven-architecture-eda">Architecture 03 — Event-Driven Architecture (EDA)<a class="headerlink" href="#architecture-03-event-driven-architecture-eda" title="Permanent link">¶</a></h1>
+<h1 id="architecture-03-event-driven-architecture-eda">Architecture 03 - Event-Driven Architecture (EDA)<a class="headerlink" href="#architecture-03-event-driven-architecture-eda" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2965,7 +2995,7 @@
 <hr>
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
 <p>Event-Driven Architecture (EDA) is a style where components communicate by <strong>producing and consuming events</strong> rather than making direct calls to each other.</p>
-<p>An <strong>event</strong> is a record of something that happened: <code>OrderPlaced</code>, <code>PaymentCharged</code>, <code>UserRegistered</code>. It's immutable — it happened, it can't be un-happened.</p>
+<p>An <strong>event</strong> is a record of something that happened: <code>OrderPlaced</code>, <code>PaymentCharged</code>, <code>UserRegistered</code>. It's immutable - it happened, it can't be un-happened.</p>
 <p><strong>Producers</strong> emit events. <strong>Consumers</strong> react to events. Neither knows about the other.</p>
 <hr>
 <h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
@@ -2974,83 +3004,83 @@
 <h2 id="three-eda-patterns">Three EDA Patterns<a class="headerlink" href="#three-eda-patterns" title="Permanent link">¶</a></h2>
 <h3 id="1-event-notification">1. Event Notification<a class="headerlink" href="#1-event-notification" title="Permanent link">¶</a></h3>
 <p>Fire-and-forget. Publisher emits event; subscriber does something.
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Order Service: "OrderPlaced" →→→ Notification Service: sends email
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Order Service: "OrderPlaced" -&gt; -&gt; -&gt; Notification Service: sends email
 </span></code></pre></div><p></p>
 <h3 id="2-event-carried-state-transfer">2. Event-Carried State Transfer<a class="headerlink" href="#2-event-carried-state-transfer" title="Permanent link">¶</a></h3>
 <p>Event contains ALL the data the consumer needs (no need to query back).
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>OrderPlaced { orderId, userId, items[], totalAmount, shippingAddress }
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>→ Inventory Service: deducts stock (no need to call Order Service back)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> -&gt; Inventory Service: deducts stock (no need to call Order Service back)
 </span></code></pre></div><p></p>
 <h3 id="3-event-sourcing-see-pattern-05">3. Event Sourcing (see Pattern 05)<a class="headerlink" href="#3-event-sourcing-see-pattern-05" title="Permanent link">¶</a></h3>
 <p>Events are the source of truth; state is derived by replaying them.</p>
 <hr>
 <h2 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[Order Service]
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    │  publishes
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    ▼
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>[Message Broker] — Kafka / RabbitMQ / AWS SNS+SQS
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    │
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    ├──► [Payment Service]       subscribes to OrderPlaced → charges card
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    │        │ publishes PaymentCharged
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    │        ▼
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    │    [Order Service]         subscribes to PaymentCharged → marks paid
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    │
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    ├──► [Inventory Service]     subscribes to OrderPlaced → reserves stock
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    │
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    ├──► [Notification Service]  subscribes to OrderPlaced → sends email
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    │
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    └──► [Analytics Service]     subscribes to all → writes to data warehouse
-</span></code></pre></div>
+<p>A producer publishes events to a broker, which fans them out asynchronously to independent consumers. Dotted edges are async events.</p>
+<pre class="mermaid"><code>flowchart TD
+    Order["Order Service"]
+    Broker["Message Broker - Kafka, RabbitMQ, AWS SNS+SQS"]
+    Payment["Payment Service"]
+    OrderPaid["Order Service - marks paid"]
+    Inventory["Inventory Service"]
+    Notification["Notification Service"]
+    Analytics["Analytics Service"]
+
+    Order --&gt;|publishes| Broker
+    Broker -.-&gt;|OrderPlaced| Payment
+    Payment -.-&gt;|publishes PaymentCharged| OrderPaid
+    Broker -.-&gt;|OrderPlaced| Inventory
+    Broker -.-&gt;|OrderPlaced| Notification
+    Broker -.-&gt;|all events| Analytics</code></pre>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
 <p>The <strong>message bus is an outbound port/adapter</strong>. The use case depends on an interface, not on Kafka directly.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Use Case Layer — defines the port</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">IEventBus</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nx">publish</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">DomainEvent</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="p">;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1">// Use Case — depends on interface</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">eventBus</span><span class="o">:</span><span class="w"> </span><span class="kt">IEventBus</span><span class="w">        </span><span class="c1">// ← interface, not Kafka</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">orderId</span><span class="p">);</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nx">order</span><span class="p">.</span><span class="nx">place</span><span class="p">();</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">eventBus</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderPlacedEvent</span><span class="p">(</span><span class="nx">order</span><span class="p">));</span><span class="w"> </span><span class="c1">// ← event crosses boundary</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="p">}</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c1">// Infrastructure Layer — Kafka adapter</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="kd">class</span><span class="w"> </span><span class="nx">KafkaEventBus</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IEventBus</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">publish</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">DomainEvent</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">producer</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">      </span><span class="nx">topic</span><span class="o">:</span><span class="w"> </span><span class="kt">event.type</span><span class="p">,</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">      </span><span class="nx">messages</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">JSON.stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">}]</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">    </span><span class="p">});</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Use Case Layer - defines the port</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">IEventBus</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nx">publish</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">DomainEvent</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1">// Use Case - depends on interface</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">eventBus</span><span class="o">:</span><span class="w"> </span><span class="kt">IEventBus</span><span class="w">        </span><span class="c1">// &lt;- interface, not Kafka</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">orderId</span><span class="p">);</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nx">order</span><span class="p">.</span><span class="nx">place</span><span class="p">();</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">eventBus</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderPlacedEvent</span><span class="p">(</span><span class="nx">order</span><span class="p">));</span><span class="w"> </span><span class="c1">// &lt;- event crosses boundary</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="p">}</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="c1">// Infrastructure Layer - Kafka adapter</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="kd">class</span><span class="w"> </span><span class="nx">KafkaEventBus</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IEventBus</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">publish</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">DomainEvent</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">producer</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">      </span><span class="nx">topic</span><span class="o">:</span><span class="w"> </span><span class="kt">event.type</span><span class="p">,</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">      </span><span class="nx">messages</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">JSON.stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">}]</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="p">});</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><strong>The use case doesn't know about Kafka. Swap Kafka for RabbitMQ — only the adapter changes.</strong></p>
+<p><strong>The use case doesn't know about Kafka. Swap Kafka for RabbitMQ - only the adapter changes.</strong></p>
 <hr>
 <h2 id="event-schema-design">Event Schema Design<a class="headerlink" href="#event-schema-design" title="Permanent link">¶</a></h2>
 <p>Events should be:
-- <strong>Immutable</strong> — past tense name, never updated
-- <strong>Self-contained</strong> — carry all data consumers need
-- <strong>Versioned</strong> — include schema version for backward compatibility</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">OrderPlacedEvent</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="s1">'OrderPlaced'</span><span class="p">;</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nx">version</span><span class="o">:</span><span class="w"> </span><span class="s1">'1.0'</span><span class="p">;</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nx">occurredAt</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w">          </span><span class="c1">// ISO 8601</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nx">customerId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">productId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="nx">quantity</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="p">}[];</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nx">totalAmount</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nx">currency</span><span class="o">:</span><span class="w"> </span><span class="s1">'THB'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'USD'</span><span class="p">;</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">}</span>
+- <strong>Immutable</strong> - past tense name, never updated
+- <strong>Self-contained</strong> - carry all data consumers need
+- <strong>Versioned</strong> - include schema version for backward compatibility</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">OrderPlacedEvent</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="s1">'OrderPlaced'</span><span class="p">;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nx">version</span><span class="o">:</span><span class="w"> </span><span class="s1">'1.0'</span><span class="p">;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nx">occurredAt</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w">          </span><span class="c1">// ISO 8601</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nx">customerId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">productId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="nx">quantity</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span><span class="w"> </span><span class="nx">price</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="p">}[];</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nx">totalAmount</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="nx">currency</span><span class="o">:</span><span class="w"> </span><span class="s1">'THB'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'USD'</span><span class="p">;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">}</span>
 </span></code></pre></div>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
@@ -3098,12 +3128,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Loose coupling</strong> — Order Service doesn't know Notification Service exists</li>
-<li><strong>Scalability</strong> — consumers scale independently based on their queue depth</li>
-<li><strong>Resilience</strong> — if Notification Service is down, events queue up and process when it recovers</li>
-<li><strong>Audit trail</strong> — event log IS the audit log; see every state change</li>
-<li><strong>New consumers are free</strong> — add Analytics Service without changing Order Service</li>
-<li><strong>Temporal decoupling</strong> — producer and consumer don't need to run at the same time</li>
+<li><strong>Loose coupling</strong> - Order Service doesn't know Notification Service exists</li>
+<li><strong>Scalability</strong> - consumers scale independently based on their queue depth</li>
+<li><strong>Resilience</strong> - if Notification Service is down, events queue up and process when it recovers</li>
+<li><strong>Audit trail</strong> - event log IS the audit log; see every state change</li>
+<li><strong>New consumers are free</strong> - add Analytics Service without changing Order Service</li>
+<li><strong>Temporal decoupling</strong> - producer and consumer don't need to run at the same time</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3140,12 +3170,12 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Eventual consistency</strong> — consumer may be 100ms behind producer; no strong consistency</li>
-<li><strong>Hard to debug</strong> — trace a bug across 5 async consumers; need distributed tracing</li>
-<li><strong>Event ordering</strong> — Kafka guarantees order per partition; across partitions, no guarantee</li>
-<li><strong>Idempotency required</strong> — consumers must handle duplicate events (at-least-once delivery)</li>
-<li><strong>Schema evolution</strong> — changing event schema breaks consumers; need versioning strategy</li>
-<li><strong>No immediate feedback</strong> — can't easily tell the user "your email failed to send"</li>
+<li><strong>Eventual consistency</strong> - consumer may be 100ms behind producer; no strong consistency</li>
+<li><strong>Hard to debug</strong> - trace a bug across 5 async consumers; need distributed tracing</li>
+<li><strong>Event ordering</strong> - Kafka guarantees order per partition; across partitions, no guarantee</li>
+<li><strong>Idempotency required</strong> - consumers must handle duplicate events (at-least-once delivery)</li>
+<li><strong>Schema evolution</strong> - changing event schema breaks consumers; need versioning strategy</li>
+<li><strong>No immediate feedback</strong> - can't easily tell the user "your email failed to send"</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
@@ -3153,8 +3183,8 @@
 <ul>
 <li><strong>Architecture:</strong> Kafka was invented at LinkedIn (2010)</li>
 <li><strong>Events:</strong> 7 trillion messages/day; activity streams, metrics, log aggregation</li>
-<li><strong>Use case:</strong> User clicks "Like" → ActivityEvent → feed update, notification, analytics</li>
-<li><strong>Good at:</strong> Planet-scale fan-out; one event → hundreds of consumers</li>
+<li><strong>Use case:</strong> User clicks "Like" -&gt; ActivityEvent -&gt; feed update, notification, analytics</li>
+<li><strong>Good at:</strong> Planet-scale fan-out; one event -&gt; hundreds of consumers</li>
 </ul>
 <h3 id="uber">Uber<a class="headerlink" href="#uber" title="Permanent link">¶</a></h3>
 <ul>
@@ -3172,13 +3202,13 @@
 <h3 id="twitter-x">Twitter (X)<a class="headerlink" href="#twitter-x" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> EventBus (internal Kafka wrapper)</li>
-<li><strong>Events:</strong> TweetPosted → fan-out to followers' timelines, trending algorithm, search index</li>
+<li><strong>Events:</strong> TweetPosted -&gt; fan-out to followers' timelines, trending algorithm, search index</li>
 <li><strong>Challenge:</strong> Celebrity tweet fan-out to 10M followers = massive write amplification</li>
 <li><strong>Solution:</strong> Lazy fan-out for high-follower accounts (pull instead of push)</li>
 </ul>
 <h3 id="aws">AWS<a class="headerlink" href="#aws" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>Architecture:</strong> EventBridge, SNS, SQS — the backbone of AWS event-driven workflows</li>
+<li><strong>Architecture:</strong> EventBridge, SNS, SQS - the backbone of AWS event-driven workflows</li>
 <li><strong>Pattern:</strong> Lambda reacts to S3 upload events, DynamoDB stream events, SQS messages</li>
 <li><strong>Good at:</strong> Serverless workflows where each step reacts to the previous step's event</li>
 </ul>

@@ -906,7 +906,7 @@
   <a href="#layer-1-domain-model-innermost" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 1 — Domain Model (Innermost)
+        Layer 1 - Domain Model (Innermost)
       
     </span>
   </a>
@@ -917,7 +917,7 @@
   <a href="#layer-2-domain-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 2 — Domain Services
+        Layer 2 - Domain Services
       
     </span>
   </a>
@@ -928,7 +928,7 @@
   <a href="#layer-3-application-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 3 — Application Services
+        Layer 3 - Application Services
       
     </span>
   </a>
@@ -939,7 +939,7 @@
   <a href="#layer-4-infrastructure-outermost" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 4 — Infrastructure (Outermost)
+        Layer 4 - Infrastructure (Outermost)
       
     </span>
   </a>
@@ -1297,6 +1297,8 @@
       
         
       
+        
+      
     
     
     
@@ -1611,6 +1613,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2675,7 +2705,7 @@
   <a href="#layer-1-domain-model-innermost" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 1 — Domain Model (Innermost)
+        Layer 1 - Domain Model (Innermost)
       
     </span>
   </a>
@@ -2686,7 +2716,7 @@
   <a href="#layer-2-domain-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 2 — Domain Services
+        Layer 2 - Domain Services
       
     </span>
   </a>
@@ -2697,7 +2727,7 @@
   <a href="#layer-3-application-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 3 — Application Services
+        Layer 3 - Application Services
       
     </span>
   </a>
@@ -2708,7 +2738,7 @@
   <a href="#layer-4-infrastructure-outermost" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 4 — Infrastructure (Outermost)
+        Layer 4 - Infrastructure (Outermost)
       
     </span>
   </a>
@@ -2845,7 +2875,7 @@
   
 
 
-<h1 id="architecture-09-onion-architecture">Architecture 09 — Onion Architecture<a class="headerlink" href="#architecture-09-onion-architecture" title="Permanent link">¶</a></h1>
+<h1 id="architecture-09-onion-architecture">Architecture 09 - Onion Architecture<a class="headerlink" href="#architecture-09-onion-architecture" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2870,7 +2900,7 @@
 </tr>
 <tr>
 <td><strong>Relationship</strong></td>
-<td>Same concept as Clean Architecture and Hexagonal — DDD-flavored naming</td>
+<td>Same concept as Clean Architecture and Hexagonal - DDD-flavored naming</td>
 </tr>
 </tbody>
 </table>
@@ -2878,15 +2908,15 @@
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
 <p>Onion Architecture (Jeffrey Palermo, 2008) organizes code into concentric layers like an onion. The innermost layers are the most stable; the outermost layers are the most volatile.</p>
 <p><strong>Key difference from Clean Architecture naming:</strong>
-- Clean Arch: Entities → Use Cases → Adapters → Frameworks
-- Onion: Domain Model → Domain Services → Application Services → Infrastructure</p>
+- Clean Arch: Entities -&gt; Use Cases -&gt; Adapters -&gt; Frameworks
+- Onion: Domain Model -&gt; Domain Services -&gt; Application Services -&gt; Infrastructure</p>
 <p>The dependency rule is identical: <strong>dependencies point inward only.</strong></p>
 <hr>
 <h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
 <p><code>./diagram.svg</code></p>
 <hr>
 <h2 id="the-four-onion-layers">The Four Onion Layers<a class="headerlink" href="#the-four-onion-layers" title="Permanent link">¶</a></h2>
-<h3 id="layer-1-domain-model-innermost">Layer 1 — Domain Model (Innermost)<a class="headerlink" href="#layer-1-domain-model-innermost" title="Permanent link">¶</a></h3>
+<h3 id="layer-1-domain-model-innermost">Layer 1 - Domain Model (Innermost)<a class="headerlink" href="#layer-1-domain-model-innermost" title="Permanent link">¶</a></h3>
 <p>Pure domain objects: entities, value objects, domain events, aggregates.
 No dependencies on anything.</p>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Pure domain, no imports from outer layers</span>
@@ -2906,19 +2936,19 @@ No dependencies on anything.</p>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nx">total</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nx">Money</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* calculation */</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="layer-2-domain-services">Layer 2 — Domain Services<a class="headerlink" href="#layer-2-domain-services" title="Permanent link">¶</a></h3>
+<h3 id="layer-2-domain-services">Layer 2 - Domain Services<a class="headerlink" href="#layer-2-domain-services" title="Permanent link">¶</a></h3>
 <p>Business logic that doesn't naturally belong in one entity.
 Depends only on Domain Model.</p>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PricingService</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nx">applyVolumeDiscount</span><span class="p">(</span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="kt">Order</span><span class="p">,</span><span class="w"> </span><span class="nx">catalogue</span><span class="o">:</span><span class="w"> </span><span class="kt">ProductCatalogue</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">Money</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="c1">// Logic spanning Order and ProductCatalogue — belongs in a domain service</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="c1">// Logic spanning Order and ProductCatalogue - belongs in a domain service</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">baseTotal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span><span class="nx">total</span><span class="p">();</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">discount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">catalogue</span><span class="p">.</span><span class="nx">getVolumeDiscount</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">itemCount</span><span class="p">());</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">baseTotal</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="mf">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">discount</span><span class="p">);</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="layer-3-application-services">Layer 3 — Application Services<a class="headerlink" href="#layer-3-application-services" title="Permanent link">¶</a></h3>
+<h3 id="layer-3-application-services">Layer 3 - Application Services<a class="headerlink" href="#layer-3-application-services" title="Permanent link">¶</a></h3>
 <p>Orchestrates domain model and domain services to fulfil use cases.
 Defines interfaces (ports) for infrastructure.
 Corresponds to Use Cases in Clean Architecture.</p>
@@ -2941,7 +2971,7 @@ Corresponds to Use Cases in Clean Architecture.</p>
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="layer-4-infrastructure-outermost">Layer 4 — Infrastructure (Outermost)<a class="headerlink" href="#layer-4-infrastructure-outermost" title="Permanent link">¶</a></h3>
+<h3 id="layer-4-infrastructure-outermost">Layer 4 - Infrastructure (Outermost)<a class="headerlink" href="#layer-4-infrastructure-outermost" title="Permanent link">¶</a></h3>
 <p>Implements all interfaces (ports) from layer 3.
 Contains: repositories, HTTP controllers, DB adapters, external API clients.</p>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderRepositoryPostgres</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IOrderRepository</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">}</span>
@@ -3044,7 +3074,7 @@ Contains: repositories, HTTP controllers, DB adapters, external API clients.</p>
 </table>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
-<p>Same as Hexagonal / Clean Architecture — purely organizational:</p>
+<p>Same as Hexagonal / Clean Architecture - purely organizational:</p>
 <table>
 <thead>
 <tr>
@@ -3070,11 +3100,11 @@ Contains: repositories, HTTP controllers, DB adapters, external API clients.</p>
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>DDD-aligned</strong> — onion layers map directly to DDD tactical patterns</li>
-<li><strong>Maximum testability</strong> — domain model layer testable with zero dependencies</li>
-<li><strong>Business logic isolated</strong> — framework changes never touch domain model</li>
-<li><strong>Explicit domain services</strong> — cross-entity logic has a clear home</li>
-<li><strong>Rich domain model</strong> — encourages putting behavior IN domain objects, not anemic models</li>
+<li><strong>DDD-aligned</strong> - onion layers map directly to DDD tactical patterns</li>
+<li><strong>Maximum testability</strong> - domain model layer testable with zero dependencies</li>
+<li><strong>Business logic isolated</strong> - framework changes never touch domain model</li>
+<li><strong>Explicit domain services</strong> - cross-entity logic has a clear home</li>
+<li><strong>Rich domain model</strong> - encourages putting behavior IN domain objects, not anemic models</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3107,17 +3137,17 @@ Contains: repositories, HTTP controllers, DB adapters, external API clients.</p>
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Overhead for simple apps</strong> — CRUD apps don't benefit; onion adds structure without value</li>
-<li><strong>DDD learning curve</strong> — team must understand aggregates, value objects, bounded contexts</li>
-<li><strong>More files</strong> — domain model, domain services, application services, infrastructure all separate</li>
-<li><strong>Anti-patterns can slip in</strong> — "anemic domain model" (entities with no behavior) defeats the purpose</li>
+<li><strong>Overhead for simple apps</strong> - CRUD apps don't benefit; onion adds structure without value</li>
+<li><strong>DDD learning curve</strong> - team must understand aggregates, value objects, bounded contexts</li>
+<li><strong>More files</strong> - domain model, domain services, application services, infrastructure all separate</li>
+<li><strong>Anti-patterns can slip in</strong> - "anemic domain model" (entities with no behavior) defeats the purpose</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
 <h3 id="domain-driven-design-practitioners-finance-insurance">Domain-Driven Design Practitioners (Finance / Insurance)<a class="headerlink" href="#domain-driven-design-practitioners-finance-insurance" title="Permanent link">¶</a></h3>
 <p><strong>ABN AMRO Bank (Netherlands)</strong>
 - <strong>Architecture:</strong> Onion Architecture + CQRS + Event Sourcing (Axon Framework)
-- <strong>Domain:</strong> Banking — Account, Transaction, Loan, Customer aggregates
+- <strong>Domain:</strong> Banking - Account, Transaction, Loan, Customer aggregates
 - <strong>Good at:</strong> Banking regulations change frequently; infrastructure (cloud provider, DB) can be swapped without touching domain logic</p>
 <p><strong>ING Bank (Global)</strong>
 - <strong>Architecture:</strong> DDD + Onion layers per bounded context (Payments, Mortgages, Insurance)
@@ -3134,7 +3164,7 @@ Contains: repositories, HTTP controllers, DB adapters, external API clients.</p>
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>Onion Architecture is Clean Architecture with DDD vocabulary. If your domain is complex — banking, insurance, healthcare, e-commerce with complex pricing — use Onion Architecture to give every DDD concept a clear, stable home. The "richer" the domain, the more value the onion layers provide.</p>
+<p>Onion Architecture is Clean Architecture with DDD vocabulary. If your domain is complex - banking, insurance, healthcare, e-commerce with complex pricing - use Onion Architecture to give every DDD concept a clear, stable home. The "richer" the domain, the more value the onion layers provide.</p>
 </blockquote>
 
 

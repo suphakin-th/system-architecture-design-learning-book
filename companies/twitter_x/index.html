@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2007,10 +2037,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-ruby-on-rails-monolith-20062011-the-fail-whale-era" class="md-nav__link">
+  <a href="#phase-1-the-ruby-on-rails-monolith-2006-2011-the-fail-whale-era" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Ruby on Rails Monolith (2006–2011) — The Fail Whale Era
+        Phase 1: The Ruby on Rails Monolith (2006-2011) - The Fail Whale Era
       
     </span>
   </a>
@@ -2021,7 +2051,7 @@
   <a href="#phase-2-the-fanout-decision-push-vs-pull" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: The Fanout Decision — Push vs Pull
+        Phase 2: The Fanout Decision - Push vs Pull
       
     </span>
   </a>
@@ -2043,7 +2073,7 @@
   <a href="#phase-4-from-ruby-to-jvm-the-finagle-rpc-framework" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 4: From Ruby to JVM — The Finagle RPC Framework
+        Phase 4: From Ruby to JVM - The Finagle RPC Framework
       
     </span>
   </a>
@@ -2065,7 +2095,7 @@
   <a href="#manhattan-twitters-distributed-key-value-store" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Manhattan — Twitter's Distributed Key-Value Store
+        Manhattan - Twitter's Distributed Key-Value Store
       
     </span>
   </a>
@@ -2582,10 +2612,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-ruby-on-rails-monolith-20062011-the-fail-whale-era" class="md-nav__link">
+  <a href="#phase-1-the-ruby-on-rails-monolith-2006-2011-the-fail-whale-era" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Ruby on Rails Monolith (2006–2011) — The Fail Whale Era
+        Phase 1: The Ruby on Rails Monolith (2006-2011) - The Fail Whale Era
       
     </span>
   </a>
@@ -2596,7 +2626,7 @@
   <a href="#phase-2-the-fanout-decision-push-vs-pull" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: The Fanout Decision — Push vs Pull
+        Phase 2: The Fanout Decision - Push vs Pull
       
     </span>
   </a>
@@ -2618,7 +2648,7 @@
   <a href="#phase-4-from-ruby-to-jvm-the-finagle-rpc-framework" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 4: From Ruby to JVM — The Finagle RPC Framework
+        Phase 4: From Ruby to JVM - The Finagle RPC Framework
       
     </span>
   </a>
@@ -2640,7 +2670,7 @@
   <a href="#manhattan-twitters-distributed-key-value-store" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Manhattan — Twitter's Distributed Key-Value Store
+        Manhattan - Twitter's Distributed Key-Value Store
       
     </span>
   </a>
@@ -2711,9 +2741,9 @@
   
 
 
-<h1 id="twitterx-architecture-case-study">Twitter/X — Architecture Case Study<a class="headerlink" href="#twitterx-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="twitterx-architecture-case-study">Twitter/X - Architecture Case Study<a class="headerlink" href="#twitterx-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"The Fail Whale was not a design choice. It was a warning that our architecture couldn't survive our own success." — Twitter Engineering</p>
+<p>"The Fail Whale was not a design choice. It was a warning that our architecture couldn't survive our own success." - Twitter Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2749,9 +2779,9 @@
 <p>"Twitter has one deceptively simple problem: 'I have 50 million followers. I just tweeted. Every follower needs to see it in their timeline. Now.' That's 50 million database writes in milliseconds. Most architectures collapse under this. Twitter's entire history is the story of solving this problem."</p>
 </blockquote>
 <hr>
-<h2 id="phase-1-the-ruby-on-rails-monolith-20062011-the-fail-whale-era">Phase 1: The Ruby on Rails Monolith (2006–2011) — The Fail Whale Era<a class="headerlink" href="#phase-1-the-ruby-on-rails-monolith-20062011-the-fail-whale-era" title="Permanent link">¶</a></h2>
+<h2 id="phase-1-the-ruby-on-rails-monolith-2006-2011-the-fail-whale-era">Phase 1: The Ruby on Rails Monolith (2006-2011) - The Fail Whale Era<a class="headerlink" href="#phase-1-the-ruby-on-rails-monolith-2006-2011-the-fail-whale-era" title="Permanent link">¶</a></h2>
 <p><strong>The original architecture:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Web Client → Ruby on Rails app → MySQL (tweets table, users table, follows table)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Web Client -&gt; Ruby on Rails app -&gt; MySQL (tweets table, users table, follows table)
 </span></code></pre></div>
 <p><strong>Why it was catastrophically bad at scale:</strong></p>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Getting YOUR timeline in 2008:</span>
@@ -2766,11 +2796,11 @@
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1">-- Joins the tweets table (100M+ rows)</span>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1">-- With the follows table (1B+ rows)</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1">-- Sorts by timestamp</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1">-- At 250M users all opening Twitter simultaneously → DEAD</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1">-- At 250M users all opening Twitter simultaneously -&gt; DEAD</span>
 </span></code></pre></div>
-<p><strong>The "Fail Whale":</strong> When MySQL couldn't keep up, the entire site went down. Twitter displayed a cartoon whale being held up by birds — the "Fail Whale" became a cultural symbol of a company growing faster than its architecture.</p>
+<p><strong>The "Fail Whale":</strong> When MySQL couldn't keep up, the entire site went down. Twitter displayed a cartoon whale being held up by birds - the "Fail Whale" became a cultural symbol of a company growing faster than its architecture.</p>
 <hr>
-<h2 id="phase-2-the-fanout-decision-push-vs-pull">Phase 2: The Fanout Decision — Push vs Pull<a class="headerlink" href="#phase-2-the-fanout-decision-push-vs-pull" title="Permanent link">¶</a></h2>
+<h2 id="phase-2-the-fanout-decision-push-vs-pull">Phase 2: The Fanout Decision - Push vs Pull<a class="headerlink" href="#phase-2-the-fanout-decision-push-vs-pull" title="Permanent link">¶</a></h2>
 <p><strong>The fundamental architecture choice:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Option A: Fanout on Read (Pull)
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  When you open Twitter:
@@ -2778,7 +2808,7 @@
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    Get their recent tweets
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    Sort and return
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Problem: 500 queries per timeline open × 250M users = billions of queries/second
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Problem: 500 queries per timeline open x 250M users = billions of queries/second
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  Benefit: Writing a tweet is fast (one insert)
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Option B: Fanout on Write (Push)
@@ -2787,12 +2817,12 @@
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    Write the tweet ID to each follower's timeline cache
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    Timeline open = one Redis read
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  Problem: Lady Gaga tweets → write to 70M follower caches simultaneously
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  Problem: Lady Gaga tweets -&gt; write to 70M follower caches simultaneously
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  Benefit: Reading a timeline is a single Redis lookup = fast
 </span></code></pre></div>
 <p><strong>Twitter's answer: Hybrid approach</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Regular users (&lt; ~10,000 followers):
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Fanout on write: tweet → push tweet_id to all followers' Redis sorted sets
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Fanout on write: tweet -&gt; push tweet_id to all followers' Redis sorted sets
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Timeline read: fetch from Redis (one operation)
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>"Celebrity" users (@taylorswift13, @elonmusk, etc., &gt; 10,000 followers):
@@ -2813,24 +2843,24 @@
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>When you open Twitter:
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  ZREVRANGE timeline:YOUR_USER_ID 0 19  # get 20 most recent tweets
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  → Redis returns 20 tweet IDs in &lt;1ms
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  → Parallel fetch of tweet content from Manhattan (key-value store)
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  → Returned to you
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a> -&gt; Redis returns 20 tweet IDs in &lt;1ms
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a> -&gt; Parallel fetch of tweet content from Manhattan (key-value store)
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a> -&gt; Returned to you
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>When your friend tweets:
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  ZADD timeline:YOUR_USER_ID {timestamp} {tweet_id}
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  → Repeated for all 500 of your friend's followers
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  → ZREMRANGEBYSCORE to trim to 800 most recent (memory management)
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a> -&gt; Repeated for all 500 of your friend's followers
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a> -&gt; ZREMRANGEBYSCORE to trim to 800 most recent (memory management)
 </span></code></pre></div>
 <p><strong>The Elon Musk problem (2023):</strong></p>
 <blockquote>
 <p>"Elon tweets. 150M followers. Fanout service gets backed up. Tweets delayed 10-30 minutes to reach all followers. The system was NOT designed for someone with 150M followers who also owns the company and tweets constantly."</p>
 </blockquote>
 <p><strong>The actual solution in 2023:</strong>
-Twitter (under Elon's ownership) gave @elonmusk's tweets priority processing in the ranking algorithm. His tweets were force-ranked to the top of follower timelines — bypassing the normal fanout queue.</p>
+Twitter (under Elon's ownership) gave @elonmusk's tweets priority processing in the ranking algorithm. His tweets were force-ranked to the top of follower timelines - bypassing the normal fanout queue.</p>
 <p>This caused significant negative press but solved the technical problem of Elon seeing his own tweets' metrics be slower than other accounts.</p>
 <hr>
-<h2 id="phase-4-from-ruby-to-jvm-the-finagle-rpc-framework">Phase 4: From Ruby to JVM — The Finagle RPC Framework<a class="headerlink" href="#phase-4-from-ruby-to-jvm-the-finagle-rpc-framework" title="Permanent link">¶</a></h2>
+<h2 id="phase-4-from-ruby-to-jvm-the-finagle-rpc-framework">Phase 4: From Ruby to JVM - The Finagle RPC Framework<a class="headerlink" href="#phase-4-from-ruby-to-jvm-the-finagle-rpc-framework" title="Permanent link">¶</a></h2>
 <p><strong>Why Twitter rewrote everything in Scala/Java:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Ruby limitations at scale:
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  - Global Interpreter Lock (GIL): only one Ruby thread runs at a time
@@ -2841,29 +2871,29 @@ Twitter (under Elon's ownership) gave @elonmusk's tweets priority processing in 
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  - RPC library for Scala/Java services
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  - Built-in: load balancing, circuit breaking, retry, timeout
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  - Designed for composing distributed services
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  - "Service" in Finagle is a function: Request → Future[Response]
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  - "Service" in Finagle is a function: Request -&gt; Future[Response]
 </span></code></pre></div>
 <p><strong>The Twitter service architecture:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>User Request → Routing (Finagle) → TweetService (Scala)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>User Request -&gt; Routing (Finagle) -&gt; TweetService (Scala)
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>                                   UserService (Scala)
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>                                   TimelineService (Scala)
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>                                   SearchService (Scala — ElasticSearch)
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>                                   SearchService (Scala - ElasticSearch)
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>                                   TrendService (Scala)
 </span></code></pre></div>
 <hr>
 <h2 id="the-search-architecture">The Search Architecture<a class="headerlink" href="#the-search-architecture" title="Permanent link">¶</a></h2>
 <p><strong>Problem:</strong> 500M+ tweets per day, all searchable, in real-time.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Tweet written → Kafka → EarlyBird (Lucene-based indexer)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Tweet written -&gt; Kafka -&gt; EarlyBird (Lucene-based indexer)
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>EarlyBird: keeps last 7 days of tweets in memory for real-time search
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  Index per shard: most recent tweets for ~1/N of users
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  Search: fan out to all EarlyBird shards, merge results, return
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>For historical search (older than 7 days):
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  Manhattan → periodic export → Hadoop → offline search index
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  Manhattan -&gt; periodic export -&gt; Hadoop -&gt; offline search index
 </span></code></pre></div>
 <p><strong>Why in-memory:</strong> Disk-based search for 500M tweets/day is too slow. EarlyBird keeps the recent index entirely in RAM.</p>
 <hr>
-<h2 id="manhattan-twitters-distributed-key-value-store">Manhattan — Twitter's Distributed Key-Value Store<a class="headerlink" href="#manhattan-twitters-distributed-key-value-store" title="Permanent link">¶</a></h2>
+<h2 id="manhattan-twitters-distributed-key-value-store">Manhattan - Twitter's Distributed Key-Value Store<a class="headerlink" href="#manhattan-twitters-distributed-key-value-store" title="Permanent link">¶</a></h2>
 <p><strong>Why Twitter built their own DB:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Tweets require:
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  - High write throughput (500M tweets/day)
@@ -2889,19 +2919,19 @@ Twitter (under Elon's ownership) gave @elonmusk's tweets priority processing in 
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Timeline Service = Use Case layer
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  GetTimeline use case: reads from ITimelineRepository
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  ITimelineRepository → RedisTimelineRepository (pre-computed) OR
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>                      → RealTimeComputedTimelineRepository (fallback)
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  ITimelineRepository -&gt; RedisTimelineRepository (pre-computed) OR
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a> -&gt; RealTimeComputedTimelineRepository (fallback)
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  Use case doesn't know which implementation is used
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>Fanout Service = Use Case with side effects
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  PublishTweet use case → calls IFanoutPort → fans out to followers
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  IFanoutPort → RedisTimelineFanout (for regular users) OR
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>              → CelebrityTweetStore (for celebrity users)
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  PublishTweet use case -&gt; calls IFanoutPort -&gt; fans out to followers
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  IFanoutPort -&gt; RedisTimelineFanout (for regular users) OR
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a> -&gt; CelebrityTweetStore (for celebrity users)
 </span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>  Strategy pattern: fanout strategy selected based on follower count
 </span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
 </span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>Manhattan = Infrastructure layer (outbound adapter)
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>  ITweetRepository → ManhattanTweetRepository
-</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>  Use case: storeTweet(tweet) → ITweetRepository.save(tweet)
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>  ITweetRepository -&gt; ManhattanTweetRepository
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>  Use case: storeTweet(tweet) -&gt; ITweetRepository.save(tweet)
 </span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>  Manhattan details (LSM tree, sharding) hidden in adapter
 </span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
 </span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>Finagle = Framework &amp; Drivers layer
@@ -2912,18 +2942,18 @@ Twitter (under Elon's ownership) gave @elonmusk's tweets priority processing in 
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>The fanout problem is universal</strong> — any "one-to-many notification" system faces it; hybrid push/pull is the standard answer</li>
-<li><strong>Pre-computed reads beat real-time reads at scale</strong> — Twitter's Redis cache: one read; MySQL join: system crash</li>
-<li><strong>Celebrity users break your assumptions</strong> — design for power-law distributions; 1% of users drive 99% of load</li>
-<li><strong>Language/runtime choice matters for concurrency</strong> — Ruby GIL prevented true parallelism; Scala/JVM solved it</li>
-<li><strong>Sometimes you build your own DB</strong> — when existing options don't meet your SLAs, build specialized storage</li>
+<li><strong>The fanout problem is universal</strong> - any "one-to-many notification" system faces it; hybrid push/pull is the standard answer</li>
+<li><strong>Pre-computed reads beat real-time reads at scale</strong> - Twitter's Redis cache: one read; MySQL join: system crash</li>
+<li><strong>Celebrity users break your assumptions</strong> - design for power-law distributions; 1% of users drive 99% of load</li>
+<li><strong>Language/runtime choice matters for concurrency</strong> - Ruby GIL prevented true parallelism; Scala/JVM solved it</li>
+<li><strong>Sometimes you build your own DB</strong> - when existing options don't meet your SLAs, build specialized storage</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="http://highscalability.com/blog/2013/7/8/the-architecture-twitter-uses-to-deal-with-150m-active-users.html">The Architecture Twitter Uses to Deal with 150M Active Users — High Scalability</a></li>
-<li><a href="https://dev.to/gabrielanhaia/twitters-fanout-strategy-at-scale-the-trade-off-most-designs-miss-55oa">Twitter's Fanout Strategy at Scale — DEV Community</a></li>
-<li><a href="https://softwareengineeringwk.substack.com/p/twitter-architecture">Twitter Engineering — Tough Architectural Decisions</a></li>
+<li><a href="http://highscalability.com/blog/2013/7/8/the-architecture-twitter-uses-to-deal-with-150m-active-users.html">The Architecture Twitter Uses to Deal with 150M Active Users - High Scalability</a></li>
+<li><a href="https://dev.to/gabrielanhaia/twitters-fanout-strategy-at-scale-the-trade-off-most-designs-miss-55oa">Twitter's Fanout Strategy at Scale - DEV Community</a></li>
+<li><a href="https://softwareengineeringwk.substack.com/p/twitter-architecture">Twitter Engineering - Tough Architectural Decisions</a></li>
 </ul>
 <hr>
 <h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">¶</a></h2>

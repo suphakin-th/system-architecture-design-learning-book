@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2035,10 +2065,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-original-monolith-20032010" class="md-nav__link">
+  <a href="#phase-1-the-original-monolith-2003-2010" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Original Monolith (2003–2010)
+        Phase 1: The Original Monolith (2003-2010)
       
     </span>
   </a>
@@ -2571,10 +2601,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-original-monolith-20032010" class="md-nav__link">
+  <a href="#phase-1-the-original-monolith-2003-2010" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Original Monolith (2003–2010)
+        Phase 1: The Original Monolith (2003-2010)
       
     </span>
   </a>
@@ -2689,9 +2719,9 @@
   
 
 
-<h1 id="linkedin-architecture-case-study">LinkedIn — Architecture Case Study<a class="headerlink" href="#linkedin-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="linkedin-architecture-case-study">LinkedIn - Architecture Case Study<a class="headerlink" href="#linkedin-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"We invented Kafka because we needed it. Then we gave it to the world." — LinkedIn Engineering</p>
+<p>"We invented Kafka because we needed it. Then we gave it to the world." - LinkedIn Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2725,13 +2755,13 @@
 <h2 id="why-linkedin-matters-for-architecture">Why LinkedIn Matters for Architecture<a class="headerlink" href="#why-linkedin-matters-for-architecture" title="Permanent link">¶</a></h2>
 <p>LinkedIn is responsible for creating some of the most important infrastructure in the world: <strong>Apache Kafka</strong> (the standard for event streaming), <strong>Apache Samza</strong> (stream processing), and pioneering the Lambda Architecture debate (and its successor, the Kappa Architecture).</p>
 <hr>
-<h2 id="phase-1-the-original-monolith-20032010">Phase 1: The Original Monolith (2003–2010)<a class="headerlink" href="#phase-1-the-original-monolith-20032010" title="Permanent link">¶</a></h2>
-<p><strong>"Leo" — The Rails/Java Monolith:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Browser → Leo (Ruby on Rails / Java) → Oracle Database
+<h2 id="phase-1-the-original-monolith-2003-2010">Phase 1: The Original Monolith (2003-2010)<a class="headerlink" href="#phase-1-the-original-monolith-2003-2010" title="Permanent link">¶</a></h2>
+<p><strong>"Leo" - The Rails/Java Monolith:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Browser -&gt; Leo (Ruby on Rails / Java) -&gt; Oracle Database
 </span></code></pre></div>
 <p><strong>The problems:</strong></p>
 <ol>
-<li><strong>Thundering herd on the Oracle DB:</strong> The "People You May Know" feature queried your graph of connections and their connections — exponential graph traversal on a relational DB</li>
+<li><strong>Thundering herd on the Oracle DB:</strong> The "People You May Know" feature queried your graph of connections and their connections - exponential graph traversal on a relational DB</li>
 <li><strong>Single point of failure:</strong> Leo went down, ALL of LinkedIn went down</li>
 <li><strong>Deployment coupling:</strong> 400+ engineers committing to one codebase</li>
 </ol>
@@ -2741,8 +2771,8 @@
 </blockquote>
 <hr>
 <h2 id="phase-2-the-graph-problem-and-voldemort">Phase 2: The Graph Problem and Voldemort<a class="headerlink" href="#phase-2-the-graph-problem-and-voldemort" title="Permanent link">¶</a></h2>
-<p><strong>The insight:</strong> LinkedIn is fundamentally a graph problem (people → connections → companies → skills). SQL is designed for relational data, not graph traversal.</p>
-<p><strong>Voldemort (2009)</strong> — LinkedIn's own distributed key-value store:
+<p><strong>The insight:</strong> LinkedIn is fundamentally a graph problem (people -&gt; connections -&gt; companies -&gt; skills). SQL is designed for relational data, not graph traversal.</p>
+<p><strong>Voldemort (2009)</strong> - LinkedIn's own distributed key-value store:
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Key: user_id
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Value: { connections: [...], skills: [...], recommendations: [...] }
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
@@ -2753,7 +2783,7 @@
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Used for: profile data, connections graph, job recommendations
 </span></code></pre></div><p></p>
-<p><strong>Espresso (2012)</strong> — LinkedIn's distributed document database:
+<p><strong>Espresso (2012)</strong> - LinkedIn's distributed document database:
 </p><div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Replaces Oracle for structured data
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>MySQL under the hood (battle-tested) + distributed routing layer on top
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Handles: member profiles, InMail, company pages
@@ -2768,34 +2798,34 @@
 - Log data (application errors)
 - Notification data (someone viewed your profile)</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Before Kafka (every pipeline was point-to-point):
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Database → (custom ETL script) → Hadoop
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Database → (different custom ETL) → Metrics system
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Database → (yet another script) → Analytics DB
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  Application → (another script) → Notification system
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Database -&gt; (custom ETL script) -&gt; Hadoop
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Database -&gt; (different custom ETL) -&gt; Metrics system
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Database -&gt; (yet another script) -&gt; Analytics DB
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  Application -&gt; (another script) -&gt; Notification system
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Problem:
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  100 sources × 100 destinations = 10,000 custom pipelines
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  100 sources x 100 destinations = 10,000 custom pipelines
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  Every new data source needs N integrations (one per destination)
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Every new destination needs M integrations (one per source)
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  This is an O(M×N) complexity problem
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  This is an O(MxN) complexity problem
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  Maintenance nightmare: 500 ETL scripts, each slightly different
 </span></code></pre></div>
 <p><strong>The Kafka solution:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>After Kafka (hub-and-spoke):
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  Any producer → [Kafka] → Any consumer
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  Any producer -&gt; [Kafka] -&gt; Any consumer
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  LinkedIn Database → Kafka → Hadoop (batch analytics)
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>                            → Metrics system (real-time)
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>                            → Analytics DB
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>                            → Notification system
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  LinkedIn Database -&gt; Kafka -&gt; Hadoop (batch analytics)
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a> -&gt; Metrics system (real-time)
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a> -&gt; Analytics DB
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a> -&gt; Notification system
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Adding a new data source: publish to Kafka. Done.
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Adding a new consumer: subscribe from Kafka. Done.
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>Complexity: O(M+N) instead of O(M×N)
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>Complexity: O(M+N) instead of O(MxN)
 </span></code></pre></div>
 <p><strong>Kafka's key design decisions:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>1. Log-structured storage (append-only)
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>   - Sequential writes are 10-100× faster than random writes
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>   - Sequential writes are 10-100x faster than random writes
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>   - Consumers read from an offset (position in the log)
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>   - Can replay messages from any point in history
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
@@ -2811,7 +2841,7 @@
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>4. Partitioning (ordering guarantee)
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>   - Messages with the same key go to the same partition
 </span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>   - Ordering guaranteed within a partition
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>   - LinkedIn: all events for member_id 12345 → same partition → ordered
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>   - LinkedIn: all events for member_id 12345 -&gt; same partition -&gt; ordered
 </span></code></pre></div>
 <p><strong>Scale achieved:</strong>
 - 500 billion messages per day
@@ -2820,104 +2850,100 @@
 <hr>
 <h2 id="phase-4-the-lambda-architecture-problem-and-solution">Phase 4: The Lambda Architecture Problem (and Solution)<a class="headerlink" href="#phase-4-the-lambda-architecture-problem-and-solution" title="Permanent link">¶</a></h2>
 <p><strong>Lambda Architecture (LinkedIn's original design):</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>                    ┌─────────────────────────┐
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Data source ───────►│ Speed Layer (Storm/Samza)│──► Real-time view
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>                    └─────────────────────────┘
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>                    ┌─────────────────────────┐
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>                    │ Batch Layer (Hadoop)     │──► Batch view
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Data source ───────►│ (reprocesses all data)  │
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>                    └─────────────────────────┘
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>                              │
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>                    ┌─────────▼───────────────┐
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>                    │ Serving Layer (Voldemort)│
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>                    │ Merges real-time + batch │
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>                    └─────────────────────────┘
-</span></code></pre></div>
+<p>The same data source feeds two parallel layers; a serving layer merges their outputs.</p>
+<pre class="mermaid"><code>flowchart LR
+    DS["Data source"]
+    Speed["Speed Layer - Storm or Samza"]
+    Batch["Batch Layer - Hadoop, reprocesses all data"]
+    Serving["Serving Layer - Voldemort, merges real-time and batch"]
+    RT["Real-time view"]
+    BV["Batch view"]
+
+    DS --&gt; Speed
+    DS --&gt; Batch
+    Speed --&gt; RT
+    Batch --&gt; BV
+    Speed --&gt; Serving
+    Batch --&gt; Serving</code></pre>
 <p><strong>The problem with Lambda:</strong></p>
 <blockquote>
-<p>"We had to implement every computation TWICE — once in the real-time layer (Java/Storm), once in the batch layer (Java/Hadoop). Different APIs, different semantics, different bug patterns. When we found a bug in the batch logic, we had to fix it in two codebases. And the outputs sometimes disagreed. Which one do you trust?"</p>
+<p>"We had to implement every computation TWICE - once in the real-time layer (Java/Storm), once in the batch layer (Java/Hadoop). Different APIs, different semantics, different bug patterns. When we found a bug in the batch logic, we had to fix it in two codebases. And the outputs sometimes disagreed. Which one do you trust?"</p>
 </blockquote>
 <p><strong>Kappa Architecture (LinkedIn's answer, 2014):</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>                    ┌───────────────────────────────────┐
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Data source ───────►│ Kafka (event log — source of truth)│
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>                    └────────────┬──────────────────────┘
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>                                 │
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>                    ┌────────────▼──────────────────────┐
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>                    │ Samza / Flink (stream processing)  │
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>                    │ processes the log in real-time AND  │
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>                    │ can replay from beginning for batch │
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>                    └────────────┬──────────────────────┘
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>                                 │
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>                    ┌────────────▼──────────────────────┐
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>                    │ Venice / Voldemort (serving layer) │
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>                    └───────────────────────────────────┘
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>One codebase. One processing framework.
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>"Batch" = stream processing over historical data.
-</span></code></pre></div>
+<p>A single linear pipeline: Kafka is the source of truth, one stream processor handles both real-time and replay, then a serving layer.</p>
+<pre class="mermaid"><code>flowchart TD
+    DS["Data source"]
+    Kafka["Kafka - event log, source of truth"]
+    Stream["Samza or Flink - stream processing, real-time plus replay from beginning for batch"]
+    Serving["Venice or Voldemort - serving layer"]
+
+    DS --&gt; Kafka
+    Kafka --&gt; Stream
+    Stream --&gt; Serving</code></pre>
+<p>One codebase. One processing framework. "Batch" = stream processing over historical data.</p>
 <blockquote>
 <p>"The insight: if your streaming system can replay from the beginning of the log, you don't need a separate batch system. A stream over historical data IS a batch job."</p>
 </blockquote>
 <hr>
 <h2 id="the-feed-architecture-cqrs-in-practice">The Feed Architecture (CQRS in Practice)<a class="headerlink" href="#the-feed-architecture-cqrs-in-practice" title="Permanent link">¶</a></h2>
 <p><strong>LinkedIn's news feed:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Write path (someone posts an update):
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  POST /updates → Kafka (update.published event)
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    → FeedFanout Service: fan out to all followers
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    → Venice: store pre-computed feed per user
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    → Notification Service: send push notifications
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>Read path (someone opens LinkedIn):
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  GET /feed → Venice (pre-computed feed for user_id)
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    → Returns in &lt;10ms (no real-time computation)
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    → Feed is already computed and stored
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>This is CQRS:
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>  Command: PostUpdate → event-driven write pipeline
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>  Query: GetFeed → direct read from pre-computed store
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Write path (someone posts an update):
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  POST /updates -&gt; Kafka (update.published event)
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a> -&gt; FeedFanout Service: fan out to all followers
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a> -&gt; Venice: store pre-computed feed per user
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a> -&gt; Notification Service: send push notifications
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Read path (someone opens LinkedIn):
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  GET /feed -&gt; Venice (pre-computed feed for user_id)
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a> -&gt; Returns in &lt;10ms (no real-time computation)
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a> -&gt; Feed is already computed and stored
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>This is CQRS:
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>  Command: PostUpdate -&gt; event-driven write pipeline
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>  Query: GetFeed -&gt; direct read from pre-computed store
 </span></code></pre></div>
 <p><strong>Why Venice (LinkedIn's own read-optimized store):</strong></p>
-<p>Venice is purpose-built for "derived data" — data that's computed from Kafka events and stored for fast reads:
+<p>Venice is purpose-built for "derived data" - data that's computed from Kafka events and stored for fast reads:
 - Immutable store (updated by replacing, not patching)
 - Push-based: Kafka writes to Venice via compaction
 - Read-optimized: any node can serve reads without coordination
 - Versioned: atomic swap of entire dataset with zero downtime</p>
 <hr>
 <h2 id="architecture-in-clean-architecture-terms">Architecture in Clean Architecture Terms<a class="headerlink" href="#architecture-in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>LinkedIn's Architecture:
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Kafka = the event bus (IEventBus port implemented by KafkaProducer/Consumer adapters)
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  Use cases publish events via IEventBus — never import Kafka directly
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>Venice = read model store (IFeedRepository implemented by VeniceClient adapter)
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  GetFeedUseCase reads from IFeedRepository — never imports Venice directly
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>Espresso = write model store (IMemberRepository implemented by EspressoClient adapter)
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  Use cases write member data via IMemberRepository
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>Samza/Flink = stream processing services = specialized use cases
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>  Each Samza job = a use case that processes a stream of domain events
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>  Input: Kafka topic; Output: Venice or Kafka topic
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>Lambda → Kappa migration = from "two implementations of same logic"
-</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>  to "one stream processor that can replay" = DRY principle at architecture level
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>LinkedIn's Architecture:
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Kafka = the event bus (IEventBus port implemented by KafkaProducer/Consumer adapters)
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  Use cases publish events via IEventBus - never import Kafka directly
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Venice = read model store (IFeedRepository implemented by VeniceClient adapter)
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  GetFeedUseCase reads from IFeedRepository - never imports Venice directly
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>Espresso = write model store (IMemberRepository implemented by EspressoClient adapter)
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Use cases write member data via IMemberRepository
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Samza/Flink = stream processing services = specialized use cases
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  Each Samza job = a use case that processes a stream of domain events
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  Input: Kafka topic; Output: Venice or Kafka topic
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>Lambda -&gt; Kappa migration = from "two implementations of same logic"
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  to "one stream processor that can replay" = DRY principle at architecture level
 </span></code></pre></div>
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Kafka solves the M×N pipeline problem</strong> — point-to-point integrations don't scale</li>
-<li><strong>Pre-compute reads where possible</strong> — LinkedIn's feed is pre-computed (CQRS write → Venice read)</li>
-<li><strong>Lambda Architecture has a maintenance tax</strong> — Kappa is simpler if your streaming framework can replay</li>
-<li><strong>Purpose-built storage wins at specific access patterns</strong> — Venice for derived reads, Espresso for structured writes, Voldemort for graph lookups</li>
-<li><strong>Graph problems need graph solutions</strong> — Voldemort (key-value) beats Oracle (relational) for "who are my connections' connections"</li>
+<li><strong>Kafka solves the MxN pipeline problem</strong> - point-to-point integrations don't scale</li>
+<li><strong>Pre-compute reads where possible</strong> - LinkedIn's feed is pre-computed (CQRS write -&gt; Venice read)</li>
+<li><strong>Lambda Architecture has a maintenance tax</strong> - Kappa is simpler if your streaming framework can replay</li>
+<li><strong>Purpose-built storage wins at specific access patterns</strong> - Venice for derived reads, Espresso for structured writes, Voldemort for graph lookups</li>
+<li><strong>Graph problems need graph solutions</strong> - Voldemort (key-value) beats Oracle (relational) for "who are my connections' connections"</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://engineering.linkedin.com/kafka/running-kafka-scale">Running Kafka at Scale — LinkedIn Engineering</a></li>
-<li><a href="https://www.infoq.com/news/2020/12/linkedin-lambda-architecture/">LinkedIn Migrates away from Lambda Architecture — InfoQ</a></li>
-<li><a href="https://factorhouse.io/articles/linkedin-kafka-architecture">How LinkedIn uses Apache Kafka in production — Factor House</a></li>
-<li><a href="https://engineering.linkedin.com/samza/operating-apache-samza-scale">Operating Apache Samza at Scale — LinkedIn Engineering</a></li>
+<li><a href="https://engineering.linkedin.com/kafka/running-kafka-scale">Running Kafka at Scale - LinkedIn Engineering</a></li>
+<li><a href="https://www.infoq.com/news/2020/12/linkedin-lambda-architecture/">LinkedIn Migrates away from Lambda Architecture - InfoQ</a></li>
+<li><a href="https://factorhouse.io/articles/linkedin-kafka-architecture">How LinkedIn uses Apache Kafka in production - Factor House</a></li>
+<li><a href="https://engineering.linkedin.com/samza/operating-apache-samza-scale">Operating Apache Samza at Scale - LinkedIn Engineering</a></li>
 </ul>
 <hr>
 <h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">¶</a></h2>

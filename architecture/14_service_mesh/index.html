@@ -1380,6 +1380,8 @@
       
         
       
+        
+      
     
     
     
@@ -1694,6 +1696,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -3011,7 +3041,7 @@
   
 
 
-<h1 id="architecture-14-service-mesh">Architecture 14 — Service Mesh<a class="headerlink" href="#architecture-14-service-mesh" title="Permanent link">¶</a></h1>
+<h1 id="architecture-14-service-mesh">Architecture 14 - Service Mesh<a class="headerlink" href="#architecture-14-service-mesh" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -3050,57 +3080,61 @@
 <hr>
 <h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">¶</a></h2>
 <p>Every service pod gets a <strong>sidecar proxy</strong> (e.g., Envoy). All traffic flows through these proxies:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Order Service] ──► [Envoy Sidecar] ──► [Network] ──► [Envoy Sidecar] ──► [Payment Service]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>The Order Service just makes an HTTP call to http://payment-service:3004/charge
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>The sidecar proxy handles:
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  - mTLS encryption (both sides authenticated)
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  - Retry on 503 (3 times, exponential backoff)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  - Circuit breaking (stop sending if 50% errors)
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  - Timeout (fail fast after 2 seconds)
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  - Metrics (request count, latency, error rate)
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  - Distributed tracing (add/propagate trace headers)
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  - Load balancing (choose healthiest instance)
-</span></code></pre></div>
+<p>Traffic from the Order Service flows through a local sidecar, across the network, and into the Payment Service's sidecar before reaching the service:</p>
+<pre class="mermaid"><code>flowchart LR
+    A["Order Service"] --&gt; B["Envoy Sidecar"]
+    B --&gt; C["Network"]
+    C --&gt; D["Envoy Sidecar"]
+    D --&gt; E["Payment Service"]</code></pre>
+<p>The Order Service just makes an HTTP call to <code>http://payment-service:3004/charge</code>. The sidecar proxy handles everything else:</p>
+<ul>
+<li>mTLS encryption (both sides authenticated)</li>
+<li>Retry on 503 (3 times, exponential backoff)</li>
+<li>Circuit breaking (stop sending if 50% errors)</li>
+<li>Timeout (fail fast after 2 seconds)</li>
+<li>Metrics (request count, latency, error rate)</li>
+<li>Distributed tracing (add and propagate trace headers)</li>
+<li>Load balancing (choose healthiest instance)</li>
+</ul>
 <hr>
 <h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">¶</a></h2>
 <h3 id="data-plane-sidecar-proxies">Data Plane (Sidecar Proxies)<a class="headerlink" href="#data-plane-sidecar-proxies" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>Envoy Proxy</strong> — the most widely used; handles all traffic</li>
+<li><strong>Envoy Proxy</strong> - the most widely used; handles all traffic</li>
 <li>Injected automatically by the mesh control plane</li>
 <li>Intercepts ALL inbound + outbound traffic from the service</li>
 </ul>
 <h3 id="control-plane">Control Plane<a class="headerlink" href="#control-plane" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>Istio</strong> — most feature-rich; uses Envoy as data plane</li>
-<li><strong>Linkerd</strong> — lightweight alternative; Rust-based</li>
-<li><strong>Consul Connect</strong> — HashiCorp's mesh; integrates with Consul service discovery</li>
+<li><strong>Istio</strong> - most feature-rich; uses Envoy as data plane</li>
+<li><strong>Linkerd</strong> - lightweight alternative; Rust-based</li>
+<li><strong>Consul Connect</strong> - HashiCorp's mesh; integrates with Consul service discovery</li>
 </ul>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<p>The service mesh is <strong>entirely in the Frameworks &amp; Drivers layer</strong> — it's infrastructure. Your use cases, entities, and interface adapters know NOTHING about it.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Order Service — PlaceOrderUseCase calls Payment Service via IPaymentGateway port</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">payments</span><span class="o">:</span><span class="w"> </span><span class="kt">IPaymentGateway</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="c1">// The use case calls the payment gateway through the interface.</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="c1">// The HTTP call goes through the Envoy sidecar.</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="c1">// The sidecar handles mTLS, retries, circuit breaking.</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="c1">// The use case has NO IDEA any of this is happening.</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">payments</span><span class="p">.</span><span class="nx">charge</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">card</span><span class="p">);</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">}</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">// HttpPaymentGateway (adapter) makes a simple HTTP call</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="kd">class</span><span class="w"> </span><span class="nx">HttpPaymentGateway</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IPaymentGateway</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">charge</span><span class="p">(</span><span class="nx">amount</span><span class="o">:</span><span class="w"> </span><span class="kt">Money</span><span class="p">,</span><span class="w"> </span><span class="nx">card</span><span class="o">:</span><span class="w"> </span><span class="kt">PaymentCard</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'http://payment-service/charge'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">card</span><span class="w"> </span><span class="p">});</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">PaymentMapper</span><span class="p">.</span><span class="nx">toDomain</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">}</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="c1">// The sidecar intercepts this call and adds: mTLS + retry + circuit breaker + metrics</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="c1">// The HttpPaymentGateway doesn't need any of this code!</span>
+<p>The service mesh is <strong>entirely in the Frameworks &amp; Drivers layer</strong> - it's infrastructure. Your use cases, entities, and interface adapters know NOTHING about it.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Order Service - PlaceOrderUseCase calls Payment Service via IPaymentGateway port</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">payments</span><span class="o">:</span><span class="w"> </span><span class="kt">IPaymentGateway</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">// The use case calls the payment gateway through the interface.</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="c1">// The HTTP call goes through the Envoy sidecar.</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="c1">// The sidecar handles mTLS, retries, circuit breaking.</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="c1">// The use case has NO IDEA any of this is happening.</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">payments</span><span class="p">.</span><span class="nx">charge</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">card</span><span class="p">);</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">// HttpPaymentGateway (adapter) makes a simple HTTP call</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="kd">class</span><span class="w"> </span><span class="nx">HttpPaymentGateway</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IPaymentGateway</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">charge</span><span class="p">(</span><span class="nx">amount</span><span class="o">:</span><span class="w"> </span><span class="kt">Money</span><span class="p">,</span><span class="w"> </span><span class="nx">card</span><span class="o">:</span><span class="w"> </span><span class="kt">PaymentCard</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'http://payment-service/charge'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">card</span><span class="w"> </span><span class="p">});</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">PaymentMapper</span><span class="p">.</span><span class="nx">toDomain</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">}</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="c1">// The sidecar intercepts this call and adds: mTLS + retry + circuit breaker + metrics</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c1">// The HttpPaymentGateway doesn't need any of this code!</span>
 </span></code></pre></div>
 <p><strong>This is the ultimate expression of Clean Architecture's "framework independence" principle.</strong></p>
 <hr>
@@ -3115,15 +3149,15 @@
 </ul>
 <h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>mTLS</strong> — mutual TLS between all services; every service authenticates</li>
-<li><strong>Authorization policies</strong> — "Order Service can call Payment Service; cannot call User Service"</li>
-<li><strong>Certificate rotation</strong> — automatic, no human involvement</li>
+<li><strong>mTLS</strong> - mutual TLS between all services; every service authenticates</li>
+<li><strong>Authorization policies</strong> - "Order Service can call Payment Service; cannot call User Service"</li>
+<li><strong>Certificate rotation</strong> - automatic, no human involvement</li>
 </ul>
 <h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>Metrics</strong> — request count, error rate, latency per service pair (Prometheus)</li>
-<li><strong>Distributed tracing</strong> — full trace across service calls (Jaeger, Zipkin)</li>
-<li><strong>Access logs</strong> — who called what, when, with what response</li>
+<li><strong>Metrics</strong> - request count, error rate, latency per service pair (Prometheus)</li>
+<li><strong>Distributed tracing</strong> - full trace across service calls (Jaeger, Zipkin)</li>
+<li><strong>Access logs</strong> - who called what, when, with what response</li>
 </ul>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
@@ -3171,12 +3205,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Zero-code resilience</strong> — retries, circuit breaking, timeouts configured in YAML, not code</li>
-<li><strong>Automatic mTLS</strong> — all service-to-service traffic encrypted and authenticated without code</li>
-<li><strong>Full observability</strong> — golden signals (latency, traffic, errors, saturation) for every service pair</li>
-<li><strong>Traffic splitting</strong> — canary deployments and A/B tests without code changes</li>
-<li><strong>Policy enforcement</strong> — "Search Service must NOT call Payments Service" enforced at infrastructure level</li>
-<li><strong>Uniform across languages</strong> — same sidecar works for Node.js, Python, Go, Java services</li>
+<li><strong>Zero-code resilience</strong> - retries, circuit breaking, timeouts configured in YAML, not code</li>
+<li><strong>Automatic mTLS</strong> - all service-to-service traffic encrypted and authenticated without code</li>
+<li><strong>Full observability</strong> - golden signals (latency, traffic, errors, saturation) for every service pair</li>
+<li><strong>Traffic splitting</strong> - canary deployments and A/B tests without code changes</li>
+<li><strong>Policy enforcement</strong> - "Search Service must NOT call Payments Service" enforced at infrastructure level</li>
+<li><strong>Uniform across languages</strong> - same sidecar works for Node.js, Python, Go, Java services</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3189,7 +3223,7 @@
 </thead>
 <tbody>
 <tr>
-<td>"10 teams, 50 services — each implements retries differently"</td>
+<td>"10 teams, 50 services - each implements retries differently"</td>
 <td>Mesh provides uniform retry policy for all</td>
 </tr>
 <tr>
@@ -3206,18 +3240,18 @@
 </tr>
 <tr>
 <td>"GDPR: Service A must never send data to Service B"</td>
-<td>Istio AuthorizationPolicy: DENY A→B at network level</td>
+<td>Istio AuthorizationPolicy: DENY A -&gt; B at network level</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Complexity</strong> — Istio alone has 20+ CRDs; steep learning curve</li>
-<li><strong>Resource overhead</strong> — every pod needs a sidecar (+100MB RAM, +5-10% CPU)</li>
-<li><strong>Debugging harder</strong> — mTLS issues, sidecar config errors add a new failure layer</li>
-<li><strong>Requires Kubernetes</strong> — most meshes are Kubernetes-native</li>
-<li><strong>Not needed at small scale</strong> — 3 services don't need a mesh; overkill</li>
+<li><strong>Complexity</strong> - Istio alone has 20+ CRDs; steep learning curve</li>
+<li><strong>Resource overhead</strong> - every pod needs a sidecar (+100MB RAM, +5-10% CPU)</li>
+<li><strong>Debugging harder</strong> - mTLS issues, sidecar config errors add a new failure layer</li>
+<li><strong>Requires Kubernetes</strong> - most meshes are Kubernetes-native</li>
+<li><strong>Not needed at small scale</strong> - 3 services don't need a mesh; overkill</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
@@ -3231,14 +3265,14 @@
 <h3 id="google-istio-traffic-director">Google (Istio, Traffic Director)<a class="headerlink" href="#google-istio-traffic-director" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Istio control plane + Envoy data plane (Google developed Istio)</li>
-<li><strong>Use case:</strong> Internal Google services use similar proxy-based mesh (Stubby → gRPC)</li>
+<li><strong>Use case:</strong> Internal Google services use similar proxy-based mesh (Stubby -&gt; gRPC)</li>
 <li><strong>Scale:</strong> Handles trillions of RPCs/day internally</li>
 <li><strong>Good at:</strong> Automatic certificate rotation; mTLS enforced at cluster level</li>
 </ul>
 <h3 id="uber-uforwarder-envoy">Uber (uForwarder + Envoy)<a class="headerlink" href="#uber-uforwarder-envoy" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Envoy-based mesh managing 4000+ services</li>
-<li><strong>Good at:</strong> Traffic shifting during deployments — 1% canary, then 5%, 20%, 100% — automated</li>
+<li><strong>Good at:</strong> Traffic shifting during deployments - 1% canary, then 5%, 20%, 100% - automated</li>
 <li><strong>Observability:</strong> Full request traces across 4000 services via Jaeger</li>
 </ul>
 <h3 id="pinterest">Pinterest<a class="headerlink" href="#pinterest" title="Permanent link">¶</a></h3>
@@ -3256,12 +3290,12 @@
 <hr>
 <h2 id="senior-advice">Senior Advice<a class="headerlink" href="#senior-advice" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"Add a service mesh when you have 10+ services and a dedicated platform team. It's not something a product team should manage. Think of it as 'WiFi for your microservices' — you don't implement 802.11 in every application; you let the infrastructure layer handle it. The beauty is that your services (and Clean Architecture within them) remain completely unchanged. The mesh is invisible to your use cases, which is exactly right."</p>
+<p>"Add a service mesh when you have 10+ services and a dedicated platform team. It's not something a product team should manage. Think of it as 'WiFi for your microservices' - you don't implement 802.11 in every application; you let the infrastructure layer handle it. The beauty is that your services (and Clean Architecture within them) remain completely unchanged. The mesh is invisible to your use cases, which is exactly right."</p>
 </blockquote>
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>The Service Mesh is the purest expression of Clean Architecture's "separation of concerns" at the infrastructure level. Your services don't implement resilience, observability, or security — the mesh does. Your use cases remain clean. This is Clean Architecture applied not just to code organization, but to the entire runtime infrastructure.</p>
+<p>The Service Mesh is the purest expression of Clean Architecture's "separation of concerns" at the infrastructure level. Your services don't implement resilience, observability, or security - the mesh does. Your use cases remain clean. This is Clean Architecture applied not just to code organization, but to the entire runtime infrastructure.</p>
 </blockquote>
 
 

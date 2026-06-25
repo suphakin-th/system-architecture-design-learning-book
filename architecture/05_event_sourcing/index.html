@@ -1297,6 +1297,8 @@
       
         
       
+        
+      
     
     
     
@@ -1611,6 +1613,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2845,7 +2875,7 @@
   
 
 
-<h1 id="architecture-05-event-sourcing">Architecture 05 — Event Sourcing<a class="headerlink" href="#architecture-05-event-sourcing" title="Permanent link">¶</a></h1>
+<h1 id="architecture-05-event-sourcing">Architecture 05 - Event Sourcing<a class="headerlink" href="#architecture-05-event-sourcing" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2878,7 +2908,7 @@
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
 <p>In traditional systems, you store the <strong>current state</strong>: <code>order.status = 'SHIPPED'</code>.</p>
 <p>In Event Sourcing, you store the <strong>events that led to that state</strong>:
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>OrderCreated → ItemAdded → ItemAdded → OrderPlaced → PaymentCharged → OrderShipped
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>OrderCreated -&gt; ItemAdded -&gt; ItemAdded -&gt; OrderPlaced -&gt; PaymentCharged -&gt; OrderShipped
 </span></code></pre></div><p></p>
 <p>The current state is derived by <strong>replaying</strong> all events from the beginning.</p>
 <p><strong>The event log IS the source of truth. The current state is a derived projection.</strong></p>
@@ -2923,7 +2953,7 @@
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
 <p>The <strong>event store</strong> is an outbound adapter (implements <code>IEventStore</code> port).
 The <strong>entity reconstitution</strong> is pure domain logic.
-<strong>Projections</strong> (read models) are built by consuming events — exactly like CQRS read models.</p>
+<strong>Projections</strong> (read models) are built by consuming events - exactly like CQRS read models.</p>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Port (defined in use case layer)</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">interface</span><span class="w"> </span><span class="nx">IEventStore</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nx">append</span><span class="p">(</span><span class="nx">streamId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">events</span><span class="o">:</span><span class="w"> </span><span class="kt">DomainEvent</span><span class="p">[],</span><span class="w"> </span><span class="nx">expectedVersion</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="p">;</span>
@@ -2963,7 +2993,7 @@ The <strong>entity reconstitution</strong> is pure domain logic.
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>You can <strong>replay all events</strong> to rebuild any projection from scratch — powerful for debugging and new feature rollout.</p>
+<p>You can <strong>replay all events</strong> to rebuild any projection from scratch - powerful for debugging and new feature rollout.</p>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
 <table>
@@ -3009,19 +3039,19 @@ The <strong>entity reconstitution</strong> is pure domain logic.
 </table>
 <h3 id="snapshots-performance-optimization">Snapshots (Performance Optimization)<a class="headerlink" href="#snapshots-performance-optimization" title="Permanent link">¶</a></h3>
 <p>For aggregates with 10,000+ events, storing a snapshot avoids full replay:
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Snapshot at v1000 + events 1001-1050 → rebuilt state
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Instead of: events 1-1050 → rebuilt state
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Snapshot at v1000 + events 1001-1050 -&gt; rebuilt state
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Instead of: events 1-1050 -&gt; rebuilt state
 </span></code></pre></div><p></p>
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Complete audit trail</strong> — every state change is recorded with WHO, WHAT, WHEN, WHY</li>
-<li><strong>Time travel</strong> — rebuild the state as it was at any point in time</li>
-<li><strong>No update/delete</strong> — append-only is the simplest possible DB operation</li>
-<li><strong>Debug production bugs</strong> — replay exact event sequence that caused the bug</li>
-<li><strong>Multiple projections</strong> — rebuild any view of the data from the same events</li>
-<li><strong>Natural integration</strong> — events are publishable to other services (EDA built-in)</li>
-<li><strong>Optimistic concurrency</strong> — version-based conflict detection without locks</li>
+<li><strong>Complete audit trail</strong> - every state change is recorded with WHO, WHAT, WHEN, WHY</li>
+<li><strong>Time travel</strong> - rebuild the state as it was at any point in time</li>
+<li><strong>No update/delete</strong> - append-only is the simplest possible DB operation</li>
+<li><strong>Debug production bugs</strong> - replay exact event sequence that caused the bug</li>
+<li><strong>Multiple projections</strong> - rebuild any view of the data from the same events</li>
+<li><strong>Natural integration</strong> - events are publishable to other services (EDA built-in)</li>
+<li><strong>Optimistic concurrency</strong> - version-based conflict detection without locks</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3058,12 +3088,12 @@ The <strong>entity reconstitution</strong> is pure domain logic.
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Complexity</strong> — significantly harder to reason about than "just update the row"</li>
-<li><strong>Event schema evolution</strong> — events are immutable; changing schema requires versioning strategy</li>
-<li><strong>Storage growth</strong> — event log grows forever; need retention policies and snapshots</li>
-<li><strong>Performance for long histories</strong> — replay of 10,000 events is slow without snapshots</li>
-<li><strong>Querying is hard</strong> — can't do <code>SELECT * FROM orders WHERE status='placed'</code>; need projections</li>
-<li><strong>Not good for simple CRUD</strong> — massive overhead for create/read/update/delete with no history needed</li>
+<li><strong>Complexity</strong> - significantly harder to reason about than "just update the row"</li>
+<li><strong>Event schema evolution</strong> - events are immutable; changing schema requires versioning strategy</li>
+<li><strong>Storage growth</strong> - event log grows forever; need retention policies and snapshots</li>
+<li><strong>Performance for long histories</strong> - replay of 10,000 events is slow without snapshots</li>
+<li><strong>Querying is hard</strong> - can't do <code>SELECT * FROM orders WHERE status='placed'</code>; need projections</li>
+<li><strong>Not good for simple CRUD</strong> - massive overhead for create/read/update/delete with no history needed</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
@@ -3096,7 +3126,7 @@ The <strong>entity reconstitution</strong> is pure domain logic.
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>Event Sourcing is the ultimate application of Clean Architecture's principle that "entities contain business rules." The entity doesn't store state — it accumulates events and derives state from them. The event store is just a port+adapter. The result is a complete audit trail and time-travel capability at the cost of significant complexity.</p>
+<p>Event Sourcing is the ultimate application of Clean Architecture's principle that "entities contain business rules." The entity doesn't store state - it accumulates events and derives state from them. The event store is just a port+adapter. The result is a complete audit trail and time-travel capability at the cost of significant complexity.</p>
 </blockquote>
 
 

@@ -977,7 +977,7 @@
   <a href="#netflix-zuul" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Netflix — Zuul
+        Netflix - Zuul
       
     </span>
   </a>
@@ -988,7 +988,7 @@
   <a href="#amazon-aws-api-gateway-alb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Amazon — AWS API Gateway + ALB
+        Amazon - AWS API Gateway + ALB
       
     </span>
   </a>
@@ -999,7 +999,7 @@
   <a href="#uber-custom-api-gateway" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Uber — Custom API Gateway
+        Uber - Custom API Gateway
       
     </span>
   </a>
@@ -1010,7 +1010,7 @@
   <a href="#airbnb-gatekeeper" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Airbnb — Gatekeeper
+        Airbnb - Gatekeeper
       
     </span>
   </a>
@@ -1320,6 +1320,8 @@
   
     
     
+      
+        
       
         
       
@@ -1655,6 +1657,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2846,7 +2876,7 @@
   <a href="#netflix-zuul" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Netflix — Zuul
+        Netflix - Zuul
       
     </span>
   </a>
@@ -2857,7 +2887,7 @@
   <a href="#amazon-aws-api-gateway-alb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Amazon — AWS API Gateway + ALB
+        Amazon - AWS API Gateway + ALB
       
     </span>
   </a>
@@ -2868,7 +2898,7 @@
   <a href="#uber-custom-api-gateway" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Uber — Custom API Gateway
+        Uber - Custom API Gateway
       
     </span>
   </a>
@@ -2879,7 +2909,7 @@
   <a href="#airbnb-gatekeeper" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Airbnb — Gatekeeper
+        Airbnb - Gatekeeper
       
     </span>
   </a>
@@ -2933,7 +2963,7 @@
   
 
 
-<h1 id="architecture-07-api-gateway">Architecture 07 — API Gateway<a class="headerlink" href="#architecture-07-api-gateway" title="Permanent link">¶</a></h1>
+<h1 id="architecture-07-api-gateway">Architecture 07 - API Gateway<a class="headerlink" href="#architecture-07-api-gateway" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2971,13 +3001,13 @@
 <p><code>./diagram.svg</code></p>
 <hr>
 <h2 id="responsibilities">Responsibilities<a class="headerlink" href="#responsibilities" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Client Request → API Gateway does:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Client Request -&gt; API Gateway does:
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  1. Authentication &amp; Authorization (verify JWT, OAuth token)
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  2. Rate Limiting (max 100 req/sec per client)
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  3. SSL Termination (HTTPS → HTTP internally)
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  4. Request Routing (GET /orders → Order Service)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  3. SSL Termination (HTTPS -&gt; HTTP internally)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  4. Request Routing (GET /orders -&gt; Order Service)
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  5. Load Balancing (round-robin across Order Service instances)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  6. Request/Response Transformation (v1 API → v2 internal format)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  6. Request/Response Transformation (v1 API -&gt; v2 internal format)
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  7. Caching (cache GET /products for 60 seconds)
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  8. Logging &amp; Tracing (add correlation ID to every request)
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  9. Circuit Breaking (stop routing to unhealthy services)
@@ -2985,7 +3015,7 @@
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
 <p>The API Gateway lives entirely in the <strong>Frameworks &amp; Drivers</strong> layer. It is infrastructure, not business logic.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[Client] → [API Gateway: Nginx/Kong/AWS ALB] → [Order Service Controller] → [PlaceOrderUseCase]
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[Client] -&gt; [API Gateway: Nginx/Kong/AWS ALB] -&gt; [Order Service Controller] -&gt; [PlaceOrderUseCase]
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>The API Gateway:
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  - Knows about HTTP routing rules
@@ -2993,7 +3023,7 @@
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  - Does NOT know about business logic
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  - Does NOT know about database schemas
 </span></code></pre></div>
-<p>Individual service controllers are the <strong>Interface Adapter</strong> (inbound) layer — they receive already-authenticated, already-rate-limited requests from the gateway.</p>
+<p>Individual service controllers are the <strong>Interface Adapter</strong> (inbound) layer - they receive already-authenticated, already-rate-limited requests from the gateway.</p>
 <div class="language-typescript highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// OrderController (Interface Adapter layer)</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1">// By the time this receives a request, the gateway has already:</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1">// - Verified the JWT</span>
@@ -3014,13 +3044,13 @@
 <hr>
 <h2 id="types-of-api-gateway">Types of API Gateway<a class="headerlink" href="#types-of-api-gateway" title="Permanent link">¶</a></h2>
 <h3 id="1-l7-reverse-proxy-simple">1. L7 Reverse Proxy (Simple)<a class="headerlink" href="#1-l7-reverse-proxy-simple" title="Permanent link">¶</a></h3>
-<p>Nginx, Traefik — basic routing and SSL termination.</p>
+<p>Nginx, Traefik - basic routing and SSL termination.</p>
 <h3 id="2-api-management-gateway-full-featured">2. API Management Gateway (Full-featured)<a class="headerlink" href="#2-api-management-gateway-full-featured" title="Permanent link">¶</a></h3>
-<p>Kong, AWS API Gateway, Azure API Management — plugins for auth, rate limiting, caching, analytics.</p>
+<p>Kong, AWS API Gateway, Azure API Management - plugins for auth, rate limiting, caching, analytics.</p>
 <h3 id="3-graphql-gateway">3. GraphQL Gateway<a class="headerlink" href="#3-graphql-gateway" title="Permanent link">¶</a></h3>
-<p>Apollo Federation, Hasura — aggregates multiple services behind one GraphQL schema.</p>
+<p>Apollo Federation, Hasura - aggregates multiple services behind one GraphQL schema.</p>
 <h3 id="4-grpc-gateway">4. gRPC Gateway<a class="headerlink" href="#4-grpc-gateway" title="Permanent link">¶</a></h3>
-<p>Envoy, grpc-gateway — transcodes HTTP/JSON to gRPC internally.</p>
+<p>Envoy, grpc-gateway - transcodes HTTP/JSON to gRPC internally.</p>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
 <table>
@@ -3067,12 +3097,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Single entry point</strong> — clients only know one URL; services can move/split freely</li>
-<li><strong>DRY cross-cutting concerns</strong> — auth implemented once in gateway, not in 10 services</li>
-<li><strong>API versioning</strong> — route <code>/v1/orders</code> to old service, <code>/v2/orders</code> to new service</li>
-<li><strong>Protocol translation</strong> — clients use REST; internally services use gRPC</li>
-<li><strong>Rate limiting</strong> — protect services from overload without service-level implementation</li>
-<li><strong>Analytics</strong> — all traffic visible in one place; easy dashboards</li>
+<li><strong>Single entry point</strong> - clients only know one URL; services can move/split freely</li>
+<li><strong>DRY cross-cutting concerns</strong> - auth implemented once in gateway, not in 10 services</li>
+<li><strong>API versioning</strong> - route <code>/v1/orders</code> to old service, <code>/v2/orders</code> to new service</li>
+<li><strong>Protocol translation</strong> - clients use REST; internally services use gRPC</li>
+<li><strong>Rate limiting</strong> - protect services from overload without service-level implementation</li>
+<li><strong>Analytics</strong> - all traffic visible in one place; easy dashboards</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3109,34 +3139,34 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Single point of failure</strong> — gateway must be clustered and HA</li>
-<li><strong>Additional latency</strong> — +1 network hop; optimize with local caching</li>
-<li><strong>Config complexity</strong> — routing rules, auth plugins, rate limit configs add up</li>
-<li><strong>Not a business logic host</strong> — avoid putting business logic in the gateway (anti-pattern)</li>
+<li><strong>Single point of failure</strong> - gateway must be clustered and HA</li>
+<li><strong>Additional latency</strong> - +1 network hop; optimize with local caching</li>
+<li><strong>Config complexity</strong> - routing rules, auth plugins, rate limit configs add up</li>
+<li><strong>Not a business logic host</strong> - avoid putting business logic in the gateway (anti-pattern)</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
-<h3 id="netflix-zuul">Netflix — Zuul<a class="headerlink" href="#netflix-zuul" title="Permanent link">¶</a></h3>
+<h3 id="netflix-zuul">Netflix - Zuul<a class="headerlink" href="#netflix-zuul" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Zuul API Gateway fronts all Netflix services</li>
 <li><strong>Features:</strong> Auth via identity service, dynamic routing, A/B testing at edge, canary deployments</li>
-<li><strong>Good at:</strong> Traffic shaping — route 5% of traffic to new service version, 95% to old</li>
+<li><strong>Good at:</strong> Traffic shaping - route 5% of traffic to new service version, 95% to old</li>
 <li><strong>Later:</strong> Moved to Zuul 2 (async, non-blocking) and now Envoy/Service Mesh</li>
 </ul>
-<h3 id="amazon-aws-api-gateway-alb">Amazon — AWS API Gateway + ALB<a class="headerlink" href="#amazon-aws-api-gateway-alb" title="Permanent link">¶</a></h3>
+<h3 id="amazon-aws-api-gateway-alb">Amazon - AWS API Gateway + ALB<a class="headerlink" href="#amazon-aws-api-gateway-alb" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> AWS API Gateway for REST/HTTP/WebSocket APIs</li>
 <li><strong>Features:</strong> IAM auth, Lambda integration, usage plans, custom domains</li>
-<li><strong>Good at:</strong> Serverless APIs — API Gateway → Lambda; no servers to manage</li>
+<li><strong>Good at:</strong> Serverless APIs - API Gateway -&gt; Lambda; no servers to manage</li>
 <li><strong>Volume:</strong> Handles hundreds of billions of API calls/month for AWS customers</li>
 </ul>
-<h3 id="uber-custom-api-gateway">Uber — Custom API Gateway<a class="headerlink" href="#uber-custom-api-gateway" title="Permanent link">¶</a></h3>
+<h3 id="uber-custom-api-gateway">Uber - Custom API Gateway<a class="headerlink" href="#uber-custom-api-gateway" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Custom Go-based gateway called "GAPIC"</li>
 <li><strong>Features:</strong> Service discovery via Hyperbahn (Uber's internal mesh), auth, rate limiting</li>
 <li><strong>Good at:</strong> Routes millions of trip requests to the right dispatch service region</li>
 </ul>
-<h3 id="airbnb-gatekeeper">Airbnb — Gatekeeper<a class="headerlink" href="#airbnb-gatekeeper" title="Permanent link">¶</a></h3>
+<h3 id="airbnb-gatekeeper">Airbnb - Gatekeeper<a class="headerlink" href="#airbnb-gatekeeper" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Internal API Gateway called Gatekeeper</li>
 <li><strong>Features:</strong> Auth, feature flags, A/B test routing, mobile API aggregation</li>
@@ -3151,7 +3181,7 @@
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>The API Gateway is infrastructure — it lives in the outermost (Frameworks &amp; Drivers) layer of Clean Architecture. It never contains business logic. Its job is to receive client requests, authenticate, rate-limit, route, and hand off to the correct service's controller. This separation ensures that adding a new gateway plugin never requires changing business logic.</p>
+<p>The API Gateway is infrastructure - it lives in the outermost (Frameworks &amp; Drivers) layer of Clean Architecture. It never contains business logic. Its job is to receive client requests, authenticate, rate-limit, route, and hand off to the correct service's controller. This separation ensures that adding a new gateway plugin never requires changing business logic.</p>
 </blockquote>
 
 

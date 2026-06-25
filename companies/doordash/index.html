@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2667,9 +2697,9 @@
   
 
 
-<h1 id="doordash-architecture-case-study">DoorDash — Architecture Case Study<a class="headerlink" href="#doordash-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="doordash-architecture-case-study">DoorDash - Architecture Case Study<a class="headerlink" href="#doordash-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"DoorDash handles 80 million requests per second at peak. Every request is a potential food delivery. Latency isn't just a performance metric — it's the difference between getting dinner and missing it." — DoorDash Engineering</p>
+<p>"DoorDash handles 80 million requests per second at peak. Every request is a potential food delivery. Latency isn't just a performance metric - it's the difference between getting dinner and missing it." - DoorDash Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2705,13 +2735,13 @@
 <p>"DoorDash has three actors: consumers (ordering food), merchants (restaurants preparing food), and Dashers (drivers delivering food). Coordinating all three simultaneously, in real-time, across 4,000+ cities is an order-of-magnitude harder than a two-sided marketplace."</p>
 </blockquote>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Order lifecycle (all must happen in coordination):
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  1. Consumer places order → merchant notified (immediately)
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  2. Merchant accepts → DoorDash assigns nearest Dasher
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  3. Merchant starts preparing → estimated prep time communicated
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  4. Dasher en route to merchant → consumer sees driver on map
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  5. Merchant completes order → Dasher picks up
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  6. Dasher drives to consumer → real-time tracking
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  7. Delivery → payment processed → merchant paid → Dasher paid
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  1. Consumer places order -&gt; merchant notified (immediately)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  2. Merchant accepts -&gt; DoorDash assigns nearest Dasher
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  3. Merchant starts preparing -&gt; estimated prep time communicated
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  4. Dasher en route to merchant -&gt; consumer sees driver on map
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  5. Merchant completes order -&gt; Dasher picks up
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  6. Dasher drives to consumer -&gt; real-time tracking
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  7. Delivery -&gt; payment processed -&gt; merchant paid -&gt; Dasher paid
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>9 state transitions. Each can fail. Each involves 3 parties.
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>= 3-way Saga pattern across 3 different user types.
@@ -2721,46 +2751,46 @@
 <p><strong>The monolith problems:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>2018: DoorDash is a Python monolith called "Pyxis"
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  Problems:
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    - Single deployment: a bug in payment code → all of DoorDash down
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    - Single deployment: a bug in payment code -&gt; all of DoorDash down
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    - Scaling: can't scale Dasher matching independently of consumer checkout
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    - Team velocity: 200 engineers in one codebase = constant conflicts
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  The breaking point: Dasher supply vs consumer demand
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    Peak demand: Friday 6pm → 100× more consumer orders than Monday 2am
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    Peak demand: Friday 6pm -&gt; 100x more consumer orders than Monday 2am
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    Dasher supply: independent of consumer demand (Dashers choose their hours)
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    In the monolith: scaling checkout automatically scales ALL of Pyxis
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    → Paying for 100× server capacity even for Dasher management (doesn't scale)
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    → Need to scale checkout independently from Dasher supply management
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a> -&gt; Paying for 100x server capacity even for Dasher management (doesn't scale)
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a> -&gt; Need to scale checkout independently from Dasher supply management
 </span></code></pre></div>
 <p><strong>The migration:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Priority 1: Extract Dasher dispatch (clearest boundary, highest value)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  → DispatchService (Go) — matches Dashers to orders
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a> -&gt; DispatchService (Go) - matches Dashers to orders
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Priority 2: Extract consumer-facing checkout
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  → OrderService (Kotlin) — order lifecycle management
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a> -&gt; OrderService (Kotlin) - order lifecycle management
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Priority 3: Extract merchant portal
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  → MerchantService (Python initially, then Kotlin)
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a> -&gt; MerchantService (Python initially, then Kotlin)
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Priority 4: Extract payments
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  → PaymentService (Java) — Stripe integration, accounting
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a> -&gt; PaymentService (Java) - Stripe integration, accounting
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Each extraction: Strangler Fig pattern
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  New service handles new orders
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  Old Pyxis handles existing orders during transition
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  Migrate traffic gradually (canary: 1% → 5% → 20% → 100%)
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  Migrate traffic gradually (canary: 1% -&gt; 5% -&gt; 20% -&gt; 100%)
 </span></code></pre></div>
 <hr>
 <h2 id="the-service-mesh-80m-requestssecond">The Service Mesh: 80M Requests/Second<a class="headerlink" href="#the-service-mesh-80m-requestssecond" title="Permanent link">¶</a></h2>
 <p><strong>The problem at scale:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Each food order involves 15-20 microservice calls:
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  OrderService → MerchantService → InventoryService
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  OrderService → DispatchService → DasherLocationService
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  OrderService → PaymentService → StripeAPI
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  OrderService → NotificationService (push to consumer + Dasher + merchant)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  OrderService -&gt; MerchantService -&gt; InventoryService
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  OrderService -&gt; DispatchService -&gt; DasherLocationService
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  OrderService -&gt; PaymentService -&gt; StripeAPI
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  OrderService -&gt; NotificationService (push to consumer + Dasher + merchant)
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  15 service calls × 80M total requests/second = 1.2 BILLION service calls/second
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  15 service calls x 80M total requests/second = 1.2 BILLION service calls/second
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Problems without service mesh:
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Each service implements its own retry logic (inconsistently)
@@ -2772,10 +2802,10 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>DoorDash uses Envoy proxy as sidecar + Istio control plane
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>1. Zone-aware routing (cost optimization):
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>   Service A (pod in us-east-1a) → Service B (prefer us-east-1a pods)
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>   Service A (pod in us-east-1a) -&gt; Service B (prefer us-east-1a pods)
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>   Why: Cross-AZ data transfer in AWS costs $0.01/GB
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>   80M req/sec × average 10KB payload = 800GB/sec
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>   Cross-AZ 20% of that = 160GB/sec × $0.01 = $1.44M/hour in transfer fees!
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>   80M req/sec x average 10KB payload = 800GB/sec
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>   Cross-AZ 20% of that = 160GB/sec x $0.01 = $1.44M/hour in transfer fees!
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>   Zone-aware routing: route to same AZ when possible
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>   Result: "Substantially reduced" (their words) data transfer costs
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>   AWS even called to ask if DoorDash was having a production incident (the
@@ -2783,12 +2813,12 @@
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>2. Adaptive concurrency limiting:
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>   Each service has auto-configured concurrency limits
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>   Based on current response latency (higher latency → lower concurrency limit)
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>   Based on current response latency (higher latency -&gt; lower concurrency limit)
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>   Prevents one slow service from consuming all threads on its caller
 </span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
 </span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>3. Circuit breaking:
 </span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>   Merchant API sometimes slow (during rush)
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>   Circuit breaker: if &gt;50% of requests fail → stop sending for 30 seconds
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>   Circuit breaker: if &gt;50% of requests fail -&gt; stop sending for 30 seconds
 </span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>   Callers get immediate fallback (cached menu) instead of waiting
 </span></code></pre></div>
 <hr>
@@ -2802,7 +2832,7 @@
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    Minimize: total delivery time across all orders
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    Subject to: Dasher capacity, restaurant prep time, distance
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  This is the Vehicle Routing Problem (VRP) — NP-hard in general
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  This is the Vehicle Routing Problem (VRP) - NP-hard in general
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>  DoorDash's approach:
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    Can't solve globally optimal (NP-hard, takes too long)
@@ -2817,7 +2847,7 @@
 </span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>  "Batching": one Dasher picks up multiple orders from same restaurant
 </span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    Consumer A: Pizza Hut, 2 miles away
 </span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    Consumer B: Pizza Hut, 2.5 miles away
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>    → One Dasher picks up both → more efficient → faster delivery for both
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a> -&gt; One Dasher picks up both -&gt; more efficient -&gt; faster delivery for both
 </span></code></pre></div>
 <hr>
 <h2 id="cockroachdb-for-configuration-management">CockroachDB for Configuration Management<a class="headerlink" href="#cockroachdb-for-configuration-management" title="Permanent link">¶</a></h2>
@@ -2830,8 +2860,8 @@
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  Dasher pickup instructions ("Ring bell at back door")
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
 </span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  Problems with old approach:
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    Configuration in code repository → code PR required to change hours
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    Operations team: "Restaurant X changed hours for Christmas" → PR → review → deploy → 1 day
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    Configuration in code repository -&gt; code PR required to change hours
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    Operations team: "Restaurant X changed hours for Christmas" -&gt; PR -&gt; review -&gt; deploy -&gt; 1 day
 </span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    Restaurant needed: 5 minutes to take effect
 </span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
 </span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>  New approach: self-service configuration platform
@@ -2855,7 +2885,7 @@
 </span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  Runs CockroachDB across 3 AWS regions (us-east-1, us-west-2, eu-west-1)
 </span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>  Strong consistency across all regions
 </span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>  Automatic failover if one region dies
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  Merchants can update config → consistent read anywhere in &lt;200ms
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  Merchants can update config -&gt; consistent read anywhere in &lt;200ms
 </span></code></pre></div>
 <hr>
 <h2 id="architecture-in-clean-architecture-terms">Architecture in Clean Architecture Terms<a class="headerlink" href="#architecture-in-clean-architecture-terms" title="Permanent link">¶</a></h2>
@@ -2863,47 +2893,47 @@
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>OrderUseCase = Use Case layer
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  PlaceOrderUseCase depends on:
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    IOrderRepository (port) → CockroachOrderRepo (adapter)
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    IDispatchPort (port) → DispatchServiceGrpcClient (adapter)
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    IPaymentPort (port) → PaymentServiceGrpcClient (adapter)
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    INotificationPort (port) → NotificationServiceClient (adapter)
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    IOrderRepository (port) -&gt; CockroachOrderRepo (adapter)
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    IDispatchPort (port) -&gt; DispatchServiceGrpcClient (adapter)
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    IPaymentPort (port) -&gt; PaymentServiceGrpcClient (adapter)
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    INotificationPort (port) -&gt; NotificationServiceClient (adapter)
 </span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>  Business rule: "Order can only be placed if merchant is open"
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    → Check MerchantConfiguration via IConfigRepository
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    → CockroachConfigRepository (adapter) fetches from CockroachDB
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a> -&gt; Check MerchantConfiguration via IConfigRepository
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a> -&gt; CockroachConfigRepository (adapter) fetches from CockroachDB
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>Envoy Sidecar = Framework &amp; Drivers layer
 </span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>  Zone-aware routing: transparent to OrderUseCase
 </span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  Circuit breaking: transparent to all use cases
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>  Services never import Envoy SDK — it's infrastructure
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>  Services never import Envoy SDK - it's infrastructure
 </span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
 </span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>DispatchAlgorithm = Domain Service (pure logic)
 </span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>  No database imports
 </span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>  No Kafka imports
 </span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>  Input: List&lt;PendingOrder&gt;, List&lt;AvailableDasher&gt;
 </span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>  Output: List&lt;OrderDasherAssignment&gt;
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>  Pure function — testable without infrastructure
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>  Pure function - testable without infrastructure
 </span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>Kafka = Event bus (IEventBus → KafkaEventBus adapter)
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>Kafka = Event bus (IEventBus -&gt; KafkaEventBus adapter)
 </span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>  OrderPlaced event published by PlaceOrderUseCase
 </span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>  DispatchService subscribes and runs matching algorithm
 </span></code></pre></div>
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Three-sided marketplaces need Saga patterns</strong> — coordinating consumer + merchant + driver requires explicit distributed transaction management</li>
-<li><strong>Zone-aware routing is a financial decision</strong> — AWS cross-AZ transfer fees at 80M req/sec are measured in millions per hour</li>
-<li><strong>Service mesh pays for itself</strong> — adaptive concurrency limiting prevented cascading failures that would have cost more than the mesh's overhead</li>
-<li><strong>Self-service configuration reduces ops burden</strong> — merchants updating their own hours vs operations team doing it = 10× faster + ops team freed for real work</li>
-<li><strong>NP-hard problems need approximate solutions</strong> — perfect matching is impossible in &lt;100ms; good enough in &lt;10ms beats optimal in 10 seconds</li>
+<li><strong>Three-sided marketplaces need Saga patterns</strong> - coordinating consumer + merchant + driver requires explicit distributed transaction management</li>
+<li><strong>Zone-aware routing is a financial decision</strong> - AWS cross-AZ transfer fees at 80M req/sec are measured in millions per hour</li>
+<li><strong>Service mesh pays for itself</strong> - adaptive concurrency limiting prevented cascading failures that would have cost more than the mesh's overhead</li>
+<li><strong>Self-service configuration reduces ops burden</strong> - merchants updating their own hours vs operations team doing it = 10x faster + ops team freed for real work</li>
+<li><strong>NP-hard problems need approximate solutions</strong> - perfect matching is impossible in &lt;100ms; good enough in &lt;10ms beats optimal in 10 seconds</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://www.infoq.com/news/2024/01/doordash-service-mesh/">DoorDash Uses Service Mesh and Cell-Based Architecture — InfoQ</a></li>
-<li><a href="https://blog.bytebytego.com/p/how-doordash-moved-to-a-service-mesh">How DoorDash Moved to a Service Mesh to Handle 80M Requests/Second — ByteByteGo</a></li>
+<li><a href="https://www.infoq.com/news/2024/01/doordash-service-mesh/">DoorDash Uses Service Mesh and Cell-Based Architecture - InfoQ</a></li>
+<li><a href="https://blog.bytebytego.com/p/how-doordash-moved-to-a-service-mesh">How DoorDash Moved to a Service Mesh to Handle 80M Requests/Second - ByteByteGo</a></li>
 <li><a href="https://careersatdoordash.com/blog/how-doordash-transitioned-from-a-monolith-to-microservices/">How DoorDash transitioned from Monolith to Microservices</a></li>
-<li><a href="https://www.infoq.com/news/2024/02/doordash-config-cockroachdb/">DoorDash Uses CockroachDB for Config Management — InfoQ</a></li>
+<li><a href="https://www.infoq.com/news/2024/02/doordash-config-cockroachdb/">DoorDash Uses CockroachDB for Config Management - InfoQ</a></li>
 </ul>
 <hr>
 <h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">¶</a></h2>

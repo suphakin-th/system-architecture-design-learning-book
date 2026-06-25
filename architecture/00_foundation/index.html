@@ -643,7 +643,7 @@
   <a href="#layer-1-entities-innermost-most-stable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 1 — Entities (Innermost / Most Stable)
+        Layer 1 - Entities (Innermost / Most Stable)
       
     </span>
   </a>
@@ -654,7 +654,7 @@
   <a href="#layer-2-use-cases-application-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 2 — Use Cases (Application Logic)
+        Layer 2 - Use Cases (Application Logic)
       
     </span>
   </a>
@@ -665,7 +665,7 @@
   <a href="#layer-3-interface-adapters-translation-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 3 — Interface Adapters (Translation Layer)
+        Layer 3 - Interface Adapters (Translation Layer)
       
     </span>
   </a>
@@ -676,7 +676,7 @@
   <a href="#layer-4-frameworks-drivers-outermost-most-volatile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 4 — Frameworks &amp; Drivers (Outermost / Most Volatile)
+        Layer 4 - Frameworks &amp; Drivers (Outermost / Most Volatile)
       
     </span>
   </a>
@@ -692,7 +692,7 @@
   <a href="#solid-the-micro-level-foundation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SOLID — The Micro-Level Foundation
+        SOLID - The Micro-Level Foundation
       
     </span>
   </a>
@@ -703,7 +703,7 @@
   <a href="#ports-and-adapters-hexagonal-same-concept-different-name" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ports and Adapters (Hexagonal) — Same Concept, Different Name
+        Ports and Adapters (Hexagonal) - Same Concept, Different Name
       
     </span>
   </a>
@@ -1269,6 +1269,8 @@
       
         
       
+        
+      
     
     
     
@@ -1583,6 +1585,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2636,7 +2666,7 @@
   <a href="#layer-1-entities-innermost-most-stable" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 1 — Entities (Innermost / Most Stable)
+        Layer 1 - Entities (Innermost / Most Stable)
       
     </span>
   </a>
@@ -2647,7 +2677,7 @@
   <a href="#layer-2-use-cases-application-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 2 — Use Cases (Application Logic)
+        Layer 2 - Use Cases (Application Logic)
       
     </span>
   </a>
@@ -2658,7 +2688,7 @@
   <a href="#layer-3-interface-adapters-translation-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 3 — Interface Adapters (Translation Layer)
+        Layer 3 - Interface Adapters (Translation Layer)
       
     </span>
   </a>
@@ -2669,7 +2699,7 @@
   <a href="#layer-4-frameworks-drivers-outermost-most-volatile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 4 — Frameworks &amp; Drivers (Outermost / Most Volatile)
+        Layer 4 - Frameworks &amp; Drivers (Outermost / Most Volatile)
       
     </span>
   </a>
@@ -2685,7 +2715,7 @@
   <a href="#solid-the-micro-level-foundation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SOLID — The Micro-Level Foundation
+        SOLID - The Micro-Level Foundation
       
     </span>
   </a>
@@ -2696,7 +2726,7 @@
   <a href="#ports-and-adapters-hexagonal-same-concept-different-name" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ports and Adapters (Hexagonal) — Same Concept, Different Name
+        Ports and Adapters (Hexagonal) - Same Concept, Different Name
       
     </span>
   </a>
@@ -2789,137 +2819,135 @@
   
 
 
-<h1 id="clean-architecture-foundation-zero-to-hero">Clean Architecture — Foundation (Zero to Hero)<a class="headerlink" href="#clean-architecture-foundation-zero-to-hero" title="Permanent link">¶</a></h1>
+<h1 id="clean-architecture-foundation-zero-to-hero">Clean Architecture - Foundation (Zero to Hero)<a class="headerlink" href="#clean-architecture-foundation-zero-to-hero" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"The goal of software architecture is to minimize the human resources required to build and maintain the required system." — Robert C. Martin</p>
+<p>"The goal of software architecture is to minimize the human resources required to build and maintain the required system." - Robert C. Martin</p>
 </blockquote>
 <hr>
 <h2 id="what-problem-does-clean-architecture-solve">What Problem Does Clean Architecture Solve?<a class="headerlink" href="#what-problem-does-clean-architecture-solve" title="Permanent link">¶</a></h2>
 <p><strong>The core problem:</strong> Business logic entangled with frameworks, databases, and UI makes the codebase brittle. Every change is risky. Testing requires spinning up infrastructure.</p>
 <p><strong>What good looks like:</strong>
-- Change your database → zero business logic changes
-- Change your UI framework → zero business logic changes
-- Test business rules → no database needed, tests run in milliseconds</p>
+- Change your database -&gt; zero business logic changes
+- Change your UI framework -&gt; zero business logic changes
+- Test business rules -&gt; no database needed, tests run in milliseconds</p>
 <hr>
 <h2 id="the-dependency-rule-the-one-rule">The Dependency Rule (The ONE Rule)<a class="headerlink" href="#the-dependency-rule-the-one-rule" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌──────────────────────────────────────────────────┐
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  Frameworks &amp; Drivers  (Express, PostgreSQL, etc) │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  ┌────────────────────────────────────────────┐  │
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  │  Interface Adapters  (Controllers, Repos)  │  │
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  │  ┌──────────────────────────────────────┐  │  │
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  │  │  Use Cases  (Application Logic)      │  │  │
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  │  │  ┌────────────────────────────────┐  │  │  │
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  │  │  │  Entities  (Business Rules)    │  │  │  │
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  │  │  └────────────────────────────────┘  │  │  │
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  │  └──────────────────────────────────────┘  │  │
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  └────────────────────────────────────────────┘  │
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>└──────────────────────────────────────────────────┘
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>Dependency arrows point INWARD only →
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>Inner layers know NOTHING about outer layers.
-</span></code></pre></div>
+<p>The four layers nest inside each other - each outer layer contains the one within it:</p>
+<pre class="mermaid"><code>flowchart TD
+  subgraph L4["Frameworks and Drivers - Express, PostgreSQL"]
+    subgraph L3["Interface Adapters - Controllers, Repos"]
+      subgraph L2["Use Cases - Application Logic"]
+        L1["Entities - Business Rules"]
+      end
+    end
+  end</code></pre>
+<p>Dependencies point only inward, toward the domain - inner layers know nothing about outer layers:</p>
+<pre class="mermaid"><code>flowchart RL
+  L4["Frameworks and Drivers"] --&gt; L3["Interface Adapters"]
+  L3 --&gt; L2["Use Cases"]
+  L2 --&gt; L1["Entities"]</code></pre>
 <p><strong>If you ever import an outer-layer module into an inner-layer module, you have violated the architecture.</strong></p>
 <hr>
 <h2 id="the-four-layers-explained">The Four Layers Explained<a class="headerlink" href="#the-four-layers-explained" title="Permanent link">¶</a></h2>
-<h3 id="layer-1-entities-innermost-most-stable">Layer 1 — Entities (Innermost / Most Stable)<a class="headerlink" href="#layer-1-entities-innermost-most-stable" title="Permanent link">¶</a></h3>
+<h3 id="layer-1-entities-innermost-most-stable">Layer 1 - Entities (Innermost / Most Stable)<a class="headerlink" href="#layer-1-entities-innermost-most-stable" title="Permanent link">¶</a></h3>
 <p><strong>What:</strong> Pure business objects and rules of your enterprise.
 <strong>Examples:</strong> <code>Order</code>, <code>User</code>, <code>Product</code>, <code>Money</code>
 <strong>Rule:</strong> No framework imports. No database imports. Just business logic.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">Order</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderItem</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="nx">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">OrderStatus</span><span class="p">.</span><span class="nx">PENDING</span><span class="p">;</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nx">addItem</span><span class="p">(</span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderItem</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">OrderStatus</span><span class="p">.</span><span class="nx">PENDING</span><span class="p">)</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s2">"Can't add to non-pending order"</span><span class="p">);</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="nx">place</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s2">"Can't place empty order"</span><span class="p">);</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">OrderStatus</span><span class="p">.</span><span class="nx">PLACED</span><span class="p">;</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">  </span><span class="nx">total</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nx">Money</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">s</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">subtotal</span><span class="p">()),</span><span class="w"> </span><span class="nx">Money</span><span class="p">.</span><span class="nx">ZERO</span><span class="p">);</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">Order</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderItem</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="nx">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">OrderStatus</span><span class="p">.</span><span class="nx">PENDING</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nx">addItem</span><span class="p">(</span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderItem</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">OrderStatus</span><span class="p">.</span><span class="nx">PENDING</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s2">"Can't add to non-pending order"</span><span class="p">);</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nx">place</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s2">"Can't place empty order"</span><span class="p">);</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">OrderStatus</span><span class="p">.</span><span class="nx">PLACED</span><span class="p">;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="nx">total</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nx">Money</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">s</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">s</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">i</span><span class="p">.</span><span class="nx">subtotal</span><span class="p">()),</span><span class="w"> </span><span class="nx">Money</span><span class="p">.</span><span class="nx">ZERO</span><span class="p">);</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><strong>Test:</strong> <code>const order = new Order(); order.addItem(...); order.place();</code> — no DB, no HTTP, pure logic.</p>
+<p><strong>Test:</strong> <code>const order = new Order(); order.addItem(...); order.place();</code> - no DB, no HTTP, pure logic.</p>
 <hr>
-<h3 id="layer-2-use-cases-application-logic">Layer 2 — Use Cases (Application Logic)<a class="headerlink" href="#layer-2-use-cases-application-logic" title="Permanent link">¶</a></h3>
-<p><strong>What:</strong> The verbs — what the application CAN DO.
+<h3 id="layer-2-use-cases-application-logic">Layer 2 - Use Cases (Application Logic)<a class="headerlink" href="#layer-2-use-cases-application-logic" title="Permanent link">¶</a></h3>
+<p><strong>What:</strong> The verbs - what the application CAN DO.
 <strong>Examples:</strong> <code>PlaceOrderUseCase</code>, <code>RegisterUserUseCase</code>, <code>SearchProductsUseCase</code>
 <strong>Rule:</strong> Depends on entities + interfaces (ports). Never on concrete implementations.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span><span class="w">    </span><span class="c1">// interface</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">payments</span><span class="o">:</span><span class="w"> </span><span class="kt">IPaymentGateway</span><span class="p">,</span><span class="w">   </span><span class="c1">// interface</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">mailer</span><span class="o">:</span><span class="w"> </span><span class="kt">IMailService</span><span class="w">         </span><span class="c1">// interface</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">PlaceOrderResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">orderId</span><span class="p">);</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nx">order</span><span class="p">.</span><span class="nx">place</span><span class="p">();</span><span class="w">                                         </span><span class="c1">// entity rule</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">payments</span><span class="p">.</span><span class="nx">charge</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">total</span><span class="p">(),</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">card</span><span class="p">);</span><span class="w">  </span><span class="c1">// via interface</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span><span class="w">                        </span><span class="c1">// via interface</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">mailer</span><span class="p">.</span><span class="nx">sendConfirmation</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span><span class="w">            </span><span class="c1">// via interface</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">order.id</span><span class="p">,</span><span class="w"> </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="kt">order.total</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span><span class="w">    </span><span class="c1">// interface</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">payments</span><span class="o">:</span><span class="w"> </span><span class="kt">IPaymentGateway</span><span class="p">,</span><span class="w">   </span><span class="c1">// interface</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">mailer</span><span class="o">:</span><span class="w"> </span><span class="kt">IMailService</span><span class="w">         </span><span class="c1">// interface</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">PlaceOrderResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">orderId</span><span class="p">);</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nx">order</span><span class="p">.</span><span class="nx">place</span><span class="p">();</span><span class="w">                                         </span><span class="c1">// entity rule</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">payments</span><span class="p">.</span><span class="nx">charge</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">total</span><span class="p">(),</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">card</span><span class="p">);</span><span class="w">  </span><span class="c1">// via interface</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span><span class="w">                        </span><span class="c1">// via interface</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">mailer</span><span class="p">.</span><span class="nx">sendConfirmation</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span><span class="w">            </span><span class="c1">// via interface</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">order.id</span><span class="p">,</span><span class="w"> </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="kt">order.total</span><span class="p">()</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><strong>Test:</strong> inject mock implementations of all 3 interfaces → no real DB, no real Stripe needed.</p>
+<p><strong>Test:</strong> inject mock implementations of all 3 interfaces -&gt; no real DB, no real Stripe needed.</p>
 <hr>
-<h3 id="layer-3-interface-adapters-translation-layer">Layer 3 — Interface Adapters (Translation Layer)<a class="headerlink" href="#layer-3-interface-adapters-translation-layer" title="Permanent link">¶</a></h3>
+<h3 id="layer-3-interface-adapters-translation-layer">Layer 3 - Interface Adapters (Translation Layer)<a class="headerlink" href="#layer-3-interface-adapters-translation-layer" title="Permanent link">¶</a></h3>
 <p><strong>What:</strong> Converts data between the use-case world and the external world.
 <strong>Types:</strong>
-- <strong>Inbound adapters:</strong> Controllers (HTTP → UseCase DTO)
-- <strong>Outbound adapters:</strong> Repository implementations (UseCase entity → DB row)</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Inbound: HTTP → Use Case</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderController</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">placeOrder</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderUseCase</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">post</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">Request</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="o">:</span><span class="w"> </span><span class="kt">Response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">placeOrder</span><span class="p">.</span><span class="nx">execute</span><span class="p">({</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">req.params.id</span><span class="p">,</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nx">card</span><span class="o">:</span><span class="w"> </span><span class="kt">req.body.card</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="p">});</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">}</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="c1">// Outbound: Use Case interface → Real PostgreSQL</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderRepositoryPostgres</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IOrderRepository</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">findById</span><span class="p">(</span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s1">'SELECT * FROM orders WHERE id=$1'</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">id</span><span class="p">]);</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">OrderMapper</span><span class="p">.</span><span class="nx">toDomain</span><span class="p">(</span><span class="nx">row</span><span class="p">);</span><span class="w">   </span><span class="c1">// DB row → domain entity</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="kt">Order</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">OrderMapper</span><span class="p">.</span><span class="nx">toPersistence</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s1">'UPDATE orders SET ...'</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">);</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="p">}</span>
+- <strong>Inbound adapters:</strong> Controllers (HTTP -&gt; UseCase DTO)
+- <strong>Outbound adapters:</strong> Repository implementations (UseCase entity -&gt; DB row)</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Inbound: HTTP -&gt; Use Case</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderController</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">placeOrder</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderUseCase</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">post</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">Request</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="o">:</span><span class="w"> </span><span class="kt">Response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">placeOrder</span><span class="p">.</span><span class="nx">execute</span><span class="p">({</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">req.params.id</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="nx">card</span><span class="o">:</span><span class="w"> </span><span class="kt">req.body.card</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p">});</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1">// Outbound: Use Case interface -&gt; Real PostgreSQL</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderRepositoryPostgres</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IOrderRepository</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">findById</span><span class="p">(</span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s1">'SELECT * FROM orders WHERE id=$1'</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">id</span><span class="p">]);</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">OrderMapper</span><span class="p">.</span><span class="nx">toDomain</span><span class="p">(</span><span class="nx">row</span><span class="p">);</span><span class="w">   </span><span class="c1">// DB row -&gt; domain entity</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="o">:</span><span class="w"> </span><span class="kt">Order</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">OrderMapper</span><span class="p">.</span><span class="nx">toPersistence</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s1">'UPDATE orders SET ...'</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">);</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="p">}</span>
 </span></code></pre></div>
 <hr>
-<h3 id="layer-4-frameworks-drivers-outermost-most-volatile">Layer 4 — Frameworks &amp; Drivers (Outermost / Most Volatile)<a class="headerlink" href="#layer-4-frameworks-drivers-outermost-most-volatile" title="Permanent link">¶</a></h3>
-<p><strong>What:</strong> The "details" — technology choices that can change without affecting business logic.
+<h3 id="layer-4-frameworks-drivers-outermost-most-volatile">Layer 4 - Frameworks &amp; Drivers (Outermost / Most Volatile)<a class="headerlink" href="#layer-4-frameworks-drivers-outermost-most-volatile" title="Permanent link">¶</a></h3>
+<p><strong>What:</strong> The "details" - technology choices that can change without affecting business logic.
 <strong>Examples:</strong> Express, NestJS, React, PostgreSQL driver, Redis client, Docker
 <strong>Rule:</strong> Only this layer knows about external frameworks. All other layers are framework-free.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// main.ts — Composition Root (the ONE place everything is wired)</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">PostgresConnection</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">db</span><span class="p">);</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">orderRepo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderRepositoryPostgres</span><span class="p">(</span><span class="nx">db</span><span class="p">);</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">stripe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">StripeGateway</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">stripe</span><span class="p">);</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kd">const</span><span class="w"> </span><span class="nx">mailer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">SendGridMailer</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">sendgrid</span><span class="p">);</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="kd">const</span><span class="w"> </span><span class="nx">placeOrder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="p">(</span><span class="nx">orderRepo</span><span class="p">,</span><span class="w"> </span><span class="nx">stripe</span><span class="p">,</span><span class="w"> </span><span class="nx">mailer</span><span class="p">);</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="kd">const</span><span class="w"> </span><span class="nx">controller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderController</span><span class="p">(</span><span class="nx">placeOrder</span><span class="p">);</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">();</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/orders/:id/place'</span><span class="p">,</span><span class="w"> </span><span class="nx">controller</span><span class="p">.</span><span class="nx">post</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">controller</span><span class="p">));</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">);</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// main.ts - Composition Root (the ONE place everything is wired)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">PostgresConnection</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">db</span><span class="p">);</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">orderRepo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderRepositoryPostgres</span><span class="p">(</span><span class="nx">db</span><span class="p">);</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">stripe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">StripeGateway</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">stripe</span><span class="p">);</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kd">const</span><span class="w"> </span><span class="nx">mailer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">SendGridMailer</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">sendgrid</span><span class="p">);</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kd">const</span><span class="w"> </span><span class="nx">placeOrder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="p">(</span><span class="nx">orderRepo</span><span class="p">,</span><span class="w"> </span><span class="nx">stripe</span><span class="p">,</span><span class="w"> </span><span class="nx">mailer</span><span class="p">);</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kd">const</span><span class="w"> </span><span class="nx">controller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderController</span><span class="p">(</span><span class="nx">placeOrder</span><span class="p">);</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">();</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/orders/:id/place'</span><span class="p">,</span><span class="w"> </span><span class="nx">controller</span><span class="p">.</span><span class="nx">post</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">controller</span><span class="p">));</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">);</span>
 </span></code></pre></div>
 <hr>
-<h2 id="solid-the-micro-level-foundation">SOLID — The Micro-Level Foundation<a class="headerlink" href="#solid-the-micro-level-foundation" title="Permanent link">¶</a></h2>
+<h2 id="solid-the-micro-level-foundation">SOLID - The Micro-Level Foundation<a class="headerlink" href="#solid-the-micro-level-foundation" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
@@ -2930,27 +2958,27 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>S</strong> — Single Responsibility</td>
+<td><strong>S</strong> - Single Responsibility</td>
 <td>One reason to change</td>
 <td>Each use case = one behavior</td>
 </tr>
 <tr>
-<td><strong>O</strong> — Open/Closed</td>
+<td><strong>O</strong> - Open/Closed</td>
 <td>Extend without modifying</td>
 <td>Add new gateway without changing use case</td>
 </tr>
 <tr>
-<td><strong>L</strong> — Liskov Substitution</td>
+<td><strong>L</strong> - Liskov Substitution</td>
 <td>Subtypes are substitutable</td>
 <td>MockRepo replaces PostgresRepo in tests</td>
 </tr>
 <tr>
-<td><strong>I</strong> — Interface Segregation</td>
+<td><strong>I</strong> - Interface Segregation</td>
 <td>Small, focused interfaces</td>
 <td><code>IOrderRepository</code> not <code>IEverythingRepository</code></td>
 </tr>
 <tr>
-<td><strong>D</strong> — Dependency Inversion</td>
+<td><strong>D</strong> - Dependency Inversion</td>
 <td>Depend on abstractions</td>
 <td>Use case depends on <code>IPaymentGateway</code>, not <code>StripeGateway</code></td>
 </tr>
@@ -2958,13 +2986,10 @@
 </table>
 <p><strong>DIP is the mechanism that makes the Dependency Rule work in code.</strong></p>
 <hr>
-<h2 id="ports-and-adapters-hexagonal-same-concept-different-name">Ports and Adapters (Hexagonal) — Same Concept, Different Name<a class="headerlink" href="#ports-and-adapters-hexagonal-same-concept-different-name" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Port   = Interface defined in the use-case layer
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Adapter = Implementation in the adapter/infrastructure layer
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>IOrderRepository   ← Port   (defined inside, by use case)
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>OrderRepositoryPostgres ← Adapter (implements the port, lives outside)
-</span></code></pre></div>
+<h2 id="ports-and-adapters-hexagonal-same-concept-different-name">Ports and Adapters (Hexagonal) - Same Concept, Different Name<a class="headerlink" href="#ports-and-adapters-hexagonal-same-concept-different-name" title="Permanent link">¶</a></h2>
+<p>A <strong>port</strong> is an interface defined in the use-case layer; an <strong>adapter</strong> is its implementation, living outside in the adapter/infrastructure layer. The adapter implements the port:</p>
+<pre class="mermaid"><code>flowchart LR
+  A["OrderRepositoryPostgres - Adapter, lives outside"] --&gt;|implements| P["IOrderRepository - Port, defined inside by use case"]</code></pre>
 <hr>
 <h2 id="testing-strategy-per-layer">Testing Strategy per Layer<a class="headerlink" href="#testing-strategy-per-layer" title="Permanent link">¶</a></h2>
 <table>
@@ -2980,31 +3005,31 @@
 <tr>
 <td>Entities</td>
 <td>Pure unit tests</td>
-<td>⚡ &lt;1ms</td>
+<td>&lt;1ms</td>
 <td>None</td>
 </tr>
 <tr>
 <td>Use Cases</td>
 <td>Unit tests + mocks</td>
-<td>⚡ &lt;5ms</td>
+<td>&lt;5ms</td>
 <td>None</td>
 </tr>
 <tr>
 <td>Adapters (inbound)</td>
 <td>Integration tests</td>
-<td>🐢 ~100ms</td>
+<td>~100ms</td>
 <td>HTTP server</td>
 </tr>
 <tr>
 <td>Adapters (outbound)</td>
 <td>Integration tests</td>
-<td>🐢 ~200ms</td>
+<td>~200ms</td>
 <td>Real DB</td>
 </tr>
 <tr>
 <td>Full system</td>
 <td>E2E tests</td>
-<td>🐌 ~2s</td>
+<td>~2s</td>
 <td>Everything</td>
 </tr>
 </tbody>
@@ -3022,11 +3047,11 @@
 <tbody>
 <tr>
 <td>CPU</td>
-<td>Minimal overhead — no extra processes, just code organisation</td>
+<td>Minimal overhead - no extra processes, just code organisation</td>
 </tr>
 <tr>
 <td>Memory</td>
-<td>Minimal — interface dispatch is negligible</td>
+<td>Minimal - interface dispatch is negligible</td>
 </tr>
 <tr>
 <td>Developer time</td>
@@ -3034,7 +3059,7 @@
 </tr>
 <tr>
 <td>Test run time</td>
-<td>Dramatically lower — unit tests run in &lt;1s because no infra needed</td>
+<td>Dramatically lower - unit tests run in &lt;1s because no infra needed</td>
 </tr>
 </tbody>
 </table>
@@ -3082,32 +3107,32 @@
 </thead>
 <tbody>
 <tr>
-<td>0 — Foundation</td>
+<td>0 - Foundation</td>
 <td>Understand layers, dependency rule, interfaces</td>
 <td>Week 1</td>
 </tr>
 <tr>
-<td>1 — Basics</td>
+<td>1 - Basics</td>
 <td>Write entities + use cases + unit tests</td>
 <td>Week 2</td>
 </tr>
 <tr>
-<td>2 — Adapters</td>
+<td>2 - Adapters</td>
 <td>Write controllers + repository impls + integration tests</td>
 <td>Week 3</td>
 </tr>
 <tr>
-<td>3 — Patterns</td>
+<td>3 - Patterns</td>
 <td>Apply CQRS, Event-Driven inside Clean Arch</td>
 <td>Week 4-6</td>
 </tr>
 <tr>
-<td>4 — Distributed</td>
+<td>4 - Distributed</td>
 <td>Microservices, Saga, Event Sourcing</td>
 <td>Week 7-10</td>
 </tr>
 <tr>
-<td>5 — Hero</td>
+<td>5 - Hero</td>
 <td>Full system design, Strangler Fig migration, Service Mesh</td>
 <td>Week 11+</td>
 </tr>
@@ -3157,7 +3182,7 @@
 </tr>
 <tr>
 <td>Onion</td>
-<td>Same concept; Domain → Application → Infrastructure naming</td>
+<td>Same concept; Domain -&gt; Application -&gt; Infrastructure naming</td>
 </tr>
 <tr>
 <td>Layered (N-Tier)</td>

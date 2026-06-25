@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -1723,7 +1753,7 @@
   <a href="#stripe-the-ledger-system" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stripe — The Ledger System
+        Stripe - The Ledger System
       
     </span>
   </a>
@@ -1734,7 +1764,7 @@
   <a href="#monzo-the-modern-bank-1500-microservices" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Monzo — The Modern Bank (1500 Microservices)
+        Monzo - The Modern Bank (1500 Microservices)
       
     </span>
   </a>
@@ -1745,7 +1775,7 @@
   <a href="#wise-formerly-transferwise-cross-border-money-movement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Wise (formerly TransferWise) — Cross-Border Money Movement
+        Wise (formerly TransferWise) - Cross-Border Money Movement
       
     </span>
   </a>
@@ -2486,7 +2516,7 @@
   <a href="#stripe-the-ledger-system" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stripe — The Ledger System
+        Stripe - The Ledger System
       
     </span>
   </a>
@@ -2497,7 +2527,7 @@
   <a href="#monzo-the-modern-bank-1500-microservices" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Monzo — The Modern Bank (1500 Microservices)
+        Monzo - The Modern Bank (1500 Microservices)
       
     </span>
   </a>
@@ -2508,7 +2538,7 @@
   <a href="#wise-formerly-transferwise-cross-border-money-movement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Wise (formerly TransferWise) — Cross-Border Money Movement
+        Wise (formerly TransferWise) - Cross-Border Money Movement
       
     </span>
   </a>
@@ -2557,10 +2587,10 @@
   
 
 
-<h1 id="fintech-companies-architecture-case-studies">Fintech Companies — Architecture Case Studies<a class="headerlink" href="#fintech-companies-architecture-case-studies" title="Permanent link">¶</a></h1>
-<h2 id="stripe-the-ledger-system">Stripe — The Ledger System<a class="headerlink" href="#stripe-the-ledger-system" title="Permanent link">¶</a></h2>
+<h1 id="fintech-companies-architecture-case-studies">Fintech Companies - Architecture Case Studies<a class="headerlink" href="#fintech-companies-architecture-case-studies" title="Permanent link">¶</a></h1>
+<h2 id="stripe-the-ledger-system">Stripe - The Ledger System<a class="headerlink" href="#stripe-the-ledger-system" title="Permanent link">¶</a></h2>
 <p><strong>Scale:</strong> $1T+ annually, 5 billion events/day</p>
-<p><strong>Core innovation:</strong> Stripe built "Ledger" — an internal double-entry accounting system that every dollar at Stripe flows through.</p>
+<p><strong>Core innovation:</strong> Stripe built "Ledger" - an internal double-entry accounting system that every dollar at Stripe flows through.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Stripe Ledger architecture:
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Source: every Charge, PaymentIntent, Transfer, Refund, Fee = events
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Ledger ingests: 5 billion events/day
@@ -2572,12 +2602,12 @@
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    Reconciliation: automated comparison vs payment networks
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  PostgreSQL: primary data store (ACID transactions for journal entries)
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  Kafka: event streaming (charge events → ledger entries)
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  Idempotency: every API call has idempotency key → processed exactly once
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  Kafka: event streaming (charge events -&gt; ledger entries)
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  Idempotency: every API call has idempotency key -&gt; processed exactly once
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>Payment API evolution:
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  2011: Charges API — simple, one-step charge
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  2019: PaymentIntents — event-sourced multi-step flow (3DS, SCA)
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  2011: Charges API - simple, one-step charge
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  2019: PaymentIntents - event-sourced multi-step flow (3DS, SCA)
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  Today: 100B+ API calls/day, 13-year backward compatibility
 </span></code></pre></div>
 <p><strong>What Stripe does that most apps don't:</strong>
@@ -2586,14 +2616,14 @@
 - Dual-write: every event written to Kafka AND PostgreSQL (consistency)
 - Envelope encryption: data key + key encryption key + HSM</p>
 <hr>
-<h2 id="monzo-the-modern-bank-1500-microservices">Monzo — The Modern Bank (1500 Microservices)<a class="headerlink" href="#monzo-the-modern-bank-1500-microservices" title="Permanent link">¶</a></h2>
+<h2 id="monzo-the-modern-bank-1500-microservices">Monzo - The Modern Bank (1500 Microservices)<a class="headerlink" href="#monzo-the-modern-bank-1500-microservices" title="Permanent link">¶</a></h2>
 <p><strong>Scale:</strong> 10M+ customers UK, real-time banking</p>
 <p><strong>Core architecture:</strong> 1500+ microservices, each owning its domain.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Monzo's ledger service:
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  Single service responsible for ALL money movements at Monzo
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  Cassandra-backed (write-heavy, append-only ideal)
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Every debit/credit → immutable journal entry in Cassandra
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  No UPDATE, no DELETE — only INSERT
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Every debit/credit -&gt; immutable journal entry in Cassandra
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  No UPDATE, no DELETE - only INSERT
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  Balance = computed from journal at read time
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>"Modern Banking in 1500 Microservices" (InfoQ talk):
@@ -2602,33 +2632,33 @@
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  Kafka: event bus between all 1500 services
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Core banking pattern:
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  Customer pays merchant → PaymentService →
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    publishes PaymentAuthorized event → Kafka
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    LedgerService subscribes → records journal entries
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    NotificationService subscribes → sends push notification
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    FraudService subscribes → runs fraud check
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  Customer pays merchant -&gt; PaymentService -&gt; 
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    publishes PaymentAuthorized event -&gt; Kafka
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    LedgerService subscribes -&gt; records journal entries
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    NotificationService subscribes -&gt; sends push notification
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    FraudService subscribes -&gt; runs fraud check
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>  No synchronous calls for these — all async events
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>  No synchronous calls for these - all async events
 </span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>  If notification service is down: payment still succeeds (decoupled)
 </span></code></pre></div>
-<p><strong>Key lesson from Monzo:</strong> Each microservice has its own database (Cassandra). No shared databases. Boundaries enforced. The Ledger Service is the source of truth — everything else is a projection of ledger events.</p>
+<p><strong>Key lesson from Monzo:</strong> Each microservice has its own database (Cassandra). No shared databases. Boundaries enforced. The Ledger Service is the source of truth - everything else is a projection of ledger events.</p>
 <hr>
-<h2 id="wise-formerly-transferwise-cross-border-money-movement">Wise (formerly TransferWise) — Cross-Border Money Movement<a class="headerlink" href="#wise-formerly-transferwise-cross-border-money-movement" title="Permanent link">¶</a></h2>
-<p><strong>Scale:</strong> £10B+ moved monthly, 170+ countries</p>
+<h2 id="wise-formerly-transferwise-cross-border-money-movement">Wise (formerly TransferWise) - Cross-Border Money Movement<a class="headerlink" href="#wise-formerly-transferwise-cross-border-money-movement" title="Permanent link">¶</a></h2>
+<p><strong>Scale:</strong> GBP 10B+ moved monthly, 170+ countries</p>
 <p><strong>Core problem solved:</strong> Banks charged 4-5% for international transfers. Wise charges 0.3-1%.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>How Wise works (the "clever trick"):
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Traditional SWIFT transfer Alice (UK) → Bob (Thailand):
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    Alice → UK bank → Correspondent bank → Thai bank → Bob
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    Cost: £25 fee + 2-3% exchange rate markup
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Traditional SWIFT transfer Alice (UK) -&gt; Bob (Thailand):
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    Alice -&gt; UK bank -&gt; Correspondent bank -&gt; Thai bank -&gt; Bob
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    Cost: GBP 25 fee + 2-3% exchange rate markup
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    Time: 2-3 business days
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Wise "local matching":
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    Alice pays £1000 into Wise's UK pool account (local transfer, free)
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    Alice pays GBP 1000 into Wise's UK pool account (local transfer, free)
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    Wise uses its existing Thai Baht pool to pay Bob in Thailand
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    Net: Alice's GBP pool grows, Wise's THB pool shrinks
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    Rebalancing: Wise uses FX market when pools are imbalanced
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  No money crosses borders → no SWIFT fees → 0.3% fee instead of 4%
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  No money crosses borders -&gt; no SWIFT fees -&gt; 0.3% fee instead of 4%
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>Database architecture:
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  Multi-currency ledger: tracks pools in 50+ currencies simultaneously
@@ -2637,7 +2667,7 @@
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
 </span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  Balance invariant:
 </span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    SUM(customer liabilities in currency X) = Wise's pool in currency X
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    Monitored every minute → alert if imbalanced
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    Monitored every minute -&gt; alert if imbalanced
 </span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
 </span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>Regulatory:
 </span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>  Money Service Business licenses in 170+ countries
@@ -2718,7 +2748,7 @@
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Monzo:
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  Domain: Balance, Payment, Account (entities per microservice)
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  Use Cases: AuthorizePayment, TransferFunds (one per service)
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Event Bus: IEventBus (port) → KafkaEventBus (adapter)
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Event Bus: IEventBus (port) -&gt; KafkaEventBus (adapter)
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  Services: each is an independent Clean Architecture application
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>Wise:

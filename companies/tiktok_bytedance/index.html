@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2667,9 +2697,9 @@
   
 
 
-<h1 id="tiktok-bytedance-architecture-case-study">TikTok / ByteDance — Architecture Case Study<a class="headerlink" href="#tiktok-bytedance-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="tiktok-bytedance-architecture-case-study">TikTok / ByteDance - Architecture Case Study<a class="headerlink" href="#tiktok-bytedance-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"TikTok's recommendation system is so effective that the average user spends 95 minutes per day on the platform — not because of content quality, but because of algorithmic precision." — Industry analysis</p>
+<p>"TikTok's recommendation system is so effective that the average user spends 95 minutes per day on the platform - not because of content quality, but because of algorithmic precision." - Industry analysis</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2712,12 +2742,12 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>YouTube/Instagram (follow-based):
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Content pool = videos from people you follow
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Algorithm: rank this pool by engagement probability
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Cold start: follow people first → only then get good content
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Cold start: follow people first -&gt; only then get good content
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>TikTok (interest-based):
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  Content pool = ALL videos (filtered by quality)
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  Algorithm: predict which video you'll finish watching
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  Cold start: first video is random popular → algorithm learns immediately
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  Cold start: first video is random popular -&gt; algorithm learns immediately
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  After 10 videos: TikTok knows more about your taste than YouTube
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                   knows after 100 follow-choices
@@ -2763,148 +2793,115 @@
 </span></code></pre></div>
 <p><strong>The Monolith Paper (ByteDance's recommendation engine):</strong></p>
 <blockquote>
-<p>"ByteDance published a paper: 'Monolith: Real Time Recommendation System With Collisionless Embedding Table' (RecSys 2022). The key innovation: their embedding table (the dictionary mapping video IDs to their learned feature vectors) must be updated in real-time as videos go viral. Traditional ML systems train in batch — update the model every few hours. Monolith trains continuously: every view → update embeddings → model improves immediately."</p>
+<p>"ByteDance published a paper: 'Monolith: Real Time Recommendation System With Collisionless Embedding Table' (RecSys 2022). The key innovation: their embedding table (the dictionary mapping video IDs to their learned feature vectors) must be updated in real-time as videos go viral. Traditional ML systems train in batch - update the model every few hours. Monolith trains continuously: every view -&gt; update embeddings -&gt; model improves immediately."</p>
 </blockquote>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Traditional recommendation pipeline:
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Collect events (batch, every few hours)
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  → Retrain model (hours)
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  → Deploy new model
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  → Model is now 6 hours out of date
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a> -&gt; Retrain model (hours)
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a> -&gt; Deploy new model
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a> -&gt; Model is now 6 hours out of date
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Monolith (online training):
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  User watches video → event immediately → model parameters update
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  New viral video → TikTok adapts to it in minutes, not hours
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  User watches video -&gt; event immediately -&gt; model parameters update
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  New viral video -&gt; TikTok adapts to it in minutes, not hours
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  The "collisionless" part: embedding tables using hash tables
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  without collisions means two different videos never share
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  the same feature vector → more accurate representations
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  the same feature vector -&gt; more accurate representations
 </span></code></pre></div>
 <hr>
 <h2 id="the-video-processing-pipeline">The Video Processing Pipeline<a class="headerlink" href="#the-video-processing-pipeline" title="Permanent link">¶</a></h2>
-<p><strong>From upload to feed in &lt;60 seconds:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Creator uploads video (MP4, 500MB)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>      │
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>      ▼
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Object Storage (S3-compatible)
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      │
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      ▼
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Kafka: VideoUploaded event
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>      │
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>      ├──► Transcoding Service (FFmpeg)
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>      │    → 2160p (4K), 1080p, 720p, 480p, 270p versions
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>      │    → HEVC, H.264, VP9 codecs (different device support)
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>      │    → HLS segments (10-second chunks for adaptive streaming)
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>      │    → CDN upload for each quality/segment
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>      │
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>      ├──► Thumbnail Service
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>      │    → Auto-select best frame (ML: "which frame has most visual interest?")
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>      │    → Generate 5 candidate thumbnails
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>      │    → Store in CDN
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>      │
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>      ├──► Content Safety Service
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>      │    → Computer vision: detect nudity, violence, hate symbols
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>      │    → NLP: analyze caption text and speech
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>      │    → Score: safe/review/remove
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>      │
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>      ├──► Metadata Extraction
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>      │    → Audio fingerprinting (identify background music → license)
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>      │    → Speech-to-text (for captions)
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>      │    → Object detection (what's in the video)
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>      │
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>      └──► Embedding Generation
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>           → Run video through ML model → 256-dimensional feature vector
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>           → Store in Monolith embedding table
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>           → Video is now searchable and recommendable
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>Total time: &lt;60 seconds from upload to appearing in feeds
-</span></code></pre></div>
+<p><strong>From upload to feed in under 60 seconds.</strong> A single upload fans out into five parallel processing services off one Kafka event:</p>
+<pre class="mermaid"><code>flowchart TD
+    Upload["Creator uploads video, MP4 500MB"] --&gt; Storage["Object Storage, S3-compatible"]
+    Storage --&gt; Kafka["Kafka: VideoUploaded event"]
+    Kafka --&gt; Transcode["Transcoding Service, FFmpeg"]
+    Kafka --&gt; Thumb["Thumbnail Service"]
+    Kafka --&gt; Safety["Content Safety Service"]
+    Kafka --&gt; Meta["Metadata Extraction"]
+    Kafka --&gt; Embed["Embedding Generation"]
+
+    Transcode --&gt; TranscodeOut["Renditions 2160p to 270p, HEVC H.264 VP9, HLS segments, CDN upload"]
+    Thumb --&gt; ThumbOut["Auto-select best frame, 5 candidates, store in CDN"]
+    Safety --&gt; SafetyOut["Computer vision and NLP, score safe review or remove"]
+    Meta --&gt; MetaOut["Audio fingerprinting, speech-to-text, object detection"]
+    Embed --&gt; EmbedOut["256-dim feature vector into Monolith table, now recommendable"]</code></pre>
+<p>Total time: under 60 seconds from upload to appearing in feeds.</p>
 <hr>
 <h2 id="the-real-time-engagement-architecture">The Real-Time Engagement Architecture<a class="headerlink" href="#the-real-time-engagement-architecture" title="Permanent link">¶</a></h2>
-<p><strong>The feedback loop that makes TikTok addictive:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>User watches video for 8 seconds (video is 10s) → 80% completion
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>      │
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>      ▼
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Event: { user_id, video_id, watch_percentage: 0.80, timestamp }
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>      │
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>      ▼
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Kafka → Flink Stream Processing
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  Flink aggregates: video 12345 has 1M 80%+ completions in last hour
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  Flink updates: video 12345 trending score += 100
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  Flink writes: updated trending scores to Redis
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>      │
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>      ▼
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Recommendation Service reads Redis: "video 12345 is trending"
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  → Pushes video 12345 to more feeds
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  → Video goes viral
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>Loop:
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>  More people see it → more completions → higher trending score → more feeds
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>  Until: completion rate drops (audience is saturated) → trending score drops
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>Time from "good video" to "going viral": minutes
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>Time this would take on YouTube: hours-to-days
-</span></code></pre></div>
+<p><strong>The feedback loop that makes TikTok addictive.</strong> Watch events flow through Flink into Redis, and the recommendation service closes the loop by pushing trending videos to more feeds:</p>
+<pre class="mermaid"><code>flowchart TD
+    Watch["User watches 8s of 10s video, 80% completion"] --&gt; Event["Event: user_id, video_id, watch_percentage 0.80, timestamp"]
+    Event --&gt; Kafka["Kafka"]
+    Kafka --&gt; Flink["Flink Stream Processing"]
+    Flink --&gt; Agg["Aggregate completions, bump trending score, write scores to Redis"]
+    Agg --&gt; Redis[("Redis trending scores")]
+    Redis --&gt; Rec["Recommendation Service reads trending"]
+    Rec --&gt;|pushes to more feeds| Watch
+    Rec --&gt; Viral["Video goes viral"]
+    Viral -.-&gt;|completion rate drops as audience saturates| ScoreDrop["Trending score drops"]</code></pre>
+<p>Time from "good video" to "going viral": minutes. The same on YouTube: hours to days.</p>
 <hr>
 <h2 id="the-cdn-architecture-delivering-to-17b-users">The CDN Architecture (Delivering to 1.7B Users)<a class="headerlink" href="#the-cdn-architecture-delivering-to-17b-users" title="Permanent link">¶</a></h2>
 <p><strong>TikTok's CDN challenge is unique:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>YouTube video:
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  One video, 1M views, same bytes delivered to everyone
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  CDN efficiency: very high (one copy served from edge)
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>TikTok video:
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  One video, 1M views, BUT:
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  - Different quality levels for different users (adaptive streaming)
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  - Different subtitle tracks (100 languages)
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  - Different timestamps (everyone watches from the start each time)
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  - Each user's first-open loads a DIFFERENT video based on preferences
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>  CDN efficiency: lower than YouTube (more unique content requests)
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  Solution: pre-fetch the next 5 videos while you're watching the current one
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>            = hide latency, appear instant
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>YouTube video:
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  One video, 1M views, same bytes delivered to everyone
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  CDN efficiency: very high (one copy served from edge)
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>TikTok video:
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  One video, 1M views, BUT:
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  - Different quality levels for different users (adaptive streaming)
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  - Different subtitle tracks (100 languages)
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  - Different timestamps (everyone watches from the start each time)
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  - Each user's first-open loads a DIFFERENT video based on preferences
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  CDN efficiency: lower than YouTube (more unique content requests)
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  Solution: pre-fetch the next 5 videos while you're watching the current one
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>            = hide latency, appear instant
 </span></code></pre></div>
 <hr>
 <h2 id="architecture-in-clean-architecture-terms">Architecture in Clean Architecture Terms<a class="headerlink" href="#architecture-in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>TikTok's Architecture:
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Recommendation Engine = Use Case layer
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  GetFeedUseCase: depends on IUserInterestModel (interface)
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  IUserInterestModel → MonolithRecommendationModel (adapter)
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  Use case doesn't import ML model code directly
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>Monolith Embedding Table = Infrastructure layer
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  Stores learned representations of users and videos
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  Updated by Flink stream processor = separate infrastructure concern
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  Use case reads embeddings via IEmbeddingStore interface
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>Kafka = Event bus (Interface Adapter)
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>  VideoUploaded event crosses from Video Service to Recommendation Service
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>  Each service publishes/subscribes via IEventBus interface
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>Flink Jobs = Specialized Use Cases for stream processing
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>  TrendingVideoAggregationJob: processes view events → updates trending scores
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>  UserInterestUpdateJob: processes completions → updates user preference vector
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>  These ARE use cases — they transform domain events into domain state
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>CDN + Transcoding = Infrastructure / Framework layer
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>  Video Service calls IStorageAdapter.store(video)
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>  IStorageAdapter → CDNStorageAdapter (handles CDN upload)
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>  Use case doesn't know about CDN infrastructure
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>TikTok's Architecture:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Recommendation Engine = Use Case layer
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  GetFeedUseCase: depends on IUserInterestModel (interface)
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  IUserInterestModel -&gt; MonolithRecommendationModel (adapter)
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  Use case doesn't import ML model code directly
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Monolith Embedding Table = Infrastructure layer
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  Stores learned representations of users and videos
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  Updated by Flink stream processor = separate infrastructure concern
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  Use case reads embeddings via IEmbeddingStore interface
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Kafka = Event bus (Interface Adapter)
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  VideoUploaded event crosses from Video Service to Recommendation Service
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  Each service publishes/subscribes via IEventBus interface
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>Flink Jobs = Specialized Use Cases for stream processing
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>  TrendingVideoAggregationJob: processes view events -&gt; updates trending scores
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>  UserInterestUpdateJob: processes completions -&gt; updates user preference vector
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  These ARE use cases - they transform domain events into domain state
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>CDN + Transcoding = Infrastructure / Framework layer
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>  Video Service calls IStorageAdapter.store(video)
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>  IStorageAdapter -&gt; CDNStorageAdapter (handles CDN upload)
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>  Use case doesn't know about CDN infrastructure
 </span></code></pre></div>
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Optimize for the right signal</strong> — TikTok optimizes completion rate, not likes; choose what actually measures value</li>
-<li><strong>Online ML beats batch ML for personalization</strong> — real-time feedback loop = algorithm improves in minutes, not hours</li>
-<li><strong>Cold start is a design problem, not a data problem</strong> — TikTok's solution: show popular content → learn immediately</li>
-<li><strong>Pre-fetch aggressively</strong> — preloading the next 5 videos makes infinite scroll feel instant</li>
-<li><strong>Trending is a stream processing problem</strong> — Flink aggregates engagement events in real-time → trending scores update continuously</li>
+<li><strong>Optimize for the right signal</strong> - TikTok optimizes completion rate, not likes; choose what actually measures value</li>
+<li><strong>Online ML beats batch ML for personalization</strong> - real-time feedback loop = algorithm improves in minutes, not hours</li>
+<li><strong>Cold start is a design problem, not a data problem</strong> - TikTok's solution: show popular content -&gt; learn immediately</li>
+<li><strong>Pre-fetch aggressively</strong> - preloading the next 5 videos makes infinite scroll feel instant</li>
+<li><strong>Trending is a stream processing problem</strong> - Flink aggregates engagement events in real-time -&gt; trending scores update continuously</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://dev.to/techahead/how-tiktok-works-decoding-system-design-architecture-with-recommendation-system-ok3">How TikTok Works: Decoding System Design &amp; Architecture</a></li>
-<li><a href="https://www.aaronabraham.ca/technical-writing/tiktok-monolith-system">Monolith: ByteDance's Recommendation System — Aaron Abraham</a></li>
-<li><a href="https://thenewstack.io/what-makes-tiktoks-algorithms-so-effective/">What Makes TikTok's Algorithms So Effective? — The New Stack</a></li>
+<li><a href="https://www.aaronabraham.ca/technical-writing/tiktok-monolith-system">Monolith: ByteDance's Recommendation System - Aaron Abraham</a></li>
+<li><a href="https://thenewstack.io/what-makes-tiktoks-algorithms-so-effective/">What Makes TikTok's Algorithms So Effective? - The New Stack</a></li>
 <li><a href="https://www.systemdesignhandbook.com/guides/bytedance-system-design-interview/">ByteDance System Design Interview Guide</a></li>
 </ul>
 <hr>

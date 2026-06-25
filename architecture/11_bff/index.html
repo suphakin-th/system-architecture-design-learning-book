@@ -1280,6 +1280,8 @@
       
         
       
+        
+      
     
     
     
@@ -1594,6 +1596,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2811,7 +2841,7 @@
   
 
 
-<h1 id="architecture-11-bff-backend-for-frontend">Architecture 11 — BFF (Backend for Frontend)<a class="headerlink" href="#architecture-11-bff-backend-for-frontend" title="Permanent link">¶</a></h1>
+<h1 id="architecture-11-bff-backend-for-frontend">Architecture 11 - BFF (Backend for Frontend)<a class="headerlink" href="#architecture-11-bff-backend-for-frontend" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2849,58 +2879,82 @@
 <p><code>./diagram.svg</code></p>
 <hr>
 <h2 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Browser]         ──► Web BFF (Node.js)     ──► User Service
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                             ──► Order Service
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                                             ──► Product Service
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>[iOS App]         ──► Mobile BFF (Node.js)  ──► User Service
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>[Android App]                               ──► Order Service
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                                             (smaller payloads, fewer fields)
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>[TV App]          ──► TV BFF (Node.js)      ──► Streaming Service
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                                             ──► Recommendation Service
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>[Partner API]     ──► Public API Gateway    ──► All Services (versioned)
-</span></code></pre></div>
+<p>Each client type talks to its own BFF, and the BFFs call the shared downstream services.</p>
+<pre class="mermaid"><code>flowchart LR
+    Browser["Browser"]
+    iOS["iOS App"]
+    Android["Android App"]
+    TV["TV App"]
+    Partner["Partner API"]
+
+    WebBFF["Web BFF (Node.js)"]
+    MobileBFF["Mobile BFF (Node.js)"]
+    TVBFF["TV BFF (Node.js)"]
+    Gateway["Public API Gateway"]
+
+    User["User Service"]
+    Order["Order Service"]
+    Product["Product Service"]
+    Streaming["Streaming Service"]
+    Recommendation["Recommendation Service"]
+    AllServices["All Services (versioned)"]
+
+    Browser --&gt; WebBFF
+    iOS --&gt; MobileBFF
+    Android --&gt; MobileBFF
+    TV --&gt; TVBFF
+    Partner --&gt; Gateway
+
+    WebBFF --&gt; User
+    WebBFF --&gt; Order
+    WebBFF --&gt; Product
+
+    MobileBFF --&gt; User
+    MobileBFF --&gt;|smaller payloads, fewer fields| Order
+
+    TVBFF --&gt; Streaming
+    TVBFF --&gt; Recommendation
+
+    Gateway --&gt; AllServices</code></pre>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<p>Each BFF is its own <strong>Interface Adapter</strong> layer — an aggregating adapter that:
+<p>Each BFF is its own <strong>Interface Adapter</strong> layer - an aggregating adapter that:
 1. Receives client-specific requests
 2. Calls multiple downstream service APIs (through interfaces/ports)
 3. Aggregates, transforms, and returns client-optimized responses</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Mobile BFF — Use Case: GetOrderSummaryForMobile</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderSummaryMobileUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orderClient</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderServiceClient</span><span class="p">,</span><span class="w">    </span><span class="c1">// port</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">userClient</span><span class="o">:</span><span class="w"> </span><span class="kt">IUserServiceClient</span><span class="p">,</span><span class="w">       </span><span class="c1">// port</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">productClient</span><span class="o">:</span><span class="w"> </span><span class="kt">IProductServiceClient</span><span class="w">  </span><span class="c1">// port</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">MobileOrderSummary</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="c1">// Fetch in parallel</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">order</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">products</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">orderClient</span><span class="p">.</span><span class="nx">getOrder</span><span class="p">(</span><span class="nx">orderId</span><span class="p">),</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">userClient</span><span class="p">.</span><span class="nx">getUser</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">userId</span><span class="p">),</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">productClient</span><span class="p">.</span><span class="nx">getProductNames</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">productId</span><span class="p">)),</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="p">]);</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="c1">// Return ONLY what mobile needs — minimal payload</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">      </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">order.id</span><span class="p">,</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">      </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">order.status</span><span class="p">,</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">      </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="kt">order.total</span><span class="p">,</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">      </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="kt">order.items.length</span><span class="p">,</span><span class="w">  </span><span class="c1">// just the count, not the full list</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">      </span><span class="nx">customerName</span><span class="o">:</span><span class="w"> </span><span class="kt">user.name</span><span class="p">,</span><span class="w">   </span><span class="c1">// just the name, not full profile</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="p">};</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="p">}</span>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="c1">// Web BFF — SAME services, but returns MUCH more data for rich dashboard</span>
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderSummaryWebUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">WebOrderDetail</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">    </span><span class="c1">// Returns full order details + customer address + all product details + history</span>
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Mobile BFF - Use Case: GetOrderSummaryForMobile</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderSummaryMobileUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orderClient</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderServiceClient</span><span class="p">,</span><span class="w">    </span><span class="c1">// port</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">userClient</span><span class="o">:</span><span class="w"> </span><span class="kt">IUserServiceClient</span><span class="p">,</span><span class="w">       </span><span class="c1">// port</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">productClient</span><span class="o">:</span><span class="w"> </span><span class="kt">IProductServiceClient</span><span class="w">  </span><span class="c1">// port</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">MobileOrderSummary</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="c1">// Fetch in parallel</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">order</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="p">,</span><span class="w"> </span><span class="nx">products</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">orderClient</span><span class="p">.</span><span class="nx">getOrder</span><span class="p">(</span><span class="nx">orderId</span><span class="p">),</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">userClient</span><span class="p">.</span><span class="nx">getUser</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">userId</span><span class="p">),</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">productClient</span><span class="p">.</span><span class="nx">getProductNames</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">productId</span><span class="p">)),</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">]);</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="c1">// Return ONLY what mobile needs - minimal payload</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">      </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">order.id</span><span class="p">,</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">      </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">order.status</span><span class="p">,</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">      </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="kt">order.total</span><span class="p">,</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">      </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="kt">order.items.length</span><span class="p">,</span><span class="w">  </span><span class="c1">// just the count, not the full list</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">      </span><span class="nx">customerName</span><span class="o">:</span><span class="w"> </span><span class="kt">user.name</span><span class="p">,</span><span class="w">   </span><span class="c1">// just the name, not full profile</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="p">};</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">}</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="c1">// Web BFF - SAME services, but returns MUCH more data for rich dashboard</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderSummaryWebUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">WebOrderDetail</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">    </span><span class="c1">// Returns full order details + customer address + all product details + history</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="p">}</span>
 </span></code></pre></div>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
@@ -2948,12 +3002,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Client-optimized responses</strong> — mobile gets small payload; web gets rich data</li>
-<li><strong>Frontend team autonomy</strong> — frontend team owns and deploys their own BFF</li>
-<li><strong>Parallel fetching</strong> — BFF fetches from multiple services concurrently (Promise.all)</li>
-<li><strong>Protocol flexibility</strong> — mobile BFF uses REST, web BFF uses GraphQL — same backends</li>
-<li><strong>Performance</strong> — mobile saves bandwidth + battery; web reduces waterfall requests</li>
-<li><strong>Security isolation</strong> — mobile API can expose different fields than partner API</li>
+<li><strong>Client-optimized responses</strong> - mobile gets small payload; web gets rich data</li>
+<li><strong>Frontend team autonomy</strong> - frontend team owns and deploys their own BFF</li>
+<li><strong>Parallel fetching</strong> - BFF fetches from multiple services concurrently (Promise.all)</li>
+<li><strong>Protocol flexibility</strong> - mobile BFF uses REST, web BFF uses GraphQL - same backends</li>
+<li><strong>Performance</strong> - mobile saves bandwidth + battery; web reduces waterfall requests</li>
+<li><strong>Security isolation</strong> - mobile API can expose different fields than partner API</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -2990,11 +3044,11 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Code duplication</strong> — some aggregation logic duplicated across BFFs</li>
-<li><strong>N BFFs to maintain</strong> — more deployments, more monitoring</li>
-<li><strong>BFF sprawl</strong> — without discipline, every team creates a BFF for everything</li>
-<li><strong>Latency from fan-out</strong> — BFF must wait for slowest downstream service</li>
-<li><strong>Ownership ambiguity</strong> — who owns the BFF when frontend and backend teams merge?</li>
+<li><strong>Code duplication</strong> - some aggregation logic duplicated across BFFs</li>
+<li><strong>N BFFs to maintain</strong> - more deployments, more monitoring</li>
+<li><strong>BFF sprawl</strong> - without discipline, every team creates a BFF for everything</li>
+<li><strong>Latency from fan-out</strong> - BFF must wait for slowest downstream service</li>
+<li><strong>Ownership ambiguity</strong> - who owns the BFF when frontend and backend teams merge?</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
@@ -3004,7 +3058,7 @@
 <li><strong>Web BFF:</strong> Returns full movie details, reviews, trailers, recommendations</li>
 <li><strong>Mobile BFF:</strong> Returns thumbnail, title, brief description, 30-second trailer</li>
 <li><strong>TV BFF:</strong> Returns content optimized for 10-foot interface (large tiles, minimal text)</li>
-<li><strong>Good at:</strong> Netflix's device footprint spans 2000+ device types — BFF per device category</li>
+<li><strong>Good at:</strong> Netflix's device footprint spans 2000+ device types - BFF per device category</li>
 </ul>
 <h3 id="airbnb">Airbnb<a class="headerlink" href="#airbnb" title="Permanent link">¶</a></h3>
 <ul>
@@ -3033,7 +3087,7 @@
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>BFF is a specialized Interface Adapter in Clean Architecture — one that aggregates and transforms data from multiple downstream services into a client-optimal response. Its power comes from team autonomy: the frontend team owns their BFF, controls its evolution, and can ship features without coordinating with backend teams on API shape.</p>
+<p>BFF is a specialized Interface Adapter in Clean Architecture - one that aggregates and transforms data from multiple downstream services into a client-optimal response. Its power comes from team autonomy: the frontend team owns their BFF, controls its evolution, and can ship features without coordinating with backend teams on API shape.</p>
 </blockquote>
 
 

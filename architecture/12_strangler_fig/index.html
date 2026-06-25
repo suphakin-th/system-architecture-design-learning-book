@@ -1106,7 +1106,7 @@
   <a href="#amazon-obidos-soa-2001-2006" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Amazon (OBIDOS → SOA, 2001-2006)
+        Amazon (OBIDOS -&gt; SOA, 2001-2006)
       
     </span>
   </a>
@@ -1117,7 +1117,7 @@
   <a href="#shopify-monolith-modular-2016-present" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Shopify (Monolith → Modular, 2016-present)
+        Shopify (Monolith -&gt; Modular, 2016-present)
       
     </span>
   </a>
@@ -1128,7 +1128,7 @@
   <a href="#twitter-monolith-soa-2011-2015" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Twitter (Monolith → SOA, 2011-2015)
+        Twitter (Monolith -&gt; SOA, 2011-2015)
       
     </span>
   </a>
@@ -1139,7 +1139,7 @@
   <a href="#airbnb-rails-soa-2018-present" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Airbnb (Rails → SOA, 2018-present)
+        Airbnb (Rails -&gt; SOA, 2018-present)
       
     </span>
   </a>
@@ -1150,7 +1150,7 @@
   <a href="#netflix-java-monolith-microservices-2008-2012" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Netflix (Java monolith → microservices, 2008-2012)
+        Netflix (Java monolith -&gt; microservices, 2008-2012)
       
     </span>
   </a>
@@ -1309,6 +1309,8 @@
   
     
     
+      
+        
       
         
       
@@ -1644,6 +1646,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2824,7 +2854,7 @@
   <a href="#amazon-obidos-soa-2001-2006" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Amazon (OBIDOS → SOA, 2001-2006)
+        Amazon (OBIDOS -&gt; SOA, 2001-2006)
       
     </span>
   </a>
@@ -2835,7 +2865,7 @@
   <a href="#shopify-monolith-modular-2016-present" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Shopify (Monolith → Modular, 2016-present)
+        Shopify (Monolith -&gt; Modular, 2016-present)
       
     </span>
   </a>
@@ -2846,7 +2876,7 @@
   <a href="#twitter-monolith-soa-2011-2015" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Twitter (Monolith → SOA, 2011-2015)
+        Twitter (Monolith -&gt; SOA, 2011-2015)
       
     </span>
   </a>
@@ -2857,7 +2887,7 @@
   <a href="#airbnb-rails-soa-2018-present" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Airbnb (Rails → SOA, 2018-present)
+        Airbnb (Rails -&gt; SOA, 2018-present)
       
     </span>
   </a>
@@ -2868,7 +2898,7 @@
   <a href="#netflix-java-monolith-microservices-2008-2012" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Netflix (Java monolith → microservices, 2008-2012)
+        Netflix (Java monolith -&gt; microservices, 2008-2012)
       
     </span>
   </a>
@@ -2911,7 +2941,7 @@
   
 
 
-<h1 id="architecture-12-strangler-fig-pattern">Architecture 12 — Strangler Fig Pattern<a class="headerlink" href="#architecture-12-strangler-fig-pattern" title="Permanent link">¶</a></h1>
+<h1 id="architecture-12-strangler-fig-pattern">Architecture 12 - Strangler Fig Pattern<a class="headerlink" href="#architecture-12-strangler-fig-pattern" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2942,7 +2972,7 @@
 </table>
 <hr>
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
-<p>Named after the Strangler Fig tree, which grows around an existing tree and gradually replaces it, the Strangler Fig Pattern migrates a legacy system incrementally — <strong>never requiring a big-bang rewrite</strong>.</p>
+<p>Named after the Strangler Fig tree, which grows around an existing tree and gradually replaces it, the Strangler Fig Pattern migrates a legacy system incrementally - <strong>never requiring a big-bang rewrite</strong>.</p>
 <p>New functionality is built in the new system. Old functionality is migrated piece by piece. The old system "strangles" until it's replaced entirely.</p>
 <p><strong>Key insight:</strong> You never freeze the old system. Both systems run simultaneously. Traffic is gradually shifted.</p>
 <hr>
@@ -2951,24 +2981,24 @@
 <hr>
 <h2 id="migration-process">Migration Process<a class="headerlink" href="#migration-process" title="Permanent link">¶</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Phase 1: Facade (Week 1-2)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  All traffic → Legacy Monolith (unchanged)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  All traffic -&gt; Legacy Monolith (unchanged)
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Introduce a facade (API Gateway) in front of the monolith
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Phase 2: Extract first module (Month 1-3)
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  New "Search Service" built with Clean Architecture
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  Gateway routes: GET /search/* → Search Service
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  Gateway routes: everything else → Legacy Monolith
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  Gateway routes: GET /search/* -&gt; Search Service
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  Gateway routes: everything else -&gt; Legacy Monolith
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>Phase 3: Extract second module (Month 3-6)
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  New "Order Service" built with Clean Architecture
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  Gateway routes: /orders/* → Order Service
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  Gateway routes: /search/* → Search Service
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  Gateway routes: everything else → Legacy Monolith
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  Gateway routes: /orders/* -&gt; Order Service
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  Gateway routes: /search/* -&gt; Search Service
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  Gateway routes: everything else -&gt; Legacy Monolith
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>...repeat...
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>Phase N: Legacy is empty (Month 12-24)
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  All traffic → New services
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  All traffic -&gt; New services
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>  Legacy Monolith is decommissioned
 </span></code></pre></div>
 <hr>
@@ -2979,7 +3009,7 @@
 <li>The interfaces (ports) you defined in the legacy system's "better parts" become the contracts for new services</li>
 <li>The API Gateway facade makes switching transparent to clients</li>
 </ol>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Step 1: Facade — just proxies everything to legacy</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Step 1: Facade - just proxies everything to legacy</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">LegacyFacadeGateway</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IOrderRepository</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">findById</span><span class="p">(</span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`http://legacy-monolith/orders/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
@@ -2987,7 +3017,7 @@
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">// Step 2: New service built — same interface</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">// Step 2: New service built - same interface</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderServiceClient</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IOrderRepository</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">findById</span><span class="p">(</span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`http://order-service/orders/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
@@ -2995,7 +3025,7 @@
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="p">}</span>
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="p">}</span>
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1">// In composition root — just swap the adapter, use case is unchanged</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1">// In composition root - just swap the adapter, use case is unchanged</span>
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="kd">const</span><span class="w"> </span><span class="nx">orderRepo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">featureFlag</span><span class="p">(</span><span class="s1">'use-new-order-service'</span><span class="p">)</span>
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="o">?</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderServiceClient</span><span class="p">()</span>
 </span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">LegacyFacadeGateway</span><span class="p">();</span>
@@ -3017,9 +3047,9 @@
 </span></code></pre></div><p></p>
 <h3 id="strangler-with-dark-launch">Strangler with Dark Launch<a class="headerlink" href="#strangler-with-dark-launch" title="Permanent link">¶</a></h3>
 <p>Run new service in shadow mode first:
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Request → Legacy (handles it for real)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>         → New Service (handles it silently, compare outputs)
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>If outputs match → shift traffic to new service
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Request -&gt; Legacy (handles it for real)
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a> -&gt; New Service (handles it silently, compare outputs)
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>If outputs match -&gt; shift traffic to new service
 </span></code></pre></div><p></p>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
@@ -3062,12 +3092,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>No big bang rewrite</strong> — most rewrites fail; incremental migration succeeds</li>
-<li><strong>Business keeps running</strong> — production never stops; users see no interruption</li>
-<li><strong>Each step is reversible</strong> — if new service has bugs, route traffic back to legacy instantly</li>
-<li><strong>Team learns incrementally</strong> — team learns new patterns (Clean Architecture) gradually</li>
-<li><strong>Risk is contained</strong> — one module at a time; failure scope is tiny</li>
-<li><strong>Validate the new architecture</strong> — prove Clean Architecture works before committing 100%</li>
+<li><strong>No big bang rewrite</strong> - most rewrites fail; incremental migration succeeds</li>
+<li><strong>Business keeps running</strong> - production never stops; users see no interruption</li>
+<li><strong>Each step is reversible</strong> - if new service has bugs, route traffic back to legacy instantly</li>
+<li><strong>Team learns incrementally</strong> - team learns new patterns (Clean Architecture) gradually</li>
+<li><strong>Risk is contained</strong> - one module at a time; failure scope is tiny</li>
+<li><strong>Validate the new architecture</strong> - prove Clean Architecture works before committing 100%</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3079,15 +3109,15 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Running two systems</strong> — CPU/memory/ops for both legacy + new system during migration</li>
-<li><strong>Data synchronization</strong> — need to keep legacy DB and new service DB in sync during transition</li>
-<li><strong>Feature parity</strong> — must maintain features in legacy while building new system</li>
-<li><strong>Long migration duration</strong> — 12-24 months for large monoliths</li>
-<li><strong>Team discipline required</strong> — must resist adding features to legacy (pulls back to old patterns)</li>
+<li><strong>Running two systems</strong> - CPU/memory/ops for both legacy + new system during migration</li>
+<li><strong>Data synchronization</strong> - need to keep legacy DB and new service DB in sync during transition</li>
+<li><strong>Feature parity</strong> - must maintain features in legacy while building new system</li>
+<li><strong>Long migration duration</strong> - 12-24 months for large monoliths</li>
+<li><strong>Team discipline required</strong> - must resist adding features to legacy (pulls back to old patterns)</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
-<h3 id="amazon-obidos-soa-2001-2006">Amazon (OBIDOS → SOA, 2001-2006)<a class="headerlink" href="#amazon-obidos-soa-2001-2006" title="Permanent link">¶</a></h3>
+<h3 id="amazon-obidos-soa-2001-2006">Amazon (OBIDOS -&gt; SOA, 2001-2006)<a class="headerlink" href="#amazon-obidos-soa-2001-2006" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Legacy:</strong> OBIDOS monolith in Perl serving the entire Amazon.com</li>
 <li><strong>Migration:</strong> Gradually extracted services: catalog, pricing, checkout, recommendations</li>
@@ -3095,27 +3125,27 @@
 <li><strong>Duration:</strong> ~5 years of gradual migration</li>
 <li><strong>Good at:</strong> Amazon never stopped selling books during the migration</li>
 </ul>
-<h3 id="shopify-monolith-modular-2016-present">Shopify (Monolith → Modular, 2016-present)<a class="headerlink" href="#shopify-monolith-modular-2016-present" title="Permanent link">¶</a></h3>
+<h3 id="shopify-monolith-modular-2016-present">Shopify (Monolith -&gt; Modular, 2016-present)<a class="headerlink" href="#shopify-monolith-modular-2016-present" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Legacy:</strong> 1M+ line Rails monolith</li>
-<li><strong>Migration:</strong> Not full microservices — instead, "modular monolith" (Components)</li>
+<li><strong>Migration:</strong> Not full microservices - instead, "modular monolith" (Components)</li>
 <li><strong>Strategy:</strong> Extract high-value modules into clearly bounded components with interfaces</li>
 <li><strong>Good at:</strong> Shopify still ships Rails monolith but with clean internal boundaries</li>
 </ul>
-<h3 id="twitter-monolith-soa-2011-2015">Twitter (Monolith → SOA, 2011-2015)<a class="headerlink" href="#twitter-monolith-soa-2011-2015" title="Permanent link">¶</a></h3>
+<h3 id="twitter-monolith-soa-2011-2015">Twitter (Monolith -&gt; SOA, 2011-2015)<a class="headerlink" href="#twitter-monolith-soa-2011-2015" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Legacy:</strong> Ruby on Rails monolith ("Fail Whale" era)</li>
-<li><strong>Migration:</strong> Strangler Fig — extracted Tweet storage (Finagle services), search, timeline</li>
+<li><strong>Migration:</strong> Strangler Fig - extracted Tweet storage (Finagle services), search, timeline</li>
 <li><strong>Facade:</strong> Internal routing layer directing traffic to new vs old services</li>
 <li><strong>Good at:</strong> Timeline service was extracted first (highest scaling pressure)</li>
 </ul>
-<h3 id="airbnb-rails-soa-2018-present">Airbnb (Rails → SOA, 2018-present)<a class="headerlink" href="#airbnb-rails-soa-2018-present" title="Permanent link">¶</a></h3>
+<h3 id="airbnb-rails-soa-2018-present">Airbnb (Rails -&gt; SOA, 2018-present)<a class="headerlink" href="#airbnb-rails-soa-2018-present" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Legacy:</strong> Ruby on Rails monolith</li>
-<li><strong>Migration:</strong> Gradual extraction by domain — Payments extracted first, then Reviews, then Search</li>
+<li><strong>Migration:</strong> Gradual extraction by domain - Payments extracted first, then Reviews, then Search</li>
 <li><strong>Good at:</strong> Each extracted service is independently deployable; Rails monolith shrinks over time</li>
 </ul>
-<h3 id="netflix-java-monolith-microservices-2008-2012">Netflix (Java monolith → microservices, 2008-2012)<a class="headerlink" href="#netflix-java-monolith-microservices-2008-2012" title="Permanent link">¶</a></h3>
+<h3 id="netflix-java-monolith-microservices-2008-2012">Netflix (Java monolith -&gt; microservices, 2008-2012)<a class="headerlink" href="#netflix-java-monolith-microservices-2008-2012" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Legacy:</strong> DVD-era Java monolith + Oracle DB</li>
 <li><strong>Migration:</strong> Strangler Fig starting with streaming, then recommendation, then billing</li>
@@ -3125,7 +3155,7 @@
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>Strangler Fig is the responsible path from legacy to Clean Architecture. It treats migration as a product: deliver value at each step, keep the system running, contain risk. The Clean Architecture you build in each extracted service — with its interfaces (ports) — is what makes each extraction safe: the facade implements the same interface as the new service, making the swap transparent.</p>
+<p>Strangler Fig is the responsible path from legacy to Clean Architecture. It treats migration as a product: deliver value at each step, keep the system running, contain risk. The Clean Architecture you build in each extracted service - with its interfaces (ports) - is what makes each extraction safe: the facade implements the same interface as the new service, making the swap transparent.</p>
 </blockquote>
 
 

@@ -1269,6 +1269,8 @@
       
         
       
+        
+      
     
     
     
@@ -1583,6 +1585,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2789,7 +2819,7 @@
   
 
 
-<h1 id="architecture-10-layered-architecture-n-tier">Architecture 10 — Layered Architecture (N-Tier)<a class="headerlink" href="#architecture-10-layered-architecture-n-tier" title="Permanent link">¶</a></h1>
+<h1 id="architecture-10-layered-architecture-n-tier">Architecture 10 - Layered Architecture (N-Tier)<a class="headerlink" href="#architecture-10-layered-architecture-n-tier" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2821,36 +2851,30 @@
 <hr>
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
 <p>Layered Architecture (also called N-Tier) organizes code into horizontal layers:
-1. <strong>Presentation Layer</strong> — UI, controllers, REST endpoints
-2. <strong>Business Logic Layer</strong> — services, domain logic
-3. <strong>Data Access Layer</strong> — repositories, ORM models
-4. <strong>Database Layer</strong> — the actual database</p>
+1. <strong>Presentation Layer</strong> - UI, controllers, REST endpoints
+2. <strong>Business Logic Layer</strong> - services, domain logic
+3. <strong>Data Access Layer</strong> - repositories, ORM models
+4. <strong>Database Layer</strong> - the actual database</p>
 <p>Each layer only talks to the layer directly below it.</p>
 <hr>
 <h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
 <p><code>./diagram.svg</code></p>
 <hr>
 <h2 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌────────────────────────────────────────┐
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  Presentation Layer                    │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  (Controllers, REST handlers, Views)   │
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>└──────────────┬─────────────────────────┘
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>               │ calls
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>┌──────────────▼─────────────────────────┐
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  Business Logic Layer                  │
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  (Services: UserService, OrderService) │
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└──────────────┬─────────────────────────┘
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>               │ calls
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>┌──────────────▼─────────────────────────┐
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  Data Access Layer                     │
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  (Repositories, ORM Models)            │
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>└──────────────┬─────────────────────────┘
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>               │ SQL/query
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>┌──────────────▼─────────────────────────┐
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  Database                              │
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│  (PostgreSQL, MySQL, MongoDB)          │
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>└────────────────────────────────────────┘
-</span></code></pre></div>
+<p>Each tier calls down to the one directly below it, and results flow back up the same path.</p>
+<pre class="mermaid"><code>flowchart TD
+    P["Presentation Layer&lt;br/&gt;Controllers, REST handlers, Views"]
+    B["Business Logic Layer&lt;br/&gt;Services: UserService, OrderService"]
+    D["Data Access Layer&lt;br/&gt;Repositories, ORM Models"]
+    DB["Database&lt;br/&gt;PostgreSQL, MySQL, MongoDB"]
+
+    P --&gt;|calls| B
+    B --&gt;|calls| D
+    D --&gt;|SQL query| DB
+
+    DB -.-&gt;|returns| D
+    D -.-&gt;|returns| B
+    B -.-&gt;|returns| P</code></pre>
 <hr>
 <h2 id="comparison-layered-vs-clean-architecture">Comparison: Layered vs Clean Architecture<a class="headerlink" href="#comparison-layered-vs-clean-architecture" title="Permanent link">¶</a></h2>
 <table>
@@ -2884,8 +2908,8 @@
 </tr>
 <tr>
 <td>Anti-corruption</td>
-<td>Weaker — "lower layer" can be imported anywhere</td>
-<td>Strict — inner layer never imports outer</td>
+<td>Weaker - "lower layer" can be imported anywhere</td>
+<td>Strict - inner layer never imports outer</td>
 </tr>
 <tr>
 <td>Common smell</td>
@@ -2897,16 +2921,16 @@
 <hr>
 <h2 id="the-main-problem-open-layers">The Main Problem: Open Layers<a class="headerlink" href="#the-main-problem-open-layers" title="Permanent link">¶</a></h2>
 <p>In practice, layered architectures suffer from <strong>layer skip</strong>: the presentation layer imports the data access layer directly, bypassing business logic.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// ❌ Classic layered architecture "shortcut"</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">// Presentation layer directly importing Data Access layer</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderController</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">orderRepository</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderRepository</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="c1">// skips service layer!</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">getOrder</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orderRepository</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span><span class="w">  </span><span class="c1">// raw DB model sent to client!</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// [X] Classic layered architecture "shortcut"</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// Presentation layer directly importing Data Access layer</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kd">class</span><span class="w"> </span><span class="nx">OrderController</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">orderRepository</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderRepository</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="c1">// skips service layer!</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">getOrder</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orderRepository</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span><span class="w">  </span><span class="c1">// raw DB model sent to client!</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Clean Architecture prevents this entirely by design.</p>
 <hr>
@@ -2921,33 +2945,33 @@
 <tbody>
 <tr>
 <td>CPU</td>
-<td>Very low overhead — simple function call chain</td>
+<td>Very low overhead - simple function call chain</td>
 </tr>
 <tr>
 <td>Memory</td>
-<td>Low — one process, simple stack</td>
+<td>Low - one process, simple stack</td>
 </tr>
 <tr>
 <td>Network</td>
-<td>Minimal — same process for all layers</td>
+<td>Minimal - same process for all layers</td>
 </tr>
 <tr>
 <td>Ops cost</td>
-<td>Very low — one service, one DB</td>
+<td>Very low - one service, one DB</td>
 </tr>
 <tr>
 <td>Test speed</td>
-<td>Medium — often requires DB for BLL testing</td>
+<td>Medium - often requires DB for BLL testing</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Simple to understand</strong> — even junior developers grasp "Presentation → Service → Repository → DB"</li>
-<li><strong>Fast to build</strong> — less boilerplate than Clean Architecture; no interfaces required upfront</li>
-<li><strong>Wide tool support</strong> — most MVC frameworks (Spring MVC, Laravel, Rails, Django) enforce this by convention</li>
-<li><strong>Easy onboarding</strong> — new developers know exactly where to look</li>
+<li><strong>Simple to understand</strong> - even junior developers grasp "Presentation -&gt; Service -&gt; Repository -&gt; DB"</li>
+<li><strong>Fast to build</strong> - less boilerplate than Clean Architecture; no interfaces required upfront</li>
+<li><strong>Wide tool support</strong> - most MVC frameworks (Spring MVC, Laravel, Rails, Django) enforce this by convention</li>
+<li><strong>Easy onboarding</strong> - new developers know exactly where to look</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -2969,7 +2993,7 @@
 </tr>
 <tr>
 <td>"Fast prototype / MVP"</td>
-<td>No interfaces, no ports — just write the code</td>
+<td>No interfaces, no ports - just write the code</td>
 </tr>
 <tr>
 <td>"Rails/Django/Laravel project"</td>
@@ -2980,41 +3004,41 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Coupling to DB</strong> — business layer often imports DB entities directly; DB schema changes cascade</li>
-<li><strong>Hard to test</strong> — services often can't be tested without real DB</li>
-<li><strong>Layer leakage</strong> — nothing stops presentation from calling data access directly</li>
-<li><strong>Tight framework coupling</strong> — business layer often imports HTTP framework types</li>
-<li><strong>Not suitable for complex domains</strong> — business rules buried in "fat services"</li>
+<li><strong>Coupling to DB</strong> - business layer often imports DB entities directly; DB schema changes cascade</li>
+<li><strong>Hard to test</strong> - services often can't be tested without real DB</li>
+<li><strong>Layer leakage</strong> - nothing stops presentation from calling data access directly</li>
+<li><strong>Tight framework coupling</strong> - business layer often imports HTTP framework types</li>
+<li><strong>Not suitable for complex domains</strong> - business rules buried in "fat services"</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
 <h3 id="most-early-web-applications">Most Early Web Applications<a class="headerlink" href="#most-early-web-applications" title="Permanent link">¶</a></h3>
 <p><strong>Google's original web frontend (Python Django)</strong>
-- Presentation (Django views) → Business logic (Python functions) → Database (BigTable/MySQL)
+- Presentation (Django views) -&gt; Business logic (Python functions) -&gt; Database (BigTable/MySQL)
 - Simple and effective for CRUD operations at early stage</p>
 <p><strong>Facebook's original PHP architecture (2004)</strong>
-- PHP template (presentation) → PHP business logic → MySQL queries
+- PHP template (presentation) -&gt; PHP business logic -&gt; MySQL queries
 - Scaled to millions before architectural problems forced a rewrite to more isolated services</p>
 <p><strong>Twitter's original Rails architecture (2006)</strong>
-- Rails MVC (presentation + routing) → ActiveRecord models (business + data access) → MySQL
-- Rails' ActiveRecord blurs the BLL/DAL boundary by design — common in layered systems</p>
+- Rails MVC (presentation + routing) -&gt; ActiveRecord models (business + data access) -&gt; MySQL
+- Rails' ActiveRecord blurs the BLL/DAL boundary by design - common in layered systems</p>
 <p><strong>Amazon in early days (OBIDOS system in Perl, 1996-2001)</strong>
-- CGI scripts → business logic → DB queries
+- CGI scripts -&gt; business logic -&gt; DB queries
 - Classic 3-tier layered; scaled with hardware before architectural limits were hit</p>
 <h3 id="enterprise-systems-java-spring">Enterprise Systems (Java Spring)<a class="headerlink" href="#enterprise-systems-java-spring" title="Permanent link">¶</a></h3>
 <p><strong>SAP, Oracle enterprise apps</strong>
-- Spring MVC controllers → Spring Services → JPA repositories → Oracle DB
+- Spring MVC controllers -&gt; Spring Services -&gt; JPA repositories -&gt; Oracle DB
 - Layered is the default Spring Boot architecture; most tutorials show 3-tier</p>
 <h3 id="key-lesson-from-big-tech">Key Lesson from Big Tech<a class="headerlink" href="#key-lesson-from-big-tech" title="Permanent link">¶</a></h3>
 <p>Every large company started with layered architecture. Every large company eventually:
 1. Hit scaling issues from DB coupling
 2. Hit testing issues from lack of interfaces
-3. Migrated toward Clean/Hexagonal/DDD patterns — or extracted microservices</p>
+3. Migrated toward Clean/Hexagonal/DDD patterns - or extracted microservices</p>
 <p><strong>Layered architecture is where you START. Clean Architecture is where you go when it hurts.</strong></p>
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>Layered Architecture is the starting point — simple, fast, and supported by every MVC framework. It becomes problematic as the domain grows complex or teams grow large. The migration path is: introduce interfaces at the service boundary → layer becomes Clean Architecture's "use case + adapter" pattern. This migration can be done incrementally, file by file.</p>
+<p>Layered Architecture is the starting point - simple, fast, and supported by every MVC framework. It becomes problematic as the domain grows complex or teams grow large. The migration path is: introduce interfaces at the service boundary -&gt; layer becomes Clean Architecture's "use case + adapter" pattern. This migration can be done incrementally, file by file.</p>
 </blockquote>
 
 

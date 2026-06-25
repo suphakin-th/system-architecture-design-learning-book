@@ -1308,6 +1308,8 @@
       
         
       
+        
+      
     
     
     
@@ -1622,6 +1624,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2867,7 +2897,7 @@
   
 
 
-<h1 id="architecture-02-microservices">Architecture 02 — Microservices<a class="headerlink" href="#architecture-02-microservices" title="Permanent link">¶</a></h1>
+<h1 id="architecture-02-microservices">Architecture 02 - Microservices<a class="headerlink" href="#architecture-02-microservices" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2899,67 +2929,67 @@
 <hr>
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
 <p>Microservices decompose a system into small, independently deployable services. Each service:
-- <strong>Owns its own database</strong> — no shared DB, no DB joins across services
-- <strong>Runs in its own process</strong> — crashes independently, scales independently
-- <strong>Communicates via network</strong> — REST, gRPC, or async events
-- <strong>Is developed by one team</strong> — Conway's Law applied by design</p>
+- <strong>Owns its own database</strong> - no shared DB, no DB joins across services
+- <strong>Runs in its own process</strong> - crashes independently, scales independently
+- <strong>Communicates via network</strong> - REST, gRPC, or async events
+- <strong>Is developed by one team</strong> - Conway's Law applied by design</p>
 <p><strong>Each microservice IS its own complete Clean Architecture application.</strong></p>
 <hr>
 <h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
 <p><code>./diagram.svg</code></p>
 <hr>
 <h2 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Client
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ▼
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>API Gateway  ← auth, rate-limit, route, load-balance
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  │
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  ├──► User Service        ──► PostgreSQL (users DB)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  │    ├── domain/         User, Profile entities
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  │    ├── application/    RegisterUser, Login use cases
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  │    ├── adapters/       REST controller, UserRepoPostgres
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  │    └── infrastructure/ Express, pg driver
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  │
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  ├──► Order Service       ──► PostgreSQL (orders DB)
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  ├──► Product Service     ──► MongoDB (products DB)
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  ├──► Payment Service     ──► PostgreSQL (payments DB)
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  └──► Notification Svc   ──► Redis (queued jobs)
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>Services communicate via:
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  ─── REST/gRPC    (synchronous, immediate answer needed)
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  ··· Events/MQ    (async, fire-and-forget or eventual consistency)
-</span></code></pre></div>
+<p>A client hits the API Gateway, which routes to independent services. Each service owns its own database. Solid edges are synchronous REST/gRPC calls; dotted edges are async events over a message queue.</p>
+<pre class="mermaid"><code>flowchart TD
+    Client["Client"]
+    GW["API Gateway&lt;br/&gt;auth, rate-limit, route, load-balance"]
+    Client --&gt; GW
+
+    GW --&gt; US["User Service&lt;br/&gt;domain, application, adapters, infrastructure"]
+    GW --&gt; OS["Order Service"]
+    GW --&gt; PS["Product Service"]
+    GW --&gt; PayS["Payment Service"]
+    GW --&gt; NS["Notification Service"]
+
+    US --&gt; UDB[("PostgreSQL: users DB")]
+    OS --&gt; ODB[("PostgreSQL: orders DB")]
+    PS --&gt; PDB[("MongoDB: products DB")]
+    PayS --&gt; PayDB[("PostgreSQL: payments DB")]
+    NS --&gt; NDB[("Redis: queued jobs")]</code></pre>
+<p>Services communicate two ways: solid <code>--&gt;</code> is REST/gRPC (synchronous, immediate answer needed); dotted <code>-.-&gt;</code> is Events/MQ (async, fire-and-forget or eventual consistency).</p>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
 <p>The <strong>network boundary replaces the module boundary</strong>. The interface (port) between services becomes a network contract (API spec / event schema).</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// In Monolith: IUserService is in-process</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">userService</span><span class="o">:</span><span class="w"> </span><span class="kt">IUserService</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1">// In Microservices: IUserService is implemented by an HTTP client</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kd">class</span><span class="w"> </span><span class="nx">HttpUserServiceClient</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IUserService</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">User</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`http://user-service/users/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">UserMapper</span><span class="p">.</span><span class="nx">toDomain</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">}</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">// ← The PlaceOrderUseCase code didn't change at all!</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// In Monolith: IUserService is in-process</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">userService</span><span class="o">:</span><span class="w"> </span><span class="kt">IUserService</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">// In Microservices: IUserService is implemented by an HTTP client</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kd">class</span><span class="w"> </span><span class="nx">HttpUserServiceClient</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IUserService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">User</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="sb">`http://user-service/users/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">UserMapper</span><span class="p">.</span><span class="nx">toDomain</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">// &lt;- The PlaceOrderUseCase code didn't change at all!</span>
 </span></code></pre></div>
-<p><strong>This is why Clean Architecture + interfaces make the monolith → microservices migration mechanical.</strong></p>
+<p><strong>This is why Clean Architecture + interfaces make the monolith -&gt; microservices migration mechanical.</strong></p>
 <hr>
 <h2 id="communication-patterns">Communication Patterns<a class="headerlink" href="#communication-patterns" title="Permanent link">¶</a></h2>
 <h3 id="synchronous-rest-grpc">Synchronous (REST / gRPC)<a class="headerlink" href="#synchronous-rest-grpc" title="Permanent link">¶</a></h3>
-<p></p><div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Order Service ──HTTP GET──► User Service
-</span></code></pre></div>
+<p>The caller blocks and waits for a direct reply.</p>
+<p></p><pre class="mermaid"><code>flowchart LR
+    OS["Order Service"] --&gt;|HTTP GET| US["User Service"]</code></pre>
 - Use when: immediate answer required to continue the request
 - Risk: if User Service is down, Order Service call fails<p></p>
 <h3 id="asynchronous-events-message-queue">Asynchronous (Events / Message Queue)<a class="headerlink" href="#asynchronous-events-message-queue" title="Permanent link">¶</a></h3>
-<p></p><div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Order Service ──publishes──► [OrderPlaced event]
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Payment Service ◄─subscribes─┘
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Email Service ◄─subscribes─┘
-</span></code></pre></div>
+<p>The Order Service publishes an event and moves on; subscribers consume it independently. Dotted edges mark the async flow.</p>
+<p></p><pre class="mermaid"><code>flowchart LR
+    OS["Order Service"] -. publishes .-&gt; EV["OrderPlaced event"]
+    EV -. subscribes .-&gt; PS["Payment Service"]
+    EV -. subscribes .-&gt; ES["Email Service"]</code></pre>
 - Use when: eventual consistency is acceptable; decoupling desired
 - Tools: Kafka, RabbitMQ, AWS SQS<p></p>
 <hr>
@@ -2981,12 +3011,12 @@
 <tr>
 <td><strong>Memory</strong></td>
 <td>High</td>
-<td>N services × minimum heap = significant total RAM</td>
+<td>N services x minimum heap = significant total RAM</td>
 </tr>
 <tr>
 <td><strong>Network</strong></td>
 <td>High</td>
-<td>Every cross-service call = network round-trip (1–10ms)</td>
+<td>Every cross-service call = network round-trip (1-10ms)</td>
 </tr>
 <tr>
 <td><strong>Disk</strong></td>
@@ -3008,12 +3038,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Independent scaling</strong> — scale Payment Service ×10, keep User Service ×1</li>
-<li><strong>Fault isolation</strong> — Product Service crash doesn't bring down orders</li>
-<li><strong>Team autonomy</strong> — 3 teams deploy on their own schedules, own CI/CD pipelines</li>
-<li><strong>Technology diversity</strong> — ML service in Python, API in Go, frontend BFF in Node.js</li>
-<li><strong>Smaller codebases</strong> — each team owns an understandable repo</li>
-<li><strong>Targeted deployments</strong> — fix a bug in Payment Service without touching anything else</li>
+<li><strong>Independent scaling</strong> - scale Payment Service x10, keep User Service x1</li>
+<li><strong>Fault isolation</strong> - Product Service crash doesn't bring down orders</li>
+<li><strong>Team autonomy</strong> - 3 teams deploy on their own schedules, own CI/CD pipelines</li>
+<li><strong>Technology diversity</strong> - ML service in Python, API in Go, frontend BFF in Node.js</li>
+<li><strong>Smaller codebases</strong> - each team owns an understandable repo</li>
+<li><strong>Targeted deployments</strong> - fix a bug in Payment Service without touching anything else</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3026,7 +3056,7 @@
 </thead>
 <tbody>
 <tr>
-<td>"Search needs 10× more CPU than checkout"</td>
+<td>"Search needs 10x more CPU than checkout"</td>
 <td>Scale each service independently</td>
 </tr>
 <tr>
@@ -3042,7 +3072,7 @@
 <td>Fault isolation via circuit breakers</td>
 </tr>
 <tr>
-<td>"We need to comply with GDPR — user data must be isolated"</td>
+<td>"We need to comply with GDPR - user data must be isolated"</td>
 <td>User service owns all PII</td>
 </tr>
 </tbody>
@@ -3050,19 +3080,19 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Network latency</strong> — in-process call = nanoseconds; HTTP call = 1–10ms</li>
-<li><strong>Distributed transactions</strong> — no free ACID; must use Saga or eventual consistency</li>
-<li><strong>Operational complexity</strong> — Kubernetes, Istio, Jaeger, ELK, Vault, etc.</li>
-<li><strong>Testing is hard</strong> — integration tests need service orchestration</li>
-<li><strong>Data duplication</strong> — denormalized data stored in multiple services</li>
-<li><strong>Debugging is hard</strong> — trace spans across 5 services to find the bug</li>
+<li><strong>Network latency</strong> - in-process call = nanoseconds; HTTP call = 1-10ms</li>
+<li><strong>Distributed transactions</strong> - no free ACID; must use Saga or eventual consistency</li>
+<li><strong>Operational complexity</strong> - Kubernetes, Istio, Jaeger, ELK, Vault, etc.</li>
+<li><strong>Testing is hard</strong> - integration tests need service orchestration</li>
+<li><strong>Data duplication</strong> - denormalized data stored in multiple services</li>
+<li><strong>Debugging is hard</strong> - trace spans across 5 services to find the bug</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
 <h3 id="amazon">Amazon<a class="headerlink" href="#amazon" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> 1000+ microservices; each team owns their services end-to-end</li>
-<li><strong>Rule:</strong> "Two-pizza team" — if a team can't be fed by two pizzas, it's too big</li>
+<li><strong>Rule:</strong> "Two-pizza team" - if a team can't be fed by two pizzas, it's too big</li>
 <li><strong>Communication:</strong> Mix of REST (synchronous) and SNS/SQS (async events)</li>
 <li><strong>Good at:</strong> Independent scaling of checkout, search, recommendations, payments</li>
 <li><strong>Story:</strong> Amazon's original 2002 Bezos mandate: all teams must expose data via service interfaces; no direct DB access</li>
@@ -3072,7 +3102,7 @@
 <li><strong>Architecture:</strong> 700+ microservices</li>
 <li><strong>Services:</strong> Content delivery (Open Connect CDN), streaming, recommendations, billing, search</li>
 <li><strong>Tools they built:</strong> Eureka (service discovery), Hystrix (circuit breaker), Zuul (API Gateway), Ribbon (load balancer)</li>
-<li><strong>Good at:</strong> Chaos Engineering — deliberately kill services to test fault tolerance</li>
+<li><strong>Good at:</strong> Chaos Engineering - deliberately kill services to test fault tolerance</li>
 <li><strong>Key insight:</strong> Each service has its own Cassandra cluster; no shared state</li>
 </ul>
 <h3 id="uber">Uber<a class="headerlink" href="#uber" title="Permanent link">¶</a></h3>
@@ -3081,19 +3111,19 @@
 <li><strong>Services:</strong> Pricing, dispatch, maps, payments, driver profiles, trip history, notifications</li>
 <li><strong>Communication:</strong> Protocol Buffers + gRPC for synchronous; Kafka for async</li>
 <li><strong>Good at:</strong> Surge pricing algorithm runs in isolation; can be updated without touching dispatch</li>
-<li><strong>Lesson learned:</strong> Too many microservices → moved to "domain-oriented microservices" (DOMA)</li>
+<li><strong>Lesson learned:</strong> Too many microservices -&gt; moved to "domain-oriented microservices" (DOMA)</li>
 </ul>
 <h3 id="airbnb">Airbnb<a class="headerlink" href="#airbnb" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Started as Rails monolith, migrated to SOA (service-oriented architecture)</li>
 <li><strong>Services:</strong> Payments (Chronos), Search, Bookings, Messaging, Reviews</li>
-<li><strong>Lesson:</strong> Service explosion → introduced "Minerva" (data consistency framework)</li>
+<li><strong>Lesson:</strong> Service explosion -&gt; introduced "Minerva" (data consistency framework)</li>
 <li><strong>Good at:</strong> Search service uses Elasticsearch and scales independently from booking flow</li>
 </ul>
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>Microservices take Clean Architecture's "dependency rule" and make it a physical boundary: the network. This gives massive organizational benefits (team autonomy, independent scaling) but requires significant operational investment. Don't start here — earn it.</p>
+<p>Microservices take Clean Architecture's "dependency rule" and make it a physical boundary: the network. This gives massive organizational benefits (team autonomy, independent scaling) but requires significant operational investment. Don't start here - earn it.</p>
 </blockquote>
 
 

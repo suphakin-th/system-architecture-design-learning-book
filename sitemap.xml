@@ -2,218 +2,222 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/00_foundation/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/01_monolith/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/02_microservices/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/03_event_driven/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/04_cqrs/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/05_event_sourcing/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/06_saga/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/07_api_gateway/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/08_hexagonal/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/09_onion/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/10_layered_ntier/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/11_bff/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/12_strangler_fig/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/13_serverless/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/14_service_mesh/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/30_three_layer_clean_functional/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/32_mvc_mvp_mvvm/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/airbnb/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/amazon/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/discord/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/doordash/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/google/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/grab/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/linkedin/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/meta_facebook/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/microsoft/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/netflix/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/pantip/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/shopify/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/stripe/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/tiktok_bytedance/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/twitter_x/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/uber/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/companies/whatsapp/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/22_sharding/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/23_fundamentals/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/24_types_comparison/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/25_indexing/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/26_replication/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/27_transactions/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/28_query_optimization/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/29_schema_patterns/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/31_three_layer_model/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/33_mvcc/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
+    </url>
+    <url>
+         <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/database/34_users_permissions_load_balanced/</loc>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/00_overview/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/01_double_entry_ledger/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/02_immutable_audit_log/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/03_payment_networks/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/05_security_hsm_pci/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/06_zero_trust/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/07_distributed_transactions/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/08_companies/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
     <url>
          <loc>https://suphakin-th.github.io/system-architecture-design-learning-book/security/linux_permissions_thai/</loc>
-         <lastmod>2026-06-21</lastmod>
+         <lastmod>2026-06-25</lastmod>
     </url>
 </urlset>

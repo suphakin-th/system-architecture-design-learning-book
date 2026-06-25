@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2689,9 +2719,9 @@
   
 
 
-<h1 id="grab-architecture-case-study">Grab — Architecture Case Study<a class="headerlink" href="#grab-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="grab-architecture-case-study">Grab - Architecture Case Study<a class="headerlink" href="#grab-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"Building a super app for Southeast Asia is harder than building one for Silicon Valley. Unreliable networks, 600+ million users across 10 countries, 8 languages, and 40+ currencies." — Grab Engineering</p>
+<p>"Building a super app for Southeast Asia is harder than building one for Silicon Valley. Unreliable networks, 600+ million users across 10 countries, 8 languages, and 40+ currencies." - Grab Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2756,23 +2786,23 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>GrabRide at peak (Southeast Asia rush hour):
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  5M+ active rides simultaneously across 8 countries
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  Each ride: driver GPS updates every 2 seconds
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  5M drivers × 0.5 updates/sec = 2.5M location updates/second
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  5M drivers x 0.5 updates/sec = 2.5M location updates/second
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Architecture for driver location:
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  Driver app → TCP connection → Location Gateway (Go)
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    → Kafka (locations.updates topic)
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>      → Flink: compute driver position in H3 hex cells
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>      → Redis: store driver_id → current H3 cell (TTL: 10 seconds)
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>      → Cassandra: store location history (for route replay)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  Driver app -&gt; TCP connection -&gt; Location Gateway (Go)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a> -&gt; Kafka (locations.updates topic)
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a> -&gt; Flink: compute driver position in H3 hex cells
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a> -&gt; Redis: store driver_id -&gt; current H3 cell (TTL: 10 seconds)
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a> -&gt; Cassandra: store location history (for route replay)
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Rider requests a GrabCar:
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  → RideService: find drivers in same H3 cell as rider
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  → Redis lookup: O(1), returns list of driver_ids in that cell
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  → Returns 5 nearest drivers in &lt;10ms
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a> -&gt; RideService: find drivers in same H3 cell as rider
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a> -&gt; Redis lookup: O(1), returns list of driver_ids in that cell
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a> -&gt; Returns 5 nearest drivers in &lt;10ms
 </span></code></pre></div>
 <p><strong>The network quality problem (Southeast Asia specific):</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Singapore: 5G, WiFi → driver location updates every 2 seconds: fine
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Rural Indonesia: 2G, 200ms latency → every-2-second update drops frequently
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Singapore: 5G, WiFi -&gt; driver location updates every 2 seconds: fine
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Rural Indonesia: 2G, 200ms latency -&gt; every-2-second update drops frequently
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Solution: adaptive location updates
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  Signal quality detected by driver app
@@ -2787,12 +2817,12 @@
 <h2 id="grabpay-payments-in-10-countries">GrabPay: Payments in 10 Countries<a class="headerlink" href="#grabpay-payments-in-10-countries" title="Permanent link">¶</a></h2>
 <p><strong>The regulatory nightmare:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Country-by-country compliance:
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Singapore: MAS (Monetary Authority of Singapore) — strict fintech licensing
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Indonesia: OJK + BI regulations — separate license from Singapore
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Malaysia: BNM regulations — different from Indonesia
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  Vietnam: SBV regulations — foreign payment restrictions
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Philippines: BSP regulations — separate wallet regulations
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  Thailand: BOT regulations — KYC requirements differ
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Singapore: MAS (Monetary Authority of Singapore) - strict fintech licensing
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Indonesia: OJK + BI regulations - separate license from Singapore
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Malaysia: BNM regulations - different from Indonesia
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  Vietnam: SBV regulations - foreign payment restrictions
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Philippines: BSP regulations - separate wallet regulations
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  Thailand: BOT regulations - KYC requirements differ
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Each country requires:
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  - Separate legal entity
@@ -2802,17 +2832,17 @@
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  - Different data residency (data must stay in country)
 </span></code></pre></div>
 <p><strong>Architecture solution:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Payment Request → PaymentRouter
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Payment Request -&gt; PaymentRouter
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  PaymentRouter: which country is this transaction in?
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  → Routes to country-specific PaymentProcessor
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a> -&gt; Routes to country-specific PaymentProcessor
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>PaymentProcessorSG (Singapore):
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  → DBS Bank API → MAS-compliant transaction
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  → Data stored in Singapore AWS region
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a> -&gt; DBS Bank API -&gt; MAS-compliant transaction
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a> -&gt; Data stored in Singapore AWS region
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>PaymentProcessorID (Indonesia):
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  → BCA Bank API → OJK-compliant transaction
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  → Data stored in Jakarta AWS region
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a> -&gt; BCA Bank API -&gt; OJK-compliant transaction
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a> -&gt; Data stored in Jakarta AWS region
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Shared:
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  Common interface: IPaymentProcessor
@@ -2840,13 +2870,13 @@
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  2. R class optimization:
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>     Large R classes (Android resource IDs) from 1500+ modules
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>     Solution: R8 shrinking + dependency cleanup → 25% app size reduction
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>     Solution: R8 shrinking + dependency cleanup -&gt; 25% app size reduction
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
 </span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  3. WebP images (replace PNG/JPG):
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>     WebP: 30% smaller than PNG, 25% smaller than JPEG
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>     → Significant reduction in image assets
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a> -&gt; Significant reduction in image assets
 </span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>Result: App size reduced by 25% → meaningful improvement for 2G users
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>Result: App size reduced by 25% -&gt; meaningful improvement for 2G users
 </span></code></pre></div>
 <hr>
 <h2 id="migrating-1000-services-from-consul-to-istio">Migrating 1000+ Services from Consul to Istio<a class="headerlink" href="#migrating-1000-services-from-consul-to-istio" title="Permanent link">¶</a></h2>
@@ -2882,8 +2912,8 @@
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  Use case never knows which country's banking partner it's using
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Location Service = Use Case
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  Depends on IDriverLocationStore (port) → Redis adapter
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Depends on IH3IndexService (port) → custom H3 geo-index adapter
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  Depends on IDriverLocationStore (port) -&gt; Redis adapter
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Depends on IH3IndexService (port) -&gt; custom H3 geo-index adapter
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  Business rule: "find all drivers within 2km" implemented in use case
 </span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  H3 indexing details: hidden in adapter
 </span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
@@ -2899,19 +2929,19 @@
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Regulatory compliance shapes architecture</strong> — Grab's per-country payment processors aren't over-engineering; they're legal requirements</li>
-<li><strong>Network quality is a first-class concern in developing markets</strong> — adaptive location updates, offline-first, progressive loading</li>
-<li><strong>App size is a feature</strong> — for 2G markets, a 25% size reduction increases your addressable user base</li>
-<li><strong>Service mesh solves security uniformly</strong> — mTLS across 1000+ services without changing service code</li>
-<li><strong>Strategy Pattern scales to country-level</strong> — same interface, different implementation per country/regulation/currency</li>
+<li><strong>Regulatory compliance shapes architecture</strong> - Grab's per-country payment processors aren't over-engineering; they're legal requirements</li>
+<li><strong>Network quality is a first-class concern in developing markets</strong> - adaptive location updates, offline-first, progressive loading</li>
+<li><strong>App size is a feature</strong> - for 2G markets, a 25% size reduction increases your addressable user base</li>
+<li><strong>Service mesh solves security uniformly</strong> - mTLS across 1000+ services without changing service code</li>
+<li><strong>Strategy Pattern scales to country-level</strong> - same interface, different implementation per country/regulation/currency</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://engineering.grab.com/">Engineering — Grab Tech Blog</a></li>
-<li><a href="https://engineering.grab.com/driving-southeast-asia-forward-with-aws">Driving Southeast Asia Forward with AWS — Grab Engineering</a></li>
+<li><a href="https://engineering.grab.com/">Engineering - Grab Tech Blog</a></li>
+<li><a href="https://engineering.grab.com/driving-southeast-asia-forward-with-aws">Driving Southeast Asia Forward with AWS - Grab Engineering</a></li>
 <li><a href="https://www.theregister.com/2024/03/05/grab_downsized_app/">Asian superapp Grab shrank its app by a quarter to survive</a></li>
-<li><a href="https://www.infoq.com/news/2024/01/doordash-service-mesh/">DoorDash Uses Service Mesh and Cell-Based Architecture — InfoQ</a></li>
+<li><a href="https://www.infoq.com/news/2024/01/doordash-service-mesh/">DoorDash Uses Service Mesh and Cell-Based Architecture - InfoQ</a></li>
 </ul>
 <hr>
 <h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">¶</a></h2>

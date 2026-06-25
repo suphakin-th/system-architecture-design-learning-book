@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -1979,10 +2009,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-monolith-20092014" class="md-nav__link">
+  <a href="#phase-1-the-monolith-2009-2014" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Monolith (2009–2014)
+        Phase 1: The Monolith (2009-2014)
       
     </span>
   </a>
@@ -1990,10 +2020,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-microservices-20142018" class="md-nav__link">
+  <a href="#phase-2-microservices-2014-2018" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: Microservices (2014–2018)
+        Phase 2: Microservices (2014-2018)
       
     </span>
   </a>
@@ -2015,7 +2045,7 @@
   <a href="#phase-4-doma-domain-oriented-microservice-architecture-2020" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 4: DOMA — Domain-Oriented Microservice Architecture (2020)
+        Phase 4: DOMA - Domain-Oriented Microservice Architecture (2020)
       
     </span>
   </a>
@@ -2026,7 +2056,7 @@
   <a href="#cadence-workflow-orchestration-for-the-saga-pattern" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cadence — Workflow Orchestration for the Saga Pattern
+        Cadence - Workflow Orchestration for the Saga Pattern
       
     </span>
   </a>
@@ -2582,10 +2612,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-monolith-20092014" class="md-nav__link">
+  <a href="#phase-1-the-monolith-2009-2014" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Monolith (2009–2014)
+        Phase 1: The Monolith (2009-2014)
       
     </span>
   </a>
@@ -2593,10 +2623,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-microservices-20142018" class="md-nav__link">
+  <a href="#phase-2-microservices-2014-2018" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: Microservices (2014–2018)
+        Phase 2: Microservices (2014-2018)
       
     </span>
   </a>
@@ -2618,7 +2648,7 @@
   <a href="#phase-4-doma-domain-oriented-microservice-architecture-2020" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 4: DOMA — Domain-Oriented Microservice Architecture (2020)
+        Phase 4: DOMA - Domain-Oriented Microservice Architecture (2020)
       
     </span>
   </a>
@@ -2629,7 +2659,7 @@
   <a href="#cadence-workflow-orchestration-for-the-saga-pattern" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cadence — Workflow Orchestration for the Saga Pattern
+        Cadence - Workflow Orchestration for the Saga Pattern
       
     </span>
   </a>
@@ -2711,9 +2741,9 @@
   
 
 
-<h1 id="uber-architecture-case-study">Uber — Architecture Case Study<a class="headerlink" href="#uber-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="uber-architecture-case-study">Uber - Architecture Case Study<a class="headerlink" href="#uber-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"We went from a monolith to microservices, then realized we had too many microservices, then invented DOMA. Architecture is iterative." — Uber Engineering</p>
+<p>"We went from a monolith to microservices, then realized we had too many microservices, then invented DOMA. Architecture is iterative." - Uber Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2749,22 +2779,18 @@
 <p>"Uber's architecture journey is the most honest one in the industry. They publicly admitted: 'we over-corrected from monolith to microservices, created chaos, then invented DOMA to organize the chaos.' That honesty and the solutions they built are worth studying deeply."</p>
 </blockquote>
 <hr>
-<h2 id="phase-1-the-monolith-20092014">Phase 1: The Monolith (2009–2014)<a class="headerlink" href="#phase-1-the-monolith-20092014" title="Permanent link">¶</a></h2>
+<h2 id="phase-1-the-monolith-2009-2014">Phase 1: The Monolith (2009-2014)<a class="headerlink" href="#phase-1-the-monolith-2009-2014" title="Permanent link">¶</a></h2>
 <p><strong>The original monolith: written in Python</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>UberApp (iOS/Android)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>      │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>      ▼
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Uber Python Monolith
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  ├── Driver matching logic
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  ├── Pricing (surge pricing algorithm)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  ├── Trip management
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  ├── Payment processing
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  ├── Push notifications
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  └── Maps &amp; routing
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>      │
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>      ▼
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>PostgreSQL (one database)
-</span></code></pre></div>
+<p>The mobile app talked to a single Python process that owned every concern, backed by one database.</p>
+<pre class="mermaid"><code>flowchart TD
+    App["UberApp iOS and Android"] --&gt; Mono["Uber Python Monolith"]
+    Mono --&gt; M1["Driver matching logic"]
+    Mono --&gt; M2["Pricing - surge algorithm"]
+    Mono --&gt; M3["Trip management"]
+    Mono --&gt; M4["Payment processing"]
+    Mono --&gt; M5["Push notifications"]
+    Mono --&gt; M6["Maps and routing"]
+    Mono --&gt; DB[("PostgreSQL - one database")]</code></pre>
 <p><strong>Why Python?</strong> Fast to prototype, startup speed, small team.</p>
 <p><strong>Problems that forced them to change:</strong></p>
 <ol>
@@ -2774,7 +2800,7 @@
 </li>
 <li>
 <p><strong>Deployment risk:</strong>
-   Changing the pricing algorithm required deploying the entire Python monolith. If the deploy had a bug, ALL of Uber went down — not just pricing.</p>
+   Changing the pricing algorithm required deploying the entire Python monolith. If the deploy had a bug, ALL of Uber went down - not just pricing.</p>
 </li>
 <li>
 <p><strong>Database lock contention:</strong>
@@ -2782,49 +2808,46 @@
 </li>
 </ol>
 <hr>
-<h2 id="phase-2-microservices-20142018">Phase 2: Microservices (2014–2018)<a class="headerlink" href="#phase-2-microservices-20142018" title="Permanent link">¶</a></h2>
+<h2 id="phase-2-microservices-2014-2018">Phase 2: Microservices (2014-2018)<a class="headerlink" href="#phase-2-microservices-2014-2018" title="Permanent link">¶</a></h2>
 <p><strong>Extracted core services:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Mobile API
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>      │
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>      ▼
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>API Gateway (custom Go-based)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      │
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      ├──► Dispatch Service (Go)      — match drivers to riders
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>      ├──► Pricing Service (Go)       — surge pricing calculation
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>      ├──► Trip Service (Python/Go)   — trip lifecycle management
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>      ├──► Payment Service (Java)     — Stripe/Braintree integration
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>      ├──► Notification Service (Go)  — push notifications
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>      ├──► Maps Service (Go)          — routing, ETAs
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>      └──► Driver Location Service (Go) — real-time GPS updates
-</span></code></pre></div>
-<p><strong>The driver location problem — solved with geospatial indexing:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Problem: 6M drivers, each updating location every 4 seconds
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  = 1.5M location updates per second just for location storage
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  = Can't use regular SQL index (too many writes)
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Solution: H3 geospatial indexing (hexagonal hierarchical)
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  Earth divided into hexagonal cells at different resolutions
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Level 9 hex cell ≈ 0.1 km² (neighborhood-sized)
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  Driver update: store driver_id → H3 cell mapping
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  Rider request: find all drivers in my H3 cell + adjacent cells
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  Instead of: "Find all drivers within 2km radius" (slow polygon query)
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  Use: "Find all drivers in hex cells 12345, 12346, 12347..." (fast lookup)
+<p>A custom Go API gateway fans requests out to single-purpose services, each owned independently.</p>
+<pre class="mermaid"><code>flowchart TD
+    API["Mobile API"] --&gt; GW["API Gateway - custom Go"]
+    GW --&gt; Dispatch["Dispatch Service Go - match drivers to riders"]
+    GW --&gt; Pricing["Pricing Service Go - surge calculation"]
+    GW --&gt; Trip["Trip Service Python and Go - trip lifecycle"]
+    GW --&gt; Payment["Payment Service Java - Stripe and Braintree"]
+    GW --&gt; Notify["Notification Service Go - push notifications"]
+    GW --&gt; Maps["Maps Service Go - routing and ETAs"]
+    GW --&gt; Location["Driver Location Service Go - real-time GPS"]</code></pre>
+<p><strong>The driver location problem - solved with geospatial indexing:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Problem: 6M drivers, each updating location every 4 seconds
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  = 1.5M location updates per second just for location storage
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  = Can't use regular SQL index (too many writes)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Solution: H3 geospatial indexing (hexagonal hierarchical)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  Earth divided into hexagonal cells at different resolutions
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  Level 9 hex cell ~= 0.1 km^2 (neighborhood-sized)
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  Driver update: store driver_id -&gt; H3 cell mapping
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  Rider request: find all drivers in my H3 cell + adjacent cells
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  Instead of: "Find all drivers within 2km radius" (slow polygon query)
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  Use: "Find all drivers in hex cells 12345, 12346, 12347..." (fast lookup)
 </span></code></pre></div>
 <p><strong>The surge pricing architecture:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Traditional approach (would not work at scale):
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Every ride request → query all drivers in area → calculate supply/demand → price
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Uber's approach:
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  Kafka stream of ride requests and driver locations
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Flink processes the stream continuously
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  Pre-compute surge multiplier per H3 hex cell every 30 seconds
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  Store surge map in Redis (expires after 60 seconds)
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  Ride request: lookup hex cell → read surge multiplier from Redis
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  = one Redis read = sub-millisecond pricing
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  = surge pricing is a read, not a calculation
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Traditional approach (would not work at scale):
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  Every ride request -&gt; query all drivers in area -&gt; calculate supply/demand -&gt; price
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Uber's approach:
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Kafka stream of ride requests and driver locations
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  Flink processes the stream continuously
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  Pre-compute surge multiplier per H3 hex cell every 30 seconds
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  Store surge map in Redis (expires after 60 seconds)
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  Ride request: lookup hex cell -&gt; read surge multiplier from Redis
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  = one Redis read = sub-millisecond pricing
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  = surge pricing is a read, not a calculation
 </span></code></pre></div>
 <hr>
 <h2 id="phase-3-the-microservices-problem-2018">Phase 3: The Microservices Problem (2018)<a class="headerlink" href="#phase-3-the-microservices-problem-2018" title="Permanent link">¶</a></h2>
@@ -2835,143 +2858,151 @@
 <p><strong>The specific problems:</strong></p>
 <ol>
 <li><strong>No clear ownership:</strong> A bug in the dispatch flow touched code owned by 5 teams. Who debugs it?</li>
-<li><strong>Circular dependencies:</strong> Service A calls B calls C calls A → deadlock, impossible to reason about</li>
+<li><strong>Circular dependencies:</strong> Service A calls B calls C calls A -&gt; deadlock, impossible to reason about</li>
 <li><strong>"Networked monolith":</strong> Services that appeared independent had to deploy together because of tight coupling via API contracts</li>
 </ol>
 <hr>
-<h2 id="phase-4-doma-domain-oriented-microservice-architecture-2020">Phase 4: DOMA — Domain-Oriented Microservice Architecture (2020)<a class="headerlink" href="#phase-4-doma-domain-oriented-microservice-architecture-2020" title="Permanent link">¶</a></h2>
+<h2 id="phase-4-doma-domain-oriented-microservice-architecture-2020">Phase 4: DOMA - Domain-Oriented Microservice Architecture (2020)<a class="headerlink" href="#phase-4-doma-domain-oriented-microservice-architecture-2020" title="Permanent link">¶</a></h2>
 <p><strong>The insight:</strong></p>
 <blockquote>
-<p>"Microservices became our Big Ball of Mud — just distributed. DOMA says: group services by business domain, not by technical function. Define strict ownership. Create explicit layers. Enforce boundaries."</p>
+<p>"Microservices became our Big Ball of Mud - just distributed. DOMA says: group services by business domain, not by technical function. Define strict ownership. Create explicit layers. Enforce boundaries."</p>
 </blockquote>
 <p><strong>DOMA Structure:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Layer 1: Infrastructure (used by everyone)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  ├── Logging Service
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  ├── Monitoring Service
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  ├── Auth Service
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  └── Config Service
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Layer 2: Business Services (Uber-wide, used across products)
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  ├── Payments Domain
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  │   ├── PaymentMethodService
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  │   ├── ChargeService
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  │   └── RefundService
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  ├── Identity Domain
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  │   ├── UserService
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  │   └── DriverService
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  └── Maps Domain
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>      ├── RoutingService
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>      ├── GeofenceService
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>      └── LocationService
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>Layer 3: Product Services (specific to one Uber product)
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>  ├── UberRides Domain
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>  │   ├── DispatchService
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>  │   ├── TripService
-</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>  │   └── PricingService
-</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>  └── UberEats Domain
-</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>      ├── OrderService
-</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>      ├── RestaurantService
-</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>      └── DeliveryService
-</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
-</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>Rule: Layer N can call Layer N-1 and lower, but NEVER higher
-</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>Rule: Same layer services should NOT call each other (go through domain gateway)
-</span></code></pre></div>
+<p>Services are grouped into three layers and into domains within each layer. A layer may call only the layers below it.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph L3["Layer 3: Product Services - specific to one Uber product"]
+        subgraph Rides["UberRides Domain"]
+            DispatchService
+            TripService
+            PricingService
+        end
+        subgraph Eats["UberEats Domain"]
+            OrderService
+            RestaurantService
+            DeliveryService
+        end
+    end
+    subgraph L2["Layer 2: Business Services - Uber-wide"]
+        subgraph Payments["Payments Domain"]
+            PaymentMethodService
+            ChargeService
+            RefundService
+        end
+        subgraph Identity["Identity Domain"]
+            UserService
+            DriverService
+        end
+        subgraph MapsD["Maps Domain"]
+            RoutingService
+            GeofenceService
+            LocationService
+        end
+    end
+    subgraph L1["Layer 1: Infrastructure - used by everyone"]
+        LoggingService
+        MonitoringService
+        AuthService
+        ConfigService
+    end
+    L3 --&gt; L2
+    L2 --&gt; L1</code></pre>
+<p>Rule: Layer N can call Layer N-1 and lower, but NEVER higher.
+Rule: Same-layer services should NOT call each other - they go through a domain gateway.</p>
 <p><strong>DOMA Gateway Pattern:</strong></p>
 <p>Each domain exposes a single Gateway API that all external callers use:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>External caller → RidesGateway → internal dispatch to DispatchService/TripService
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>                                   (callers don't know which internal service handles it)
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>This is the Facade design pattern at the domain level.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>External caller -&gt; RidesGateway -&gt; internal dispatch to DispatchService/TripService
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>                                   (callers don't know which internal service handles it)
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>This is the Facade design pattern at the domain level.
 </span></code></pre></div>
 <hr>
-<h2 id="cadence-workflow-orchestration-for-the-saga-pattern">Cadence — Workflow Orchestration for the Saga Pattern<a class="headerlink" href="#cadence-workflow-orchestration-for-the-saga-pattern" title="Permanent link">¶</a></h2>
-<p><strong>Problem:</strong> A trip involves: matching driver → pricing → payment auth → trip start → trip end → payment charge → driver payout. Any step can fail. The saga pattern requires compensating transactions.</p>
+<h2 id="cadence-workflow-orchestration-for-the-saga-pattern">Cadence - Workflow Orchestration for the Saga Pattern<a class="headerlink" href="#cadence-workflow-orchestration-for-the-saga-pattern" title="Permanent link">¶</a></h2>
+<p><strong>Problem:</strong> A trip involves: matching driver -&gt; pricing -&gt; payment auth -&gt; trip start -&gt; trip end -&gt; payment charge -&gt; driver payout. Any step can fail. The saga pattern requires compensating transactions.</p>
 <p><strong>Cadence (now Temporal.io):</strong></p>
-<div class="language-go highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Cadence workflow = Saga Orchestrator</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">func</span><span class="w"> </span><span class="nx">TripWorkflow</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="c1">// Step 1: Match driver</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">driver</span><span class="w"> </span><span class="nx">DriverInfo</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">matchDriver</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">).</span><span class="nx">Get</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">driver</span><span class="p">)</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="c1">// no driver found, trip cancelled</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="c1">// Step 2: Authorize payment</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">  </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">authorizePayment</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">,</span><span class="w"> </span><span class="nx">driver</span><span class="p">.</span><span class="nx">EstimatedFare</span><span class="p">)</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="c1">// Compensate: release driver</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">releaseDriver</span><span class="p">,</span><span class="w"> </span><span class="nx">driver</span><span class="p">.</span><span class="nx">Id</span><span class="p">)</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">  </span><span class="c1">// Step 3: Run trip (waits for trip completion — could be hours)</span>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">  </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">runTrip</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">).</span><span class="nx">Get</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">  </span><span class="c1">// Step 4: Capture payment</span>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">  </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">capturePayment</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">)</span>
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span>
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="p">}</span>
-</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="c1">// If the server crashes mid-trip, Cadence replays the workflow from the last checkpoint</span>
-</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="c1">// The driver and rider never know a server restarted</span>
+<div class="language-go highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Cadence workflow = Saga Orchestrator</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">func</span><span class="w"> </span><span class="nx">TripWorkflow</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="c1">// Step 1: Match driver</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">driver</span><span class="w"> </span><span class="nx">DriverInfo</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">matchDriver</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">).</span><span class="nx">Get</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">driver</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="c1">// no driver found, trip cancelled</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="c1">// Step 2: Authorize payment</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">authorizePayment</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">,</span><span class="w"> </span><span class="nx">driver</span><span class="p">.</span><span class="nx">EstimatedFare</span><span class="p">)</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="c1">// Compensate: release driver</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">releaseDriver</span><span class="p">,</span><span class="w"> </span><span class="nx">driver</span><span class="p">.</span><span class="nx">Id</span><span class="p">)</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">  </span><span class="c1">// Step 3: Run trip (waits for trip completion - could be hours)</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">  </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">runTrip</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">).</span><span class="nx">Get</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">  </span><span class="c1">// Step 4: Capture payment</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">  </span><span class="nx">workflow</span><span class="p">.</span><span class="nx">ExecuteActivity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">capturePayment</span><span class="p">,</span><span class="w"> </span><span class="nx">tripId</span><span class="p">)</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="p">}</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="c1">// If the server crashes mid-trip, Cadence replays the workflow from the last checkpoint</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="c1">// The driver and rider never know a server restarted</span>
 </span></code></pre></div>
 <p><strong>Why Cadence/Temporal was invented at Uber:</strong></p>
 <blockquote>
-<p>"Long-running workflows (a trip is 20 minutes; waiting for human approval is days) can't run in-process — the server restarts. Cadence persists workflow state as events, replays them on restart. It's event sourcing for workflow orchestration."</p>
+<p>"Long-running workflows (a trip is 20 minutes; waiting for human approval is days) can't run in-process - the server restarts. Cadence persists workflow state as events, replays them on restart. It's event sourcing for workflow orchestration."</p>
 </blockquote>
 <hr>
 <h2 id="real-time-data-architecture">Real-Time Data Architecture<a class="headerlink" href="#real-time-data-architecture" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Driver Location Update (every 4 seconds per driver)
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  │
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  ▼
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Kafka (kafka.location.updates topic)
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  │
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  ├──► Flink (stream processing) → surge pricing calculation → Redis
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  ├──► Cassandra (location history for trip replay/audit)
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  └──► H3 GeoIndex Service → dispatch lookup
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>Rider requests a trip:
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  → DispatchService reads H3 index from Redis (nearest drivers)
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  → Sends trip offer to N nearest drivers via WebSocket
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  → First driver to accept → TripService creates trip
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  → Saga workflow starts
-</span></code></pre></div>
+<p>Location updates stream through Kafka to three consumers; a rider request then reads the precomputed index and drives the trip flow.</p>
+<pre class="mermaid"><code>flowchart TD
+    Loc["Driver Location Update - every 4s per driver"] --&gt; Kafka["Kafka - location.updates topic"]
+    Kafka --&gt; Flink["Flink stream processing"]
+    Flink --&gt;|surge calculation| Redis[("Redis")]
+    Kafka --&gt; Cassandra[("Cassandra - location history for replay and audit")]
+    Kafka --&gt; H3["H3 GeoIndex Service - dispatch lookup"]
+
+    Req["Rider requests a trip"] --&gt; Read["DispatchService reads H3 index from Redis - nearest drivers"]
+    Read --&gt; Offer["Send trip offer to N nearest drivers via WebSocket"]
+    Offer --&gt; Accept["First driver to accept"]
+    Accept --&gt; TripSvc["TripService creates trip"]
+    TripSvc --&gt; Saga["Saga workflow starts"]
+    Redis -.-&gt; Read
+    H3 -.-&gt; Read</code></pre>
 <hr>
 <h2 id="architecture-in-clean-architecture-terms">Architecture in Clean Architecture Terms<a class="headerlink" href="#architecture-in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>DOMA = Clean Architecture at organizational scale
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Domain Gateway = Interface Adapter (inbound for the domain)
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  Callers interact with the domain through the gateway
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  Internal domain structure is hidden
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>Internal Domain Services = Use Cases
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  DispatchService.matchDriver() = a use case
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  Depends on IDriverRepository, IGeofenceService (interfaces)
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>Infrastructure Services = Framework &amp; Drivers layer
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  Kafka publishing, Redis caching, Cassandra repos = adapters
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>  Business logic never imports Kafka directly
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>DOMA Layer Rule = Clean Architecture's Dependency Rule
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  Layer N can only depend on Layer N-1 and lower
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>  = same as "inner layers never import outer layers"
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>DOMA = Clean Architecture at organizational scale
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Domain Gateway = Interface Adapter (inbound for the domain)
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  Callers interact with the domain through the gateway
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  Internal domain structure is hidden
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Internal Domain Services = Use Cases
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  DispatchService.matchDriver() = a use case
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  Depends on IDriverRepository, IGeofenceService (interfaces)
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>Infrastructure Services = Framework &amp; Drivers layer
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  Kafka publishing, Redis caching, Cassandra repos = adapters
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  Business logic never imports Kafka directly
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>DOMA Layer Rule = Clean Architecture's Dependency Rule
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>  Layer N can only depend on Layer N-1 and lower
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>  = same as "inner layers never import outer layers"
 </span></code></pre></div>
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Microservices is a people problem</strong> — 1000 services × 1000 engineers works; 1000 services × 100 engineers = chaos</li>
-<li><strong>Domain boundaries must match team boundaries</strong> — Conway's Law is real; your architecture mirrors your org chart</li>
-<li><strong>Event streaming solves real-time scale</strong> — 15M location updates/second requires Kafka, not REST calls</li>
-<li><strong>Geospatial indexing is a specialized problem</strong> — H3 hexagons beat lat/lon polygon queries at Uber's scale</li>
-<li><strong>Long-running workflows need Saga/Temporal</strong> — a trip is 20 minutes; you can't hold a DB transaction that long</li>
+<li><strong>Microservices is a people problem</strong> - 1000 services x 1000 engineers works; 1000 services x 100 engineers = chaos</li>
+<li><strong>Domain boundaries must match team boundaries</strong> - Conway's Law is real; your architecture mirrors your org chart</li>
+<li><strong>Event streaming solves real-time scale</strong> - 15M location updates/second requires Kafka, not REST calls</li>
+<li><strong>Geospatial indexing is a specialized problem</strong> - H3 hexagons beat lat/lon polygon queries at Uber's scale</li>
+<li><strong>Long-running workflows need Saga/Temporal</strong> - a trip is 20 minutes; you can't hold a DB transaction that long</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://www.uber.com/blog/microservice-architecture/">Introducing Domain-Oriented Microservice Architecture — Uber Blog</a></li>
+<li><a href="https://www.uber.com/blog/microservice-architecture/">Introducing Domain-Oriented Microservice Architecture - Uber Blog</a></li>
 <li><a href="https://www.uber.com/blog/service-oriented-architecture/">Service-Oriented Architecture: Scaling the Uber Engineering Codebase</a></li>
-<li><a href="https://grokkingthesystemdesign.com/guides/uber-system-design/">Uber System Design Deep Dive — Grokking</a></li>
+<li><a href="https://grokkingthesystemdesign.com/guides/uber-system-design/">Uber System Design Deep Dive - Grokking</a></li>
 </ul>
 <hr>
 <h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">¶</a></h2>

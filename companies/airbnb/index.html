@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2192,10 +2222,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-ruby-on-rails-monolith-20082014" class="md-nav__link">
+  <a href="#phase-1-the-ruby-on-rails-monolith-2008-2014" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Ruby on Rails Monolith (2008–2014)
+        Phase 1: The Ruby on Rails Monolith (2008-2014)
       
     </span>
   </a>
@@ -2203,10 +2233,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-the-failed-microservices-attempt-20152016" class="md-nav__link">
+  <a href="#phase-2-the-failed-microservices-attempt-2015-2016" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: The Failed Microservices Attempt (2015–2016)
+        Phase 2: The Failed Microservices Attempt (2015-2016)
       
     </span>
   </a>
@@ -2214,10 +2244,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-3-soa-with-graphql-relay-2017present" class="md-nav__link">
+  <a href="#phase-3-soa-with-graphql-relay-2017-present" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 3: SOA with GraphQL + Relay (2017–present)
+        Phase 3: SOA with GraphQL + Relay (2017-present)
       
     </span>
   </a>
@@ -2549,10 +2579,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-ruby-on-rails-monolith-20082014" class="md-nav__link">
+  <a href="#phase-1-the-ruby-on-rails-monolith-2008-2014" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Ruby on Rails Monolith (2008–2014)
+        Phase 1: The Ruby on Rails Monolith (2008-2014)
       
     </span>
   </a>
@@ -2560,10 +2590,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-the-failed-microservices-attempt-20152016" class="md-nav__link">
+  <a href="#phase-2-the-failed-microservices-attempt-2015-2016" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: The Failed Microservices Attempt (2015–2016)
+        Phase 2: The Failed Microservices Attempt (2015-2016)
       
     </span>
   </a>
@@ -2571,10 +2601,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-3-soa-with-graphql-relay-2017present" class="md-nav__link">
+  <a href="#phase-3-soa-with-graphql-relay-2017-present" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 3: SOA with GraphQL + Relay (2017–present)
+        Phase 3: SOA with GraphQL + Relay (2017-present)
       
     </span>
   </a>
@@ -2667,9 +2697,9 @@
   
 
 
-<h1 id="airbnb-architecture-case-study">Airbnb — Architecture Case Study<a class="headerlink" href="#airbnb-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="airbnb-architecture-case-study">Airbnb - Architecture Case Study<a class="headerlink" href="#airbnb-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"We tried microservices, failed, tried again, and eventually succeeded — but not in the way we expected." — Airbnb Engineering</p>
+<p>"We tried microservices, failed, tried again, and eventually succeeded - but not in the way we expected." - Airbnb Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2700,18 +2730,18 @@
 </tbody>
 </table>
 <hr>
-<h2 id="phase-1-the-ruby-on-rails-monolith-20082014">Phase 1: The Ruby on Rails Monolith (2008–2014)<a class="headerlink" href="#phase-1-the-ruby-on-rails-monolith-20082014" title="Permanent link">¶</a></h2>
+<h2 id="phase-1-the-ruby-on-rails-monolith-2008-2014">Phase 1: The Ruby on Rails Monolith (2008-2014)<a class="headerlink" href="#phase-1-the-ruby-on-rails-monolith-2008-2014" title="Permanent link">¶</a></h2>
 <p><strong>The original setup:</strong> Ruby on Rails monolith + PostgreSQL + Nginx on AWS</p>
 <p><strong>The problems that forced change:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>By 2014:
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  - 5 separate teams, all committing to one Rails app
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  - "You broke my build" was said multiple times daily
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  - Deploy frequency: once per week (too risky to deploy more)
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  - One bad deploy → entire Airbnb down
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  - One bad deploy -&gt; entire Airbnb down
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  - Search, Payments, Messaging, and Listings teams all stepping on each other
 </span></code></pre></div>
 <hr>
-<h2 id="phase-2-the-failed-microservices-attempt-20152016">Phase 2: The Failed Microservices Attempt (2015–2016)<a class="headerlink" href="#phase-2-the-failed-microservices-attempt-20152016" title="Permanent link">¶</a></h2>
+<h2 id="phase-2-the-failed-microservices-attempt-2015-2016">Phase 2: The Failed Microservices Attempt (2015-2016)<a class="headerlink" href="#phase-2-the-failed-microservices-attempt-2015-2016" title="Permanent link">¶</a></h2>
 <p><strong>The honest failure:</strong></p>
 <blockquote>
 <p>"In 2015 we announced we would migrate to microservices in 18 months. We missed every deadline. After a year of effort, we called it off. The migration was taking longer than expected, and we were still shipping features in the monolith. We hadn't solved the fundamental problem: circular dependencies."</p>
@@ -2721,8 +2751,8 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  PaymentService needed UserService for user verification
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  UserService needed PaymentService for billing validation
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Both needed to import each other → circular dependency
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  → Can't split into separate services
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Both needed to import each other -&gt; circular dependency
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a> -&gt; Can't split into separate services
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Root cause: the domain boundaries weren't clear.
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>If you can't draw a box around one part of your system
@@ -2733,7 +2763,7 @@
 <p>"You can't migrate to microservices before you understand your domain boundaries. Domain boundaries first. Service extraction second."</p>
 </blockquote>
 <hr>
-<h2 id="phase-3-soa-with-graphql-relay-2017present">Phase 3: SOA with GraphQL + Relay (2017–present)<a class="headerlink" href="#phase-3-soa-with-graphql-relay-2017present" title="Permanent link">¶</a></h2>
+<h2 id="phase-3-soa-with-graphql-relay-2017-present">Phase 3: SOA with GraphQL + Relay (2017-present)<a class="headerlink" href="#phase-3-soa-with-graphql-relay-2017-present" title="Permanent link">¶</a></h2>
 <p><strong>The approach that worked: clear contracts first:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Instead of jumping to separate deployments, Airbnb:
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>1. Defined the API contracts between domains
@@ -2751,8 +2781,8 @@
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Listing page on web: needs 50 fields (full description, all photos, all reviews)
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Listing on mobile: needs 15 fields (small preview, thumbnail, price)
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  REST API: GET /listings/123 → returns all 50 fields always
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Mobile over-fetches: downloads 50 fields, uses 15 → wastes bandwidth/battery
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  REST API: GET /listings/123 -&gt; returns all 50 fields always
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Mobile over-fetches: downloads 50 fields, uses 15 -&gt; wastes bandwidth/battery
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>GraphQL solution:
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  Mobile client asks for exactly what it needs
@@ -2769,9 +2799,9 @@
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  Output: "You could earn 20% more by pricing at $120 on weekends"
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  ML Pipeline:
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    Hive (batch): historical booking data → feature engineering → daily
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    Flink (streaming): real-time demand signals → pricing adjustments
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    ML model: gradient boosted trees → price recommendation
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    Hive (batch): historical booking data -&gt; feature engineering -&gt; daily
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    Flink (streaming): real-time demand signals -&gt; pricing adjustments
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    ML model: gradient boosted trees -&gt; price recommendation
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>Dynamic Pricing (Smart Pricing):
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  Airbnb adjusts price automatically if host opts in
@@ -2786,79 +2816,61 @@
 <hr>
 <h2 id="the-search-architecture">The Search Architecture<a class="headerlink" href="#the-search-architecture" title="Permanent link">¶</a></h2>
 <p><strong>Search at Airbnb scale:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>User searches: "2 nights in Bangkok, 2 adults, December"
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>      │
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>      ▼
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Search Query Service
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  Parses query → structured search request
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>      │
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>      ▼
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Availability Service
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  Which listings are available Dec 15-17?
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  Source: PostgreSQL availability calendar (not search engine)
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>      │
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>      ▼
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>Elasticsearch (listing search)
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  Filters: Bangkok area, 2+ guests, available dates
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>  Returns: candidate listing IDs (10,000 candidates)
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>      │
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>      ▼
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>Ranking Service (ML)
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>  For each candidate: predict likelihood of booking given this user's history
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>  Features: price vs user's historical spend, superhost status, photo quality
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>  Returns: top 100 ranked listings
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>      │
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>      ▼
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>Enrichment Service
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>  For each of top 100: fetch full listing details from listing service
-</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>      │
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>      ▼
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>User sees: top 20 results with price, photo, rating
-</span></code></pre></div>
+<p>The search request flows through a pipeline of services, each narrowing the candidate set from millions of listings down to the 20 results the user sees.</p>
+<pre class="mermaid"><code>flowchart TD
+    U["User search: 2 nights in Bangkok, 2 adults, December"]
+    Q["Search Query Service: parses query into structured request"]
+    A["Availability Service: which listings are free Dec 15-17 (PostgreSQL calendar)"]
+    E["Elasticsearch: filter by area, guests, dates - 10,000 candidates"]
+    R["Ranking Service (ML): predict booking likelihood - top 100"]
+    EN["Enrichment Service: fetch full details for top 100"]
+    Res["User sees: top 20 results with price, photo, rating"]
+
+    U --&gt; Q --&gt; A --&gt; E --&gt; R --&gt; EN --&gt; Res</code></pre>
 <hr>
 <h2 id="architecture-in-clean-architecture-terms">Architecture in Clean Architecture Terms<a class="headerlink" href="#architecture-in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Airbnb's Architecture:
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Search Use Case = Use Case layer
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  SearchListingsUseCase depends on:
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    IAvailabilityService (port) → AvailabilityServiceClient (adapter)
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    ISearchIndex (port) → ElasticsearchAdapter (adapter)
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    IRankingService (port) → MLRankingServiceClient (adapter)
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  Use case orchestrates these ports; adapters implement them
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  Use case code is framework-agnostic
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>GraphQL = Interface Adapter (inbound)
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>  GraphQL resolver = Controller that calls SearchListingsUseCase
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>  Client specifies field selection in the query
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>  Resolver returns only the requested fields
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>Flink Jobs = Specialized Use Cases for pricing data pipeline
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>  Reads from Kafka (demand events) → computes pricing signals → writes to Redis
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>  Business logic: "if search volume increased 50% → adjust price signal"
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>  Infrastructure: Flink handles stream processing; use case is just the logic
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>Hive = Infrastructure layer (batch data store)
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>  IPricingFeatureStore → HiveFeatureStore (adapter)
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>  PricingService reads historical features via IPricingFeatureStore
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>  Hive details hidden behind interface
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Airbnb's Architecture:
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Search Use Case = Use Case layer
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  SearchListingsUseCase depends on:
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    IAvailabilityService (port) -&gt; AvailabilityServiceClient (adapter)
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    ISearchIndex (port) -&gt; ElasticsearchAdapter (adapter)
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    IRankingService (port) -&gt; MLRankingServiceClient (adapter)
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  Use case orchestrates these ports; adapters implement them
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  Use case code is framework-agnostic
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>GraphQL = Interface Adapter (inbound)
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  GraphQL resolver = Controller that calls SearchListingsUseCase
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  Client specifies field selection in the query
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>  Resolver returns only the requested fields
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>Flink Jobs = Specialized Use Cases for pricing data pipeline
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>  Reads from Kafka (demand events) -&gt; computes pricing signals -&gt; writes to Redis
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>  Business logic: "if search volume increased 50% -&gt; adjust price signal"
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>  Infrastructure: Flink handles stream processing; use case is just the logic
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>Hive = Infrastructure layer (batch data store)
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>  IPricingFeatureStore -&gt; HiveFeatureStore (adapter)
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>  PricingService reads historical features via IPricingFeatureStore
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>  Hive details hidden behind interface
 </span></code></pre></div>
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Domain boundaries must be clear before service extraction</strong> — Airbnb's failed first attempt: boundaries weren't clear</li>
-<li><strong>GraphQL solves multi-client data needs</strong> — one endpoint, each client asks for what it needs</li>
-<li><strong>Validate boundaries inside the monolith first</strong> — enforce API contracts inside one codebase before splitting deployments</li>
-<li><strong>Extract by risk and value, not by difficulty</strong> — Payments first (compliance need), not the easiest service first</li>
-<li><strong>Real-time + batch = complete pricing</strong> — Hive for historical patterns, Flink for real-time demand</li>
+<li><strong>Domain boundaries must be clear before service extraction</strong> - Airbnb's failed first attempt: boundaries weren't clear</li>
+<li><strong>GraphQL solves multi-client data needs</strong> - one endpoint, each client asks for what it needs</li>
+<li><strong>Validate boundaries inside the monolith first</strong> - enforce API contracts inside one codebase before splitting deployments</li>
+<li><strong>Extract by risk and value, not by difficulty</strong> - Payments first (compliance need), not the easiest service first</li>
+<li><strong>Real-time + batch = complete pricing</strong> - Hive for historical patterns, Flink for real-time demand</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://blog.bytebytego.com/p/a-brief-history-of-airbnbs-architecture">A Brief History of Airbnb's Architecture — ByteByteGo</a></li>
-<li><a href="https://www.infoq.com/presentations/airbnb-soa-migration/">The Great Migration: from Monolith to Service-Oriented — InfoQ</a></li>
-<li><a href="https://medium.com/airbnb-engineering/building-services-at-airbnb-part-1-c4c1d8fa811b">Building Services at Airbnb — Airbnb Tech Blog</a></li>
-<li><a href="https://www.techaheadcorp.com/blog/how-airbnb-migrated-to-microservices/">Airbnb's SOA Migration — TechAhead</a></li>
+<li><a href="https://blog.bytebytego.com/p/a-brief-history-of-airbnbs-architecture">A Brief History of Airbnb's Architecture - ByteByteGo</a></li>
+<li><a href="https://www.infoq.com/presentations/airbnb-soa-migration/">The Great Migration: from Monolith to Service-Oriented - InfoQ</a></li>
+<li><a href="https://medium.com/airbnb-engineering/building-services-at-airbnb-part-1-c4c1d8fa811b">Building Services at Airbnb - Airbnb Tech Blog</a></li>
+<li><a href="https://www.techaheadcorp.com/blog/how-airbnb-migrated-to-microservices/">Airbnb's SOA Migration - TechAhead</a></li>
 </ul>
 <hr>
 <h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">¶</a></h2>

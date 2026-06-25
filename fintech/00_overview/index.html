@@ -12,7 +12,7 @@
         <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/00_overview/">
       
       
-        <link rel="prev" href="../../database/33_mvcc/">
+        <link rel="prev" href="../../database/34_users_permissions_load_balanced/">
       
       
         <link rel="next" href="../01_double_entry_ledger/">
@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1375,6 +1377,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1594,7 +1624,7 @@
   <a href="#rule-3-idempotency-process-each-payment-exactly-once" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rule 3: Idempotency — Process Each Payment Exactly Once
+        Rule 3: Idempotency - Process Each Payment Exactly Once
       
     </span>
   </a>
@@ -2614,7 +2644,7 @@
   <a href="#rule-3-idempotency-process-each-payment-exactly-once" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rule 3: Idempotency — Process Each Payment Exactly Once
+        Rule 3: Idempotency - Process Each Payment Exactly Once
       
     </span>
   </a>
@@ -2679,9 +2709,9 @@
   
 
 
-<h1 id="financial-systems-architecture-complete-overview">Financial Systems Architecture — Complete Overview<a class="headerlink" href="#financial-systems-architecture-complete-overview" title="Permanent link">¶</a></h1>
+<h1 id="financial-systems-architecture-complete-overview">Financial Systems Architecture - Complete Overview<a class="headerlink" href="#financial-systems-architecture-complete-overview" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"In financial systems, the cost of a bug is not a bad user experience. It is real money lost, real accounts corrupted, real people's savings gone. This changes everything about how you design, test, and operate these systems." — Senior fintech architect</p>
+<p>"In financial systems, the cost of a bug is not a bad user experience. It is real money lost, real accounts corrupted, real people's savings gone. This changes everything about how you design, test, and operate these systems." - Senior fintech architect</p>
 </blockquote>
 <hr>
 <h2 id="why-financial-architecture-is-different">Why Financial Architecture Is Different<a class="headerlink" href="#why-financial-architecture-is-different" title="Permanent link">¶</a></h2>
@@ -2725,31 +2755,31 @@
 <h2 id="the-stack-of-financial-architecture">The Stack of Financial Architecture<a class="headerlink" href="#the-stack-of-financial-architecture" title="Permanent link">¶</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Layer 1: BUSINESS MODEL
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Double-Entry Bookkeeping
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  → Every transaction: debit one account, credit another
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  → Sum of all debits = Sum of all credits ALWAYS
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  → Mathematical proof of correctness
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a> -&gt; Every transaction: debit one account, credit another
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a> -&gt; Sum of all debits = Sum of all credits ALWAYS
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a> -&gt; Mathematical proof of correctness
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Layer 2: DATA INTEGRITY
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  Immutable Append-Only Ledger
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  → Never UPDATE or DELETE financial records
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  → Every change is a new INSERT
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  → Cryptographic hash chain (tamper-evident)
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a> -&gt; Never UPDATE or DELETE financial records
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a> -&gt; Every change is a new INSERT
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a> -&gt; Cryptographic hash chain (tamper-evident)
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>Layer 3: TRANSACTION SAFETY
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  ACID Transactions + Idempotency
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  → All-or-nothing: debit + credit together or neither
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  → Idempotency keys: charge exactly once even with retries
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a> -&gt; All-or-nothing: debit + credit together or neither
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a> -&gt; Idempotency keys: charge exactly once even with retries
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>Layer 4: DISTRIBUTED SAFETY
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  Saga Pattern (not 2PC) for cross-service transactions
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>  → Each step has a compensating action
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>  → No distributed locks that can deadlock
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a> -&gt; Each step has a compensating action
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a> -&gt; No distributed locks that can deadlock
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>Layer 5: SECURITY
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>  HSM → Key management (keys never leave hardware)
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>  PCI DSS → Compliance framework
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>  mTLS → Mutual auth between all services
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>  Zero Trust → Never trust, always verify
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>  HSM -&gt; Key management (keys never leave hardware)
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>  PCI DSS -&gt; Compliance framework
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>  mTLS -&gt; Mutual auth between all services
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>  Zero Trust -&gt; Never trust, always verify
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
 </span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>Layer 6: AUDIT &amp; COMPLIANCE
 </span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>  Write-Ahead Log (WAL)
@@ -2776,7 +2806,7 @@
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">FROM</span><span class="w"> </span><span class="n">journal_entries</span><span class="p">;</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1">-- imbalance must always = 0</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1">-- If it's not zero → data corruption → investigate immediately</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1">-- If it's not zero -&gt; data corruption -&gt; investigate immediately</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1">-- This is your first monitoring alert</span>
 </span></code></pre></div>
 <hr>
@@ -2788,15 +2818,15 @@
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  Net change to system: $0
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Payment received $100 from Stripe:
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Stripe liability account:  -$100 (debit → we owe Stripe less)
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  Customer account:          +$100 (credit → customer has more)
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Stripe liability account:  -$100 (debit -&gt; we owe Stripe less)
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  Customer account:          +$100 (credit -&gt; customer has more)
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  Net change to system: $0
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>WRONG approach:
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  Alice.balance -= 100;  // where did the $100 go?
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  Bob.balance += 100;    // where did the $100 come from?
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  → No audit trail of the TRANSFER itself
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  → If Alice is debited and system crashes → $100 lost
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a> -&gt; No audit trail of the TRANSFER itself
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a> -&gt; If Alice is debited and system crashes -&gt; $100 lost
 </span></code></pre></div>
 <h3 id="rule-2-every-financial-record-is-immutable">Rule 2: Every Financial Record Is Immutable<a class="headerlink" href="#rule-2-every-financial-record-is-immutable" title="Permanent link">¶</a></h3>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- NEVER do this in a financial system:</span>
@@ -2815,16 +2845,16 @@
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="c1">-- The wrong entry stays visible. The correction is a new entry.</span>
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1">-- Auditors can trace exactly what happened and when.</span>
 </span></code></pre></div>
-<h3 id="rule-3-idempotency-process-each-payment-exactly-once">Rule 3: Idempotency — Process Each Payment Exactly Once<a class="headerlink" href="#rule-3-idempotency-process-each-payment-exactly-once" title="Permanent link">¶</a></h3>
+<h3 id="rule-3-idempotency-process-each-payment-exactly-once">Rule 3: Idempotency - Process Each Payment Exactly Once<a class="headerlink" href="#rule-3-idempotency-process-each-payment-exactly-once" title="Permanent link">¶</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Without idempotency:
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  User clicks "Pay" → network timeout → user clicks "Pay" again
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  → Two charges processed → user double-charged → angry customer, refund needed
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  User clicks "Pay" -&gt; network timeout -&gt; user clicks "Pay" again
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a> -&gt; Two charges processed -&gt; user double-charged -&gt; angry customer, refund needed
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>With idempotency:
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  User clicks "Pay" → generates idempotency_key = uuid()
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  Network timeout → user clicks "Pay" again → SAME idempotency_key
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  Second request: "already processed → return stored result"
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  → Charged exactly once → correct
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  User clicks "Pay" -&gt; generates idempotency_key = uuid()
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  Network timeout -&gt; user clicks "Pay" again -&gt; SAME idempotency_key
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  Second request: "already processed -&gt; return stored result"
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a> -&gt; Charged exactly once -&gt; correct
 </span></code></pre></div>
 <hr>
 <h2 id="financial-architecture-patterns-index">Financial Architecture Patterns Index<a class="headerlink" href="#financial-architecture-patterns-index" title="Permanent link">¶</a></h2>
@@ -2984,7 +3014,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer">
         
           
-          <a href="../../database/33_mvcc/" class="md-footer__link md-footer__link--prev" aria-label="Previous: MVCC">
+          <a href="../../database/34_users_permissions_load_balanced/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Users &amp; Permissions (Load-Balanced)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -2994,7 +3024,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                MVCC
+                Users &amp; Permissions (Load-Balanced)
               </div>
             </div>
           </a>

@@ -1313,6 +1313,8 @@
       
         
       
+        
+      
     
     
     
@@ -1627,6 +1629,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2877,7 +2907,7 @@
   
 
 
-<h1 id="architecture-13-serverless-architecture">Architecture 13 — Serverless Architecture<a class="headerlink" href="#architecture-13-serverless-architecture" title="Permanent link">¶</a></h1>
+<h1 id="architecture-13-serverless-architecture">Architecture 13 - Serverless Architecture<a class="headerlink" href="#architecture-13-serverless-architecture" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2890,7 +2920,7 @@
 <tbody>
 <tr>
 <td><strong>Type</strong></td>
-<td>Function-as-a-Service (FaaS) — no server management</td>
+<td>Function-as-a-Service (FaaS) - no server management</td>
 </tr>
 <tr>
 <td><strong>Complexity</strong></td>
@@ -2909,63 +2939,64 @@
 <hr>
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
 <p>Serverless means you write <strong>functions</strong> instead of services. The cloud provider handles everything else: provisioning, scaling, availability, patching. You pay only for what you use (per invocation).</p>
-<p><strong>"Serverless" doesn't mean no servers — it means YOU don't manage servers.</strong></p>
+<p><strong>"Serverless" doesn't mean no servers - it means YOU don't manage servers.</strong></p>
 <hr>
 <h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
 <p><code>./diagram.svg</code></p>
 <hr>
 <h2 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>HTTP Request → API Gateway → Lambda Function (PlaceOrder)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                 │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                                 ├──► DynamoDB (write order)
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                                 ├──► SQS (publish event)
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                                 └──► Return response
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>SQS event → Lambda Function (ProcessPayment)
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                ├──► Stripe API (charge card)
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                └──► SNS (publish PaymentCharged event)
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>SNS event → Lambda Function (SendNotification)
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                └──► SES (send email)
-</span></code></pre></div>
+<p>An HTTP request enters through the API Gateway and fans out across event-driven Lambda functions, each calling managed services and chaining the next function via SQS and SNS events.</p>
+<pre class="mermaid"><code>flowchart TD
+    HTTP["HTTP Request"] --&gt; GW["API Gateway"]
+    GW --&gt; PO["Lambda PlaceOrder"]
+    PO --&gt;|write order| DDB["DynamoDB"]
+    PO --&gt;|publish event| SQS["SQS"]
+    PO --&gt;|return response| RESP["HTTP Response"]
+
+    SQS --&gt;|event| PP["Lambda ProcessPayment"]
+    PP --&gt;|charge card| STRIPE["Stripe API"]
+    PP --&gt;|publish PaymentCharged| SNS["SNS"]
+
+    SNS --&gt;|event| SN["Lambda SendNotification"]
+    SN --&gt;|send email| SES["SES"]</code></pre>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<p>A Lambda function handler IS the <strong>Controller</strong> (Interface Adapter layer). The business logic should still live in Use Cases and Entities — NOT in the handler.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// ❌ BAD: Business logic in the handler</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">APIGatewayEvent</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">body</span><span class="o">!</span><span class="p">);</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="c1">// VALIDATION, BUSINESS RULES, DB CALLS all in the handler!</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">put</span><span class="p">({</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">});</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">stripe</span><span class="p">.</span><span class="nx">charges</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">});</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">statusCode</span><span class="o">:</span><span class="w"> </span><span class="kt">200</span><span class="p">,</span><span class="w"> </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="kt">JSON.stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">order.id</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">};</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">};</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1">// ✅ GOOD: Handler is just a thin adapter</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">APIGatewayEvent</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="c1">// Handler = Controller (Interface Adapter layer)</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">PlaceOrderRequestMapper</span><span class="p">.</span><span class="nx">fromApiGateway</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">placeOrderUseCase</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span><span class="w">  </span><span class="c1">// use case call</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">statusCode</span><span class="o">:</span><span class="w"> </span><span class="kt">200</span><span class="p">,</span><span class="w"> </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="kt">JSON.stringify</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">};</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">};</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1">// Use Case: SAME as non-serverless — platform-agnostic</span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span><span class="w">   </span><span class="c1">// interface</span>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">payments</span><span class="o">:</span><span class="w"> </span><span class="kt">IPaymentGateway</span><span class="w">   </span><span class="c1">// interface</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">PlaceOrderResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="p">}</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="c1">// Adapters: DynamoDB implementation (can swap to RDS without changing use case)</span>
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="kd">class</span><span class="w"> </span><span class="nx">DynamoOrderRepository</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IOrderRepository</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">}</span>
+<p>A Lambda function handler IS the <strong>Controller</strong> (Interface Adapter layer). The business logic should still live in Use Cases and Entities - NOT in the handler.</p>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// [X] BAD: Business logic in the handler</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">APIGatewayEvent</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">body</span><span class="o">!</span><span class="p">);</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="c1">// VALIDATION, BUSINESS RULES, DB CALLS all in the handler!</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">put</span><span class="p">({</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">});</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">stripe</span><span class="p">.</span><span class="nx">charges</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">});</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">statusCode</span><span class="o">:</span><span class="w"> </span><span class="kt">200</span><span class="p">,</span><span class="w"> </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="kt">JSON.stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">order.id</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">};</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">// [OK] GOOD: Handler is just a thin adapter</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">handler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">APIGatewayEvent</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="c1">// Handler = Controller (Interface Adapter layer)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">PlaceOrderRequestMapper</span><span class="p">.</span><span class="nx">fromApiGateway</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">placeOrderUseCase</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span><span class="w">  </span><span class="c1">// use case call</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">statusCode</span><span class="o">:</span><span class="w"> </span><span class="kt">200</span><span class="p">,</span><span class="w"> </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="kt">JSON.stringify</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">};</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1">// Use Case: SAME as non-serverless - platform-agnostic</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span><span class="w">   </span><span class="c1">// interface</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">payments</span><span class="o">:</span><span class="w"> </span><span class="kt">IPaymentGateway</span><span class="w">   </span><span class="c1">// interface</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">PlaceOrderResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="p">}</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="c1">// Adapters: DynamoDB implementation (can swap to RDS without changing use case)</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="kd">class</span><span class="w"> </span><span class="nx">DynamoOrderRepository</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IOrderRepository</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <p><strong>The UseCase can be unit-tested locally without AWS, without DynamoDB, without Stripe.</strong></p>
 <hr>
 <h2 id="cold-start-problem">Cold Start Problem<a class="headerlink" href="#cold-start-problem" title="Permanent link">¶</a></h2>
-<p>Lambda functions have a "cold start" — when a function hasn't been invoked recently, AWS must initialize the runtime. This adds 100ms-3000ms latency.</p>
+<p>Lambda functions have a "cold start" - when a function hasn't been invoked recently, AWS must initialize the runtime. This adds 100ms-3000ms latency.</p>
 <p><strong>Mitigation strategies:</strong>
-- Provisioned Concurrency (keep N instances warm — costs money)
+- Provisioned Concurrency (keep N instances warm - costs money)
 - Keep handlers small (fast initialization)
 - Use Lambda Layers for shared code (reduces bundle size)
 - Use Rust or Go runtime instead of Node.js/Python (faster cold start)</p>
@@ -2983,7 +3014,7 @@
 <tr>
 <td><strong>CPU</strong></td>
 <td>Billed per ms of execution</td>
-<td>Scales to zero when idle — biggest cost advantage</td>
+<td>Scales to zero when idle - biggest cost advantage</td>
 </tr>
 <tr>
 <td><strong>Memory</strong></td>
@@ -3003,11 +3034,11 @@
 <tr>
 <td><strong>Cost</strong></td>
 <td>Pay per 100ms execution</td>
-<td>Free tier: 1M requests/month — ideal for low traffic</td>
+<td>Free tier: 1M requests/month - ideal for low traffic</td>
 </tr>
 <tr>
 <td><strong>Network</strong></td>
-<td>Stateless — no persistent connections</td>
+<td>Stateless - no persistent connections</td>
 <td>Use connection pooling (RDS Proxy) for DB</td>
 </tr>
 </tbody>
@@ -3015,12 +3046,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Zero server management</strong> — no EC2, no patching, no capacity planning</li>
-<li><strong>Auto-scaling</strong> — 0 to 10,000 concurrent automatically; no configuration</li>
-<li><strong>Pay per use</strong> — idle cost = $0 (vs $200/month for idle EC2)</li>
-<li><strong>Fast deployment</strong> — <code>serverless deploy</code> — functions live in seconds</li>
-<li><strong>Infinite scalability</strong> — AWS scales Lambda to meet demand automatically</li>
-<li><strong>Event-driven natively</strong> — S3 events, DynamoDB streams, SQS, SNS trigger functions naturally</li>
+<li><strong>Zero server management</strong> - no EC2, no patching, no capacity planning</li>
+<li><strong>Auto-scaling</strong> - 0 to 10,000 concurrent automatically; no configuration</li>
+<li><strong>Pay per use</strong> - idle cost = $0 (vs $200/month for idle EC2)</li>
+<li><strong>Fast deployment</strong> - <code>serverless deploy</code> - functions live in seconds</li>
+<li><strong>Infinite scalability</strong> - AWS scales Lambda to meet demand automatically</li>
+<li><strong>Event-driven natively</strong> - S3 events, DynamoDB streams, SQS, SNS trigger functions naturally</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3046,7 +3077,7 @@
 </tr>
 <tr>
 <td>"Image resize, PDF generation on upload"</td>
-<td>S3 trigger → Lambda → processed result; perfect fit</td>
+<td>S3 trigger -&gt; Lambda -&gt; processed result; perfect fit</td>
 </tr>
 <tr>
 <td>"Webhooks from Stripe/GitHub"</td>
@@ -3057,19 +3088,19 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Cold starts</strong> — 100ms-3s delay for first request after idle period</li>
-<li><strong>Execution time limit</strong> — AWS Lambda: 15-minute max (not for long jobs)</li>
-<li><strong>Stateless</strong> — no persistent memory between invocations; use external state (Redis, DynamoDB)</li>
-<li><strong>Vendor lock-in</strong> — AWS Lambda syntax differs from GCP Cloud Functions; migration is painful</li>
-<li><strong>Debugging is hard</strong> — distributed by nature; need structured logging + X-Ray tracing</li>
-<li><strong>Not good for persistent connections</strong> — WebSocket, long-polling require special setup</li>
+<li><strong>Cold starts</strong> - 100ms-3s delay for first request after idle period</li>
+<li><strong>Execution time limit</strong> - AWS Lambda: 15-minute max (not for long jobs)</li>
+<li><strong>Stateless</strong> - no persistent memory between invocations; use external state (Redis, DynamoDB)</li>
+<li><strong>Vendor lock-in</strong> - AWS Lambda syntax differs from GCP Cloud Functions; migration is painful</li>
+<li><strong>Debugging is hard</strong> - distributed by nature; need structured logging + X-Ray tracing</li>
+<li><strong>Not good for persistent connections</strong> - WebSocket, long-polling require special setup</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
 <h3 id="netflix">Netflix<a class="headerlink" href="#netflix" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Hundreds of Lambda functions for media processing</li>
-<li><strong>Use case:</strong> Video encoding pipeline: S3 upload → Lambda trigger → transcoding job dispatch</li>
+<li><strong>Use case:</strong> Video encoding pipeline: S3 upload -&gt; Lambda trigger -&gt; transcoding job dispatch</li>
 <li><strong>Good at:</strong> Processing millions of videos; scales to 0 when no uploads are happening</li>
 </ul>
 <h3 id="airbnb">Airbnb<a class="headerlink" href="#airbnb" title="Permanent link">¶</a></h3>
@@ -3082,19 +3113,19 @@
 <ul>
 <li><strong>Architecture:</strong> Serverless vending machine backend (AWS Lambda case study)</li>
 <li><strong>Use case:</strong> Each vending machine purchase triggers a Lambda function; 2M transactions/month</li>
-<li><strong>Good at:</strong> Cost — 70% cost reduction vs EC2-based system</li>
+<li><strong>Good at:</strong> Cost - 70% cost reduction vs EC2-based system</li>
 </ul>
 <h3 id="irobot-roomba">iRobot (Roomba)<a class="headerlink" href="#irobot-roomba" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> AWS Lambda for IoT device events</li>
-<li><strong>Use case:</strong> Each Roomba vacuum sends cleaning session data → Lambda processes → DynamoDB stores</li>
+<li><strong>Use case:</strong> Each Roomba vacuum sends cleaning session data -&gt; Lambda processes -&gt; DynamoDB stores</li>
 <li><strong>Good at:</strong> 10M+ devices; Lambda scales to match traffic without provisioning</li>
 </ul>
 <h3 id="the-guardian-news">The Guardian (News)<a class="headerlink" href="#the-guardian-news" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> Lambda for breaking news content delivery</li>
-<li><strong>Use case:</strong> CMS publish event → Lambda → CDN invalidation → updated pages worldwide</li>
-<li><strong>Good at:</strong> Breaking news spikes (election results) — Lambda handles the burst automatically</li>
+<li><strong>Use case:</strong> CMS publish event -&gt; Lambda -&gt; CDN invalidation -&gt; updated pages worldwide</li>
+<li><strong>Good at:</strong> Breaking news spikes (election results) - Lambda handles the burst automatically</li>
 </ul>
 <hr>
 <h2 id="serverless-vs-containers">Serverless vs Containers<a class="headerlink" href="#serverless-vs-containers" title="Permanent link">¶</a></h2>
@@ -3147,7 +3178,7 @@
 <hr>
 <h2 id="senior-architecture-advice">Senior Architecture Advice<a class="headerlink" href="#senior-architecture-advice" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"Serverless is the right default for event-driven workloads with variable traffic. But never put business logic in the handler — that's where most serverless architectures go wrong. Treat the Lambda handler like an Express controller: it translates the event into a request DTO, calls a use case, translates the response. The use case knows nothing about Lambda. This means you can run the same business logic locally, in a Lambda, in a container, or in a test — without changing a line of business logic."</p>
+<p>"Serverless is the right default for event-driven workloads with variable traffic. But never put business logic in the handler - that's where most serverless architectures go wrong. Treat the Lambda handler like an Express controller: it translates the event into a request DTO, calls a use case, translates the response. The use case knows nothing about Lambda. This means you can run the same business logic locally, in a Lambda, in a container, or in a test - without changing a line of business logic."</p>
 </blockquote>
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>

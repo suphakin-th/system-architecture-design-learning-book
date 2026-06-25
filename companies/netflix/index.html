@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -1951,10 +1981,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-monolith-19972008" class="md-nav__link">
+  <a href="#phase-1-the-monolith-1997-2008" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Monolith (1997–2008)
+        Phase 1: The Monolith (1997-2008)
       
     </span>
   </a>
@@ -1962,10 +1992,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-migration-to-aws-microservices-20082016" class="md-nav__link">
+  <a href="#phase-2-migration-to-aws-microservices-2008-2016" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: Migration to AWS + Microservices (2008–2016)
+        Phase 2: Migration to AWS + Microservices (2008-2016)
       
     </span>
   </a>
@@ -2037,7 +2067,7 @@
   <a href="#open-connect-cdn-the-real-secret" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open Connect CDN — The Real Secret
+        Open Connect CDN - The Real Secret
       
     </span>
   </a>
@@ -2632,10 +2662,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-1-the-monolith-19972008" class="md-nav__link">
+  <a href="#phase-1-the-monolith-1997-2008" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 1: The Monolith (1997–2008)
+        Phase 1: The Monolith (1997-2008)
       
     </span>
   </a>
@@ -2643,10 +2673,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-migration-to-aws-microservices-20082016" class="md-nav__link">
+  <a href="#phase-2-migration-to-aws-microservices-2008-2016" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: Migration to AWS + Microservices (2008–2016)
+        Phase 2: Migration to AWS + Microservices (2008-2016)
       
     </span>
   </a>
@@ -2718,7 +2748,7 @@
   <a href="#open-connect-cdn-the-real-secret" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Open Connect CDN — The Real Secret
+        Open Connect CDN - The Real Secret
       
     </span>
   </a>
@@ -2811,9 +2841,9 @@
   
 
 
-<h1 id="netflix-architecture-case-study">Netflix — Architecture Case Study<a class="headerlink" href="#netflix-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="netflix-architecture-case-study">Netflix - Architecture Case Study<a class="headerlink" href="#netflix-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"Netflix's greatest achievement isn't streaming video — it's building a system where any part can fail and users never notice." — Engineering observation</p>
+<p>"Netflix's greatest achievement isn't streaming video - it's building a system where any part can fail and users never notice." - Engineering observation</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2850,10 +2880,10 @@
 <hr>
 <h2 id="the-senior-architect-tells-the-story">The Senior Architect Tells the Story<a class="headerlink" href="#the-senior-architect-tells-the-story" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"Netflix is the definitive case study for why you need to plan for failure at the architecture level. Not 'log errors nicely' level — 'assume every single dependency WILL fail' level. Their architecture decisions come from one core belief: your system is always partially broken, and users should never see it."</p>
+<p>"Netflix is the definitive case study for why you need to plan for failure at the architecture level. Not 'log errors nicely' level - 'assume every single dependency WILL fail' level. Their architecture decisions come from one core belief: your system is always partially broken, and users should never see it."</p>
 </blockquote>
 <hr>
-<h2 id="phase-1-the-monolith-19972008">Phase 1: The Monolith (1997–2008)<a class="headerlink" href="#phase-1-the-monolith-19972008" title="Permanent link">¶</a></h2>
+<h2 id="phase-1-the-monolith-1997-2008">Phase 1: The Monolith (1997-2008)<a class="headerlink" href="#phase-1-the-monolith-1997-2008" title="Permanent link">¶</a></h2>
 <p><strong>The DVD-era monolith:</strong>
 - Java monolith called the "NCCP" (Netflix Content Delivery Platform)
 - Oracle database for all data
@@ -2868,35 +2898,35 @@
 </blockquote>
 <p>This 2008 outage changed software architecture forever.</p>
 <hr>
-<h2 id="phase-2-migration-to-aws-microservices-20082016">Phase 2: Migration to AWS + Microservices (2008–2016)<a class="headerlink" href="#phase-2-migration-to-aws-microservices-20082016" title="Permanent link">¶</a></h2>
+<h2 id="phase-2-migration-to-aws-microservices-2008-2016">Phase 2: Migration to AWS + Microservices (2008-2016)<a class="headerlink" href="#phase-2-migration-to-aws-microservices-2008-2016" title="Permanent link">¶</a></h2>
 <p><strong>The 7-year migration:</strong>
 - Gradually extracted features from the NCCP
 - Each extracted feature became a microservice on AWS
-- Used the Strangler Fig pattern — NCCP shrank as services were extracted
+- Used the Strangler Fig pattern - NCCP shrank as services were extracted
 - By 2016: fully on AWS, 700+ microservices, NCCP decommissioned</p>
 <p><strong>Key services extracted:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>User Service          → account management, authentication
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Viewing History       → what you've watched
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Recommendation Engine → what to watch next (ML models)
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Search Service        → find content
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Streaming Delivery    → actual video bytes (Open Connect CDN)
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Billing Service       → payment processing
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Content Service       → metadata (title, description, ratings)
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>User Service -&gt; account management, authentication
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Viewing History -&gt; what you've watched
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Recommendation Engine -&gt; what to watch next (ML models)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Search Service -&gt; find content
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Streaming Delivery -&gt; actual video bytes (Open Connect CDN)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Billing Service -&gt; payment processing
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Content Service -&gt; metadata (title, description, ratings)
 </span></code></pre></div><p></p>
 <hr>
 <h2 id="the-chaos-engineering-revolution">The Chaos Engineering Revolution<a class="headerlink" href="#the-chaos-engineering-revolution" title="Permanent link">¶</a></h2>
 <p><strong>The problem with "test for success":</strong></p>
 <blockquote>
-<p>"We'd test that everything worked. But in production, things fail in ways you never imagined. A network partition between the recommendation service and the streaming service — our test suite never covered that. Chaos Monkey was born."</p>
+<p>"We'd test that everything worked. But in production, things fail in ways you never imagined. A network partition between the recommendation service and the streaming service - our test suite never covered that. Chaos Monkey was born."</p>
 </blockquote>
 <p><strong>Chaos Monkey (2011):</strong>
 Netflix built a tool that randomly kills production servers. Every day. On purpose.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Chaos Monkey → randomly terminates EC2 instances
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Chaos Gorilla → kills entire Availability Zones
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Chaos Kong   → kills entire AWS Regions
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Chaos Monkey -&gt; randomly terminates EC2 instances
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Chaos Gorilla -&gt; kills entire Availability Zones
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Chaos Kong -&gt; kills entire AWS Regions
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>If your system can survive random component death,
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>it's truly resilient — not just theoretically resilient.
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>it's truly resilient - not just theoretically resilient.
 </span></code></pre></div>
 <p><strong>Result:</strong> Netflix's architecture is designed around "what happens when THIS breaks" not "what happens when this works."</p>
 <p><strong>Junior asks:</strong> "Why would you break your own production servers?"</p>
@@ -2924,52 +2954,52 @@ Netflix built a tool that randomly kills production servers. Every day. On purpo
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="c1">// User sees slightly less personalized recommendations,</span>
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="c1">// but they ALWAYS see something. Netflix never shows an error.</span>
 </span></code></pre></div>
-<p><strong>This is the Bulkhead Pattern</strong> — like compartments in a ship, isolate failures so they don't sink the whole vessel.</p>
+<p><strong>This is the Bulkhead Pattern</strong> - like compartments in a ship, isolate failures so they don't sink the whole vessel.</p>
 <h3 id="circuit-breaker-pattern-hystrix">Circuit Breaker Pattern (Hystrix)<a class="headerlink" href="#circuit-breaker-pattern-hystrix" title="Permanent link">¶</a></h3>
-<p>Netflix invented Hystrix — the most widely used circuit breaker library:</p>
+<p>Netflix invented Hystrix - the most widely used circuit breaker library:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>State: CLOSED (normal)
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  All requests flow through
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  If failure rate &gt; 50% in 10 seconds → OPEN
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  If failure rate &gt; 50% in 10 seconds -&gt; OPEN
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>State: OPEN (tripped)
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  All requests immediately return fallback
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  After 5 seconds → HALF-OPEN
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  After 5 seconds -&gt; HALF-OPEN
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>State: HALF-OPEN (testing recovery)
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  One request allowed through
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  If success → CLOSED
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  If failure → OPEN again
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  If success -&gt; CLOSED
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  If failure -&gt; OPEN again
 </span></code></pre></div>
 <blockquote>
 <p>"Without circuit breakers, one slow downstream service blocks all threads waiting for its response. Eventually ALL your threads are waiting, your service runs out of threads, and YOU become the slow service for your upstreams. The failure cascades. With circuit breakers, you detect the problem and stop calling the broken service immediately."</p>
 </blockquote>
 <hr>
 <h2 id="cqrs-for-content-delivery">CQRS for Content Delivery<a class="headerlink" href="#cqrs-for-content-delivery" title="Permanent link">¶</a></h2>
-<p><strong>The problem:</strong> Netflix catalog has 15,000+ titles. Reading catalog data (search, browse) is 1000× more frequent than writing it (adding new titles).</p>
+<p><strong>The problem:</strong> Netflix catalog has 15,000+ titles. Reading catalog data (search, browse) is 1000x more frequent than writing it (adding new titles).</p>
 <p><strong>Solution: CQRS</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Write side (Content Team uploads new movie):
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  AdminService → ContentMetadataService → PostgreSQL (normalized)
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>                                       → Triggers event: ContentPublished
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  AdminService -&gt; ContentMetadataService -&gt; PostgreSQL (normalized)
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a> -&gt; Triggers event: ContentPublished
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Read side (Users searching/browsing):
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  ContentPublished event → fan out to:
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    ElasticsearchProjection  → search index (fast full-text search)
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    RedisProjection          → most-viewed cache
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    S3Projection             → CDN-ready JSON files per region
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    PersonalizationProjection → ML training data
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  ContentPublished event -&gt; fan out to:
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    ElasticsearchProjection -&gt; search index (fast full-text search)
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    RedisProjection -&gt; most-viewed cache
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    S3Projection -&gt; CDN-ready JSON files per region
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    PersonalizationProjection -&gt; ML training data
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>User searches for "action movies":
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  → Elasticsearch (pre-built search index)
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  → Returns in 50ms
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  → No join to PostgreSQL needed
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a> -&gt; Elasticsearch (pre-built search index)
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a> -&gt; Returns in 50ms
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a> -&gt; No join to PostgreSQL needed
 </span></code></pre></div>
 <hr>
-<h2 id="open-connect-cdn-the-real-secret">Open Connect CDN — The Real Secret<a class="headerlink" href="#open-connect-cdn-the-real-secret" title="Permanent link">¶</a></h2>
+<h2 id="open-connect-cdn-the-real-secret">Open Connect CDN - The Real Secret<a class="headerlink" href="#open-connect-cdn-the-real-secret" title="Permanent link">¶</a></h2>
 <p><strong>The problem no one talks about:</strong> 15% of global internet traffic. Moving video bytes from Netflix data centers to your TV through the public internet = unacceptably high latency and cost.</p>
 <p><strong>The solution:</strong> Netflix built their own CDN with 18,000+ servers in 1,000+ locations worldwide.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>You press Play on a movie:
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  Netflix API → determines nearest Open Connect Appliance (OCA)
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  Your ISP (True, AIS, DTAC in Thailand) → has a Netflix OCA in their network
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  Netflix API -&gt; determines nearest Open Connect Appliance (OCA)
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  Your ISP (True, AIS, DTAC in Thailand) -&gt; has a Netflix OCA in their network
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  Video bytes come from the OCA in your ISP's building
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  Round trip: &lt;5ms instead of 200ms+ to California
 </span></code></pre></div>
@@ -2980,8 +3010,8 @@ Netflix built a tool that randomly kills production servers. Every day. On purpo
 <p>Netflix's VOD architecture was NOT designed for live streaming. Problems:</p>
 <ol>
 <li><strong>Manifest management:</strong> VOD has a pre-generated playlist. Live has a constantly updating manifest that 65M clients are polling simultaneously.</li>
-<li><strong>CDN caching:</strong> VOD segments are cacheable. Live segments are unique per second — CDN can't help.</li>
-<li><strong>Real-time encoding:</strong> Must encode 4K → 8 quality levels in &lt;2 seconds.</li>
+<li><strong>CDN caching:</strong> VOD segments are cacheable. Live segments are unique per second - CDN can't help.</li>
+<li><strong>Real-time encoding:</strong> Must encode 4K -&gt; 8 quality levels in &lt;2 seconds.</li>
 </ol>
 <p><strong>Resolution:</strong> The microservices architecture meant live streaming issues didn't affect VOD. Subscribers watching normal content experienced no degradation. Only live viewers were affected.</p>
 <blockquote>
@@ -2997,9 +3027,9 @@ Netflix built a tool that randomly kills production servers. Every day. On purpo
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  adapters/     REST controllers + Cassandra/DynamoDB repos + Kafka publishers
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  infra/        Hystrix circuit breaker, Ribbon load balancer, Eureka discovery
 </span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>Hystrix = infrastructure layer — use cases never call Hystrix directly
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>Eureka (service discovery) = framework layer — services don't know about it
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Ribbon (load balancing) = framework layer — transparent to business logic
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>Hystrix = infrastructure layer - use cases never call Hystrix directly
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>Eureka (service discovery) = framework layer - services don't know about it
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Ribbon (load balancing) = framework layer - transparent to business logic
 </span></code></pre></div>
 <hr>
 <h2 id="key-technologies-and-why">Key Technologies and Why<a class="headerlink" href="#key-technologies-and-why" title="Permanent link">¶</a></h2>
@@ -3067,19 +3097,19 @@ Netflix built a tool that randomly kills production servers. Every day. On purpo
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Design for failure first</strong> — assume every dependency will fail; build fallbacks</li>
-<li><strong>Circuit breakers are mandatory</strong> — not optional — in microservices</li>
-<li><strong>Read/write separation (CQRS)</strong> — 1000:1 read/write ratio = separate models</li>
-<li><strong>Chaos testing in production</strong> — theoretical resilience ≠ actual resilience</li>
-<li><strong>Graceful degradation</strong> — less personalized &gt; no content; always show something</li>
-<li><strong>Infrastructure is a product</strong> — Netflix open-sourced Hystrix, Eureka, Ribbon because they built them as reusable tools, not hacks</li>
+<li><strong>Design for failure first</strong> - assume every dependency will fail; build fallbacks</li>
+<li><strong>Circuit breakers are mandatory</strong> - not optional - in microservices</li>
+<li><strong>Read/write separation (CQRS)</strong> - 1000:1 read/write ratio = separate models</li>
+<li><strong>Chaos testing in production</strong> - theoretical resilience != actual resilience</li>
+<li><strong>Graceful degradation</strong> - less personalized &gt; no content; always show something</li>
+<li><strong>Infrastructure is a product</strong> - Netflix open-sourced Hystrix, Eureka, Ribbon because they built them as reusable tools, not hacks</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://blog.bytebytego.com/p/a-brief-history-of-scaling-netflix">A Brief History of Scaling Netflix — ByteByteGo</a></li>
+<li><a href="https://blog.bytebytego.com/p/a-brief-history-of-scaling-netflix">A Brief History of Scaling Netflix - ByteByteGo</a></li>
 <li><a href="https://netflixtechblog.com/">Netflix Microservices Engineering Blog</a></li>
-<li><a href="https://www.clustox.com/blog/netflix-case-study/">Netflix Architecture Case Study — Clustox</a></li>
+<li><a href="https://www.clustox.com/blog/netflix-case-study/">Netflix Architecture Case Study - Clustox</a></li>
 <li><a href="https://discord.com/blog/how-discord-scaled-elixir-to-5-000-000-concurrent-users">How Discord Scaled Elixir to 5M Concurrent Users</a></li>
 </ul>
 <hr>

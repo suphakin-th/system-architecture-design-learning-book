@@ -1050,6 +1050,8 @@
       
         
       
+        
+      
     
     
     
@@ -1202,7 +1204,7 @@
   <a href="#1st-normal-form-1nf-atomic-values" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1st Normal Form (1NF) — Atomic Values
+        1st Normal Form (1NF) - Atomic Values
       
     </span>
   </a>
@@ -1213,7 +1215,7 @@
   <a href="#2nd-normal-form-2nf-no-partial-dependencies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2nd Normal Form (2NF) — No Partial Dependencies
+        2nd Normal Form (2NF) - No Partial Dependencies
       
     </span>
   </a>
@@ -1224,7 +1226,7 @@
   <a href="#3rd-normal-form-3nf-no-transitive-dependencies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3rd Normal Form (3NF) — No Transitive Dependencies
+        3rd Normal Form (3NF) - No Transitive Dependencies
       
     </span>
   </a>
@@ -1594,6 +1596,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2647,7 +2677,7 @@
   <a href="#1st-normal-form-1nf-atomic-values" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1st Normal Form (1NF) — Atomic Values
+        1st Normal Form (1NF) - Atomic Values
       
     </span>
   </a>
@@ -2658,7 +2688,7 @@
   <a href="#2nd-normal-form-2nf-no-partial-dependencies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2nd Normal Form (2NF) — No Partial Dependencies
+        2nd Normal Form (2NF) - No Partial Dependencies
       
     </span>
   </a>
@@ -2669,7 +2699,7 @@
   <a href="#3rd-normal-form-3nf-no-transitive-dependencies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3rd Normal Form (3NF) — No Transitive Dependencies
+        3rd Normal Form (3NF) - No Transitive Dependencies
       
     </span>
   </a>
@@ -2811,9 +2841,9 @@
   
 
 
-<h1 id="database-design-fundamentals">Database Design — Fundamentals<a class="headerlink" href="#database-design-fundamentals" title="Permanent link">¶</a></h1>
+<h1 id="database-design-fundamentals">Database Design - Fundamentals<a class="headerlink" href="#database-design-fundamentals" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"A database schema is your most important architectural decision. It's the hardest thing to change later and the foundation everything else sits on." — Senior DBA wisdom</p>
+<p>"A database schema is your most important architectural decision. It's the hardest thing to change later and the foundation everything else sits on." - Senior DBA wisdom</p>
 </blockquote>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
@@ -2835,21 +2865,21 @@
 </tr>
 <tr>
 <td><strong>Skill level</strong></td>
-<td>Zero to hero — start here before patterns</td>
+<td>Zero to hero - start here before patterns</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="the-senior-explains-it-to-the-junior">The Senior Explains It To The Junior<a class="headerlink" href="#the-senior-explains-it-to-the-junior" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"Every bug that makes it to production is either a logic bug or a data bug. Logic bugs are easy — you see them in logs, you fix the code, you redeploy. Data bugs are different. If you design your schema wrong, the bad data is IN THE DATABASE. You can't fix it with a code deploy. You need a migration, which might take hours on a 100M-row table, during which your site is slow or locked. <strong>Schema design mistakes are the most expensive mistakes you'll ever make.</strong>"</p>
+<p>"Every bug that makes it to production is either a logic bug or a data bug. Logic bugs are easy - you see them in logs, you fix the code, you redeploy. Data bugs are different. If you design your schema wrong, the bad data is IN THE DATABASE. You can't fix it with a code deploy. You need a migration, which might take hours on a 100M-row table, during which your site is slow or locked. <strong>Schema design mistakes are the most expensive mistakes you'll ever make.</strong>"</p>
 </blockquote>
 <hr>
 <h2 id="the-three-forms-of-normal-form-normalization">The Three Forms of Normal Form (Normalization)<a class="headerlink" href="#the-three-forms-of-normal-form-normalization" title="Permanent link">¶</a></h2>
 <p>Normalization eliminates redundancy. Redundancy = data inconsistency = bugs.</p>
-<h3 id="1st-normal-form-1nf-atomic-values">1st Normal Form (1NF) — Atomic Values<a class="headerlink" href="#1st-normal-form-1nf-atomic-values" title="Permanent link">¶</a></h3>
+<h3 id="1st-normal-form-1nf-atomic-values">1st Normal Form (1NF) - Atomic Values<a class="headerlink" href="#1st-normal-form-1nf-atomic-values" title="Permanent link">¶</a></h3>
 <p><strong>Rule:</strong> Every cell must contain ONE value. No arrays, no comma-separated lists in a column.</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- ❌ WRONG: phone numbers in one column</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- [X] WRONG: phone numbers in one column</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">users</span><span class="p">:</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">name</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">phones</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="mi">1</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Alice</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="ss">"0812345678, 0823456789"</span>
@@ -2857,7 +2887,7 @@
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">-- Problem: How do you query "find all users with phone 0812345678"?</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">-- SELECT * FROM users WHERE phones LIKE '%0812345678%' -- SLOW, wrong</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">-- ✅ CORRECT: 1NF — separate table for multi-valued attributes</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">-- [OK] CORRECT: 1NF - separate table for multi-valued attributes</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">users</span><span class="p">:</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">name</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="mi">1</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="n">Alice</span>
@@ -2867,9 +2897,9 @@
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="mi">1</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">0812345678</span>
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="mi">1</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="mi">0823456789</span>
 </span></code></pre></div>
-<h3 id="2nd-normal-form-2nf-no-partial-dependencies">2nd Normal Form (2NF) — No Partial Dependencies<a class="headerlink" href="#2nd-normal-form-2nf-no-partial-dependencies" title="Permanent link">¶</a></h3>
+<h3 id="2nd-normal-form-2nf-no-partial-dependencies">2nd Normal Form (2NF) - No Partial Dependencies<a class="headerlink" href="#2nd-normal-form-2nf-no-partial-dependencies" title="Permanent link">¶</a></h3>
 <p><strong>Rule:</strong> Every non-key column must depend on the WHOLE primary key (applies to composite keys).</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- ❌ WRONG: order_items with composite key (order_id, product_id)</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- [X] WRONG: order_items with composite key (order_id, product_id)</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">order_items</span><span class="p">:</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">order_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">product_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">quantity</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">product_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">product_price</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
@@ -2877,17 +2907,17 @@
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1">-- If you update product_name, you update it in EVERY order row that has that product</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1">-- One place gives wrong value = data inconsistency</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">-- ✅ CORRECT: 2NF — move product data to its own table</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">-- [OK] CORRECT: 2NF - move product data to its own table</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">order_items</span><span class="p">:</span>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="n">order_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">product_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">quantity</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">unit_price_at_time_of_order</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">products</span><span class="p">:</span>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">current_price</span>
 </span></code></pre></div>
-<p>Note: <code>unit_price_at_time_of_order</code> is intentional — product price can change; the order must remember what it was at purchase time.</p>
-<h3 id="3rd-normal-form-3nf-no-transitive-dependencies">3rd Normal Form (3NF) — No Transitive Dependencies<a class="headerlink" href="#3rd-normal-form-3nf-no-transitive-dependencies" title="Permanent link">¶</a></h3>
+<p>Note: <code>unit_price_at_time_of_order</code> is intentional - product price can change; the order must remember what it was at purchase time.</p>
+<h3 id="3rd-normal-form-3nf-no-transitive-dependencies">3rd Normal Form (3NF) - No Transitive Dependencies<a class="headerlink" href="#3rd-normal-form-3nf-no-transitive-dependencies" title="Permanent link">¶</a></h3>
 <p><strong>Rule:</strong> Non-key columns must depend on the primary key, not on OTHER non-key columns.</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- ❌ WRONG: employees table</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- [X] WRONG: employees table</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">employees</span><span class="p">:</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">department_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">department_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">department_budget</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
@@ -2895,7 +2925,7 @@
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1">-- not directly on employee id</span>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1">-- If department name changes: update EVERY employee row</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1">-- ✅ CORRECT: 3NF — separate table</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1">-- [OK] CORRECT: 3NF - separate table</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">employees</span><span class="p">:</span>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">department_id</span>
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
@@ -2904,18 +2934,18 @@
 </span></code></pre></div>
 <h3 id="when-to-denormalize-and-why-its-not-always-wrong">When to Denormalize (and why it's not always wrong)<a class="headerlink" href="#when-to-denormalize-and-why-its-not-always-wrong" title="Permanent link">¶</a></h3>
 <p>Denormalization = intentionally breaking normalization rules for read performance.</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- Normalized (slow for reads — requires JOIN):</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- Normalized (slow for reads - requires JOIN):</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">orders</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">order_items</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">customers</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1">-- Denormalized (fast for reads — one query, pre-joined):</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1">-- Denormalized (fast for reads - one query, pre-joined):</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">order_summary</span><span class="p">:</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="n">order_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">customer_name</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">customer_email</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">item_names</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">total</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1">-- When to denormalize:</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1">-- ✓ Read &gt;&gt; Write ratio (reads 100× more than writes)</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1">-- ✓ The JOIN query is too slow (measured, not assumed)</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1">-- ✓ You accept the risk of inconsistency between tables</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1">-- ✓ The denormalized table is the READ MODEL in CQRS</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1">-- [OK] Read &gt;&gt; Write ratio (reads 100x more than writes)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1">-- [OK] The JOIN query is too slow (measured, not assumed)</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1">-- [OK] You accept the risk of inconsistency between tables</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1">-- [OK] The denormalized table is the READ MODEL in CQRS</span>
 </span></code></pre></div>
 <blockquote>
 <p><strong>The rule:</strong> Normalize first. Denormalize only after you measure that the normalized query is too slow. "Premature denormalization is the root of many database evils."</p>
@@ -2927,9 +2957,9 @@
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="p">...</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">);</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1">-- ✓ Small (8 bytes), fast index, sequential writes (good for B-tree)</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">-- ✗ Predictable (user can guess IDs: /users/1, /users/2)</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1">-- ✗ Doesn't work across shards (shard 1 and shard 2 both have user id=1)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1">-- [OK] Small (8 bytes), fast index, sequential writes (good for B-tree)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">-- [X] Predictable (user can guess IDs: /users/1, /users/2)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1">-- [X] Doesn't work across shards (shard 1 and shard 2 both have user id=1)</span>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1">-- Use when: single database, internal IDs not exposed to users</span>
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1">-- Option 2: UUID v4 (random)</span>
@@ -2937,10 +2967,10 @@
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_random_uuid</span><span class="p">()</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="p">...</span>
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">);</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="c1">-- ✓ Globally unique (safe for sharding and distributed systems)</span>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1">-- ✓ Unpredictable (security: can't enumerate users)</span>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="c1">-- ✗ 16 bytes (2× larger than BIGINT)</span>
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1">-- ✗ Random insertion breaks B-tree locality → page fragmentation → slower writes</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="c1">-- [OK] Globally unique (safe for sharding and distributed systems)</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1">-- [OK] Unpredictable (security: can't enumerate users)</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="c1">-- [X] 16 bytes (2x larger than BIGINT)</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="c1">-- [X] Random insertion breaks B-tree locality -&gt; page fragmentation -&gt; slower writes</span>
 </span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="c1">-- Use when: distributed systems, user-facing IDs, microservices</span>
 </span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>
 </span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="c1">-- Option 3: ULID / UUID v7 (time-ordered UUID)</span>
@@ -2948,10 +2978,10 @@
 </span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_uuid_v7</span><span class="p">()</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 </span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">  </span><span class="p">...</span>
 </span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="p">);</span>
-</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="c1">-- ✓ Globally unique</span>
-</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="c1">-- ✓ Sortable by time (first 48 bits = timestamp)</span>
-</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="c1">-- ✓ Sequential writes (no B-tree fragmentation)</span>
-</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="c1">-- ✓ 16 bytes</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="c1">-- [OK] Globally unique</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="c1">-- [OK] Sortable by time (first 48 bits = timestamp)</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="c1">-- [OK] Sequential writes (no B-tree fragmentation)</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="c1">-- [OK] 16 bytes</span>
 </span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="c1">-- The best of both worlds for distributed systems</span>
 </span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="c1">-- Use when: distributed, but you want sequential writes</span>
 </span></code></pre></div>
@@ -2973,7 +3003,7 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1">-- ON DELETE options:</span>
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">-- RESTRICT: prevent deletion of user if they have orders (safest)</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1">-- CASCADE: delete orders when user is deleted (dangerous — data loss)</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1">-- CASCADE: delete orders when user is deleted (dangerous - data loss)</span>
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1">-- SET NULL: set user_id = NULL when user deleted (orphaned records)</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1">-- NO ACTION: same as RESTRICT in most DBs</span>
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
@@ -2983,14 +3013,14 @@
 </span></code></pre></div>
 <hr>
 <h2 id="data-types-choosing-correctly">Data Types: Choosing Correctly<a class="headerlink" href="#data-types-choosing-correctly" title="Permanent link">¶</a></h2>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">-- ❌ Common mistakes:</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">-- [X] Common mistakes:</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w">  </span><span class="c1">-- for everything, including fixed-length codes</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nb">INT</span><span class="w">           </span><span class="c1">-- for user_id when you might have &gt; 2B users (INT max = 2.1B)</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">TEXT</span><span class="w">          </span><span class="c1">-- for short strings (can't index directly)</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nb">FLOAT</span><span class="o">/</span><span class="n">DOUBLE</span><span class="w">  </span><span class="c1">-- for money (floating point rounding errors!)</span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">DATETIME</span><span class="w">      </span><span class="c1">-- without timezone awareness</span>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1">-- ✅ Correct choices:</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1">-- [OK] Correct choices:</span>
 </span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="nb">CHAR</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">           </span><span class="c1">-- for country codes (fixed length, faster than VARCHAR)</span>
 </span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nb">BIGINT</span><span class="w">            </span><span class="c1">-- for IDs (safe up to 9.2 quintillion)</span>
 </span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w">      </span><span class="c1">-- for names, emails (appropriate length)</span>
@@ -3000,10 +3030,10 @@
 </span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="n">JSONB</span><span class="w">             </span><span class="c1">-- for flexible schema data (PostgreSQL, indexed)</span>
 </span></code></pre></div>
 <p><strong>The money problem:</strong>
-</p><div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">-- ❌ WRONG:</span>
+</p><div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">-- [X] WRONG:</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">price</span><span class="w"> </span><span class="nb">FLOAT</span><span class="w">  </span><span class="c1">-- 0.1 + 0.2 = 0.30000000000000004 in IEEE 754</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">-- ✅ CORRECT:</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">-- [OK] CORRECT:</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">price</span><span class="w"> </span><span class="nb">DECIMAL</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w">  </span><span class="c1">-- exact: 0.1000 + 0.2000 = 0.3000</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1">-- OR: store in cents as INTEGER</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">price_cents</span><span class="w"> </span><span class="nb">INT</span><span class="w">  </span><span class="c1">-- $9.99 stored as 999 (no decimal arithmetic needed)</span>
@@ -3039,28 +3069,28 @@
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">deleted_at</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="c1">-- When to use soft delete:</span>
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="c1">-- ✓ Audit trail required (you need to know who deleted what)</span>
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="c1">-- ✓ GDPR "right to be forgotten" (you mark deleted, then scrub PII separately)</span>
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="c1">-- ✓ Undo functionality (user accidentally deleted → restore)</span>
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="c1">-- ✗ Adds WHERE deleted_at IS NULL to EVERY query</span>
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="c1">-- ✗ Deleted rows still consume storage</span>
-</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="c1">-- ✗ Unique indexes need to account for deleted rows</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="c1">-- [OK] Audit trail required (you need to know who deleted what)</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="c1">-- [OK] GDPR "right to be forgotten" (you mark deleted, then scrub PII separately)</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="c1">-- [OK] Undo functionality (user accidentally deleted -&gt; restore)</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="c1">-- [X] Adds WHERE deleted_at IS NULL to EVERY query</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="c1">-- [X] Deleted rows still consume storage</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="c1">-- [X] Unique indexes need to account for deleted rows</span>
 </span></code></pre></div>
 <hr>
 <h2 id="the-n1-query-problem-the-most-common-orm-bug">The N+1 Query Problem (The Most Common ORM Bug)<a class="headerlink" href="#the-n1-query-problem-the-most-common-orm-bug" title="Permanent link">¶</a></h2>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">// ❌ N+1 problem:</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Order</span><span class="p">.</span><span class="nx">findAll</span><span class="p">();</span><span class="w">  </span><span class="c1">// 1 query → 100 orders</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">// [X] N+1 problem:</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Order</span><span class="p">.</span><span class="nx">findAll</span><span class="p">();</span><span class="w">  </span><span class="c1">// 1 query -&gt; 100 orders</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">orders</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">User</span><span class="p">.</span><span class="nx">findById</span><span class="p">(</span><span class="nx">order</span><span class="p">.</span><span class="nx">userId</span><span class="p">);</span><span class="w">  </span><span class="c1">// 100 queries!</span>
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="c1">// Total: 101 queries for what could be 2</span>
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">}</span>
 </span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1">// ✅ Eager loading (JOIN):</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1">// [OK] Eager loading (JOIN):</span>
 </span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="kd">const</span><span class="w"> </span><span class="nx">orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Order</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span>
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">  </span><span class="nx">include</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="kt">User</span><span class="w"> </span><span class="p">}]</span><span class="w">  </span><span class="c1">// 1 query with JOIN</span>
 </span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="p">});</span>
 </span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1">// ✅ Or two queries (better than N+1):</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1">// [OK] Or two queries (better than N+1):</span>
 </span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="kd">const</span><span class="w"> </span><span class="nx">orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">Order</span><span class="p">.</span><span class="nx">findAll</span><span class="p">();</span><span class="w">  </span><span class="c1">// 1 query</span>
 </span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="kd">const</span><span class="w"> </span><span class="nx">userIds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">orders</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">o</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">o</span><span class="p">.</span><span class="nx">userId</span><span class="p">);</span>
 </span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="kd">const</span><span class="w"> </span><span class="nx">users</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">User</span><span class="p">.</span><span class="nx">findAll</span><span class="p">({</span><span class="w"> </span><span class="nx">where</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">userIds</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">});</span><span class="w">  </span><span class="c1">// 1 query with IN clause</span>
@@ -3070,14 +3100,14 @@
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Database Design = Infrastructure layer concern
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>IOrderRepository (port) — defined in Use Case layer
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>IOrderRepository (port) - defined in Use Case layer
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  Has no idea about:
 </span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    - Table names
 </span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    - Column types
 </span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    - Join strategies
 </span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    - Index existence
 </span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>OrderRepositoryPostgres (adapter) — in Infrastructure layer
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>OrderRepositoryPostgres (adapter) - in Infrastructure layer
 </span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>  Implements IOrderRepository
 </span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>  Knows all of the above
 </span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>  Contains the SQL/ORM code
@@ -3094,13 +3124,13 @@
 <hr>
 <h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Normalize first</strong> — 3NF eliminates most data inconsistency bugs</li>
-<li><strong>Denormalize only when measured</strong> — not because you "think" it'll be slow</li>
-<li><strong>Never use FLOAT for money</strong> — use DECIMAL or store cents as INT</li>
-<li><strong>Always declare constraints</strong> — NOT NULL, UNIQUE, FK, CHECK are your safety net</li>
-<li><strong>Primary key choice is permanent</strong> — UUID v7 (ULID) is the modern best practice for distributed systems</li>
-<li><strong>N+1 queries will kill your app</strong> — always think about how many queries your ORM generates</li>
-<li><strong>Soft delete has hidden complexity</strong> — consider carefully before adding it everywhere</li>
+<li><strong>Normalize first</strong> - 3NF eliminates most data inconsistency bugs</li>
+<li><strong>Denormalize only when measured</strong> - not because you "think" it'll be slow</li>
+<li><strong>Never use FLOAT for money</strong> - use DECIMAL or store cents as INT</li>
+<li><strong>Always declare constraints</strong> - NOT NULL, UNIQUE, FK, CHECK are your safety net</li>
+<li><strong>Primary key choice is permanent</strong> - UUID v7 (ULID) is the modern best practice for distributed systems</li>
+<li><strong>N+1 queries will kill your app</strong> - always think about how many queries your ORM generates</li>
+<li><strong>Soft delete has hidden complexity</strong> - consider carefully before adding it everywhere</li>
 </ol>
 <hr>
 <h2 id="architecture-diagram">Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permanent link">¶</a></h2>

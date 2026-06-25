@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2063,10 +2093,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-problem-the-tangled-monolith-20152018" class="md-nav__link">
+  <a href="#the-problem-the-tangled-monolith-2015-2018" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Problem: The Tangled Monolith (2015–2018)
+        The Problem: The Tangled Monolith (2015-2018)
       
     </span>
   </a>
@@ -2571,10 +2601,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-problem-the-tangled-monolith-20152018" class="md-nav__link">
+  <a href="#the-problem-the-tangled-monolith-2015-2018" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Problem: The Tangled Monolith (2015–2018)
+        The Problem: The Tangled Monolith (2015-2018)
       
     </span>
   </a>
@@ -2689,9 +2719,9 @@
   
 
 
-<h1 id="shopify-architecture-case-study">Shopify — Architecture Case Study<a class="headerlink" href="#shopify-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="shopify-architecture-case-study">Shopify - Architecture Case Study<a class="headerlink" href="#shopify-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"We chose to stay a monolith and optimize it. That was the hardest, most contrarian decision we made." — Shopify Engineering</p>
+<p>"We chose to stay a monolith and optimize it. That was the hardest, most contrarian decision we made." - Shopify Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2728,23 +2758,20 @@
 <hr>
 <h2 id="the-senior-architect-explains-the-key-decision">The Senior Architect Explains the Key Decision<a class="headerlink" href="#the-senior-architect-explains-the-key-decision" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"In 2019, when every other company at our scale was racing to microservices, Shopify doubled down on the monolith. Not the spaghetti monolith that breaks everything — the modular monolith with strict boundaries enforced by tooling. This decision is still controversial. Let me explain why it was right."</p>
+<p>"In 2019, when every other company at our scale was racing to microservices, Shopify doubled down on the monolith. Not the spaghetti monolith that breaks everything - the modular monolith with strict boundaries enforced by tooling. This decision is still controversial. Let me explain why it was right."</p>
 </blockquote>
 <hr>
-<h2 id="the-problem-the-tangled-monolith-20152018">The Problem: The Tangled Monolith (2015–2018)<a class="headerlink" href="#the-problem-the-tangled-monolith-20152018" title="Permanent link">¶</a></h2>
-<p><strong>What "Shopify's monolith" looked like before they fixed it:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>shopify/
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── app/
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── models/
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   │   ├── order.rb          # business logic AND DB model
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   │   ├── product.rb        # calls shipping.rb directly
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   │   ├── cart.rb           # calls payments.rb directly
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   │   └── checkout.rb       # calls everything
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   ├── controllers/
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│   │   └── (fat controllers calling models directly)
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   └── services/
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│       └── (no consistent pattern — some have, some don't)
-</span></code></pre></div>
+<h2 id="the-problem-the-tangled-monolith-2015-2018">The Problem: The Tangled Monolith (2015-2018)<a class="headerlink" href="#the-problem-the-tangled-monolith-2015-2018" title="Permanent link">¶</a></h2>
+<p><strong>What "Shopify's monolith" looked like before they fixed it</strong> - one flat <code>app/</code> tree where models held business logic and called each other directly:</p>
+<pre class="mermaid"><code>flowchart TD
+  shopify["shopify/"] --&gt; app["app/"]
+  app --&gt; models["models/"]
+  app --&gt; controllers["controllers/ - fat controllers calling models directly"]
+  app --&gt; services["services/ - no consistent pattern"]
+  models --&gt; order["order.rb - business logic AND DB model"]
+  models --&gt; product["product.rb - calls shipping.rb directly"]
+  models --&gt; cart["cart.rb - calls payments.rb directly"]
+  models --&gt; checkout["checkout.rb - calls everything"]</code></pre>
 <p><strong>The specific problems:</strong></p>
 <ol>
 <li>
@@ -2766,136 +2793,135 @@
 <blockquote>
 <p>"We don't need network boundaries to have clean boundaries. We need ENFORCED MODULE BOUNDARIES inside our monolith. Microservices enforce this with the network. We'll enforce it with static analysis."</p>
 </blockquote>
-<p><strong>Packwerk — Shopify's open-source boundary enforcer:</strong></p>
-<div class="language-ruby highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># packages.yml (defines the modules)</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># checkout module cannot import from shipping module directly</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">components</span><span class="o">/</span><span class="ss">checkout</span><span class="p">:</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="ss">enforce_dependencies</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="ss">enforce_privacy</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">components</span><span class="o">/</span><span class="ss">shipping</span><span class="p">:</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="ss">enforce_dependencies</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="ss">enforce_privacy</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># If checkout/order.rb tries to import Shipping::Calculator:</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1">#   Packwerk fails the build</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1">#   Error: "checkout cannot depend on shipping — use the API"</span>
+<p><strong>Packwerk - Shopify's open-source boundary enforcer:</strong></p>
+<div class="language-ruby highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># packages.yml (defines the modules)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># checkout module cannot import from shipping module directly</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">components</span><span class="o">/</span><span class="ss">checkout</span><span class="p">:</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="ss">enforce_dependencies</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="ss">enforce_privacy</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">components</span><span class="o">/</span><span class="ss">shipping</span><span class="p">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="ss">enforce_dependencies</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="ss">enforce_privacy</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># If checkout/order.rb tries to import Shipping::Calculator:</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">#   Packwerk fails the build</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">#   Error: "checkout cannot depend on shipping - use the API"</span>
 </span></code></pre></div>
-<p><strong>The module structure after Packwerk:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>shopify/
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── components/
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>│   ├── checkout/
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>│   │   ├── app/models/checkout/order.rb     # Internal: can't import shipping directly
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>│   │   ├── app/public/checkout/api.rb       # Public interface (port)
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>│   │   └── package.yml                      # Defines this as a bounded module
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>│   ├── shipping/
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>│   │   ├── app/models/shipping/calculator.rb
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>│   │   ├── app/public/shipping/api.rb       # Public interface
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>│   │   └── package.yml
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>│   ├── payments/
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>│   ├── inventory/
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>│   └── tax/
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>└── app/                                     # Legacy code (being migrated)
-</span></code></pre></div>
+<p><strong>The module structure after Packwerk</strong> - each component is a bounded module exposing a public API, with legacy code isolated under <code>app/</code>:</p>
+<pre class="mermaid"><code>flowchart TD
+  shopify["shopify/"] --&gt; components["components/"]
+  shopify --&gt; legacy["app/ - legacy code being migrated"]
+  components --&gt; checkout["checkout/"]
+  components --&gt; shipping["shipping/"]
+  components --&gt; payments["payments/"]
+  components --&gt; inventory["inventory/"]
+  components --&gt; tax["tax/"]
+  checkout --&gt; co_model["app/models/checkout/order.rb - internal, cannot import shipping"]
+  checkout --&gt; co_api["app/public/checkout/api.rb - public interface, the port"]
+  checkout --&gt; co_pkg["package.yml - defines this as a bounded module"]
+  shipping --&gt; sh_model["app/models/shipping/calculator.rb"]
+  shipping --&gt; sh_api["app/public/shipping/api.rb - public interface"]
+  shipping --&gt; sh_pkg["package.yml"]</code></pre>
 <p><strong>How checkout calls shipping after Packwerk:</strong></p>
-<div class="language-ruby highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># WRONG (before Packwerk enforcement):</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Checkout</span><span class="o">::</span><span class="no">Order</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_shipping</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="no">Shipping</span><span class="o">::</span><span class="no">Calculator</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span><span class="w">  </span><span class="c1"># Direct import — BANNED</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="k">end</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">end</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># RIGHT (after Packwerk):</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">class</span><span class="w"> </span><span class="nc">Checkout</span><span class="o">::</span><span class="no">Order</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_shipping</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="no">Checkout</span><span class="o">::</span><span class="no">ShippingPort</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span><span class="w">  </span><span class="c1"># Call through the public API</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="k">end</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="k">end</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1"># Checkout::ShippingPort is an adapter that calls Shipping::API</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="c1"># Shipping can change its internals without affecting Checkout</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="c1"># This IS the Clean Architecture port/adapter pattern</span>
+<div class="language-ruby highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># WRONG (before Packwerk enforcement):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">Checkout</span><span class="o">::</span><span class="no">Order</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_shipping</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="no">Shipping</span><span class="o">::</span><span class="no">Calculator</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span><span class="w">  </span><span class="c1"># Direct import - BANNED</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="k">end</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">end</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># RIGHT (after Packwerk):</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">class</span><span class="w"> </span><span class="nc">Checkout</span><span class="o">::</span><span class="no">Order</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_shipping</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="no">Checkout</span><span class="o">::</span><span class="no">ShippingPort</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span><span class="w">  </span><span class="c1"># Call through the public API</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="k">end</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="k">end</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># Checkout::ShippingPort is an adapter that calls Shipping::API</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="c1"># Shipping can change its internals without affecting Checkout</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># This IS the Clean Architecture port/adapter pattern</span>
 </span></code></pre></div>
 <hr>
 <h2 id="the-database-scaling-problem-mysql-pods">The Database Scaling Problem: MySQL Pods<a class="headerlink" href="#the-database-scaling-problem-mysql-pods" title="Permanent link">¶</a></h2>
 <p><strong>The one-DB-per-monolith problem:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Shopify has 2M+ merchants. On a normal day, merchant A and merchant B
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>don't affect each other. But on Black Friday:
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Merchant A (big store): 10,000 orders/minute
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Merchant B (small store): 10 orders/minute
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>On a shared database:
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  Merchant A's massive load → long-running queries → locks tables
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  → Merchant B's queries wait for locks
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  → Merchant B's checkout is slow
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  → Merchant B's customers abandon carts
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  → Merchant B loses sales they'd have made
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  Merchant A's success is costing Merchant B.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Shopify has 2M+ merchants. On a normal day, merchant A and merchant B
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>don't affect each other. But on Black Friday:
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Merchant A (big store): 10,000 orders/minute
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Merchant B (small store): 10 orders/minute
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>On a shared database:
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  Merchant A's massive load -&gt; long-running queries -&gt; locks tables
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a> -&gt; Merchant B's queries wait for locks
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a> -&gt; Merchant B's checkout is slow
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a> -&gt; Merchant B's customers abandon carts
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a> -&gt; Merchant B loses sales they'd have made
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  Merchant A's success is costing Merchant B.
 </span></code></pre></div>
 <p><strong>Shopify's Pod Architecture:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Pod 1 (MySQL cluster): Merchants #1–500,000
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  Primary MySQL + 3 read replicas
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  All data for these 500K merchants lives ONLY here
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Pod 2 (MySQL cluster): Merchants #500,001–1,000,000
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  Primary MySQL + 3 read replicas
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Pod 3: Merchants #1,000,001–1,500,000
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>...
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>Pod N: Merchants #(N-1)*500K – N*500K
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>Routing layer: every request → look up merchant → route to correct pod
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Pod 1 (MySQL cluster): Merchants #1-500,000
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Primary MySQL + 3 read replicas
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  All data for these 500K merchants lives ONLY here
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Pod 2 (MySQL cluster): Merchants #500,001-1,000,000
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Primary MySQL + 3 read replicas
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>Pod 3: Merchants #1,000,001-1,500,000
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>...
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>Pod N: Merchants #(N-1)*500K - N*500K
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>Routing layer: every request -&gt; look up merchant -&gt; route to correct pod
 </span></code></pre></div>
 <p><strong>Why this is brilliant:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Black Friday:
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  Big merchant (1M orders/minute) → on Pod 3 → only Pod 3 is stressed
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  Small merchant → on Pod 7 → completely unaffected by Pod 3's load
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  Pod isolation = merchant isolation = every merchant gets consistent performance
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  New merchant joins: assigned to least-loaded pod
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  Pod filling up: migrate some merchants to a new empty pod
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Black Friday:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  Big merchant (1M orders/minute) -&gt; on Pod 3 -&gt; only Pod 3 is stressed
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  Small merchant -&gt; on Pod 7 -&gt; completely unaffected by Pod 3's load
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  Pod isolation = merchant isolation = every merchant gets consistent performance
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  New merchant joins: assigned to least-loaded pod
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  Pod filling up: migrate some merchants to a new empty pod
 </span></code></pre></div>
 <p><strong>The shard key: <code>shop_id</code></strong></p>
-<div class="language-ruby highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Every database query is scoped to the current shop:</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="no">Shop</span><span class="o">.</span><span class="n">with_current_shop</span><span class="p">(</span><span class="n">shop_id</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="no">Order</span><span class="o">.</span><span class="n">all</span><span class="w">  </span><span class="c1"># Automatically queries correct pod, correct shard</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">end</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1"># The ORM (ActiveRecord) + Shopify's custom sharding layer</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># routes queries to the correct MySQL pod transparently</span>
+<div class="language-ruby highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Every database query is scoped to the current shop:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="no">Shop</span><span class="o">.</span><span class="n">with_current_shop</span><span class="p">(</span><span class="n">shop_id</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="no">Order</span><span class="o">.</span><span class="n">all</span><span class="w">  </span><span class="c1"># Automatically queries correct pod, correct shard</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">end</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># The ORM (ActiveRecord) + Shopify's custom sharding layer</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># routes queries to the correct MySQL pod transparently</span>
 </span></code></pre></div>
 <hr>
 <h2 id="black-friday-architecture">Black Friday Architecture<a class="headerlink" href="#black-friday-architecture" title="Permanent link">¶</a></h2>
 <p><strong>The challenge:</strong> Shopify processes 30TB of data per minute on Black Friday peak.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Normal day: baseline load
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  Checkout: 10,000 orders/minute across all merchants
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  Response time: &lt;100ms
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Black Friday peak:
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  Checkout: 10,000,000 orders/minute
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  Response time: must still be &lt;100ms
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  Traffic increase: 1000×
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>How Shopify handles it:
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>1. Pre-scaling (days before):
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>   Database pods pre-scaled to 3× normal capacity
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>   Redis cluster pre-scaled for session/cart caching
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>   CDN pre-warmed with merchant storefront assets
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>   Kubernetes auto-scaling configured with higher upper limits
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>2. Storefront caching (biggest lever):
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>   Product pages are cached in CDN and served without hitting app servers
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>   Only "buy" button flow hits Shopify backend
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>   99% of Black Friday traffic = reading product pages = CDN cached
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>3. Queue-based checkout (asynchrony):
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>   Cart → checkout attempt → enters queue → processed serially per shop
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>   Prevents N simultaneous checkouts from overwhelming one shop's pod
-</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>   User sees: "Your order is being processed" (immediately)
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>   vs: "503 Service Unavailable" (without queue)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Normal day: baseline load
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  Checkout: 10,000 orders/minute across all merchants
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  Response time: &lt;100ms
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Black Friday peak:
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  Checkout: 10,000,000 orders/minute
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  Response time: must still be &lt;100ms
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  Traffic increase: 1000x
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>How Shopify handles it:
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>1. Pre-scaling (days before):
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>   Database pods pre-scaled to 3x normal capacity
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>   Redis cluster pre-scaled for session/cart caching
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>   CDN pre-warmed with merchant storefront assets
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>   Kubernetes auto-scaling configured with higher upper limits
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>2. Storefront caching (biggest lever):
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>   Product pages are cached in CDN and served without hitting app servers
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>   Only "buy" button flow hits Shopify backend
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>   99% of Black Friday traffic = reading product pages = CDN cached
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>3. Queue-based checkout (asynchrony):
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>   Cart -&gt; checkout attempt -&gt; enters queue -&gt; processed serially per shop
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>   Prevents N simultaneous checkouts from overwhelming one shop's pod
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>   User sees: "Your order is being processed" (immediately)
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>   vs: "503 Service Unavailable" (without queue)
 </span></code></pre></div>
 <hr>
 <h2 id="why-shopify-didnt-choose-microservices">Why Shopify Didn't Choose Microservices<a class="headerlink" href="#why-shopify-didnt-choose-microservices" title="Permanent link">¶</a></h2>
@@ -2905,48 +2931,48 @@
 - Kubernetes expertise (takes 6-12 months to learn)
 - Service mesh (Istio adds 50% ops complexity)
 - Distributed tracing (had none at the time)
-- Per-service CI/CD pipelines (×100 services = ×100 pipelines)
+- Per-service CI/CD pipelines (x100 services = x100 pipelines)
 - Cross-service API versioning (extremely painful in practice)</p>
-<p>And what would we gain? Independent deployments, maybe. Independent scaling of specific components, possibly. But we can already scale horizontally — we just add more Shopify app servers. The bottleneck is the database, and we solved that with pods.</p>
+<p>And what would we gain? Independent deployments, maybe. Independent scaling of specific components, possibly. But we can already scale horizontally - we just add more Shopify app servers. The bottleneck is the database, and we solved that with pods.</p>
 <p>The cost of microservices was: 2 years of migration, massive ops overhead, probable bugs from distributed transactions. The benefit: marginal. We chose modular monolith."</p>
 </blockquote>
 <hr>
 <h2 id="architecture-in-clean-architecture-terms">Architecture in Clean Architecture Terms<a class="headerlink" href="#architecture-in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Shopify's Modular Monolith = Clean Architecture within one deployment
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Packwerk modules = Clean Architecture layers + bounded contexts
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  component/checkout/app/public/api.rb = the Port (interface)
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  component/checkout/app/models/ = Entities + Use Cases
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  component/checkout/app/adapters/ = Interface Adapters
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>MySQL Pod routing = Infrastructure layer (outbound adapter)
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>  IOrderRepository → ShopifyActiveRecordRepository
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  Repository selects correct pod connection based on current_shop_id
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  Use cases never know which pod they're on
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>Shopify Admin (React + GraphQL) = Framework &amp; Drivers (inbound adapter)
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>  React component calls GraphQL query
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>  GraphQL resolver = Controller that calls use case
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>  Use case response shapes the GraphQL type
-</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>
-</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>Key insight: You CAN have Clean Architecture in a monolith.
-</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>The boundaries are enforced by tools (Packwerk) not by the network.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Shopify's Modular Monolith = Clean Architecture within one deployment
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Packwerk modules = Clean Architecture layers + bounded contexts
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  component/checkout/app/public/api.rb = the Port (interface)
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  component/checkout/app/models/ = Entities + Use Cases
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  component/checkout/app/adapters/ = Interface Adapters
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>MySQL Pod routing = Infrastructure layer (outbound adapter)
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  IOrderRepository -&gt; ShopifyActiveRecordRepository
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Repository selects correct pod connection based on current_shop_id
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  Use cases never know which pod they're on
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>Shopify Admin (React + GraphQL) = Framework &amp; Drivers (inbound adapter)
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  React component calls GraphQL query
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>  GraphQL resolver = Controller that calls use case
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>  Use case response shapes the GraphQL type
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>Key insight: You CAN have Clean Architecture in a monolith.
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>The boundaries are enforced by tools (Packwerk) not by the network.
 </span></code></pre></div>
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Modular monolith beats unstructured microservices</strong> — Shopify serves $200B GMV from one deployable Ruby app</li>
-<li><strong>Enforce boundaries with tools, not willpower</strong> — Packwerk makes the architecture real; without it, developers take shortcuts</li>
-<li><strong>Database isolation solves tenant isolation</strong> — pods separate merchants more effectively than code separation</li>
-<li><strong>Caching is the biggest scaling lever</strong> — 99% of Black Friday traffic is CDN-served product pages</li>
-<li><strong>The right architecture depends on your team, not just your scale</strong> — 1000 engineers on Rails &gt; 1000 engineers learning Kubernetes</li>
+<li><strong>Modular monolith beats unstructured microservices</strong> - Shopify serves $200B GMV from one deployable Ruby app</li>
+<li><strong>Enforce boundaries with tools, not willpower</strong> - Packwerk makes the architecture real; without it, developers take shortcuts</li>
+<li><strong>Database isolation solves tenant isolation</strong> - pods separate merchants more effectively than code separation</li>
+<li><strong>Caching is the biggest scaling lever</strong> - 99% of Black Friday traffic is CDN-served product pages</li>
+<li><strong>The right architecture depends on your team, not just your scale</strong> - 1000 engineers on Rails &gt; 1000 engineers learning Kubernetes</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="https://shopify.engineering/shopify-monolith">Under Deconstruction: The State of Shopify's Monolith</a></li>
-<li><a href="https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity">Deconstructing the Monolith — Shopify Engineering</a></li>
-<li><a href="https://newsletter.techworld-with-milan.com/p/inside-shopifys-modular-monolith">Inside Shopify's Modular Monolith — Dr. Milan Milanović</a></li>
+<li><a href="https://shopify.engineering/deconstructing-monolith-designing-software-maximizes-developer-productivity">Deconstructing the Monolith - Shopify Engineering</a></li>
+<li><a href="https://newsletter.techworld-with-milan.com/p/inside-shopifys-modular-monolith">Inside Shopify's Modular Monolith - Dr. Milan Milanovic</a></li>
 <li><a href="https://medium.com/@himanshusingour7/how-shopify-handles-30tb-of-data-every-minute-with-a-monolithic-architecture-cad54df86955">How Shopify Handles 30TB of Data Every Minute</a></li>
 </ul>
 <hr>

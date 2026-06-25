@@ -1050,6 +1050,8 @@
       
         
       
+        
+      
     
     
     
@@ -1246,7 +1248,7 @@
   <a href="#b-tree-indexes-the-default-postgresql-mysql-innodb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        B-Tree Indexes — The Default (PostgreSQL, MySQL InnoDB)
+        B-Tree Indexes - The Default (PostgreSQL, MySQL InnoDB)
       
     </span>
   </a>
@@ -1257,7 +1259,7 @@
   <a href="#lsm-tree-indexes-write-optimized-cassandra-rocksdb-leveldb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        LSM Tree Indexes — Write-Optimized (Cassandra, RocksDB, LevelDB)
+        LSM Tree Indexes - Write-Optimized (Cassandra, RocksDB, LevelDB)
       
     </span>
   </a>
@@ -1346,7 +1348,7 @@
   <a href="#gist-gin-spatial-and-full-text" class="md-nav__link">
     <span class="md-ellipsis">
       
-        GiST / GIN — Spatial and Full-Text
+        GiST / GIN - Spatial and Full-Text
       
     </span>
   </a>
@@ -1362,7 +1364,7 @@
   <a href="#reading-explain-plans-your-most-important-skill" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reading EXPLAIN Plans — Your Most Important Skill
+        Reading EXPLAIN Plans - Your Most Important Skill
       
     </span>
   </a>
@@ -1672,6 +1674,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2713,7 +2743,7 @@
   <a href="#b-tree-indexes-the-default-postgresql-mysql-innodb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        B-Tree Indexes — The Default (PostgreSQL, MySQL InnoDB)
+        B-Tree Indexes - The Default (PostgreSQL, MySQL InnoDB)
       
     </span>
   </a>
@@ -2724,7 +2754,7 @@
   <a href="#lsm-tree-indexes-write-optimized-cassandra-rocksdb-leveldb" class="md-nav__link">
     <span class="md-ellipsis">
       
-        LSM Tree Indexes — Write-Optimized (Cassandra, RocksDB, LevelDB)
+        LSM Tree Indexes - Write-Optimized (Cassandra, RocksDB, LevelDB)
       
     </span>
   </a>
@@ -2813,7 +2843,7 @@
   <a href="#gist-gin-spatial-and-full-text" class="md-nav__link">
     <span class="md-ellipsis">
       
-        GiST / GIN — Spatial and Full-Text
+        GiST / GIN - Spatial and Full-Text
       
     </span>
   </a>
@@ -2829,7 +2859,7 @@
   <a href="#reading-explain-plans-your-most-important-skill" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reading EXPLAIN Plans — Your Most Important Skill
+        Reading EXPLAIN Plans - Your Most Important Skill
       
     </span>
   </a>
@@ -2967,9 +2997,9 @@
   
 
 
-<h1 id="database-indexing-complete-guide">Database Indexing — Complete Guide<a class="headerlink" href="#database-indexing-complete-guide" title="Permanent link">¶</a></h1>
+<h1 id="database-indexing-complete-guide">Database Indexing - Complete Guide<a class="headerlink" href="#database-indexing-complete-guide" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"An index is a promise to the database engine: 'I will pay the cost of maintaining this structure so you don't have to scan the table every time.'" — Database internals</p>
+<p>"An index is a promise to the database engine: 'I will pay the cost of maintaining this structure so you don't have to scan the table every time.'" - Database internals</p>
 </blockquote>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
@@ -2987,7 +3017,7 @@
 </tr>
 <tr>
 <td><strong>Trade-off</strong></td>
-<td>Faster reads ↔ Slower writes, more storage</td>
+<td>Faster reads &lt;-&gt; Slower writes, more storage</td>
 </tr>
 <tr>
 <td><strong>Most important skill</strong></td>
@@ -2998,23 +3028,23 @@
 <hr>
 <h2 id="senior-to-junior-why-indexes-matter">Senior to Junior: Why Indexes Matter<a class="headerlink" href="#senior-to-junior-why-indexes-matter" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"Your app works perfectly with 100 rows in the database. You launch, get 1M users, and suddenly everything is slow. You look at the database: one query is doing a full table scan on 50M rows. That's your missing index. The query is functionally correct — it returns the right data. It's just doing it the hard way: checking every single row instead of jumping directly to what it needs. One index, added in 30 seconds, fixes it completely."</p>
+<p>"Your app works perfectly with 100 rows in the database. You launch, get 1M users, and suddenly everything is slow. You look at the database: one query is doing a full table scan on 50M rows. That's your missing index. The query is functionally correct - it returns the right data. It's just doing it the hard way: checking every single row instead of jumping directly to what it needs. One index, added in 30 seconds, fixes it completely."</p>
 </blockquote>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Without index (full table scan):</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345</span><span class="p">;</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">-- Database engine: "I need to check all 50M rows to find user 12345's orders"</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">-- Time: O(n) — proportional to table size</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">-- Time: O(n) - proportional to table size</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">-- 1M rows: 50ms. 50M rows: 2500ms. 500M rows: 25 seconds.</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">-- With index on user_id:</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_user_id</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">user_id</span><span class="p">);</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">-- Database engine: "I'll use the index to jump directly to user 12345's rows"</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">-- Time: O(log n) — proportional to LOG of table size</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">-- Time: O(log n) - proportional to LOG of table size</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1">-- 1M rows: 0.5ms. 50M rows: 0.6ms. 500M rows: 0.7ms.</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">-- Log(n) barely grows as n grows — this is the power of indexes</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">-- Log(n) barely grows as n grows - this is the power of indexes</span>
 </span></code></pre></div>
 <hr>
-<h2 id="b-tree-indexes-the-default-postgresql-mysql-innodb">B-Tree Indexes — The Default (PostgreSQL, MySQL InnoDB)<a class="headerlink" href="#b-tree-indexes-the-default-postgresql-mysql-innodb" title="Permanent link">¶</a></h2>
+<h2 id="b-tree-indexes-the-default-postgresql-mysql-innodb">B-Tree Indexes - The Default (PostgreSQL, MySQL InnoDB)<a class="headerlink" href="#b-tree-indexes-the-default-postgresql-mysql-innodb" title="Permanent link">¶</a></h2>
 <p><strong>How it works:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>B-Tree for user_id column:
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
@@ -3025,17 +3055,17 @@
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    [100]      [300]   [600]    [900]
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>   /    \      /   \    /  \    /   \
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a> [50] [150] [250] [350] [550][650] [850][950]
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  ↓     ↓     ↓     ↓     ↓    ↓     ↓    ↓
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>   v       v       v       v       v      v       v      v 
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a> rows  rows  rows  rows  rows  rows  rows rows
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Looking for user_id = 650:
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  Check root: 650 &gt; 500? yes → go right
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  Check 800: 650 &lt; 800? yes → go left
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  Check 600: 650 &gt; 600? yes → go right
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  Found 650 → jump to data rows
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  Check root: 650 &gt; 500? yes -&gt; go right
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  Check 800: 650 &lt; 800? yes -&gt; go left
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  Check 600: 650 &gt; 600? yes -&gt; go right
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  Found 650 -&gt; jump to data rows
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>Total comparisons: 4 (for 950 rows)
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>log₂(950) ≈ 10 comparisons for ANY row in 950 row table
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>log2(950) ~= 10 comparisons for ANY row in 950 row table
 </span></code></pre></div>
 <p><strong>B-Tree supports:</strong>
 - Exact match: <code>WHERE id = 123</code>
@@ -3043,24 +3073,24 @@
 - Starts-with: <code>WHERE email LIKE 'suphakin%'</code> (NOT <code>WHERE email LIKE '%@gmail.com'</code>)
 - ORDER BY (if sorted same as index)</p>
 <p><strong>B-Tree does NOT support:</strong>
-- Contains: <code>WHERE email LIKE '%gmail%'</code> → full scan
+- Contains: <code>WHERE email LIKE '%gmail%'</code> -&gt; full scan
 - Case-insensitive by default (use functional index)</p>
 <hr>
-<h2 id="lsm-tree-indexes-write-optimized-cassandra-rocksdb-leveldb">LSM Tree Indexes — Write-Optimized (Cassandra, RocksDB, LevelDB)<a class="headerlink" href="#lsm-tree-indexes-write-optimized-cassandra-rocksdb-leveldb" title="Permanent link">¶</a></h2>
+<h2 id="lsm-tree-indexes-write-optimized-cassandra-rocksdb-leveldb">LSM Tree Indexes - Write-Optimized (Cassandra, RocksDB, LevelDB)<a class="headerlink" href="#lsm-tree-indexes-write-optimized-cassandra-rocksdb-leveldb" title="Permanent link">¶</a></h2>
 <p><strong>The problem with B-Trees at high write volume:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>B-Tree write problem:
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Insert row with user_id = 123 → find correct leaf node → insert in place
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  If the page is full → SPLIT: rearrange two pages
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Insert row with user_id = 123 -&gt; find correct leaf node -&gt; insert in place
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  If the page is full -&gt; SPLIT: rearrange two pages
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  Split might cascade up the tree
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  Random I/O: the leaf page might be anywhere on disk
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  High write load: 100K inserts/sec → 100K random I/O → disk can't keep up
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  High write load: 100K inserts/sec -&gt; 100K random I/O -&gt; disk can't keep up
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>LSM Tree solution: convert random writes to sequential writes
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  All writes go to: in-memory buffer (MemTable)
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  When buffer full: flush as sorted SSTable (Sequential String Table) to disk
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  Sequential write: 10-100× faster than random write on SSD/HDD
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  Sequential write: 10-100x faster than random write on SSD/HDD
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Read: check MemTable → L0 SSTables → L1 SSTables → ... (most recent first)
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>Read: check MemTable -&gt; L0 SSTables -&gt; L1 SSTables -&gt; ... (most recent first)
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>Compaction: background process merges and sorts SSTables
 </span></code></pre></div>
 <p><strong>LSM Tree trade-off:</strong>
@@ -3074,18 +3104,18 @@
 <h2 id="index-types">Index Types<a class="headerlink" href="#index-types" title="Permanent link">¶</a></h2>
 <h3 id="single-column-index">Single Column Index<a class="headerlink" href="#single-column-index" title="Permanent link">¶</a></h3>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_users_email</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">email</span><span class="p">);</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1">-- Used for: WHERE email = 'x' · WHERE email LIKE 'x%' · ORDER BY email</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1">-- Used for: WHERE email = 'x' - WHERE email LIKE 'x%' - ORDER BY email</span>
 </span></code></pre></div>
 <h3 id="composite-index-multi-column">Composite Index (Multi-Column)<a class="headerlink" href="#composite-index-multi-column" title="Permanent link">¶</a></h3>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">-- CRITICAL: Order matters! The leftmost columns must be in the WHERE clause</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_user_status</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">);</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1">-- ✅ Uses the index (leftmost columns present):</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1">-- [OK] Uses the index (leftmost columns present):</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'pending'</span><span class="p">;</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">created_at</span><span class="p">;</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">-- ❌ Does NOT use the index (missing leftmost column):</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">-- [X] Does NOT use the index (missing leftmost column):</span>
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'pending'</span><span class="p">;</span><span class="w">  </span><span class="c1">-- status is not the first column</span>
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">created_at</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">'2024-01-01'</span><span class="p">;</span><span class="w">  </span><span class="c1">-- created_at is third</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
@@ -3120,7 +3150,7 @@
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1">-- Query:</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">posts</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">to_tsvector</span><span class="p">(</span><span class="s1">'english'</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="p">)</span><span class="w"> </span><span class="o">@@</span><span class="w"> </span><span class="n">plainto_tsquery</span><span class="p">(</span><span class="s1">'clean architecture'</span><span class="p">);</span>
 </span></code></pre></div>
-<h3 id="gist-gin-spatial-and-full-text">GiST / GIN — Spatial and Full-Text<a class="headerlink" href="#gist-gin-spatial-and-full-text" title="Permanent link">¶</a></h3>
+<h3 id="gist-gin-spatial-and-full-text">GiST / GIN - Spatial and Full-Text<a class="headerlink" href="#gist-gin-spatial-and-full-text" title="Permanent link">¶</a></h3>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">-- GiST: for geometric, range, and nearest-neighbor queries</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_restaurants_location</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">restaurants</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="p">(</span><span class="k">location</span><span class="p">);</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
@@ -3129,7 +3159,7 @@
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">metadata</span><span class="w"> </span><span class="o">@&gt;</span><span class="w"> </span><span class="s1">'{"brand": "Apple"}'</span><span class="p">;</span>
 </span></code></pre></div>
 <hr>
-<h2 id="reading-explain-plans-your-most-important-skill">Reading EXPLAIN Plans — Your Most Important Skill<a class="headerlink" href="#reading-explain-plans-your-most-important-skill" title="Permanent link">¶</a></h2>
+<h2 id="reading-explain-plans-your-most-important-skill">Reading EXPLAIN Plans - Your Most Important Skill<a class="headerlink" href="#reading-explain-plans-your-most-important-skill" title="Permanent link">¶</a></h2>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">-- PostgreSQL EXPLAIN ANALYZE</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">ANALYZE</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345</span><span class="p">;</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
@@ -3138,7 +3168,7 @@
 </span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="n">Filter</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345</span><span class="p">)</span>
 </span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">  </span><span class="k">Rows</span><span class="w"> </span><span class="n">Removed</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">Filter</span><span class="p">:</span><span class="w"> </span><span class="mi">5000000</span>
 </span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">Planning</span><span class="w"> </span><span class="k">Time</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">234</span><span class="w"> </span><span class="n">ms</span>
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="n">Execution</span><span class="w"> </span><span class="k">Time</span><span class="p">:</span><span class="w"> </span><span class="mi">2341</span><span class="p">.</span><span class="mi">456</span><span class="w"> </span><span class="n">ms</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span><span class="mi">3</span><span class="w"> </span><span class="n">SECONDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BAD</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="n">Execution</span><span class="w"> </span><span class="k">Time</span><span class="p">:</span><span class="w"> </span><span class="mi">2341</span><span class="p">.</span><span class="mi">456</span><span class="w"> </span><span class="n">ms</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span><span class="mi">3</span><span class="w"> </span><span class="n">SECONDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BAD</span>
 </span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
 </span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="c1">-- Key terms to understand:</span>
 </span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="c1">-- Seq Scan = full table scan = NO INDEX USED (usually bad for large tables)</span>
@@ -3152,25 +3182,25 @@
 </span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">  </span><span class="p">(</span><span class="n">actual</span><span class="w"> </span><span class="k">time</span><span class="o">=</span><span class="mi">0</span><span class="p">.</span><span class="mi">045</span><span class="p">..</span><span class="mi">0</span><span class="p">.</span><span class="mi">123</span><span class="w"> </span><span class="k">rows</span><span class="o">=</span><span class="mi">23</span><span class="w"> </span><span class="n">loops</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w">  </span><span class="k">Index</span><span class="w"> </span><span class="n">Cond</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345</span><span class="p">)</span>
 </span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="n">Planning</span><span class="w"> </span><span class="k">Time</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">456</span><span class="w"> </span><span class="n">ms</span>
-</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="n">Execution</span><span class="w"> </span><span class="k">Time</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">178</span><span class="w"> </span><span class="n">ms</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">2</span><span class="n">ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="mi">000</span><span class="err">×</span><span class="w"> </span><span class="n">faster</span><span class="o">!</span>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="n">Execution</span><span class="w"> </span><span class="k">Time</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">178</span><span class="w"> </span><span class="n">ms</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">2</span><span class="n">ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="mi">000</span><span class="n">x</span><span class="w"> </span><span class="n">faster</span><span class="o">!</span>
 </span></code></pre></div>
 <p><strong>What to look for in EXPLAIN:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>RED FLAGS (investigate these):
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  Seq Scan on large table  → might need an index
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  Rows Removed by Filter: 5000000  → checking many rows to find few
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  Seq Scan on large table -&gt; might need an index
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  Rows Removed by Filter: 5000000 -&gt; checking many rows to find few
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  Execution Time: &gt; 100ms for simple queries
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
 </span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>GREEN FLAGS (working well):
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  Index Scan  → using B-tree index
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>  Bitmap Index Scan  → using index efficiently
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>  Index Only Scan  → data from index itself, no table access needed!
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  Index Scan -&gt; using B-tree index
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>  Bitmap Index Scan -&gt; using index efficiently
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>  Index Only Scan -&gt; data from index itself, no table access needed!
 </span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>  Execution Time: &lt; 10ms
 </span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
 </span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>OPERATIONS (cost breakdown):
-</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>  Nested Loop  → good for small result sets
-</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>  Hash Join  → good for larger joins
-</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>  Merge Join  → good for pre-sorted data
-</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>  Sort  → sort needed (check if index can eliminate it)
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>  Nested Loop -&gt; good for small result sets
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>  Hash Join -&gt; good for larger joins
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>  Merge Join -&gt; good for pre-sorted data
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>  Sort -&gt; sort needed (check if index can eliminate it)
 </span></code></pre></div>
 <hr>
 <h2 id="index-design-patterns">Index Design Patterns<a class="headerlink" href="#index-design-patterns" title="Permanent link">¶</a></h2>
@@ -3181,26 +3211,26 @@
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1">-- Bad: index only on user_id, but SELECT needs status and total</span>
 </span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_user</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">user_id</span><span class="p">);</span>
 </span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123</span><span class="p">;</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1">-- → Index Scan (finds rows) + heap fetch (reads table for status, total)</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1">-- -&gt; Index Scan (finds rows) + heap fetch (reads table for status, total)</span>
 </span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
 </span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="c1">-- Good: covering index includes queried columns</span>
 </span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_user_covering</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span><span class="w"> </span><span class="n">INCLUDE</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="p">);</span>
 </span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123</span><span class="p">;</span>
-</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1">-- → Index Only Scan (never touches table = fastest possible)</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1">-- -&gt; Index Only Scan (never touches table = fastest possible)</span>
 </span></code></pre></div>
 <h3 id="the-cardinality-rule">The Cardinality Rule<a class="headerlink" href="#the-cardinality-rule" title="Permanent link">¶</a></h3>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">-- High cardinality column = many distinct values → good index candidate</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1">-- Low cardinality column = few distinct values → poor index candidate</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">-- High cardinality column = many distinct values -&gt; good index candidate</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1">-- Low cardinality column = few distinct values -&gt; poor index candidate</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1">-- HIGH cardinality (good for index):</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="n">user_id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">very</span><span class="w"> </span><span class="n">selective</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="n">email</span><span class="p">:</span><span class="w"> </span><span class="k">unique</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">perfect</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="n">order_id</span><span class="p">:</span><span class="w"> </span><span class="k">unique</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">perfect</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="n">user_id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">index</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">very</span><span class="w"> </span><span class="n">selective</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="n">email</span><span class="p">:</span><span class="w"> </span><span class="k">unique</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">perfect</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="n">order_id</span><span class="p">:</span><span class="w"> </span><span class="k">unique</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">perfect</span>
 </span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
 </span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1">-- LOW cardinality (poor index candidate):</span>
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">  </span><span class="n">status</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="s1">'pending'</span><span class="p">,</span><span class="w"> </span><span class="s1">'completed'</span><span class="p">,</span><span class="w"> </span><span class="s1">'cancelled'</span><span class="p">)</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="k">values</span>
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">  </span><span class="n">country</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="o">-</span><span class="mi">200</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">might</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">useful</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">specific</span><span class="w"> </span><span class="n">country</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">rare</span>
-</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">  </span><span class="nb">boolean</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">useless</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">standalone</span><span class="w"> </span><span class="k">index</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">  </span><span class="n">status</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="s1">'pending'</span><span class="p">,</span><span class="w"> </span><span class="s1">'completed'</span><span class="p">,</span><span class="w"> </span><span class="s1">'cancelled'</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="k">values</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">  </span><span class="n">country</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="o">-</span><span class="mi">200</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">might</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">useful</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">specific</span><span class="w"> </span><span class="n">country</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">rare</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">  </span><span class="nb">boolean</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">useless</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">standalone</span><span class="w"> </span><span class="k">index</span>
 </span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
 </span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="c1">-- Combining low+high cardinality:</span>
 </span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">  </span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">user_id</span><span class="p">);</span><span class="w">  </span><span class="c1">-- status first filters, user_id narrows</span>
@@ -3212,16 +3242,16 @@
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1">-- Now this query needs NO SORT:</span>
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">created_at</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="c1">-- Without index: sorts 50M rows to get top 20 → slow</span>
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1">-- With index: walks index backward, takes first 20 → instant</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="c1">-- Without index: sorts 50M rows to get top 20 -&gt; slow</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1">-- With index: walks index backward, takes first 20 -&gt; instant</span>
 </span></code></pre></div>
 <hr>
 <h2 id="when-not-to-index">When NOT to Index<a class="headerlink" href="#when-not-to-index" title="Permanent link">¶</a></h2>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">-- Indexes have costs: every INSERT/UPDATE/DELETE must also update all indexes</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1">-- Table with 5 indexes:</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="k">INSERT</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">indexes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">I</span><span class="o">/</span><span class="n">O</span><span class="w"> </span><span class="n">operations</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="k">modify</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="n">changed</span><span class="w"> </span><span class="n">columns</span><span class="s1">' indexes</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="k">INSERT</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">indexes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">I</span><span class="o">/</span><span class="n">O</span><span class="w"> </span><span class="n">operations</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="k">UPDATE</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">modify</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="n">changed</span><span class="w"> </span><span class="n">columns</span><span class="s1">' indexes</span>
 </span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
 </span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s1">-- Don'</span><span class="n">t</span><span class="w"> </span><span class="k">index</span><span class="p">:</span>
 </span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1">-- 1. Small tables (&lt; 10K rows): full scan is faster than index + random heap fetch</span>
@@ -3266,7 +3296,7 @@
 </span><span id="__span-17-24"><a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_orders_user_list</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">orders</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span>
 </span><span id="__span-17-25"><a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="n">INCLUDE</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">total_cents</span><span class="p">);</span>
 </span><span id="__span-17-26"><a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="c1">-- Query: SELECT id, status, total_cents FROM orders WHERE user_id = ? ORDER BY created_at DESC;</span>
-</span><span id="__span-17-27"><a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="c1">-- → Index Only Scan: gets all needed data from index alone</span>
+</span><span id="__span-17-27"><a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="c1">-- -&gt; Index Only Scan: gets all needed data from index alone</span>
 </span></code></pre></div>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
@@ -3278,8 +3308,8 @@
 </span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>The Repository adapter decides HOW to execute this:
 </span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>  OrderRepositoryPostgres:
 </span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC LIMIT 20
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    → The INDEX exists or not — this is infrastructure
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>    → The use case never knows
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a> -&gt; The INDEX exists or not - this is infrastructure
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a> -&gt; The use case never knows
 </span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>
 </span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>The business rule "get latest 20 orders" lives in Use Case layer
 </span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>The performance of that query lives in Infrastructure layer

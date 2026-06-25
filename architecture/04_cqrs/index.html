@@ -766,7 +766,7 @@
   <a href="#level-1-same-db-separate-models-simple" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Level 1 — Same DB, Separate Models (Simple)
+        Level 1 - Same DB, Separate Models (Simple)
       
     </span>
   </a>
@@ -777,7 +777,7 @@
   <a href="#level-2-separate-read-db-full-cqrs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Level 2 — Separate Read DB (Full CQRS)
+        Level 2 - Separate Read DB (Full CQRS)
       
     </span>
   </a>
@@ -788,7 +788,7 @@
   <a href="#level-3-cqrs-event-sourcing-advanced" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Level 3 — CQRS + Event Sourcing (Advanced)
+        Level 3 - CQRS + Event Sourcing (Advanced)
       
     </span>
   </a>
@@ -1319,6 +1319,8 @@
       
         
       
+        
+      
     
     
     
@@ -1633,6 +1635,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2697,7 +2727,7 @@
   <a href="#level-1-same-db-separate-models-simple" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Level 1 — Same DB, Separate Models (Simple)
+        Level 1 - Same DB, Separate Models (Simple)
       
     </span>
   </a>
@@ -2708,7 +2738,7 @@
   <a href="#level-2-separate-read-db-full-cqrs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Level 2 — Separate Read DB (Full CQRS)
+        Level 2 - Separate Read DB (Full CQRS)
       
     </span>
   </a>
@@ -2719,7 +2749,7 @@
   <a href="#level-3-cqrs-event-sourcing-advanced" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Level 3 — CQRS + Event Sourcing (Advanced)
+        Level 3 - CQRS + Event Sourcing (Advanced)
       
     </span>
   </a>
@@ -2889,7 +2919,7 @@
   
 
 
-<h1 id="architecture-04-cqrs-command-query-responsibility-segregation">Architecture 04 — CQRS (Command Query Responsibility Segregation)<a class="headerlink" href="#architecture-04-cqrs-command-query-responsibility-segregation" title="Permanent link">¶</a></h1>
+<h1 id="architecture-04-cqrs-command-query-responsibility-segregation">Architecture 04 - CQRS (Command Query Responsibility Segregation)<a class="headerlink" href="#architecture-04-cqrs-command-query-responsibility-segregation" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -2922,86 +2952,94 @@
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
 <p>CQRS separates <strong>Commands</strong> (write operations that change state) from <strong>Queries</strong> (read operations that return data). They use separate models, sometimes separate databases.</p>
 <p><strong>Core insight:</strong> In most systems, reads outnumber writes by 10:1 to 100:1. They have very different optimization needs. Why use the same model for both?</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Command: PlaceOrder  → changes state → writes to write model DB
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Query:   GetOrderById → reads state → reads from read model DB (optimized for fast reads)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Command: PlaceOrder -&gt; changes state -&gt; writes to write model DB
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Query:   GetOrderById -&gt; reads state -&gt; reads from read model DB (optimized for fast reads)
 </span></code></pre></div>
 <hr>
 <h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
 <p><code>./diagram.svg</code></p>
 <hr>
 <h2 id="levels-of-cqrs">Levels of CQRS<a class="headerlink" href="#levels-of-cqrs" title="Permanent link">¶</a></h2>
-<h3 id="level-1-same-db-separate-models-simple">Level 1 — Same DB, Separate Models (Simple)<a class="headerlink" href="#level-1-same-db-separate-models-simple" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>                    ┌── CommandHandler → Domain Entities → Write Model (normalized DB)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Application ───────┤
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                    └── QueryHandler → Query DTO → Read Model (same DB, different view/table)
-</span></code></pre></div>
-<h3 id="level-2-separate-read-db-full-cqrs">Level 2 — Separate Read DB (Full CQRS)<a class="headerlink" href="#level-2-separate-read-db-full-cqrs" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>                    ┌── CommandHandler → Domain Entities → Write DB (PostgreSQL, normalized)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Application ───────┤                          │
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>                    │                    [Event / Sync]
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>                    │                          │
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                    └── QueryHandler → Read DB (Elasticsearch, Redis, denormalized views)
-</span></code></pre></div>
-<h3 id="level-3-cqrs-event-sourcing-advanced">Level 3 — CQRS + Event Sourcing (Advanced)<a class="headerlink" href="#level-3-cqrs-event-sourcing-advanced" title="Permanent link">¶</a></h3>
-<p>Commands → Events → Event Store → projections → Read Models
+<h3 id="level-1-same-db-separate-models-simple">Level 1 - Same DB, Separate Models (Simple)<a class="headerlink" href="#level-1-same-db-separate-models-simple" title="Permanent link">¶</a></h3>
+<p>The application splits into a command path and a query path; both hit the same database but use separate models.</p>
+<pre class="mermaid"><code>flowchart LR
+    App["Application"]
+    App --&gt; CH["CommandHandler"]
+    App --&gt; QH["QueryHandler"]
+    CH --&gt; DE["Domain Entities"]
+    DE --&gt; WM["Write Model (normalized DB)"]
+    QH --&gt; QD["Query DTO"]
+    QD --&gt; RM["Read Model (same DB, different view/table)"]</code></pre>
+<h3 id="level-2-separate-read-db-full-cqrs">Level 2 - Separate Read DB (Full CQRS)<a class="headerlink" href="#level-2-separate-read-db-full-cqrs" title="Permanent link">¶</a></h3>
+<p>The command path writes to its own DB, which then syncs to a separate read DB that the query path serves from.</p>
+<pre class="mermaid"><code>flowchart LR
+    App["Application"]
+    App --&gt; CH["CommandHandler"]
+    App --&gt; QH["QueryHandler"]
+    CH --&gt; DE["Domain Entities"]
+    DE --&gt; WDB["Write DB (PostgreSQL, normalized)"]
+    WDB --&gt;|Event / Sync| RDB["Read DB (Elasticsearch, Redis, denormalized views)"]
+    QH --&gt; RDB</code></pre>
+<h3 id="level-3-cqrs-event-sourcing-advanced">Level 3 - CQRS + Event Sourcing (Advanced)<a class="headerlink" href="#level-3-cqrs-event-sourcing-advanced" title="Permanent link">¶</a></h3>
+<p>Commands -&gt; Events -&gt; Event Store -&gt; projections -&gt; Read Models
 (see Pattern 05)</p>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
 <p>CQRS splits Use Cases into two types:</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Command Use Case — WRITES, returns minimal data (just ID or void)</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderCommand</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">customerId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderItemDto</span><span class="p">[]</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderCommandHandler</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span><span class="w">       </span><span class="c1">// write model interface</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">eventBus</span><span class="o">:</span><span class="w"> </span><span class="kt">IEventBus</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">cmd</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderCommand</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Order</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">cmd</span><span class="p">.</span><span class="nx">customerId</span><span class="p">,</span><span class="w"> </span><span class="nx">cmd</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span><span class="w"> </span><span class="c1">// entity</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">eventBus</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderPlacedEvent</span><span class="p">(</span><span class="nx">order</span><span class="p">));</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span><span class="w">  </span><span class="c1">// only return the ID</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="p">}</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="c1">// Query Use Case — READS, never changes state, optimized DTO</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderDetailsQuery</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="p">}</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderDetailsQueryHandler</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">readDb</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderReadRepository</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="c1">// read model interface</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="kt">GetOrderDetailsQuery</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">OrderDetailsDto</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">    </span><span class="c1">// Goes directly to read model — may be a denormalized view, Redis, or Elasticsearch</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">readDb</span><span class="p">.</span><span class="nx">getOrderDetails</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">orderId</span><span class="p">);</span>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="p">}</span>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Command Use Case - WRITES, returns minimal data (just ID or void)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderCommand</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">customerId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="kt">OrderItemDto</span><span class="p">[]</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderCommandHandler</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">orders</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderRepository</span><span class="p">,</span><span class="w">       </span><span class="c1">// write model interface</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="nx">eventBus</span><span class="o">:</span><span class="w"> </span><span class="kt">IEventBus</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">cmd</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderCommand</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Order</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">cmd</span><span class="p">.</span><span class="nx">customerId</span><span class="p">,</span><span class="w"> </span><span class="nx">cmd</span><span class="p">.</span><span class="nx">items</span><span class="p">);</span><span class="w"> </span><span class="c1">// entity</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">orders</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="nx">order</span><span class="p">);</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">eventBus</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">OrderPlacedEvent</span><span class="p">(</span><span class="nx">order</span><span class="p">));</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">order</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span><span class="w">  </span><span class="c1">// only return the ID</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="p">}</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1">// Query Use Case - READS, never changes state, optimized DTO</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderDetailsQuery</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">public</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="p">}</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="kd">class</span><span class="w"> </span><span class="nx">GetOrderDetailsQueryHandler</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">readDb</span><span class="o">:</span><span class="w"> </span><span class="kt">IOrderReadRepository</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="c1">// read model interface</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">query</span><span class="o">:</span><span class="w"> </span><span class="kt">GetOrderDetailsQuery</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">OrderDetailsDto</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">    </span><span class="c1">// Goes directly to read model - may be a denormalized view, Redis, or Elasticsearch</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">readDb</span><span class="p">.</span><span class="nx">getOrderDetails</span><span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">orderId</span><span class="p">);</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><strong>Key rule:</strong> Queries NEVER modify state. Commands NEVER return data beyond confirmation.</p>
 <hr>
 <h2 id="read-model-design">Read Model Design<a class="headerlink" href="#read-model-design" title="Permanent link">¶</a></h2>
 <p>The read model is optimized for how data is DISPLAYED, not how it's stored.</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">-- Write model: 3NF normalized</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">orders</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">)</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">order_items</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">product_id</span><span class="p">,</span><span class="w"> </span><span class="n">quantity</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">)</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">customers</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">shipping_address</span><span class="p">)</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">products</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">sku</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">)</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">-- Read model: denormalized for the "Order Details" page</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">order_details_view</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="n">customer_name</span><span class="p">,</span><span class="w"> </span><span class="n">customer_email</span><span class="p">,</span><span class="w"> </span><span class="n">shipping_address</span><span class="p">,</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">{</span><span class="w"> </span><span class="n">product_name</span><span class="p">,</span><span class="w"> </span><span class="n">sku</span><span class="p">,</span><span class="w"> </span><span class="n">quantity</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">subtotal</span><span class="w"> </span><span class="err">}</span><span class="p">],</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="n">total_amount</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="p">)</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="c1">-- This is one query, no joins needed = fast!</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Write model: 3NF normalized</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">orders</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">customer_id</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">order_items</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">product_id</span><span class="p">,</span><span class="w"> </span><span class="n">quantity</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">customers</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">shipping_address</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">products</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">sku</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1">-- Read model: denormalized for the "Order Details" page</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">order_details_view</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">created_at</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="n">customer_name</span><span class="p">,</span><span class="w"> </span><span class="n">customer_email</span><span class="p">,</span><span class="w"> </span><span class="n">shipping_address</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="n">items</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">{</span><span class="w"> </span><span class="n">product_name</span><span class="p">,</span><span class="w"> </span><span class="n">sku</span><span class="p">,</span><span class="w"> </span><span class="n">quantity</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">subtotal</span><span class="w"> </span><span class="err">}</span><span class="p">],</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="n">total_amount</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="p">)</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1">-- This is one query, no joins needed = fast!</span>
 </span></code></pre></div>
 <hr>
 <h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
@@ -3027,7 +3065,7 @@
 <tr>
 <td><strong>Network</strong></td>
 <td>Medium</td>
-<td>Sync between write → read DB adds network hops</td>
+<td>Sync between write -&gt; read DB adds network hops</td>
 </tr>
 <tr>
 <td><strong>Disk</strong></td>
@@ -3054,12 +3092,12 @@
 <hr>
 <h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Independent scaling</strong> — scale read replicas ×10; write DB stays ×1</li>
-<li><strong>Optimized queries</strong> — read model is shaped exactly for the UI; no joins, no transforms</li>
-<li><strong>Clear separation</strong> — can't accidentally write in a read handler; impossible by design</li>
-<li><strong>Audit-friendly</strong> — commands are explicit intents; log them all</li>
-<li><strong>Multiple read models</strong> — OrderDetailsView for web, OrderSummaryView for mobile, both from same write commands</li>
-<li><strong>Caching is easy</strong> — read models are immutable until next command; easy to cache</li>
+<li><strong>Independent scaling</strong> - scale read replicas x10; write DB stays x1</li>
+<li><strong>Optimized queries</strong> - read model is shaped exactly for the UI; no joins, no transforms</li>
+<li><strong>Clear separation</strong> - can't accidentally write in a read handler; impossible by design</li>
+<li><strong>Audit-friendly</strong> - commands are explicit intents; log them all</li>
+<li><strong>Multiple read models</strong> - OrderDetailsView for web, OrderSummaryView for mobile, both from same write commands</li>
+<li><strong>Caching is easy</strong> - read models are immutable until next command; easy to cache</li>
 </ol>
 <hr>
 <h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
@@ -3096,11 +3134,11 @@
 <hr>
 <h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Eventual consistency</strong> — read model may lag; "I just placed an order but it doesn't show yet"</li>
-<li><strong>Complexity</strong> — two models, two DBs, synchronization logic</li>
-<li><strong>More code</strong> — separate command handlers, query handlers, DTOs for each direction</li>
-<li><strong>Sync mechanism</strong> — need to sync write → read DB (events, CDC, polling)</li>
-<li><strong>Not worth it for CRUD</strong> — if reads and writes have similar load, CQRS is overhead</li>
+<li><strong>Eventual consistency</strong> - read model may lag; "I just placed an order but it doesn't show yet"</li>
+<li><strong>Complexity</strong> - two models, two DBs, synchronization logic</li>
+<li><strong>More code</strong> - separate command handlers, query handlers, DTOs for each direction</li>
+<li><strong>Sync mechanism</strong> - need to sync write -&gt; read DB (events, CDC, polling)</li>
+<li><strong>Not worth it for CRUD</strong> - if reads and writes have similar load, CQRS is overhead</li>
 </ol>
 <hr>
 <h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
@@ -3127,14 +3165,14 @@
 <h3 id="linkedin">LinkedIn<a class="headerlink" href="#linkedin" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Architecture:</strong> CQRS for activity streams (feed)</li>
-<li><strong>Write model:</strong> User action (post, like, connect) → normalized event store</li>
+<li><strong>Write model:</strong> User action (post, like, connect) -&gt; normalized event store</li>
 <li><strong>Read model:</strong> Pre-computed feed per user (Redis sorted sets)</li>
 <li><strong>Good at:</strong> Reading your feed = one Redis lookup; writing a post = async fan-out</li>
 </ul>
 <hr>
 <h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>CQRS takes the Clean Architecture principle of "use cases are the app's verbs" and splits those verbs into two kinds: Commands (change state) and Queries (read state). This split allows each side to be optimized independently — writes for consistency and correctness, reads for speed and flexibility.</p>
+<p>CQRS takes the Clean Architecture principle of "use cases are the app's verbs" and splits those verbs into two kinds: Commands (change state) and Queries (read state). This split allows each side to be optimized independently - writes for consistency and correctness, reads for speed and flexibility.</p>
 </blockquote>
 
 

@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1375,6 +1377,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1683,7 +1713,7 @@
   <a href="#swift-cross-border-payments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SWIFT — Cross-Border Payments
+        SWIFT - Cross-Border Payments
       
     </span>
   </a>
@@ -1694,7 +1724,7 @@
   <a href="#promptpay-thailands-real-time-payment-system" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PromptPay — Thailand's Real-Time Payment System
+        PromptPay - Thailand's Real-Time Payment System
       
     </span>
   </a>
@@ -1705,7 +1735,7 @@
   <a href="#iso-20022-the-universal-financial-language" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ISO 20022 — The Universal Financial Language
+        ISO 20022 - The Universal Financial Language
       
     </span>
   </a>
@@ -2619,7 +2649,7 @@
   <a href="#swift-cross-border-payments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SWIFT — Cross-Border Payments
+        SWIFT - Cross-Border Payments
       
     </span>
   </a>
@@ -2630,7 +2660,7 @@
   <a href="#promptpay-thailands-real-time-payment-system" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PromptPay — Thailand's Real-Time Payment System
+        PromptPay - Thailand's Real-Time Payment System
       
     </span>
   </a>
@@ -2641,7 +2671,7 @@
   <a href="#iso-20022-the-universal-financial-language" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ISO 20022 — The Universal Financial Language
+        ISO 20022 - The Universal Financial Language
       
     </span>
   </a>
@@ -2679,225 +2709,215 @@
   
 
 
-<h1 id="payment-networks-visa-mastercard-swift-promptpay">Payment Networks — Visa, Mastercard, SWIFT, PromptPay<a class="headerlink" href="#payment-networks-visa-mastercard-swift-promptpay" title="Permanent link">¶</a></h1>
+<h1 id="payment-networks-visa-mastercard-swift-promptpay">Payment Networks - Visa, Mastercard, SWIFT, PromptPay<a class="headerlink" href="#payment-networks-visa-mastercard-swift-promptpay" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"A card swipe takes 2 seconds. In those 2 seconds: your bank, Visa's network, the merchant's bank, fraud systems in 3 countries, and a risk engine all communicate — and they all must agree before your coffee is poured." — Payment industry veteran</p>
+<p>"A card swipe takes 2 seconds. In those 2 seconds: your bank, Visa's network, the merchant's bank, fraud systems in 3 countries, and a risk engine all communicate - and they all must agree before your coffee is poured." - Payment industry veteran</p>
 </blockquote>
 <hr>
 <h2 id="the-four-party-model-how-card-payments-work">The Four-Party Model (How Card Payments Work)<a class="headerlink" href="#the-four-party-model-how-card-payments-work" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[Cardholder]          [Merchant]
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>     │                    │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>     │ swipes card        │ POS terminal
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>     │                    ▼
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>     │           [Acquirer Bank]     ← merchant's bank (e.g., Kasikorn Bank)
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>     │                    │
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>     │           [Card Network]      ← VisaNet or Banknet (the highway)
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>     │                    │
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>     │           [Issuer Bank]       ← cardholder's bank (e.g., SCB)
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>     │                    │
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>     └────────── Authorization Response (approve/decline)
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>Roles:
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  Cardholder: you, with your card
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  Merchant: the shop accepting payment
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  Acquirer: merchant's bank that processes card transactions
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  Network: Visa/Mastercard (routes messages, sets rules)
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  Issuer: cardholder's bank (decides to approve or decline)
-</span></code></pre></div>
+<p>How an authorization request flows from the cardholder through to the issuer and back as an approve/decline response.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant CH as Cardholder
+    participant M as Merchant POS
+    participant A as Acquirer Bank
+    participant N as Card Network
+    participant I as Issuer Bank
+    CH-&gt;&gt;M: swipes card
+    M-&gt;&gt;A: send to merchant's bank (e.g. Kasikorn)
+    A-&gt;&gt;N: route over VisaNet or Banknet
+    N-&gt;&gt;I: route to cardholder's bank (e.g. SCB)
+    I--&gt;&gt;CH: Authorization Response (approve or decline)</code></pre>
+<p>Roles:</p>
+<ul>
+<li><strong>Cardholder</strong>: you, with your card</li>
+<li><strong>Merchant</strong>: the shop accepting payment</li>
+<li><strong>Acquirer</strong>: merchant's bank that processes card transactions</li>
+<li><strong>Network</strong>: Visa/Mastercard (routes messages, sets rules)</li>
+<li><strong>Issuer</strong>: cardholder's bank (decides to approve or decline)</li>
+</ul>
 <hr>
 <h2 id="the-3-step-transaction-lifecycle">The 3-Step Transaction Lifecycle<a class="headerlink" href="#the-3-step-transaction-lifecycle" title="Permanent link">¶</a></h2>
 <h3 id="step-1-authorization-real-time-1-2-seconds">Step 1: Authorization (real-time, 1-2 seconds)<a class="headerlink" href="#step-1-authorization-real-time-1-2-seconds" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Customer taps card at Thai restaurant (Kasikorn POS)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>          │
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>          ▼
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[POS Terminal] → encrypts card data using HSM → ISO 8583 message
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>          │
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>          ▼
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>[Kasikorn Acquirer] → forwards to VisaNet
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>          │
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>          ▼  (&lt; 100ms to route globally)
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>[VisaNet] → routes to issuer bank based on BIN (Bank Identification Number)
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>          │  first 6 digits of card → identifies the issuer
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>          ▼
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>[SCB Issuer Bank] → checks:
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>          - Is the card valid (not expired, not blocked)?
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>          - Does the account have sufficient funds?
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>          - Does this transaction look fraudulent? (ML model)
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>          - Is the cardholder in the right geography?
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>          │
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>          ▼
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>Authorization Response: APPROVED (with authorization code) or DECLINED (with reason)
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>          │ (same path back, reversed)
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>          ▼
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>Customer sees: ✓ Payment approved
-</span></code></pre></div>
-<p><strong>The authorization is NOT the money moving — it's a hold/reservation</strong></p>
+<p>The real-time request/response that decides, in about a second, whether the payment is approved.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Customer
+    participant P as POS Terminal
+    participant A as Kasikorn Acquirer
+    participant V as VisaNet
+    participant I as SCB Issuer Bank
+    C-&gt;&gt;P: taps card at Thai restaurant
+    P-&gt;&gt;A: encrypt card data with HSM, build ISO 8583 message
+    A-&gt;&gt;V: forward to VisaNet
+    Note over V: under 100ms to route globally
+    V-&gt;&gt;I: route by BIN (first 6 digits identify the issuer)
+    Note over I: checks card validity, funds, fraud ML model, geography
+    I--&gt;&gt;C: Authorization Response, APPROVED with code or DECLINED with reason
+    Note over C: Customer sees Payment approved</code></pre>
+<p><strong>The authorization is NOT the money moving - it's a hold/reservation</strong></p>
 <h3 id="step-2-clearing-batch-end-of-day">Step 2: Clearing (batch, end of day)<a class="headerlink" href="#step-2-clearing-batch-end-of-day" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>End of business day:
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Merchant's POS sends batch of all day's authorizations
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  → Kasikorn Acquirer → VisaNet
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  VisaNet net-settles: all issuers owe acquirers (and vice versa)
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  Creates net settlement positions
-</span></code></pre></div>
+<p>At end of day the merchant batches the day's authorizations and the network nets out who owes whom.</p>
+<pre class="mermaid"><code>flowchart LR
+    A["Merchant POS batch of day's authorizations"] --&gt; B["Kasikorn Acquirer"]
+    B --&gt; C["VisaNet"]
+    C --&gt; D["Net-settle: issuers owe acquirers and vice versa"]
+    D --&gt; E["Net settlement positions created"]</code></pre>
 <h3 id="step-3-settlement-next-1-2-business-days">Step 3: Settlement (next 1-2 business days)<a class="headerlink" href="#step-3-settlement-next-1-2-business-days" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Actual money movement:
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Net settlement positions → central bank real-time gross settlement (RTGS)
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  In Thailand: BAHTNET (Bank of Thailand's RTGS)
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  Kasikorn Acquirer receives: net total from all card transactions
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  SCB Issuer sends: net total for all cardholders who paid
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>The $0.89 you paid at Starbucks:
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  D+0: Authorization (instant, no money moves)
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  D+1: Clearing (net positions calculated)
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  D+2: Settlement (actual money moves between banks)
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  D+3: Shows as "Posted" on your statement
-</span></code></pre></div>
+<p>Where money actually moves: net positions are settled through the central bank's RTGS.</p>
+<pre class="mermaid"><code>flowchart TD
+    A["Net settlement positions"] --&gt; B["Central bank RTGS"]
+    B --&gt; C["Thailand: BAHTNET, Bank of Thailand's RTGS"]
+    C --&gt; D["Kasikorn Acquirer receives net total from all card transactions"]
+    C --&gt; E["SCB Issuer sends net total for all cardholders who paid"]</code></pre>
+<p>The $0.89 you paid at Starbucks:</p>
+<ul>
+<li><strong>D+0</strong>: Authorization (instant, no money moves)</li>
+<li><strong>D+1</strong>: Clearing (net positions calculated)</li>
+<li><strong>D+2</strong>: Settlement (actual money moves between banks)</li>
+<li><strong>D+3</strong>: Shows as "Posted" on your statement</li>
+</ul>
 <hr>
 <h2 id="visanet-architecture-65000-transactionssecond">VisaNet Architecture (65,000 transactions/second)<a class="headerlink" href="#visanet-architecture-65000-transactionssecond" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>VisaNet has 2 processing centers:
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  - Highlands Ranch, Colorado, USA (primary)
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  - McLean, Virginia, USA (backup)
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  Both are FULLY active simultaneously (active-active, not active-passive)
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  If one center fails: other handles ALL traffic seamlessly
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  99.999% availability = 5.26 minutes downtime per year maximum
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>The Core Processing Layer:
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  Tandem NonStop computers (fault-tolerant by design)
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  Every component is duplicated
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  If any component fails → system continues without interruption
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  These are NOT commodity servers — purpose-built fault-tolerant hardware
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>Load: 65,000+ transactions per second peak
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>      Handles 2× normal load during Black Friday, holidays
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>      Auto-scales capacity provisioned in advance for predicted peaks
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>VisaNet has 2 processing centers:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  - Highlands Ranch, Colorado, USA (primary)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  - McLean, Virginia, USA (backup)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Both are FULLY active simultaneously (active-active, not active-passive)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  If one center fails: other handles ALL traffic seamlessly
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  99.999% availability = 5.26 minutes downtime per year maximum
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>The Core Processing Layer:
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  Tandem NonStop computers (fault-tolerant by design)
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  Every component is duplicated
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  If any component fails -&gt; system continues without interruption
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  These are NOT commodity servers - purpose-built fault-tolerant hardware
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>Load: 65,000+ transactions per second peak
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>      Handles 2x normal load during Black Friday, holidays
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>      Auto-scales capacity provisioned in advance for predicted peaks
 </span></code></pre></div>
 <hr>
-<h2 id="swift-cross-border-payments">SWIFT — Cross-Border Payments<a class="headerlink" href="#swift-cross-border-payments" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SWIFT = Society for Worldwide Interbank Financial Telecommunication
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Founded: 1973, Belgium
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Members: 11,000+ financial institutions in 200+ countries
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>SWIFT does NOT move money — it moves MESSAGES
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  "Bank A instructs Bank B to pay Customer X $1000"
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  The actual money moves through correspondent banking relationships
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>SWIFT message types:
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  MT103: Customer credit transfer (individual payment)
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>  MT202: Bank-to-bank payment
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>  MT940: Statement/balance report
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>ISO 20022 Migration (2023-2025):
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>  SWIFT migrating from MT messages to ISO 20022 MX messages
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>  MX messages: richer data, machine-readable, structured
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>  Old: MT103 "SWIFT payment /for invoice 12345" (free text, ambiguous)
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>  New: ISO 20022 pacs.008 with structured creditor reference, purpose code, etc.
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>SWIFT timeline for a cross-border payment:
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>  Sending bank → SWIFT → Correspondent bank → Destination bank
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>  T+0 to T+2 (business days) typical
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>  Problem: too slow for modern expectations
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>  Solution: SWIFT gpi (global payments innovation) = same-day for many corridors
-</span></code></pre></div>
+<h2 id="swift-cross-border-payments">SWIFT - Cross-Border Payments<a class="headerlink" href="#swift-cross-border-payments" title="Permanent link">¶</a></h2>
+<p>SWIFT = Society for Worldwide Interbank Financial Telecommunication. Founded 1973, Belgium. Members: 11,000+ financial institutions in 200+ countries.</p>
+<p>SWIFT does NOT move money - it moves MESSAGES:</p>
+<ul>
+<li>"Bank A instructs Bank B to pay Customer X $1000"</li>
+<li>The actual money moves through correspondent banking relationships</li>
+</ul>
+<p>SWIFT message types:</p>
+<ul>
+<li><strong>MT103</strong>: Customer credit transfer (individual payment)</li>
+<li><strong>MT202</strong>: Bank-to-bank payment</li>
+<li><strong>MT940</strong>: Statement/balance report</li>
+</ul>
+<p>ISO 20022 Migration (2023-2025):</p>
+<ul>
+<li>SWIFT migrating from MT messages to ISO 20022 MX messages</li>
+<li>MX messages: richer data, machine-readable, structured</li>
+<li>Old: MT103 "SWIFT payment /for invoice 12345" (free text, ambiguous)</li>
+<li>New: ISO 20022 pacs.008 with structured creditor reference, purpose code, etc.</li>
+</ul>
+<p>A cross-border payment hops bank to bank through SWIFT and correspondent banks, typically T+0 to T+2 business days.</p>
+<pre class="mermaid"><code>flowchart LR
+    A["Sending bank"] --&gt; B["SWIFT"]
+    B --&gt; C["Correspondent bank"]
+    C --&gt; D["Destination bank"]</code></pre>
+<ul>
+<li><strong>Problem</strong>: too slow for modern expectations</li>
+<li><strong>Solution</strong>: SWIFT gpi (global payments innovation) = same-day for many corridors</li>
+</ul>
 <hr>
-<h2 id="promptpay-thailands-real-time-payment-system">PromptPay — Thailand's Real-Time Payment System<a class="headerlink" href="#promptpay-thailands-real-time-payment-system" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Launched: January 2017 by Bank of Thailand (BOT)
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Operated by: National ITMX Co., Ltd.
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Tech partner: Vocalink (Mastercard subsidiary)
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Users: 77 million registered (2023) out of 70 million Thai population
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Standard: ISO 20022 internally + ISO 8583 adapter for bank compatibility
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>Architecture:
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  [Payer App (e.g., SCB Easy)]
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        │ PromptPay transfer to 081-234-5678
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>        ▼
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  [SCB Core Banking] → ISO 8583 → [National ITMX Central Switch]
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>                                         │
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>                                   Proxy resolution:
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>                                   081-234-5678 → which bank? which account?
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>                                   (stored in central directory)
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>                                         │
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>                                         ▼
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>                               [Kasikorn Bank] ← credit customer account
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>                                         │
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>                               [National ITMX ACK]
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>                                         │
-</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>                               [SCB ACK] → debit payer
-</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>
-</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>Clearing: 2 cycles per day through BAHTNET (BOT's RTGS)
-</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>Settlement: same day (T+0)
-</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>Transaction time: &lt; 60 seconds end-to-end
-</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>Cost: Free for most retail transfers (≤5,000 THB)
-</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>
-</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>QR Code standard: EMVCo QR (same standard as China's Alipay/WeChat Pay)
-</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a>Cross-border: PromptPay ↔ PayNow (Singapore) ↔ Alipay (China) QR linkage
-</span></code></pre></div>
+<h2 id="promptpay-thailands-real-time-payment-system">PromptPay - Thailand's Real-Time Payment System<a class="headerlink" href="#promptpay-thailands-real-time-payment-system" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Launched</strong>: January 2017 by Bank of Thailand (BOT)</li>
+<li><strong>Operated by</strong>: National ITMX Co., Ltd.</li>
+<li><strong>Tech partner</strong>: Vocalink (Mastercard subsidiary)</li>
+<li><strong>Users</strong>: 77 million registered (2023) out of 70 million Thai population</li>
+<li><strong>Standard</strong>: ISO 20022 internally plus ISO 8583 adapter for bank compatibility</li>
+</ul>
+<p>How a PromptPay transfer flows from the payer's app through the central switch to the recipient's bank and back as acknowledgements.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant P as Payer App (SCB Easy)
+    participant S as SCB Core Banking
+    participant X as National ITMX Central Switch
+    participant K as Kasikorn Bank
+    P-&gt;&gt;S: PromptPay transfer to 081-234-5678
+    S-&gt;&gt;X: ISO 8583 message
+    Note over X: Proxy resolution, which bank and account for 081-234-5678 (central directory)
+    X-&gt;&gt;K: credit customer account
+    K--&gt;&gt;X: National ITMX ACK
+    X--&gt;&gt;S: SCB ACK
+    Note over S: debit payer</code></pre>
+<ul>
+<li><strong>Clearing</strong>: 2 cycles per day through BAHTNET (BOT's RTGS)</li>
+<li><strong>Settlement</strong>: same day (T+0)</li>
+<li><strong>Transaction time</strong>: under 60 seconds end-to-end</li>
+<li><strong>Cost</strong>: Free for most retail transfers (&lt;=5,000 THB)</li>
+<li><strong>QR Code standard</strong>: EMVCo QR (same standard as China's Alipay/WeChat Pay)</li>
+<li><strong>Cross-border</strong>: PromptPay to PayNow (Singapore) to Alipay (China) QR linkage</li>
+</ul>
 <hr>
-<h2 id="iso-20022-the-universal-financial-language">ISO 20022 — The Universal Financial Language<a class="headerlink" href="#iso-20022-the-universal-financial-language" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ISO 20022 is the new global standard for financial messaging.
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Replacing: SWIFT MT, ISO 8583 (card), NACHA (US ACH), and many national standards
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Why it matters:
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  Old messages (ISO 8583, MT103): fixed-length fields, limited data, ambiguous
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  ISO 20022: XML/JSON structured, unlimited rich data, machine-readable
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Example (old SWIFT MT103):
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  :32A:230115USD1000,
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  :50K:/123456789
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  ACME Corporation
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  :59:/987654321
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  John Smith
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  :70:INVOICE 12345  ← free text! Ambiguous. Hard to process automatically.
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>Example (new ISO 20022 pacs.008):
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  &lt;CdtTrfTxInf&gt;
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    &lt;Amt&gt;&lt;InstdAmt Ccy="USD"&gt;1000.00&lt;/InstdAmt&gt;&lt;/Amt&gt;
-</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    &lt;Dbtr&gt;&lt;Nm&gt;ACME Corporation&lt;/Nm&gt;&lt;Id&gt;&lt;OrgId&gt;...&lt;/OrgId&gt;&lt;/Id&gt;&lt;/Dbtr&gt;
-</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>    &lt;Cdtr&gt;&lt;Nm&gt;John Smith&lt;/Nm&gt;&lt;PrvtId&gt;&lt;DtAndPlcOfBirth&gt;...&lt;/DtAndPlcOfBirth&gt;&lt;/PrvtId&gt;&lt;/Cdtr&gt;
-</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>    &lt;RmtInf&gt;&lt;Strd&gt;&lt;CdtrRefInf&gt;&lt;Ref&gt;INV-12345&lt;/Ref&gt;&lt;/CdtrRefInf&gt;&lt;/Strd&gt;&lt;/RmtInf&gt;
-</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>  &lt;/CdtTrfTxInf&gt;
-</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>
-</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>Benefits of ISO 20022:
-</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>  AML/KYC: rich counterparty data → better fraud detection
-</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>  Sanctions screening: structured name/address → fewer false positives
-</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>  Reconciliation: structured invoice references → automated matching
-</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>  Interoperability: one standard for all markets
-</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>
-</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>Adoption timeline:
-</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>  SWIFT CBPR+: Nov 2022 (coexistence) → Nov 2025 (mandatory)
-</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>  PromptPay: ISO 20022 since launch (2017)
-</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>  UK Faster Payments: ISO 20022 since 2023
-</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>  BAHTNET (Thailand RTGS): ISO 20022 since 2021
+<h2 id="iso-20022-the-universal-financial-language">ISO 20022 - The Universal Financial Language<a class="headerlink" href="#iso-20022-the-universal-financial-language" title="Permanent link">¶</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ISO 20022 is the new global standard for financial messaging.
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Replacing: SWIFT MT, ISO 8583 (card), NACHA (US ACH), and many national standards
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Why it matters:
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Old messages (ISO 8583, MT103): fixed-length fields, limited data, ambiguous
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  ISO 20022: XML/JSON structured, unlimited rich data, machine-readable
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Example (old SWIFT MT103):
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  :32A:230115USD1000,
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  :50K:/123456789
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  ACME Corporation
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  :59:/987654321
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  John Smith
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  :70:INVOICE 12345 &lt;- free text! Ambiguous. Hard to process automatically.
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>Example (new ISO 20022 pacs.008):
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  &lt;CdtTrfTxInf&gt;
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    &lt;Amt&gt;&lt;InstdAmt Ccy="USD"&gt;1000.00&lt;/InstdAmt&gt;&lt;/Amt&gt;
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    &lt;Dbtr&gt;&lt;Nm&gt;ACME Corporation&lt;/Nm&gt;&lt;Id&gt;&lt;OrgId&gt;...&lt;/OrgId&gt;&lt;/Id&gt;&lt;/Dbtr&gt;
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    &lt;Cdtr&gt;&lt;Nm&gt;John Smith&lt;/Nm&gt;&lt;PrvtId&gt;&lt;DtAndPlcOfBirth&gt;...&lt;/DtAndPlcOfBirth&gt;&lt;/PrvtId&gt;&lt;/Cdtr&gt;
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    &lt;RmtInf&gt;&lt;Strd&gt;&lt;CdtrRefInf&gt;&lt;Ref&gt;INV-12345&lt;/Ref&gt;&lt;/CdtrRefInf&gt;&lt;/Strd&gt;&lt;/RmtInf&gt;
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>  &lt;/CdtTrfTxInf&gt;
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>Benefits of ISO 20022:
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>  AML/KYC: rich counterparty data -&gt; better fraud detection
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>  Sanctions screening: structured name/address -&gt; fewer false positives
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>  Reconciliation: structured invoice references -&gt; automated matching
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>  Interoperability: one standard for all markets
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>Adoption timeline:
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>  SWIFT CBPR+: Nov 2022 (coexistence) -&gt; Nov 2025 (mandatory)
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>  PromptPay: ISO 20022 since launch (2017)
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>  UK Faster Payments: ISO 20022 since 2023
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>  BAHTNET (Thailand RTGS): ISO 20022 since 2021
 </span></code></pre></div>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Payment Networks = External systems (Infrastructure / Frameworks &amp; Drivers layer)
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Your payment use case:
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  ChargeCustomerUseCase.execute()
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    → calls IPaymentGateway.charge()  [interface / port]
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>IPaymentGateway implementations (adapters):
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  VisaDirectPaymentAdapter    → calls Visa API
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  MastercardSendAdapter       → calls Mastercard API
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>  PromptPayAdapter            → calls National ITMX API
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>  StripeGatewayAdapter        → calls Stripe API (which calls Visa/MC)
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>The use case never knows WHICH payment network was used.
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>It only knows: IPaymentGateway.charge(amount, paymentMethod) → result
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>ISO 20022 message construction happens in the adapter layer.
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>Business rule "charge $100 to customer" lives in the use case.
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>Message formatting "pacs.008 with creditor reference" lives in the adapter.
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>This is exactly Clean Architecture's purpose:
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>Swap from Visa Direct to PromptPay:
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>  Change the adapter only
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>  Use case code unchanged
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>  Business rules unchanged
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Payment Networks = External systems (Infrastructure / Frameworks &amp; Drivers layer)
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Your payment use case:
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  ChargeCustomerUseCase.execute()
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a> -&gt; calls IPaymentGateway.charge()  [interface / port]
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>IPaymentGateway implementations (adapters):
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  VisaDirectPaymentAdapter -&gt; calls Visa API
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  MastercardSendAdapter -&gt; calls Mastercard API
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  PromptPayAdapter -&gt; calls National ITMX API
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  StripeGatewayAdapter -&gt; calls Stripe API (which calls Visa/MC)
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>The use case never knows WHICH payment network was used.
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>It only knows: IPaymentGateway.charge(amount, paymentMethod) -&gt; result
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>ISO 20022 message construction happens in the adapter layer.
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>Business rule "charge $100 to customer" lives in the use case.
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>Message formatting "pacs.008 with creditor reference" lives in the adapter.
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>This is exactly Clean Architecture's purpose:
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>Swap from Visa Direct to PromptPay:
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>  Change the adapter only
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>  Use case code unchanged
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>  Business rules unchanged
 </span></code></pre></div>
 
 

@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2130,10 +2160,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-the-cassandra-nightmare-20172022" class="md-nav__link">
+  <a href="#phase-2-the-cassandra-nightmare-2017-2022" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: The Cassandra Nightmare (2017–2022)
+        Phase 2: The Cassandra Nightmare (2017-2022)
       
     </span>
   </a>
@@ -2141,10 +2171,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-3-migration-to-scylladb-rust-20222023" class="md-nav__link">
+  <a href="#phase-3-migration-to-scylladb-rust-2022-2023" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 3: Migration to ScyllaDB + Rust (2022–2023)
+        Phase 3: Migration to ScyllaDB + Rust (2022-2023)
       
     </span>
   </a>
@@ -2571,10 +2601,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-2-the-cassandra-nightmare-20172022" class="md-nav__link">
+  <a href="#phase-2-the-cassandra-nightmare-2017-2022" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 2: The Cassandra Nightmare (2017–2022)
+        Phase 2: The Cassandra Nightmare (2017-2022)
       
     </span>
   </a>
@@ -2582,10 +2612,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#phase-3-migration-to-scylladb-rust-20222023" class="md-nav__link">
+  <a href="#phase-3-migration-to-scylladb-rust-2022-2023" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 3: Migration to ScyllaDB + Rust (2022–2023)
+        Phase 3: Migration to ScyllaDB + Rust (2022-2023)
       
     </span>
   </a>
@@ -2667,9 +2697,9 @@
   
 
 
-<h1 id="discord-architecture-case-study">Discord — Architecture Case Study<a class="headerlink" href="#discord-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="discord-architecture-case-study">Discord - Architecture Case Study<a class="headerlink" href="#discord-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"We chose Elixir because the Erlang VM was literally built for what Discord is: millions of persistent connections, real-time messaging, fault tolerance." — Discord Engineering</p>
+<p>"We chose Elixir because the Erlang VM was literally built for what Discord is: millions of persistent connections, real-time messaging, fault tolerance." - Discord Engineering</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2706,23 +2736,23 @@
 <hr>
 <h2 id="the-problem-discord-was-built-to-solve">The Problem Discord Was Built to Solve<a class="headerlink" href="#the-problem-discord-was-built-to-solve" title="Permanent link">¶</a></h2>
 <blockquote>
-<p>"Every gaming session needs voice chat. But every voice chat solution in 2015 was terrible — Skype crashed, TeamSpeak was complicated, Mumble looked like a 2004 website. We needed: always on, always available, no accounts to set up, &lt;50ms voice latency, supports 100 people in one channel."</p>
+<p>"Every gaming session needs voice chat. But every voice chat solution in 2015 was terrible - Skype crashed, TeamSpeak was complicated, Mumble looked like a 2004 website. We needed: always on, always available, no accounts to set up, &lt;50ms voice latency, supports 100 people in one channel."</p>
 </blockquote>
 <hr>
 <h2 id="phase-1-why-elixir-2015">Phase 1: Why Elixir? (2015)<a class="headerlink" href="#phase-1-why-elixir-2015" title="Permanent link">¶</a></h2>
 <p><strong>The connection problem:</strong></p>
 <p>Discord is fundamentally different from Twitter or Facebook. Users don't open Discord, do something, and close it. Users leave Discord OPEN all day. Your entire friend group is connected simultaneously. This means:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Twitter: User opens app → request → response → close
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Twitter: User opens app -&gt; request -&gt; response -&gt; close
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Connections: burst, then close
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Model: stateless HTTP is fine
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Discord: User opens app → WebSocket → stays open for 8 hours
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Discord: User opens app -&gt; WebSocket -&gt; stays open for 8 hours
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  Connections: persistent, stateful, always open
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  Model: stateless HTTP is WRONG; need stateful actor model
 </span></code></pre></div>
 <p><strong>Why not Node.js?</strong></p>
 <blockquote>
-<p>"Node.js runs on a single thread with an event loop. It handles 10K concurrent connections fine. At 100K, garbage collection pauses cause jitter — users hear audio glitches. At 1M, Node.js becomes unstable. We needed something designed for this."</p>
+<p>"Node.js runs on a single thread with an event loop. It handles 10K concurrent connections fine. At 100K, garbage collection pauses cause jitter - users hear audio glitches. At 1M, Node.js becomes unstable. We needed something designed for this."</p>
 </blockquote>
 <p><strong>Why Elixir (Erlang VM):</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Erlang was built by Ericsson in 1986 for telephone switching systems.
@@ -2736,11 +2766,11 @@
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  - Lightweight: 2KB per process (vs 1MB per OS thread)
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  - 1 server: handles 2M Elixir processes (vs 1K OS threads)
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  - Isolated: one crash kills one process, not the server
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  - Message-passing: no shared state → no race conditions
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  - Message-passing: no shared state -&gt; no race conditions
 </span></code></pre></div>
 <p><strong>Result:</strong> Discord scaled Elixir to 5 million concurrent users on surprisingly few servers.</p>
 <hr>
-<h2 id="phase-2-the-cassandra-nightmare-20172022">Phase 2: The Cassandra Nightmare (2017–2022)<a class="headerlink" href="#phase-2-the-cassandra-nightmare-20172022" title="Permanent link">¶</a></h2>
+<h2 id="phase-2-the-cassandra-nightmare-2017-2022">Phase 2: The Cassandra Nightmare (2017-2022)<a class="headerlink" href="#phase-2-the-cassandra-nightmare-2017-2022" title="Permanent link">¶</a></h2>
 <p><strong>The initial decision:</strong>
 Discord chose Apache Cassandra to store messages. The reasoning was sound:
 - Messages are append-only (insert-heavy, rarely updated)
@@ -2757,36 +2787,36 @@ Discord chose Apache Cassandra to store messages. The reasoning was sound:
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Discord servers (communities) are sharded by server_id
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  Popular servers (Reddit, gaming communities) = millions of messages
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  All messages for r/gaming go to the same Cassandra partition
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  That partition = HOTSPOT → all reads/writes queue up → latency spikes
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  That partition = HOTSPOT -&gt; all reads/writes queue up -&gt; latency spikes
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>p99 read latency: 40–125ms (users can see noticeable lag)
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>p99 write latency: 5–70ms (inconsistent, spiky)
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>p99 read latency: 40-125ms (users can see noticeable lag)
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>p99 write latency: 5-70ms (inconsistent, spiky)
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>Engineering time: constant firefighting of Cassandra issues
 </span></code></pre></div>
 <p><strong>The senior architect's perspective:</strong></p>
 <blockquote>
-<p>"Cassandra saved us at 1 billion messages. At 1 trillion messages, it became our biggest problem. This is normal in architecture: the solution to problem A creates problem B at scale. The question is always: what are the failure modes at 10× current scale? Cassandra's failure mode was hot partitions, and we could see that becoming catastrophic."</p>
+<p>"Cassandra saved us at 1 billion messages. At 1 trillion messages, it became our biggest problem. This is normal in architecture: the solution to problem A creates problem B at scale. The question is always: what are the failure modes at 10x current scale? Cassandra's failure mode was hot partitions, and we could see that becoming catastrophic."</p>
 </blockquote>
 <hr>
-<h2 id="phase-3-migration-to-scylladb-rust-20222023">Phase 3: Migration to ScyllaDB + Rust (2022–2023)<a class="headerlink" href="#phase-3-migration-to-scylladb-rust-20222023" title="Permanent link">¶</a></h2>
+<h2 id="phase-3-migration-to-scylladb-rust-2022-2023">Phase 3: Migration to ScyllaDB + Rust (2022-2023)<a class="headerlink" href="#phase-3-migration-to-scylladb-rust-2022-2023" title="Permanent link">¶</a></h2>
 <p><strong>Why ScyllaDB:</strong>
-- Same Cassandra Query Language (CQL) — no application code changes
-- Written in C++ (not Java) — no JVM garbage collection pauses
-- Uses the same consistent hashing approach — same data model
-- Per-core architecture — one core handles one set of shards (no thread contention)</p>
-<p><strong>The hot partition solution — Bucket Layer:</strong></p>
+- Same Cassandra Query Language (CQL) - no application code changes
+- Written in C++ (not Java) - no JVM garbage collection pauses
+- Uses the same consistent hashing approach - same data model
+- Per-core architecture - one core handles one set of shards (no thread contention)</p>
+<p><strong>The hot partition solution - Bucket Layer:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Old shard key: channel_id
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  All messages for one channel → one partition → hotspot
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  All messages for one channel -&gt; one partition -&gt; hotspot
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>New shard key: channel_id + bucket
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  bucket = message_id / (10 days worth of messages)
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  Messages spread across multiple partitions over time
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  Hot channels spread their load across multiple partitions
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Before: channel 12345 → partition 12345 (hot)
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>After:  channel 12345, bucket 1 → partition A
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        channel 12345, bucket 2 → partition B
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        channel 12345, bucket 3 → partition C
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Before: channel 12345 -&gt; partition 12345 (hot)
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>After:  channel 12345, bucket 1 -&gt; partition A
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        channel 12345, bucket 2 -&gt; partition B
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        channel 12345, bucket 3 -&gt; partition C
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>        Load is distributed across 3 partitions
 </span></code></pre></div>
 <p><strong>Why Rust for the data service layer:</strong></p>
@@ -2794,13 +2824,13 @@ Discord chose Apache Cassandra to store messages. The reasoning was sound:
 <p>"Between our Elixir application and ScyllaDB, we built a Rust data service layer. Rust gives us: no garbage collector (no pauses), zero-cost abstractions, memory safety without runtime overhead. For the hot path between our app and DB, we need deterministic performance. Rust delivers that."</p>
 </blockquote>
 <p><strong>Results:</strong>
-- p99 read latency: <strong>15ms</strong> (was 40–125ms → 4-8× improvement)
-- p99 write latency: <strong>5ms</strong> (was 5–70ms → consistent, not spiky)
+- p99 read latency: <strong>15ms</strong> (was 40-125ms -&gt; 4-8x improvement)
+- p99 write latency: <strong>5ms</strong> (was 5-70ms -&gt; consistent, not spiky)
 - Node count: reduced from 177 Cassandra nodes to fewer ScyllaDB nodes</p>
 <hr>
 <h2 id="the-voice-architecture-the-core-product">The Voice Architecture (The Core Product)<a class="headerlink" href="#the-voice-architecture-the-core-product" title="Permanent link">¶</a></h2>
 <p><strong>How Discord voice works:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>User A (Bangkok) → Discord Edge Server (Singapore)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>User A (Bangkok) -&gt; Discord Edge Server (Singapore)
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  WebSocket: control plane (who's talking, muting, joining)
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  UDP: audio data (real-time, loss-tolerant)
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
@@ -2844,7 +2874,7 @@ Discord chose Apache Cassandra to store messages. The reasoning was sound:
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  Each GenServer IS the aggregate root for its channel
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>ScyllaDB/Rust layer = Interface Adapter (outbound)
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  IMessageRepository → ScyllaDB Rust client
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  IMessageRepository -&gt; ScyllaDB Rust client
 </span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  Use cases call IMessageRepository.save(message)
 </span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  ScyllaDB details (shard key, bucket) hidden in the adapter
 </span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
@@ -2860,11 +2890,11 @@ Discord chose Apache Cassandra to store messages. The reasoning was sound:
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Match technology to the problem</strong> — Erlang/Elixir exists for exactly Discord's problem (persistent connections, actor model)</li>
-<li><strong>Cassandra isn't always the answer</strong> — it saved Discord at 1B messages, hurt them at 1T messages</li>
-<li><strong>Design the shard key around access patterns</strong> — the bucket layer solved Cassandra's hotspot problem</li>
-<li><strong>Language choice matters for specific problems</strong> — Rust's predictability in the hot data path vs Elixir's concurrency for the control plane</li>
-<li><strong>Supervisors = architectural resilience</strong> — Elixir supervisors let you isolate failures to one actor</li>
+<li><strong>Match technology to the problem</strong> - Erlang/Elixir exists for exactly Discord's problem (persistent connections, actor model)</li>
+<li><strong>Cassandra isn't always the answer</strong> - it saved Discord at 1B messages, hurt them at 1T messages</li>
+<li><strong>Design the shard key around access patterns</strong> - the bucket layer solved Cassandra's hotspot problem</li>
+<li><strong>Language choice matters for specific problems</strong> - Rust's predictability in the hot data path vs Elixir's concurrency for the control plane</li>
+<li><strong>Supervisors = architectural resilience</strong> - Elixir supervisors let you isolate failures to one actor</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>

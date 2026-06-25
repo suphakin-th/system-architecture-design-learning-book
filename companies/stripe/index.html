@@ -1048,6 +1048,8 @@
       
         
       
+        
+      
     
     
     
@@ -1362,6 +1364,34 @@
     
   
     MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Users &amp; Permissions (Load-Balanced)
   
 
     
@@ -2689,9 +2719,9 @@
   
 
 
-<h1 id="stripe-architecture-case-study">Stripe — Architecture Case Study<a class="headerlink" href="#stripe-architecture-case-study" title="Permanent link">¶</a></h1>
+<h1 id="stripe-architecture-case-study">Stripe - Architecture Case Study<a class="headerlink" href="#stripe-architecture-case-study" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"Our job is to abstract away the complexity of payments so developers never have to think about banking infrastructure again." — Patrick Collison</p>
+<p>"Our job is to abstract away the complexity of payments so developers never have to think about banking infrastructure again." - Patrick Collison</p>
 </blockquote>
 <hr>
 <h2 id="company-profile">Company Profile<a class="headerlink" href="#company-profile" title="Permanent link">¶</a></h2>
@@ -2734,12 +2764,12 @@
 <hr>
 <h2 id="the-core-engineering-challenge-money-must-not-get-lost">The Core Engineering Challenge: Money Must Not Get Lost<a class="headerlink" href="#the-core-engineering-challenge-money-must-not-get-lost" title="Permanent link">¶</a></h2>
 <p><strong>The fundamental constraint of financial systems:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>A regular web app: user submits form → if request fails → user retries → harmless
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>A regular web app: user submits form -&gt; if request fails -&gt; user retries -&gt; harmless
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>A payments app: user pays $100 → if request fails → retry?
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Case 1: First request failed before charging → retry = charge once ✓
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  Case 2: First request charged but response lost → retry = charge TWICE ✗
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  Case 3: First request charged, user already has receipt → retry = confuse user ✗
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>A payments app: user pays $100 -&gt; if request fails -&gt; retry?
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Case 1: First request failed before charging -&gt; retry = charge once [OK]
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  Case 2: First request charged but response lost -&gt; retry = charge TWICE [X]
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  Case 3: First request charged, user already has receipt -&gt; retry = confuse user [X]
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>The dual-write problem:
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  Action: charge $100
@@ -2755,10 +2785,10 @@
 </span></code></pre></div>
 <p><strong>Stripe's answer to these problems:</strong></p>
 <ol>
-<li><strong>Idempotency Keys</strong> — solve the retry problem</li>
-<li><strong>Event Sourcing</strong> — solve the dual-write problem</li>
-<li><strong>Distributed Locking</strong> — prevent concurrent operations on the same object</li>
-<li><strong>Reconciliation Jobs</strong> — catch and fix any inconsistencies</li>
+<li><strong>Idempotency Keys</strong> - solve the retry problem</li>
+<li><strong>Event Sourcing</strong> - solve the dual-write problem</li>
+<li><strong>Distributed Locking</strong> - prevent concurrent operations on the same object</li>
+<li><strong>Reconciliation Jobs</strong> - catch and fix any inconsistencies</li>
 </ol>
 <hr>
 <h2 id="idempotency-the-core-design-principle">Idempotency: The Core Design Principle<a class="headerlink" href="#idempotency-the-core-design-principle" title="Permanent link">¶</a></h2>
@@ -2768,7 +2798,7 @@
 </blockquote>
 <p><strong>How Stripe implements it:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Client generates a unique idempotency key:
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  key = UUID() → "idem_2XjA8mNpQrL4wBvZ"
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  key = UUID() -&gt; "idem_2XjA8mNpQrL4wBvZ"
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>API call:
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  POST /v1/charges
@@ -2782,15 +2812,15 @@
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Stripe server:
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  1. Hash the Idempotency-Key
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  2. Check Redis: does key idem_2XjA8mNpQrL4wBvZ exist?
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>     - Yes → return the stored response (do NOT process again)
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>     - No  → acquire distributed lock for this key
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>             → process the charge
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>             → store result in Redis with key
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>             → release lock
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>             → return result
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>     - Yes -&gt; return the stored response (do NOT process again)
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>     - No -&gt; acquire distributed lock for this key
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a> -&gt; process the charge
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a> -&gt; store result in Redis with key
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a> -&gt; release lock
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a> -&gt; return result
 </span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
 </span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>Client network timeout, retries:
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>  Same Idempotency-Key → Stripe returns stored result
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>  Same Idempotency-Key -&gt; Stripe returns stored result
 </span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>  Card charged EXACTLY once, regardless of how many retries
 </span></code></pre></div>
 <p><strong>The implementation in Clean Architecture terms:</strong></p>
@@ -2804,7 +2834,7 @@
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">ChargeRequest</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">ChargeResponse</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="c1">// Check idempotency key</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">existing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">idempotencyStore</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">idempotencyKey</span><span class="p">);</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">existing</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">existing</span><span class="p">;</span><span class="w">  </span><span class="c1">// Already processed — return cached result</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">existing</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">existing</span><span class="p">;</span><span class="w">  </span><span class="c1">// Already processed - return cached result</span>
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="c1">// Acquire distributed lock</span>
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">idempotencyStore</span><span class="p">.</span><span class="nx">lock</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">idempotencyKey</span><span class="p">);</span>
@@ -2835,7 +2865,7 @@
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  - Was there a failed attempt before it succeeded?
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  - Was it refunded and re-charged?
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  - What was the authorization code?
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  - Regulators need 7 years of history — you can't just show current state.
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  - Regulators need 7 years of history - you can't just show current state.
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>Event Sourcing approach (Stripe's reality):
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  payment_intent_events:
@@ -2854,25 +2884,25 @@
 </span></code></pre></div>
 <p><strong>The PaymentIntent API (Stripe's master achievement):</strong></p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Old Charges API (pre-2019):
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  POST /charges → tries to charge immediately
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  POST /charges -&gt; tries to charge immediately
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  Problem: 3D Secure, bank authentication, SCA compliance require
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>           asynchronous flows that don't fit request/response
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>PaymentIntents API (event-sourced workflow):
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  POST /payment_intents → creates a PaymentIntent
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  POST /payment_intents -&gt; creates a PaymentIntent
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    State: requires_payment_method
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  Attach payment method →
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  Attach payment method -&gt; 
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    State: requires_confirmation
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  Confirm →
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  Confirm -&gt; 
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    State: requires_action (3D Secure needed)
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    → Redirect user to bank for authentication
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a> -&gt; Redirect user to bank for authentication
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>  User authenticates at bank →
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>  User authenticates at bank -&gt; 
 </span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    State: processing
 </span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  Bank processes charge →
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>  Bank processes charge -&gt; 
 </span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    State: succeeded OR payment_failed
 </span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
 </span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>Each state transition = one event appended to the event log
@@ -2925,18 +2955,18 @@
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Every hour:
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  For each charge in state "unknown":
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    Query Visa/Mastercard directly via batch API
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    If Visa says "yes, we charged it" → update to "succeeded"
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    If Visa says "no charge" → update to "failed" → unblock refund
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    If Visa says "yes, we charged it" -&gt; update to "succeeded"
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    If Visa says "no charge" -&gt; update to "failed" -&gt; unblock refund
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Every day:
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  Compare Stripe's ledger with bank's settlement files (CSV dumps)
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  If any discrepancy → alert and investigate
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  If any discrepancy -&gt; alert and investigate
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>Every month:
 </span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  Full reconciliation with all payment networks
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  Any unclaimed money → held in reserve → returned via regulatory process
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  Any unclaimed money -&gt; held in reserve -&gt; returned via regulatory process
 </span></code></pre></div>
-<p>This is "defensive architecture" — assume events will be lost and build a correction mechanism.</p>
+<p>This is "defensive architecture" - assume events will be lost and build a correction mechanism.</p>
 <hr>
 <h2 id="architecture-in-clean-architecture-terms">Architecture in Clean Architecture Terms<a class="headerlink" href="#architecture-in-clean-architecture-terms" title="Permanent link">¶</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Stripe's Architecture:
@@ -2949,35 +2979,35 @@
 </span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>  Depends on: IPaymentGateway, IEventStore, IIdempotencyStore (all interfaces)
 </span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  Publishes domain events: ChargeAttempted, ChargeSucceeded, ChargeFailed
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>IEventStore → StripeEventStorePostgres = Interface Adapter
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>IEventStore -&gt; StripeEventStorePostgres = Interface Adapter
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  Stores events in PostgreSQL
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>  Use case never imports PostgreSQL directly
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
 </span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>API versioning = Interface Adapter (inbound)
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  HTTP request (v1 format) → adapter → internal DTO → use case
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>  Use case response → adapter → HTTP response (v1 format)
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>  HTTP request (v1 format) -&gt; adapter -&gt; internal DTO -&gt; use case
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>  Use case response -&gt; adapter -&gt; HTTP response (v1 format)
 </span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>  Different adapters per API version; same use case
 </span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
 </span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>Reconciliation Jobs = Use Cases triggered by scheduler
 </span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>  ReconcileUnknownChargesUseCase.execute()
 </span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>  Depends on: IPaymentNetworkClient (Visa/Mastercard interface)
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>  Use case doesn't know if it's querying Visa or Mastercard — just the interface
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>  Use case doesn't know if it's querying Visa or Mastercard - just the interface
 </span></code></pre></div>
 <hr>
 <h2 id="lessons-for-your-architecture">Lessons for Your Architecture<a class="headerlink" href="#lessons-for-your-architecture" title="Permanent link">¶</a></h2>
 <ol>
-<li><strong>Idempotency is not optional for money</strong> — every payment operation must be idempotent; no exceptions</li>
-<li><strong>Event Sourcing is the natural fit for financial systems</strong> — regulators need history; events give you that for free</li>
-<li><strong>Design APIs to last decades</strong> — Stripe's version pinning means customers never need to upgrade</li>
-<li><strong>Reconciliation catches what events miss</strong> — distributed systems lie; reconcile against ground truth regularly</li>
-<li><strong>The PaymentIntent pattern</strong> — when an operation has async steps (3D Secure, bank auth), model it as a state machine driven by events</li>
+<li><strong>Idempotency is not optional for money</strong> - every payment operation must be idempotent; no exceptions</li>
+<li><strong>Event Sourcing is the natural fit for financial systems</strong> - regulators need history; events give you that for free</li>
+<li><strong>Design APIs to last decades</strong> - Stripe's version pinning means customers never need to upgrade</li>
+<li><strong>Reconciliation catches what events miss</strong> - distributed systems lie; reconcile against ground truth regularly</li>
+<li><strong>The PaymentIntent pattern</strong> - when an operation has async steps (3D Secure, bank auth), model it as a state machine driven by events</li>
 </ol>
 <hr>
 <h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://stripe.dev/blog/payment-api-design">Stripe's Payments APIs: The First 10 Years — Stripe Dev Blog</a></li>
-<li><a href="https://blog.bytebytego.com/p/the-first-10-year-evolution-of-stripes">The First 10-Year Evolution of Stripe's Payments API — ByteByteGo</a></li>
-<li><a href="https://stripe.com/blog/engineering">Engineering — Stripe Blog</a></li>
+<li><a href="https://stripe.dev/blog/payment-api-design">Stripe's Payments APIs: The First 10 Years - Stripe Dev Blog</a></li>
+<li><a href="https://blog.bytebytego.com/p/the-first-10-year-evolution-of-stripes">The First 10-Year Evolution of Stripe's Payments API - ByteByteGo</a></li>
+<li><a href="https://stripe.com/blog/engineering">Engineering - Stripe Blog</a></li>
 <li><a href="https://www.systemdesignhandbook.com/guides/stripe-system-design-interview/">Stripe System Design Interview Guide</a></li>
 </ul>
 <hr>
