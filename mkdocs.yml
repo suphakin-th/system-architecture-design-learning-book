@@ -115,6 +115,7 @@ nav:
     - Sharding: database/22_sharding.md
     - 3-Layer DB Model (ANSI/SPARC): database/31_three_layer_model.md
     - MVCC: database/33_mvcc.md
+    - Users & Permissions (Load-Balanced): database/34_users_permissions_load_balanced.md
 
   - Fintech Architecture:
     - Overview: fintech/00_overview.md

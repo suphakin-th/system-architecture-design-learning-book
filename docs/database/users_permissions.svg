@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="560" viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrB" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#388bfd"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="980" height="560" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">Database Users and Permissions in a Load-Balanced Setup</text>
+  <text x="490" y="57" text-anchor="middle" fill="#8b949e" font-size="13">One app, many servers. Separate accounts by job. Least privilege contains every leak.</text>
+
+  <!-- Application -->
+  <rect x="380" y="80" width="220" height="46" rx="8" fill="#161b22" stroke="#8b949e" stroke-width="1.5"/>
+  <text x="490" y="108" text-anchor="middle" fill="#c9d1d9" font-size="14" font-weight="bold">Application</text>
+
+  <!-- writer pool arrow -->
+  <line x1="430" y1="126" x2="300" y2="178" stroke="#3fb950" stroke-width="2" marker-end="url(#arrG)"/>
+  <text x="300" y="158" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="bold">writes: app_writer</text>
+  <!-- reader pool arrow -->
+  <line x1="550" y1="126" x2="680" y2="178" stroke="#388bfd" stroke-width="2" marker-end="url(#arrB)"/>
+  <text x="680" y="158" text-anchor="middle" fill="#388bfd" font-size="11" font-weight="bold">reads: app_reader</text>
+
+  <!-- Proxy -->
+  <rect x="180" y="180" width="620" height="44" rx="8" fill="#1a1000" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="490" y="207" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Load Balancer / Proxy   (ProxySQL, PgBouncer, RDS Proxy)</text>
+
+  <!-- route to primary -->
+  <line x1="300" y1="224" x2="240" y2="276" stroke="#3fb950" stroke-width="2" marker-end="url(#arrG)"/>
+  <text x="210" y="256" text-anchor="middle" fill="#3fb950" font-size="11">route write</text>
+  <!-- route to replicas -->
+  <line x1="600" y1="224" x2="600" y2="276" stroke="#388bfd" stroke-width="2" marker-end="url(#arrB)"/>
+  <line x1="640" y1="224" x2="800" y2="276" stroke="#388bfd" stroke-width="2" marker-end="url(#arrB)"/>
+  <text x="700" y="252" text-anchor="middle" fill="#388bfd" font-size="11">route reads (load balanced)</text>
+
+  <!-- Primary -->
+  <rect x="120" y="280" width="240" height="80" rx="10" fill="#0a2010" stroke="#3fb950" stroke-width="2"/>
+  <text x="240" y="306" text-anchor="middle" fill="#3fb950" font-size="14" font-weight="bold">Primary DB</text>
+  <text x="240" y="326" text-anchor="middle" fill="#85e89d" font-size="11">accepts ALL writes</text>
+  <text x="240" y="344" text-anchor="middle" fill="#85e89d" font-size="11">app_writer, migrator, dba_admin</text>
+
+  <!-- Replica 1 -->
+  <rect x="500" y="280" width="200" height="80" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="600" y="306" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">Read Replica 1</text>
+  <text x="600" y="326" text-anchor="middle" fill="#7ab8ff" font-size="11">serves reads</text>
+  <text x="600" y="344" text-anchor="middle" fill="#7ab8ff" font-size="11">app_reader (SELECT only)</text>
+
+  <!-- Replica 2 -->
+  <rect x="730" y="280" width="200" height="80" rx="10" fill="#0a1628" stroke="#388bfd" stroke-width="2"/>
+  <text x="830" y="306" text-anchor="middle" fill="#388bfd" font-size="14" font-weight="bold">Read Replica 2</text>
+  <text x="830" y="326" text-anchor="middle" fill="#7ab8ff" font-size="11">serves reads</text>
+  <text x="830" y="344" text-anchor="middle" fill="#7ab8ff" font-size="11">app_reader (SELECT only)</text>
+
+  <!-- replication arrows (dashed) -->
+  <line x1="360" y1="320" x2="498" y2="320" stroke="#e3b341" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arrY)"/>
+  <line x1="360" y1="335" x2="728" y2="355" stroke="#e3b341" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arrY)"/>
+  <text x="445" y="312" text-anchor="middle" fill="#e3b341" font-size="10">replication copies data</text>
+
+  <!-- Account responsibility table -->
+  <rect x="20" y="388" width="940" height="156" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="490" y="410" text-anchor="middle" fill="#e3b341" font-size="14" font-weight="bold">One account per job - least privilege</text>
+
+  <rect x="35" y="420" width="295" height="26" rx="4" fill="#0a2010" stroke="#3fb950" stroke-width="1"/>
+  <text x="45" y="438" fill="#85e89d" font-size="11">app_writer  -  SELECT INSERT UPDATE DELETE</text>
+  <rect x="342" y="420" width="295" height="26" rx="4" fill="#0a1628" stroke="#388bfd" stroke-width="1"/>
+  <text x="352" y="438" fill="#7ab8ff" font-size="11">app_reader  -  SELECT only</text>
+  <rect x="649" y="420" width="296" height="26" rx="4" fill="#1a0a28" stroke="#bc8cff" stroke-width="1"/>
+  <text x="659" y="438" fill="#d2a8ff" font-size="11">migrator  -  CREATE ALTER DROP (deploy only)</text>
+
+  <rect x="35" y="452" width="295" height="26" rx="4" fill="#200505" stroke="#f85149" stroke-width="1"/>
+  <text x="45" y="470" fill="#ff9090" font-size="11">dba_admin  -  everything (audited break-glass)</text>
+  <rect x="342" y="452" width="295" height="26" rx="4" fill="#1a1000" stroke="#e3b341" stroke-width="1"/>
+  <text x="352" y="470" fill="#f0c060" font-size="11">replication  -  copy stream only</text>
+  <rect x="649" y="452" width="296" height="26" rx="4" fill="#0a1020" stroke="#8b949e" stroke-width="1"/>
+  <text x="659" y="470" fill="#c9d1d9" font-size="11">monitoring  -  SELECT on stats views</text>
+
+  <rect x="35" y="486" width="910" height="48" rx="5" fill="#0a2010" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="490" y="505" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="bold">If app_reader leaks: attacker can only read public data. Rotate one secret. No writes, no schema changes, no data loss.</text>
+  <text x="490" y="523" text-anchor="middle" fill="#85e89d" font-size="11">The proxy decides WHERE a query goes. The account decides WHAT it is allowed to do. Keep them separate.</text>
+</svg>
