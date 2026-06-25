@@ -509,13 +509,15 @@ All three patterns live in the Interface Adapters layer of Clean Architecture. T
 
 ```mermaid
 flowchart TD
-    subgraph FD["Frameworks and Drivers (Express, React runtime, SwiftUI)"]
+    subgraph FD["Frameworks & Drivers (Express, React runtime, SwiftUI)"]
+        FDn["The web, the screen, the database driver"]
         subgraph IA["Interface Adapters - MVC/MVP/MVVM live here"]
             ADAPTERS["MVC Controller, MVP Presenter, MVVM ViewModel: all just different styles of Interface Adapter"]
-        end
-        subgraph UC["Use Cases"]
-            subgraph ENT["Entities - Model equals domain here"]
-                E["Entities"]
+            subgraph UC["Use Cases"]
+                UCn["Application business rules"]
+                subgraph ENT["Entities (Model = domain here)"]
+                    E["Enterprise business rules (pure)"]
+                end
             end
         end
     end

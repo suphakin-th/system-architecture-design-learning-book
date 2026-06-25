@@ -21,10 +21,15 @@ The four layers nest inside each other - each outer layer contains the one withi
 
 ```mermaid
 flowchart TD
-  subgraph L4["Frameworks and Drivers - Express, PostgreSQL"]
-    subgraph L3["Interface Adapters - Controllers, Repos"]
-      subgraph L2["Use Cases - Application Logic"]
-        L1["Entities - Business Rules"]
+  subgraph L4["Frameworks & Drivers"]
+    L4n["Express, PostgreSQL, the web, the DB"]
+    subgraph L3["Interface Adapters"]
+      L3n["Controllers, Presenters, Repositories"]
+      subgraph L2["Use Cases"]
+        L2n["Application logic"]
+        subgraph L1["Entities"]
+          L1n["Business rules (pure)"]
+        end
       end
     end
   end

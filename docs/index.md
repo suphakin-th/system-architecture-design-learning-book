@@ -102,10 +102,15 @@ The four Clean Architecture layers nest inside one another. Each outer layer wra
 
 ```mermaid
 flowchart TD
-    subgraph FD["Frameworks and Drivers - Express, PostgreSQL, Kafka"]
-        subgraph IA["Interface Adapters - Controllers, Repositories"]
-            subgraph UC["Use Cases - Business operations"]
-                E["Entities - Business rules, pure"]
+    subgraph FD["Frameworks & Drivers"]
+        FDn["Express, PostgreSQL, Kafka, the web, the DB"]
+        subgraph IA["Interface Adapters"]
+            IAn["Controllers, Presenters, Repositories"]
+            subgraph UC["Use Cases"]
+                UCn["Application business rules"]
+                subgraph EN["Entities"]
+                    En["Enterprise business rules (pure)"]
+                end
             end
         end
     end
