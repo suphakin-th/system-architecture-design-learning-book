@@ -9,29 +9,31 @@
         <meta name="author" content="Suphakin Th.">
       
       
-        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/">
+        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/ai-infra/34_ai_infra_hardware/">
       
       
+        <link rel="prev" href="../../database/34_users_permissions_load_balanced/">
       
-        <link rel="next" href="architecture/00_foundation/">
+      
+        <link rel="next" href="../../production/40_caching/">
       
       
         
       
       
-      <link rel="icon" href="assets/logo.svg">
+      <link rel="icon" href="../../assets/logo.svg">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>System Architecture Design — Learning Book</title>
+        <title>NPU vs GPU vs CPU (Local Inference) - System Architecture Design — Learning Book</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -50,7 +52,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -66,7 +68,7 @@
 
     
     
-  <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
             html.glightbox-open { overflow: initial; height: 100%; }
             .gslide-title { margin-top: 0px; user-select: text; }
             .gslide-desc { color: #666; user-select: text; }
@@ -95,7 +97,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#system-architecture-design-learning-book" class="md-skip">
+        <a href="#ai-infra-hardware-npu-vs-gpu-vs-cpu-for-local-inference" class="md-skip">
           Skip to content
         </a>
       
@@ -111,9 +113,9 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="System Architecture Design — Learning Book" class="md-header__button md-logo" aria-label="System Architecture Design — Learning Book" data-md-component="logo">
+    <a href="../.." title="System Architecture Design — Learning Book" class="md-header__button md-logo" aria-label="System Architecture Design — Learning Book" data-md-component="logo">
       
-  <img src="assets/logo.svg" alt="logo">
+  <img src="../../assets/logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -130,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              NPU vs GPU vs CPU (Local Inference)
             
           </span>
         </div>
@@ -240,11 +242,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -265,7 +265,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="architecture/00_foundation/" class="md-tabs__link">
+        <a href="../../architecture/00_foundation/" class="md-tabs__link">
           
   
   
@@ -287,7 +287,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="database/23_fundamentals/" class="md-tabs__link">
+        <a href="../../database/23_fundamentals/" class="md-tabs__link">
           
   
   
@@ -305,11 +305,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="ai-infra/34_ai_infra_hardware/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -331,7 +333,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="production/40_caching/" class="md-tabs__link">
+        <a href="../../production/40_caching/" class="md-tabs__link">
           
   
   
@@ -353,7 +355,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="fintech/00_overview/" class="md-tabs__link">
+        <a href="../../fintech/00_overview/" class="md-tabs__link">
           
   
   
@@ -375,7 +377,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="companies/amazon/" class="md-tabs__link">
+        <a href="../../companies/amazon/" class="md-tabs__link">
           
   
   
@@ -397,7 +399,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="security/linux_permissions_thai/" class="md-tabs__link">
+        <a href="../../security/linux_permissions_thai/" class="md-tabs__link">
           
   
   
@@ -439,9 +441,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="System Architecture Design — Learning Book" class="md-nav__button md-logo" aria-label="System Architecture Design — Learning Book" data-md-component="logo">
+    <a href="../.." title="System Architecture Design — Learning Book" class="md-nav__button md-logo" aria-label="System Architecture Design — Learning Book" data-md-component="logo">
       
-  <img src="assets/logo.svg" alt="logo">
+  <img src="../../assets/logo.svg" alt="logo">
 
     </a>
     System Architecture Design — Learning Book
@@ -465,37 +467,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -511,92 +486,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-      
-        <li class="md-nav__item">
-  <a href="#what-is-this" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What Is This?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#who-is-this-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Who Is This For?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-use-this-book" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How to Use This Book
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#coverage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Coverage
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-one-diagram-that-rules-them-all" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The One Diagram That Rules Them All
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sources-credits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sources &amp; Credits
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -698,7 +587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/00_foundation/" class="md-nav__link">
+      <a href="../../architecture/00_foundation/" class="md-nav__link">
         
   
   
@@ -726,7 +615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/01_monolith/" class="md-nav__link">
+      <a href="../../architecture/01_monolith/" class="md-nav__link">
         
   
   
@@ -754,7 +643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/02_microservices/" class="md-nav__link">
+      <a href="../../architecture/02_microservices/" class="md-nav__link">
         
   
   
@@ -782,7 +671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/03_event_driven/" class="md-nav__link">
+      <a href="../../architecture/03_event_driven/" class="md-nav__link">
         
   
   
@@ -810,7 +699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/04_cqrs/" class="md-nav__link">
+      <a href="../../architecture/04_cqrs/" class="md-nav__link">
         
   
   
@@ -838,7 +727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/05_event_sourcing/" class="md-nav__link">
+      <a href="../../architecture/05_event_sourcing/" class="md-nav__link">
         
   
   
@@ -866,7 +755,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/06_saga/" class="md-nav__link">
+      <a href="../../architecture/06_saga/" class="md-nav__link">
         
   
   
@@ -894,7 +783,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/07_api_gateway/" class="md-nav__link">
+      <a href="../../architecture/07_api_gateway/" class="md-nav__link">
         
   
   
@@ -922,7 +811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/08_hexagonal/" class="md-nav__link">
+      <a href="../../architecture/08_hexagonal/" class="md-nav__link">
         
   
   
@@ -950,7 +839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/09_onion/" class="md-nav__link">
+      <a href="../../architecture/09_onion/" class="md-nav__link">
         
   
   
@@ -978,7 +867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/10_layered_ntier/" class="md-nav__link">
+      <a href="../../architecture/10_layered_ntier/" class="md-nav__link">
         
   
   
@@ -1006,7 +895,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/11_bff/" class="md-nav__link">
+      <a href="../../architecture/11_bff/" class="md-nav__link">
         
   
   
@@ -1034,7 +923,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/12_strangler_fig/" class="md-nav__link">
+      <a href="../../architecture/12_strangler_fig/" class="md-nav__link">
         
   
   
@@ -1062,7 +951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/13_serverless/" class="md-nav__link">
+      <a href="../../architecture/13_serverless/" class="md-nav__link">
         
   
   
@@ -1090,7 +979,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/14_service_mesh/" class="md-nav__link">
+      <a href="../../architecture/14_service_mesh/" class="md-nav__link">
         
   
   
@@ -1118,7 +1007,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/32_mvc_mvp_mvvm/" class="md-nav__link">
+      <a href="../../architecture/32_mvc_mvp_mvvm/" class="md-nav__link">
         
   
   
@@ -1146,7 +1035,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/30_three_layer_clean_functional/" class="md-nav__link">
+      <a href="../../architecture/30_three_layer_clean_functional/" class="md-nav__link">
         
   
   
@@ -1259,7 +1148,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/23_fundamentals/" class="md-nav__link">
+      <a href="../../database/23_fundamentals/" class="md-nav__link">
         
   
   
@@ -1287,7 +1176,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/24_types_comparison/" class="md-nav__link">
+      <a href="../../database/24_types_comparison/" class="md-nav__link">
         
   
   
@@ -1315,7 +1204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/25_indexing/" class="md-nav__link">
+      <a href="../../database/25_indexing/" class="md-nav__link">
         
   
   
@@ -1343,7 +1232,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/26_replication/" class="md-nav__link">
+      <a href="../../database/26_replication/" class="md-nav__link">
         
   
   
@@ -1371,7 +1260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/27_transactions/" class="md-nav__link">
+      <a href="../../database/27_transactions/" class="md-nav__link">
         
   
   
@@ -1399,7 +1288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/28_query_optimization/" class="md-nav__link">
+      <a href="../../database/28_query_optimization/" class="md-nav__link">
         
   
   
@@ -1427,7 +1316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/29_schema_patterns/" class="md-nav__link">
+      <a href="../../database/29_schema_patterns/" class="md-nav__link">
         
   
   
@@ -1455,7 +1344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/22_sharding/" class="md-nav__link">
+      <a href="../../database/22_sharding/" class="md-nav__link">
         
   
   
@@ -1483,7 +1372,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/31_three_layer_model/" class="md-nav__link">
+      <a href="../../database/31_three_layer_model/" class="md-nav__link">
         
   
   
@@ -1511,7 +1400,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/33_mvcc/" class="md-nav__link">
+      <a href="../../database/33_mvcc/" class="md-nav__link">
         
   
   
@@ -1539,7 +1428,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/34_users_permissions_load_balanced/" class="md-nav__link">
+      <a href="../../database/34_users_permissions_load_balanced/" class="md-nav__link">
         
   
   
@@ -1571,8 +1460,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -1582,21 +1473,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked="">
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4">
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -1614,7 +1506,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1629,10 +1521,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="ai-infra/34_ai_infra_hardware/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NPU vs GPU vs CPU (Local Inference)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1648,6 +1567,181 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-this-solves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem This Solves
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-npus-are-not-a-drop-in-replacement-for-gpu-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why NPUs Are Not a Drop-in Replacement for GPU Inference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why NPUs Are Not a Drop-in Replacement for GPU Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-npu-generations-are-not-interchangeable-and-the-differences-arent-cosmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. NPU generations are not interchangeable — and the differences aren't cosmetic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-tops-number-is-a-floor-set-by-the-osecosystem-not-just-a-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The "TOPS" number is a floor set by the OS/ecosystem, not just a spec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-npus-are-architecturally-optimized-for-sustained-low-power-inference-not-peak-throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. NPUs are architecturally optimized for sustained low-power inference, not peak throughput
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-pitfalls-applies-broadly-not-just-to-amd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Pitfalls (Applies Broadly, Not Just to AMD)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Pitfalls (Applies Broadly, Not Just to AMD)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pitfall-igpu-silently-falls-back-to-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfall: iGPU silently falls back to CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pitfall-a-successful-install-a-working-inference-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfall: A successful install ≠ a working inference path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pitfall-chasing-pathenvironment-issues-can-mask-or-be-mistaken-for-a-hardware-limitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfall: Chasing PATH/environment issues can mask (or be mistaken for) a hardware limitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Framework
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-grounding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-World Grounding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1733,7 +1827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="production/40_caching/" class="md-nav__link">
+      <a href="../../production/40_caching/" class="md-nav__link">
         
   
   
@@ -1761,7 +1855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="production/41_observability/" class="md-nav__link">
+      <a href="../../production/41_observability/" class="md-nav__link">
         
   
   
@@ -1789,7 +1883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="production/42_app_security/" class="md-nav__link">
+      <a href="../../production/42_app_security/" class="md-nav__link">
         
   
   
@@ -1817,7 +1911,7 @@
   
   
     <li class="md-nav__item">
-      <a href="production/43_api_design/" class="md-nav__link">
+      <a href="../../production/43_api_design/" class="md-nav__link">
         
   
   
@@ -1845,7 +1939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="production/44_resilience/" class="md-nav__link">
+      <a href="../../production/44_resilience/" class="md-nav__link">
         
   
   
@@ -1952,7 +2046,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/00_overview/" class="md-nav__link">
+      <a href="../../fintech/00_overview/" class="md-nav__link">
         
   
   
@@ -1980,7 +2074,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/01_double_entry_ledger/" class="md-nav__link">
+      <a href="../../fintech/01_double_entry_ledger/" class="md-nav__link">
         
   
   
@@ -2008,7 +2102,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/02_immutable_audit_log/" class="md-nav__link">
+      <a href="../../fintech/02_immutable_audit_log/" class="md-nav__link">
         
   
   
@@ -2036,7 +2130,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/03_payment_networks/" class="md-nav__link">
+      <a href="../../fintech/03_payment_networks/" class="md-nav__link">
         
   
   
@@ -2064,7 +2158,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/05_security_hsm_pci/" class="md-nav__link">
+      <a href="../../fintech/05_security_hsm_pci/" class="md-nav__link">
         
   
   
@@ -2092,7 +2186,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/06_zero_trust/" class="md-nav__link">
+      <a href="../../fintech/06_zero_trust/" class="md-nav__link">
         
   
   
@@ -2120,7 +2214,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/07_distributed_transactions/" class="md-nav__link">
+      <a href="../../fintech/07_distributed_transactions/" class="md-nav__link">
         
   
   
@@ -2148,7 +2242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="fintech/08_companies/" class="md-nav__link">
+      <a href="../../fintech/08_companies/" class="md-nav__link">
         
   
   
@@ -2273,7 +2367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/amazon/" class="md-nav__link">
+      <a href="../../companies/amazon/" class="md-nav__link">
         
   
   
@@ -2301,7 +2395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/google/" class="md-nav__link">
+      <a href="../../companies/google/" class="md-nav__link">
         
   
   
@@ -2329,7 +2423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/meta_facebook/" class="md-nav__link">
+      <a href="../../companies/meta_facebook/" class="md-nav__link">
         
   
   
@@ -2357,7 +2451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/netflix/" class="md-nav__link">
+      <a href="../../companies/netflix/" class="md-nav__link">
         
   
   
@@ -2385,7 +2479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/uber/" class="md-nav__link">
+      <a href="../../companies/uber/" class="md-nav__link">
         
   
   
@@ -2413,7 +2507,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/twitter_x/" class="md-nav__link">
+      <a href="../../companies/twitter_x/" class="md-nav__link">
         
   
   
@@ -2441,7 +2535,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/linkedin/" class="md-nav__link">
+      <a href="../../companies/linkedin/" class="md-nav__link">
         
   
   
@@ -2469,7 +2563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/shopify/" class="md-nav__link">
+      <a href="../../companies/shopify/" class="md-nav__link">
         
   
   
@@ -2497,7 +2591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/stripe/" class="md-nav__link">
+      <a href="../../companies/stripe/" class="md-nav__link">
         
   
   
@@ -2525,7 +2619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/discord/" class="md-nav__link">
+      <a href="../../companies/discord/" class="md-nav__link">
         
   
   
@@ -2553,7 +2647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/whatsapp/" class="md-nav__link">
+      <a href="../../companies/whatsapp/" class="md-nav__link">
         
   
   
@@ -2581,7 +2675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/tiktok_bytedance/" class="md-nav__link">
+      <a href="../../companies/tiktok_bytedance/" class="md-nav__link">
         
   
   
@@ -2609,7 +2703,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/airbnb/" class="md-nav__link">
+      <a href="../../companies/airbnb/" class="md-nav__link">
         
   
   
@@ -2637,7 +2731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/grab/" class="md-nav__link">
+      <a href="../../companies/grab/" class="md-nav__link">
         
   
   
@@ -2665,7 +2759,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/doordash/" class="md-nav__link">
+      <a href="../../companies/doordash/" class="md-nav__link">
         
   
   
@@ -2693,7 +2787,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/microsoft/" class="md-nav__link">
+      <a href="../../companies/microsoft/" class="md-nav__link">
         
   
   
@@ -2721,7 +2815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="companies/pantip/" class="md-nav__link">
+      <a href="../../companies/pantip/" class="md-nav__link">
         
   
   
@@ -2814,7 +2908,7 @@
   
   
     <li class="md-nav__item">
-      <a href="security/linux_permissions_thai/" class="md-nav__link">
+      <a href="../../security/linux_permissions_thai/" class="md-nav__link">
         
   
   
@@ -2869,10 +2963,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#what-is-this" class="md-nav__link">
+  <a href="#at-a-glance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What Is This?
+        At a Glance
       
     </span>
   </a>
@@ -2880,10 +2974,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#who-is-this-for" class="md-nav__link">
+  <a href="#the-problem-this-solves" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Who Is This For?
+        The Problem This Solves
       
     </span>
   </a>
@@ -2891,10 +2985,110 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-use-this-book" class="md-nav__link">
+  <a href="#why-npus-are-not-a-drop-in-replacement-for-gpu-inference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How to Use This Book
+        Why NPUs Are Not a Drop-in Replacement for GPU Inference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why NPUs Are Not a Drop-in Replacement for GPU Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-npu-generations-are-not-interchangeable-and-the-differences-arent-cosmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. NPU generations are not interchangeable — and the differences aren't cosmetic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-tops-number-is-a-floor-set-by-the-osecosystem-not-just-a-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The "TOPS" number is a floor set by the OS/ecosystem, not just a spec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-npus-are-architecturally-optimized-for-sustained-low-power-inference-not-peak-throughput" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. NPUs are architecturally optimized for sustained low-power inference, not peak throughput
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-pitfalls-applies-broadly-not-just-to-amd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Pitfalls (Applies Broadly, Not Just to AMD)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Pitfalls (Applies Broadly, Not Just to AMD)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pitfall-igpu-silently-falls-back-to-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfall: iGPU silently falls back to CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pitfall-a-successful-install-a-working-inference-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfall: A successful install ≠ a working inference path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pitfall-chasing-pathenvironment-issues-can-mask-or-be-mistaken-for-a-hardware-limitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pitfall: Chasing PATH/environment issues can mask (or be mistaken for) a hardware limitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Framework
       
     </span>
   </a>
@@ -2902,10 +3096,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#coverage" class="md-nav__link">
+  <a href="#real-world-grounding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Coverage
+        Real-World Grounding
       
     </span>
   </a>
@@ -2913,21 +3107,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-one-diagram-that-rules-them-all" class="md-nav__link">
+  <a href="#related" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The One Diagram That Rules Them All
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sources-credits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sources &amp; Credits
+        Related
       
     </span>
   </a>
@@ -2954,147 +3137,208 @@
   
 
 
-<h1 id="system-architecture-design-learning-book">System Architecture Design - Learning Book<a class="headerlink" href="#system-architecture-design-learning-book" title="Permanent link">¶</a></h1>
+<h1 id="ai-infra-hardware-npu-vs-gpu-vs-cpu-for-local-inference">AI Infra Hardware — NPU vs GPU vs CPU for Local Inference<a class="headerlink" href="#ai-infra-hardware-npu-vs-gpu-vs-cpu-for-local-inference" title="Permanent link">¶</a></h1>
 <blockquote>
-<p><strong>"The goal of software architecture is to minimize the human resources required to build and maintain the required system."</strong> - Robert C. Martin</p>
+<p>"A 16 TOPS NPU and a 40 TOPS NPU aren't the same product with a different number — they're often different silicon generations with a different instruction set your runtime may not even support yet. Check the software support matrix before you check the spec sheet." — lesson from a full afternoon lost to this</p>
 </blockquote>
 <hr>
-<h2 id="what-is-this">What Is This?<a class="headerlink" href="#what-is-this" title="Permanent link">¶</a></h2>
-<p>A complete, self-contained learning library for software and system architecture - built from scratch using real research, big-tech engineering blogs, and production battle-tested patterns.</p>
-<p><strong>Written as a senior architect explaining to a junior/mid developer.</strong> Not just "what" a pattern is, but <strong>why it exists</strong>, <strong>what problem it solves</strong>, <strong>what it costs</strong>, and <strong>how real companies use it</strong>.</p>
-<hr>
-<h2 id="who-is-this-for">Who Is This For?<a class="headerlink" href="#who-is-this-for" title="Permanent link">¶</a></h2>
-<ul>
-<li>Junior -&gt; Mid developers who want to understand how large systems are built</li>
-<li>Mid -&gt; Senior developers preparing for system design interviews</li>
-<li>Anyone studying for <strong>ByteByteGo</strong>, <strong>Designing Data-Intensive Applications</strong>, or <strong>Clean Architecture</strong></li>
-<li>Thai developers looking for resources in both Thai and English</li>
-</ul>
-<hr>
-<h2 id="how-to-use-this-book">How to Use This Book<a class="headerlink" href="#how-to-use-this-book" title="Permanent link">¶</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><input id="__tabbed_1_3" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1">Learning Path (Recommended)</label><label for="__tabbed_1_2">Quick Reference</label><label for="__tabbed_1_3">By Problem</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Week 1-2:   Clean Architecture Foundation -&gt; Monolith -&gt; Layered N-Tier
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Week 3-4:   CQRS -&gt; Event-Driven -&gt; Event Sourcing
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Week 5-6:   Microservices -&gt; Saga -&gt; API Gateway -&gt; BFF
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Week 7-8:   Database Fundamentals -&gt; Indexing -&gt; Replication -&gt; Transactions
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Week 9-10:  Fintech Architecture (Ledger -&gt; Audit -&gt; Payments -&gt; Security)
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Week 11+:   Company Case Studies (Amazon -&gt; Netflix -&gt; Google -&gt; ...)
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<p>Use the <strong>search bar</strong> (top right) to find any concept instantly.</p>
-<p>Examples to try:
-- <code>fanout</code> -&gt; Twitter's hybrid fanout solution
-- <code>idempotency</code> -&gt; Stripe's payment safety
-- <code>MVCC</code> -&gt; PostgreSQL concurrency control
-- <code>PromptPay</code> -&gt; Thailand's real-time payment system
-- <code>สิทธิ์</code> -&gt; Linux permissions in Thai</p>
-</div>
-<div class="tabbed-block">
+<h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
-<th>I need to...</th>
-<th>Go to</th>
+<th></th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Understand Clean Architecture from zero</td>
-<td><a href="architecture/00_foundation/">Foundation</a></td>
+<td><strong>What</strong></td>
+<td>How to pick the right on-device compute target (CPU / GPU / NPU) for running AI models locally</td>
 </tr>
 <tr>
-<td>Know when to use microservices</td>
-<td><a href="architecture/02_microservices/">Microservices</a></td>
+<td><strong>Used by</strong></td>
+<td>Local LLM tools (Ollama, LM Studio), on-device vision models, Windows Copilot+ features</td>
 </tr>
 <tr>
-<td>Design a payment/financial system</td>
-<td><a href="fintech/00_overview/">Fintech Overview</a></td>
+<td><strong>Key promise</strong></td>
+<td>NPUs are the most power-efficient, but only for the workloads their software stack actually supports</td>
 </tr>
 <tr>
-<td>Make my database faster</td>
-<td><a href="database/28_query_optimization/">Query Optimization</a></td>
-</tr>
-<tr>
-<td>Pass a security pentest</td>
-<td><a href="security/linux_permissions_thai/">Linux Permissions</a></td>
-</tr>
-<tr>
-<td>Learn from Netflix's architecture</td>
-<td><a href="companies/netflix/">Netflix Case Study</a></td>
+<td><strong>Trade-off</strong></td>
+<td>Newest/most efficient hardware often has the least mature and most restrictive software support</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
 <hr>
-<h2 id="coverage">Coverage<a class="headerlink" href="#coverage" title="Permanent link">¶</a></h2>
-<div class="grid cards">
+<h2 id="the-problem-this-solves">The Problem This Solves<a class="headerlink" href="#the-problem-this-solves" title="Permanent link">¶</a></h2>
+<p>Every modern laptop CPU ships with three distinct places code can run: the CPU cores,
+an integrated GPU, and increasingly, a dedicated NPU (Neural Processing Unit). All
+three can technically "run AI models" — but they are not interchangeable, and
+picking wrong wastes hours chasing a dead end that a spec sheet would have ruled out
+in five minutes.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Same laptop, three compute targets:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  CPU          — general purpose, always works, slowest for parallel math
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  iGPU         — parallel compute via Vulkan/DirectML/ROCm, good LLM throughput
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  NPU          — purpose-built matrix multiply silicon, best perf-per-watt,
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                 but narrowest software support and most fragmented by generation
+</span></code></pre></div>
+<p>The instinct — "there's a dedicated AI chip sitting right there, use that" — is
+often wrong for LLM workloads specifically, for reasons that have nothing to do
+with how well you configure it.</p>
+<hr>
+<h2 id="why-npus-are-not-a-drop-in-replacement-for-gpu-inference">Why NPUs Are Not a Drop-in Replacement for GPU Inference<a class="headerlink" href="#why-npus-are-not-a-drop-in-replacement-for-gpu-inference" title="Permanent link">¶</a></h2>
+<h3 id="1-npu-generations-are-not-interchangeable-and-the-differences-arent-cosmetic">1. NPU generations are not interchangeable — and the differences aren't cosmetic<a class="headerlink" href="#1-npu-generations-are-not-interchangeable-and-the-differences-arent-cosmetic" title="Permanent link">¶</a></h3>
+<p>AMD's own NPU line illustrates this well:</p>
+<table>
+<thead>
+<tr>
+<th>Generation</th>
+<th>Codename example</th>
+<th>TOPS</th>
+<th>LLM support in AMD's official stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XDNA1</td>
+<td>Phoenix, Hawk Point (Ryzen 7000/8000/200-series)</td>
+<td>~16</td>
+<td>❌ CNN INT8 only — no LLM/BF16</td>
+</tr>
+<tr>
+<td>XDNA2</td>
+<td>Strix Point, Krackan Point, Strix Halo, Ryzen AI 300+</td>
+<td>50+</td>
+<td>✅ Full LLM support</td>
+</tr>
+</tbody>
+</table>
+<p>This is not a driver limitation or a configuration flag — it's stated directly in
+AMD's Ryzen AI Software release notes as a hard capability split by silicon
+generation. Installing the latest version of AMD's own official toolchain on an
+XDNA1 chip will complete successfully, generate no install errors, and then simply
+be unable to run the workload you wanted, because the <em>runtime itself</em> routes LLM
+ops away from unsupported hardware.</p>
+<p><strong>Lesson:</strong> "same vendor, same NPU brand name" ≠ "same capabilities." Always check
+the specific chip generation against the specific software stack's support matrix
+— not just "does this laptop have an NPU."</p>
+<h3 id="2-the-tops-number-is-a-floor-set-by-the-osecosystem-not-just-a-spec">2. The "TOPS" number is a floor set by the OS/ecosystem, not just a spec<a class="headerlink" href="#2-the-tops-number-is-a-floor-set-by-the-osecosystem-not-just-a-spec" title="Permanent link">¶</a></h3>
+<p>Microsoft's Copilot+ PC certification requires a minimum of <strong>40 TOPS</strong> of NPU
+performance to unlock on-device Windows AI features (Phi Silica, Windows Studio
+Effects acceleration, Recall, etc.). A perfectly real, working NPU at 16 TOPS
+simply doesn't clear that bar — not a bug, a certification threshold.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>NPU TOPS  &lt;  40   →  No Copilot+ PC NPU features, regardless of chip health
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>NPU TOPS  ≥  40   →  Eligible for OS-level NPU-accelerated features
+</span></code></pre></div>
+<p>This means the same physical laptop can be "AI-capable" in a marketing sense while
+being locked out of an entire tier of software that assumes a higher-end chip.</p>
+<h3 id="3-npus-are-architecturally-optimized-for-sustained-low-power-inference-not-peak-throughput">3. NPUs are architecturally optimized for sustained low-power inference, not peak throughput<a class="headerlink" href="#3-npus-are-architecturally-optimized-for-sustained-low-power-inference-not-peak-throughput" title="Permanent link">¶</a></h3>
+<p>NPUs are matrix-multiply accelerators designed to run <em>continuously</em> at very low
+power draw — think always-on background tasks like webcam bokeh, noise
+suppression, or small CNN classification, running for hours on battery without
+meaningfully affecting battery life. They are not designed to win at raw
+tokens/second for a chat-sized LLM the way a discrete or even integrated GPU with
+much higher memory bandwidth will.</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Optimized for</th>
+<th>Typical local LLM fit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>General-purpose, always available</td>
+<td>Works, but slowest — fine as a fallback</td>
+</tr>
+<tr>
+<td>iGPU (Vulkan/DirectML/ROCm)</td>
+<td>Parallel throughput</td>
+<td>Best fit for chat-sized local LLMs (3B–8B range) on a laptop</td>
+</tr>
+<tr>
+<td>NPU</td>
+<td>Sustained low-power, narrow op support</td>
+<td>Best for small always-on CNN/vision tasks, not general LLM chat</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="common-pitfalls-applies-broadly-not-just-to-amd">Common Pitfalls (Applies Broadly, Not Just to AMD)<a class="headerlink" href="#common-pitfalls-applies-broadly-not-just-to-amd" title="Permanent link">¶</a></h2>
+<h3 id="pitfall-igpu-silently-falls-back-to-cpu">Pitfall: iGPU silently falls back to CPU<a class="headerlink" href="#pitfall-igpu-silently-falls-back-to-cpu" title="Permanent link">¶</a></h3>
+<p>Some inference runtimes (Ollama included) detect a Vulkan-capable integrated GPU
+but <strong>disable it by default</strong> unless explicitly told to use it — an integrated GPU
+sharing system RAM is a less "safe" default than a discrete GPU with dedicated
+VRAM, so runtimes tend to be conservative. If a runtime seems slower than
+expected, check whether it's silently running on CPU before assuming the hardware
+is the bottleneck.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Verify what a runtime actually used, don't assume from the config:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ollama<span class="w"> </span>ps<span class="w">   </span><span class="c1"># PROCESSOR column shows "100% CPU" vs "100% GPU" — check this every time</span>
+</span></code></pre></div>
+<h3 id="pitfall-a-successful-install-a-working-inference-path">Pitfall: A successful install ≠ a working inference path<a class="headerlink" href="#pitfall-a-successful-install-a-working-inference-path" title="Permanent link">¶</a></h3>
+<p>An installer completing without errors only proves the <em>software</em> installed
+correctly — not that the target hardware can execute the workload. Always run the
+vendor's own verification/quicktest script and inspect its logs for warnings, not
+just its exit code. A script can print "success" while every actual inference call
+silently fell back to a slower or unsupported path.</p>
+<h3 id="pitfall-chasing-pathenvironment-issues-can-mask-or-be-mistaken-for-a-hardware-limitation">Pitfall: Chasing PATH/environment issues can mask (or be mistaken for) a hardware limitation<a class="headerlink" href="#pitfall-chasing-pathenvironment-issues-can-mask-or-be-mistaken-for-a-hardware-limitation" title="Permanent link">¶</a></h3>
+<p>Windows does not propagate environment variable changes to already-running
+processes — not <code>explorer.exe</code>, not shells spawned before the change, nothing
+alive when the registry was written. This can make a completely unrelated PATH
+problem look identical to "the hardware doesn't support this," and vice versa. Rule
+out environment/PATH issues with a clean process (or a full restart) <em>before</em>
+concluding the hardware itself is the blocker — but also don't let a fixed PATH
+issue create false confidence that the underlying hardware capability question is
+answered. They're independent failure modes that can occur in the same debugging
+session.</p>
+<hr>
+<h2 id="decision-framework">Decision Framework<a class="headerlink" href="#decision-framework" title="Permanent link">¶</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Need to run an LLM locally on a laptop with CPU + iGPU + NPU?
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>1. Check the NPU generation against the specific runtime's support matrix FIRST.
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>   → If it doesn't explicitly list your exact chip/generation, assume no support
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>     until proven otherwise. Don't rely on "same vendor" or "has an NPU" as a proxy.
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>2. If the NPU doesn't support LLM workloads (very common on last-gen chips):
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>   → Use the iGPU via Vulkan/DirectML/ROCm. This is usually the best throughput
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>     option for chat-sized models (3B-8B) on a laptop without a discrete GPU.
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>3. Reserve the NPU for what it's actually good at:
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>   → Small, sustained, low-power CNN/vision inference running continuously
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>     (webcam effects, wake-word detection, background classification) —
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>     not general-purpose LLM chat.
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>4. Always verify with the vendor's own test script AND check the runtime's
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>   own process/utilization reporting — don't trust "install succeeded" or
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>   "script printed success" alone.
+</span></code></pre></div>
+<hr>
+<h2 id="real-world-grounding">Real-World Grounding<a class="headerlink" href="#real-world-grounding" title="Permanent link">¶</a></h2>
 <ul>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 16 7.36-5.73L21 9l-9-7-9 7 1.63 1.27M12 18.54l-7.38-5.73L3 14.07l9 7 9-7-1.63-1.27z"></path></svg></span> <strong>15 Architecture Patterns</strong></p>
-<hr>
-<p>From Monolith to Service Mesh, each with SVG diagram, real-world examples, and Clean Architecture mapping.</p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7s3.58 4 8 4 8-1.79 8-4-3.58-4-8-4M4 9v3c0 2.21 3.58 4 8 4s8-1.79 8-4V9c0 2.21-3.58 4-8 4s-8-1.79-8-4m0 5v3c0 2.21 3.58 4 8 4s8-1.79 8-4v-3c0 2.21-3.58 4-8 4s-8-1.79-8-4"></path></svg></span> <strong>11 Database Topics</strong></p>
-<hr>
-<p>Types, indexing (B-Tree vs LSM), replication, ACID/BASE/CAP, MVCC, sharding, ANSI/SPARC 3-layer model.</p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 15h2c0 1.08 1.37 2 3 2s3-.92 3-2c0-1.1-1.04-1.5-3.24-2.03C9.64 12.44 7 11.78 7 9c0-1.79 1.47-3.31 3.5-3.82V3h3v2.18C15.53 5.69 17 7.21 17 9h-2c0-1.08-1.37-2-3-2s-3 .92-3 2c0 1.1 1.04 1.5 3.24 2.03C14.36 11.56 17 12.22 17 15c0 1.79-1.47 3.31-3.5 3.82V21h-3v-2.18C8.47 18.31 7 16.79 7 15"></path></svg></span> <strong>8 Fintech Patterns</strong></p>
-<hr>
-<p>Double-entry ledger, immutable audit logs, Visa/PromptPay networks, HSM/PCI DSS, Zero Trust, idempotency.</p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3v18h6v-3.5h2V21h6V3zm2 2h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zm-8 4h2v2H7zm8 0h2v2h-2z"></path></svg></span> <strong>17 Big Tech Companies</strong></p>
-<hr>
-<p>Amazon, Google, Meta, Netflix, Uber, Twitter, LinkedIn, Shopify, Stripe, Discord, WhatsApp, TikTok, Airbnb, Grab, DoorDash, Microsoft, Pantip.</p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"></path></svg></span> <strong>Linux Security</strong></p>
-<hr>
-<p>Permissions, SUID/SGID, ACL, systemd hardening - written in Thai for microservice server setup.</p>
-</li>
-<li>
-<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17z"></path></svg></span> <strong>Zero to Hero</strong></p>
-<hr>
-<p>Every topic explained as a senior architect teaching a junior. No assumed knowledge.</p>
-</li>
+<li><strong>Windows Copilot+ PC tier</strong>: Microsoft draws the line at 40 TOPS specifically
+  so that on-device Phi Silica and other OS AI features have a guaranteed
+  performance floor across all "Copilot+" branded hardware — a fragmented
+  experience across NPU generations would undermine the feature's reliability
+  promise.</li>
+<li><strong>AMD Ryzen AI software stack</strong>: Explicitly scopes LLM/BF16 support to
+  XDNA2-generation silicon (Strix Point onward) while keeping XDNA1
+  (Phoenix/Hawk Point) limited to CNN INT8 — a deliberate scoping decision
+  reflected in the official release notes, not an oversight.</li>
+<li><strong>Ollama's iGPU handling</strong>: Defaults to <em>not</em> using an integrated GPU unless
+  explicitly enabled, because integrated GPUs share system memory with the CPU
+  and can have less predictable behavior under memory pressure than a discrete
+  GPU — a conservative default that trades a bit of performance for stability out
+  of the box.</li>
 </ul>
-</div>
 <hr>
-<h2 id="the-one-diagram-that-rules-them-all">The One Diagram That Rules Them All<a class="headerlink" href="#the-one-diagram-that-rules-them-all" title="Permanent link">¶</a></h2>
-<p>The four Clean Architecture layers nest inside one another. Each outer layer wraps the ones inside it, and dependencies point inward only - an inner layer knows nothing about the layers around it.</p>
-<pre class="mermaid"><code>flowchart TD
-    subgraph FD["Frameworks &amp; Drivers"]
-        FDn["Express, PostgreSQL, Kafka, the web, the DB"]
-        subgraph IA["Interface Adapters"]
-            IAn["Controllers, Presenters, Repositories"]
-            subgraph UC["Use Cases"]
-                UCn["Application business rules"]
-                subgraph EN["Entities"]
-                    En["Enterprise business rules (pure)"]
-                end
-            end
-        end
-    end</code></pre>
-<p><strong>This is Clean Architecture.</strong> Every pattern in this book is a variation on this diagram at a different scale - from a single module to 1,000 microservices.</p>
-<hr>
-<h2 id="sources-credits">Sources &amp; Credits<a class="headerlink" href="#sources-credits" title="Permanent link">¶</a></h2>
-<p>This library synthesizes knowledge from:</p>
+<h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">¶</a></h2>
 <ul>
-<li><a href="https://bytebytego.com">ByteByteGo</a> - Alex Xu's system design resources</li>
-<li><a href="https://netflixtechblog.com">Netflix Tech Blog</a> - <a href="https://www.uber.com/blog/engineering/">Uber Engineering</a> - <a href="https://shopify.engineering">Shopify Engineering</a></li>
-<li><a href="https://engineering.linkedin.com">LinkedIn Engineering</a> - <a href="https://discord.com/blog/engineering">Discord Engineering</a> - <a href="https://stripe.dev/blog">Stripe Dev Blog</a></li>
-<li><a href="https://dataintensive.net">Designing Data-Intensive Applications</a> - Martin Kleppmann</li>
-<li><a href="https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164">Clean Architecture</a> - Robert C. Martin</li>
-<li><a href="https://sre.google/sre-book/table-of-contents/">Google SRE Book</a></li>
-<li><a href="https://www.postgresql.org/docs/">PostgreSQL Documentation</a></li>
-<li><a href="https://aws.amazon.com/blogs/architecture/">AWS Architecture Blog</a></li>
+<li>Full incident writeup with the exact commands, error messages, and timeline
+  from chasing this exact problem on real hardware:
+  <a href="https://github.com/suphakin-th/ops-runbooks/blob/main/docs/incidents/2026-08-19-ryzen-npu-llm-dead-end.md"><code>ops-runbooks: AMD NPU Won't Run LLMs — A Hardware Dead End</code></a></li>
 </ul>
 
 
@@ -3134,15 +3378,31 @@
       
       <nav class="md-footer__inner md-grid" aria-label="Footer">
         
+          
+          <a href="../../database/34_users_permissions_load_balanced/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Users &amp; Permissions (Load-Balanced)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Users &amp; Permissions (Load-Balanced)
+              </div>
+            </div>
+          </a>
+        
         
           
-          <a href="architecture/00_foundation/" class="md-footer__link md-footer__link--next" aria-label="Next: Foundation (Zero to Hero)">
+          <a href="../../production/40_caching/" class="md-footer__link md-footer__link--next" aria-label="Next: Caching &amp; CDN">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Foundation (Zero to Hero)
+                Caching &amp; CDN
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -3195,10 +3455,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "navigation.indexes", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "navigation.indexes", "search.highlight", "search.suggest", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   
