@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="820" viewBox="0 0 980 820" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#161b22"/></linearGradient>
+    <marker id="arrG" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3fb950"/></marker>
+    <marker id="arrR" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f85149"/></marker>
+    <marker id="arrY" markerWidth="9" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#e3b341"/></marker>
+  </defs>
+  <rect width="980" height="820" fill="url(#bg)"/>
+  <text x="490" y="36" text-anchor="middle" fill="#f0f6fc" font-size="22" font-weight="bold">AI Infra Hardware — NPU vs GPU vs CPU for Local Inference</text>
+  <text x="490" y="57" text-anchor="middle" fill="#e3b341" font-size="13" font-weight="bold">Same laptop, three compute targets — not interchangeable for LLM workloads</text>
+
+  <!-- Three compute targets row -->
+  <rect x="20" y="80" width="300" height="150" rx="10" fill="#0d1a26" stroke="#388bfd" stroke-width="2"/>
+  <text x="170" y="106" text-anchor="middle" fill="#79c0ff" font-size="15" font-weight="bold">CPU</text>
+  <text x="170" y="126" text-anchor="middle" fill="#8b949e" font-size="11">General purpose</text>
+  <text x="170" y="146" text-anchor="middle" fill="#8b949e" font-size="11">Always works, no setup</text>
+  <text x="170" y="166" text-anchor="middle" fill="#8b949e" font-size="11">Slowest for parallel math</text>
+  <rect x="35" y="180" width="270" height="34" rx="6" fill="#132a1a" stroke="#3fb950" stroke-width="1"/>
+  <text x="170" y="201" text-anchor="middle" fill="#7ee787" font-size="11">✓ Safe fallback, every runtime supports it</text>
+
+  <rect x="340" y="80" width="300" height="150" rx="10" fill="#0d1a26" stroke="#3fb950" stroke-width="2"/>
+  <text x="490" y="106" text-anchor="middle" fill="#7ee787" font-size="15" font-weight="bold">iGPU (Vulkan/DirectML/ROCm)</text>
+  <text x="490" y="126" text-anchor="middle" fill="#8b949e" font-size="11">Parallel compute throughput</text>
+  <text x="490" y="146" text-anchor="middle" fill="#8b949e" font-size="11">Shares system RAM with CPU</text>
+  <text x="490" y="166" text-anchor="middle" fill="#8b949e" font-size="11">Often disabled by default!</text>
+  <rect x="355" y="180" width="270" height="34" rx="6" fill="#132a1a" stroke="#3fb950" stroke-width="1"/>
+  <text x="490" y="201" text-anchor="middle" fill="#7ee787" font-size="11">✓ Best fit for chat-sized LLMs (3B–8B) on a laptop</text>
+
+  <rect x="660" y="80" width="300" height="150" rx="10" fill="#26160d" stroke="#e3b341" stroke-width="2"/>
+  <text x="810" y="106" text-anchor="middle" fill="#e3b341" font-size="15" font-weight="bold">NPU</text>
+  <text x="810" y="126" text-anchor="middle" fill="#8b949e" font-size="11">Purpose-built matrix silicon</text>
+  <text x="810" y="146" text-anchor="middle" fill="#8b949e" font-size="11">Best perf-per-watt, sustained</text>
+  <text x="810" y="166" text-anchor="middle" fill="#8b949e" font-size="11">Narrowest, most fragmented support</text>
+  <rect x="675" y="180" width="270" height="34" rx="6" fill="#2d1a05" stroke="#e3b341" stroke-width="1"/>
+  <text x="810" y="201" text-anchor="middle" fill="#e3b341" font-size="11">⚠ Best for small always-on CNN, NOT general LLM chat</text>
+
+  <!-- NPU generation split -->
+  <text x="490" y="255" text-anchor="middle" fill="#f0f6fc" font-size="16" font-weight="bold">NPU generations are not interchangeable (AMD example)</text>
+
+  <rect x="40" y="275" width="420" height="170" rx="10" fill="#200505" stroke="#f85149" stroke-width="2"/>
+  <text x="250" y="300" text-anchor="middle" fill="#f85149" font-size="14" font-weight="bold">XDNA1 — Phoenix / Hawk Point</text>
+  <text x="250" y="320" text-anchor="middle" fill="#ff9090" font-size="11">Ryzen 7000 / 8000 / 200-series</text>
+  <text x="250" y="345" text-anchor="middle" fill="#ff9090" font-size="12" font-weight="bold">~16 TOPS</text>
+  <rect x="55" y="358" width="390" height="34" rx="6" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="250" y="379" text-anchor="middle" fill="#ff9090" font-size="11">❌ CNN INT8 only — NO LLM / BF16 support</text>
+  <rect x="55" y="398" width="390" height="34" rx="6" fill="#330000" stroke="#f85149" stroke-width="1"/>
+  <text x="250" y="419" text-anchor="middle" fill="#ff9090" font-size="11">❌ Below 40 TOPS Copilot+ PC threshold</text>
+
+  <rect x="520" y="275" width="420" height="170" rx="10" fill="#0a2410" stroke="#3fb950" stroke-width="2"/>
+  <text x="730" y="300" text-anchor="middle" fill="#7ee787" font-size="14" font-weight="bold">XDNA2 — Strix / Krackan / Strix Halo</text>
+  <text x="730" y="320" text-anchor="middle" fill="#7ee787" font-size="11">Ryzen AI 300 / 400-series</text>
+  <text x="730" y="345" text-anchor="middle" fill="#7ee787" font-size="12" font-weight="bold">50+ TOPS</text>
+  <rect x="535" y="358" width="390" height="34" rx="6" fill="#132a1a" stroke="#3fb950" stroke-width="1"/>
+  <text x="730" y="379" text-anchor="middle" fill="#7ee787" font-size="11">✓ Full LLM + BF16 support in official stack</text>
+  <rect x="535" y="398" width="390" height="34" rx="6" fill="#132a1a" stroke="#3fb950" stroke-width="1"/>
+  <text x="730" y="419" text-anchor="middle" fill="#7ee787" font-size="11">✓ Meets 40 TOPS Copilot+ PC threshold</text>
+
+  <text x="490" y="470" text-anchor="middle" fill="#e3b341" font-size="12" font-weight="bold">"Same vendor, same NPU brand" ≠ "same capabilities" — check the software support matrix, not just the spec sheet</text>
+
+  <!-- Decision framework -->
+  <text x="490" y="510" text-anchor="middle" fill="#f0f6fc" font-size="16" font-weight="bold">Decision Framework</text>
+
+  <rect x="40" y="530" width="900" height="46" rx="6" fill="#161b22" stroke="#388bfd" stroke-width="1.5"/>
+  <text x="490" y="558" text-anchor="middle" fill="#79c0ff" font-size="12">1. Check NPU generation against the runtime's support matrix FIRST — don't assume from "has an NPU"</text>
+
+  <rect x="40" y="586" width="900" height="46" rx="6" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="490" y="614" text-anchor="middle" fill="#7ee787" font-size="12">2. If NPU lacks LLM support (common on last-gen chips) → use iGPU via Vulkan/DirectML/ROCm instead</text>
+
+  <rect x="40" y="642" width="900" height="46" rx="6" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="490" y="670" text-anchor="middle" fill="#e3b341" font-size="12">3. Reserve NPU for what it's built for: small, sustained, low-power CNN/vision — not general LLM chat</text>
+
+  <rect x="40" y="698" width="900" height="46" rx="6" fill="#161b22" stroke="#f85149" stroke-width="1.5"/>
+  <text x="490" y="726" text-anchor="middle" fill="#ff9090" font-size="12">4. Always verify with the vendor's test script AND check runtime utilization reporting — "install succeeded" ≠ "hardware is being used"</text>
+
+  <!-- Footer -->
+  <rect x="40" y="758" width="900" height="42" rx="6" fill="#0d1117" stroke="#30363d" stroke-width="1"/>
+  <text x="490" y="784" text-anchor="middle" fill="#8b949e" font-size="11">Full incident: chasing this exact problem on real Hawk Point hardware — see ops-runbooks/2026-08-19-ryzen-npu-llm-dead-end</text>
+</svg>

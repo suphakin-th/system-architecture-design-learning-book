@@ -81,6 +81,18 @@
 
 ---
 
+### Supplementary — AI Infra Hardware
+
+Not part of the software architecture learning path above, but a related decision
+that comes up constantly when running AI workloads on your own machine rather than
+someone else's cloud.
+
+| Directory | What You'll Learn |
+|---|---|
+| `34_ai_infra_hardware/` | NPU vs GPU vs CPU for local AI inference — why NPU generations aren't interchangeable, why "has an NPU" doesn't mean "can run your model," and a decision framework for picking the right compute target |
+
+---
+
 ## Pattern Reference Table
 
 | # | Pattern | Problem It Solves | Resource Cost | Complexity |
@@ -250,7 +262,10 @@ clean_architechture_design/
 ├── 13_serverless/
 │   ├── README.md
 │   └── diagram.svg
-└── 14_service_mesh/
+├── 14_service_mesh/
+│   ├── README.md
+│   └── diagram.svg
+└── 34_ai_infra_hardware/       ← supplementary, not part of the architecture ladder
     ├── README.md
     └── diagram.svg
 ```

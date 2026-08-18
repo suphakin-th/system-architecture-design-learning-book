@@ -117,6 +117,9 @@ nav:
     - MVCC: database/33_mvcc.md
     - Users & Permissions (Load-Balanced): database/34_users_permissions_load_balanced.md
 
+  - AI Infra:
+    - NPU vs GPU vs CPU (Local Inference): ai-infra/34_ai_infra_hardware.md
+
   - Production Engineering:
     - Caching & CDN: production/40_caching.md
     - Observability (Logs · Metrics · Traces): production/41_observability.md
