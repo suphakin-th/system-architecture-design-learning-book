@@ -120,6 +120,9 @@ nav:
   - AI Infra:
     - NPU vs GPU vs CPU (Local Inference): ai-infra/34_ai_infra_hardware.md
 
+  - Original Designs:
+    - GhostExec (OS-Native Serverless): architecture/35_ghostexec_os_native_serverless.md
+
   - Production Engineering:
     - Caching & CDN: production/40_caching.md
     - Observability (Logs · Metrics · Traces): production/41_observability.md
