@@ -9,13 +9,13 @@
         <meta name="author" content="Suphakin Th.">
       
       
-        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/14_service_mesh/">
+        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/architecture/35_ghostexec_os_native_serverless/">
       
       
-        <link rel="prev" href="../13_serverless/">
+        <link rel="prev" href="../../ai-infra/34_ai_infra_hardware/">
       
       
-        <link rel="next" href="../32_mvc_mvp_mvvm/">
+        <link rel="next" href="../../production/40_caching/">
       
       
         
@@ -26,7 +26,7 @@
     
     
       
-        <title>14 · Service Mesh - System Architecture Design — Learning Book</title>
+        <title>GhostExec (OS-Native Serverless) - System Architecture Design — Learning Book</title>
       
     
     
@@ -97,7 +97,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#architecture-14-service-mesh" class="md-skip">
+        <a href="#architecture-35-ghostexec-os-native-serverless-original-design" class="md-skip">
           Skip to content
         </a>
       
@@ -132,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              14 · Service Mesh
+              GhostExec (OS-Native Serverless)
             
           </span>
         </div>
@@ -261,12 +261,10 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../00_foundation/" class="md-tabs__link">
           
   
@@ -329,11 +327,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../35_ghostexec_os_native_serverless/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -516,10 +516,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -561,22 +559,21 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked="">
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   
@@ -594,7 +591,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1001,37 +998,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    14 · Service Mesh
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../14_service_mesh/" class="md-nav__link">
         
   
   
@@ -1047,308 +1017,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-      
-        <li class="md-nav__item">
-  <a href="#at-a-glance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        At a Glance
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What Is It?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#diagram-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagram Reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How It Works
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Components
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Components">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#data-plane-sidecar-proxies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Plane (Sidecar Proxies)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#control-plane" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control Plane
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#in-clean-architecture-terms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        In Clean Architecture Terms
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#features-the-mesh-provides-for-free" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Features the Mesh Provides for Free
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Features the Mesh Provides for Free">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#traffic-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Traffic Management
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Security
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#observability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Observability
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#resource-consumption" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource Consumption
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#benefits" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Benefits
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#problems-it-solves-best" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Problems It Solves Best
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#costs-tradeoffs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Costs / Tradeoffs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#big-tech-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Big Tech Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Big Tech Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#lyft-envoy-creator-2016" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Lyft (Envoy creator, 2016)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#google-istio-traffic-director" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Google (Istio, Traffic Director)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#uber-uforwarder-envoy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Uber (uForwarder + Envoy)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pinterest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pinterest
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#airbnb" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Airbnb
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#senior-advice" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Senior Advice
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Takeaway
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1907,8 +1575,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -1918,21 +1588,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked="">
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5">
-        
-          
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -1950,7 +1621,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1965,10 +1636,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../35_ghostexec_os_native_serverless/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GhostExec (OS-Native Serverless)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1984,6 +1682,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Is It?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-five-guarantees-and-what-backs-each-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Five Guarantees, and What Backs Each One
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-real-design-work-is-failure-modes-not-happy-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the Real Design Work Is: Failure Modes, Not Happy Paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-one-idea-that-generalizes-across-all-of-the-above" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The One Idea That Generalizes Across All of the Above
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-decisions-worth-naming-explicitly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Decisions Worth Naming Explicitly
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exercise-was-worth-doing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Exercise Was Worth Doing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3227,10 +3022,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#diagram-reference" class="md-nav__link">
+  <a href="#the-five-guarantees-and-what-backs-each-one" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Diagram Reference
+        The Five Guarantees, and What Backs Each One
       
     </span>
   </a>
@@ -3238,10 +3033,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
+  <a href="#where-the-real-design-work-is-failure-modes-not-happy-paths" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How It Works
+        Where the Real Design Work Is: Failure Modes, Not Happy Paths
       
     </span>
   </a>
@@ -3249,49 +3044,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#components" class="md-nav__link">
+  <a href="#the-one-idea-that-generalizes-across-all-of-the-above" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Components
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Components">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#data-plane-sidecar-proxies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Plane (Sidecar Proxies)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#control-plane" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control Plane
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#in-clean-architecture-terms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        In Clean Architecture Terms
+        The One Idea That Generalizes Across All of the Above
       
     </span>
   </a>
@@ -3299,60 +3055,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#features-the-mesh-provides-for-free" class="md-nav__link">
+  <a href="#design-decisions-worth-naming-explicitly" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Features the Mesh Provides for Free
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Features the Mesh Provides for Free">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#traffic-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Traffic Management
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#security" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Security
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#observability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Observability
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#resource-consumption" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resource Consumption
+        Design Decisions Worth Naming Explicitly
       
     </span>
   </a>
@@ -3360,126 +3066,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#benefits" class="md-nav__link">
+  <a href="#why-this-exercise-was-worth-doing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Benefits
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#problems-it-solves-best" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Problems It Solves Best
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#costs-tradeoffs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Costs / Tradeoffs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#big-tech-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Big Tech Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Big Tech Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#lyft-envoy-creator-2016" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Lyft (Envoy creator, 2016)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#google-istio-traffic-director" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Google (Istio, Traffic Director)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#uber-uforwarder-envoy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Uber (uForwarder + Envoy)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pinterest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pinterest
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#airbnb" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Airbnb
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#senior-advice" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Senior Advice
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-takeaway" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Key Takeaway
+        Why This Exercise Was Worth Doing
       
     </span>
   </a>
@@ -3506,7 +3096,7 @@
   
 
 
-<h1 id="architecture-14-service-mesh">Architecture 14 - Service Mesh<a class="headerlink" href="#architecture-14-service-mesh" title="Permanent link">¶</a></h1>
+<h1 id="architecture-35-ghostexec-os-native-serverless-original-design">Architecture 35 — GhostExec: OS-Native Serverless (Original Design)<a class="headerlink" href="#architecture-35-ghostexec-os-native-serverless-original-design" title="Permanent link">¶</a></h1>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
 <table>
@@ -3519,249 +3109,101 @@
 <tbody>
 <tr>
 <td><strong>Type</strong></td>
-<td>Infrastructure layer for service-to-service communication</td>
+<td>Self-hosted serverless runtime built entirely on OS primitives — no container runtime, no cloud SDK</td>
 </tr>
 <tr>
 <td><strong>Complexity</strong></td>
-<td>High (operational)</td>
+<td>High (the payoff is zero external dependencies, at the cost of hand-managing what a platform normally hides)</td>
 </tr>
 <tr>
 <td><strong>Best for</strong></td>
-<td>Large microservices deployments needing observability, security, and resilience</td>
+<td>Short-lived jobs where you want serverless <em>ergonomics</em> (ephemeral, isolated, self-cleaning) without a serverless <em>platform</em></td>
 </tr>
 <tr>
 <td><strong>Avoid when</strong></td>
-<td>Monolith, small number of services (&lt;5), team without Kubernetes expertise</td>
+<td>You already have Kubernetes/Lambda in place and the migration cost isn't worth "no dependency" as a goal in itself</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Original architecture design — full spec written, not yet implemented</td>
 </tr>
 </tbody>
 </table>
 <hr>
 <h2 id="what-is-it">What Is It?<a class="headerlink" href="#what-is-it" title="Permanent link">¶</a></h2>
-<p>A Service Mesh is a <strong>dedicated infrastructure layer</strong> that handles service-to-service communication in a microservices architecture. Instead of each service implementing retry logic, mTLS, circuit breaking, and observability independently, the mesh handles all of this via <strong>sidecar proxies</strong> injected alongside each service.</p>
-<p><strong>The service doesn't know the mesh exists. Clean Architecture achieved at the infrastructure level.</strong></p>
+<p>Every cloud provider's "serverless" offering is really a bundle of five guarantees: a job runs in an isolated sandbox, gets private scratch storage, moves data in and out safely, saves its result somewhere durable, and cleans up completely when it's done. GhostExec asks: <strong>what if you built those five guarantees directly out of what the operating system already gives you, instead of out of a managed platform?</strong></p>
+<p>The answer turns out to be "yes, and the primitives to do it — <code>tmpfs</code>, atomic <code>rename()</code>, namespaces, <code>cgroups</code>, <code>epoll</code> — have existed on every Unix-like system for decades, largely unused for this purpose because reaching for a container platform is the path of least resistance." GhostExec is what falls out of taking that "no" seriously and working through the consequences properly: not a toy demo, but a design that survives the kind of scrutiny a real distributed system needs — concurrent writers, crash recovery, memory forensics, fan-out safety.</p>
+<p><strong>This isn't serverless-without-a-cloud-bill. It's "what is a cloud platform actually made of, underneath the marketing," rebuilt from first principles.</strong></p>
 <hr>
-<h2 id="diagram-reference">Diagram Reference<a class="headerlink" href="#diagram-reference" title="Permanent link">¶</a></h2>
-<p><code>./diagram.svg</code></p>
-<hr>
-<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">¶</a></h2>
-<p>Every service pod gets a <strong>sidecar proxy</strong> (e.g., Envoy). All traffic flows through these proxies:</p>
-<p>Traffic from the Order Service flows through a local sidecar, across the network, and into the Payment Service's sidecar before reaching the service:</p>
-<pre class="mermaid"><code>flowchart LR
-    A["Order Service"] --&gt; B["Envoy Sidecar"]
-    B --&gt; C["Network"]
-    C --&gt; D["Envoy Sidecar"]
-    D --&gt; E["Payment Service"]</code></pre>
-<p>The Order Service just makes an HTTP call to <code>http://payment-service:3004/charge</code>. The sidecar proxy handles everything else:</p>
-<ul>
-<li>mTLS encryption (both sides authenticated)</li>
-<li>Retry on 503 (3 times, exponential backoff)</li>
-<li>Circuit breaking (stop sending if 50% errors)</li>
-<li>Timeout (fail fast after 2 seconds)</li>
-<li>Metrics (request count, latency, error rate)</li>
-<li>Distributed tracing (add and propagate trace headers)</li>
-<li>Load balancing (choose healthiest instance)</li>
-</ul>
-<hr>
-<h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">¶</a></h2>
-<h3 id="data-plane-sidecar-proxies">Data Plane (Sidecar Proxies)<a class="headerlink" href="#data-plane-sidecar-proxies" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Envoy Proxy</strong> - the most widely used; handles all traffic</li>
-<li>Injected automatically by the mesh control plane</li>
-<li>Intercepts ALL inbound + outbound traffic from the service</li>
-</ul>
-<h3 id="control-plane">Control Plane<a class="headerlink" href="#control-plane" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Istio</strong> - most feature-rich; uses Envoy as data plane</li>
-<li><strong>Linkerd</strong> - lightweight alternative; Rust-based</li>
-<li><strong>Consul Connect</strong> - HashiCorp's mesh; integrates with Consul service discovery</li>
-</ul>
-<hr>
-<h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<p>The service mesh is <strong>entirely in the Frameworks &amp; Drivers layer</strong> - it's infrastructure. Your use cases, entities, and interface adapters know NOTHING about it.</p>
-<div class="language-typescript highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Order Service - PlaceOrderUseCase calls Payment Service via IPaymentGateway port</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">class</span><span class="w"> </span><span class="nx">PlaceOrderUseCase</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="k">private</span><span class="w"> </span><span class="nx">payments</span><span class="o">:</span><span class="w"> </span><span class="kt">IPaymentGateway</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">execute</span><span class="p">(</span><span class="nx">req</span><span class="o">:</span><span class="w"> </span><span class="kt">PlaceOrderRequest</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">// The use case calls the payment gateway through the interface.</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="c1">// The HTTP call goes through the Envoy sidecar.</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="c1">// The sidecar handles mTLS, retries, circuit breaking.</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="c1">// The use case has NO IDEA any of this is happening.</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">payments</span><span class="p">.</span><span class="nx">charge</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">req</span><span class="p">.</span><span class="nx">card</span><span class="p">);</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">// HttpPaymentGateway (adapter) makes a simple HTTP call</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="kd">class</span><span class="w"> </span><span class="nx">HttpPaymentGateway</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">IPaymentGateway</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">charge</span><span class="p">(</span><span class="nx">amount</span><span class="o">:</span><span class="w"> </span><span class="kt">Money</span><span class="p">,</span><span class="w"> </span><span class="nx">card</span><span class="o">:</span><span class="w"> </span><span class="kt">PaymentCard</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'http://payment-service/charge'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">card</span><span class="w"> </span><span class="p">});</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">PaymentMapper</span><span class="p">.</span><span class="nx">toDomain</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">}</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="c1">// The sidecar intercepts this call and adds: mTLS + retry + circuit breaker + metrics</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="c1">// The HttpPaymentGateway doesn't need any of this code!</span>
-</span></code></pre></div>
-<p><strong>This is the ultimate expression of Clean Architecture's "framework independence" principle.</strong></p>
-<hr>
-<h2 id="features-the-mesh-provides-for-free">Features the Mesh Provides for Free<a class="headerlink" href="#features-the-mesh-provides-for-free" title="Permanent link">¶</a></h2>
-<h3 id="traffic-management">Traffic Management<a class="headerlink" href="#traffic-management" title="Permanent link">¶</a></h3>
-<ul>
-<li>Load balancing (round-robin, least-connections, consistent hash)</li>
-<li>Traffic splitting (canary: 5% to new version, 95% to old)</li>
-<li>Circuit breaking (stop routing to unhealthy instances)</li>
-<li>Retry policies (retry 3 times on 503, with backoff)</li>
-<li>Timeout enforcement (fail after 2 seconds)</li>
-</ul>
-<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>mTLS</strong> - mutual TLS between all services; every service authenticates</li>
-<li><strong>Authorization policies</strong> - "Order Service can call Payment Service; cannot call User Service"</li>
-<li><strong>Certificate rotation</strong> - automatic, no human involvement</li>
-</ul>
-<h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Metrics</strong> - request count, error rate, latency per service pair (Prometheus)</li>
-<li><strong>Distributed tracing</strong> - full trace across service calls (Jaeger, Zipkin)</li>
-<li><strong>Access logs</strong> - who called what, when, with what response</li>
-</ul>
-<hr>
-<h2 id="resource-consumption">Resource Consumption<a class="headerlink" href="#resource-consumption" title="Permanent link">¶</a></h2>
+<h2 id="the-five-guarantees-and-what-backs-each-one">The Five Guarantees, and What Backs Each One<a class="headerlink" href="#the-five-guarantees-and-what-backs-each-one" title="Permanent link">¶</a></h2>
+<p>A cloud FaaS platform (Lambda, Cloud Functions) gives you these implicitly, as part of what you're paying for. GhostExec's design makes each one explicit and traces it to a specific OS-level mechanism:</p>
 <table>
 <thead>
 <tr>
-<th>Resource</th>
-<th>Usage</th>
-<th>Notes</th>
+<th>Guarantee</th>
+<th>Cloud platform's version</th>
+<th>GhostExec's version</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>CPU</strong></td>
-<td>+5-15% per sidecar</td>
-<td>Envoy proxy has CPU overhead per request</td>
+<td><strong>Isolated execution</strong></td>
+<td>A managed micro-VM or gVisor sandbox per invocation</td>
+<td>Chosen per-job from three levels — lightweight namespace isolation, a real QEMU microVM, or a managed background service — selected by a small, deterministic rule set, not hardcoded</td>
 </tr>
 <tr>
-<td><strong>Memory</strong></td>
-<td>+50-100MB per pod (sidecar)</td>
-<td>Each sidecar = extra container in the pod</td>
+<td><strong>Private scratch storage</strong></td>
+<td>Ephemeral <code>/tmp</code> inside the sandbox, wiped on teardown</td>
+<td>A private, RAM-backed filesystem mount per job, named by a cryptographically random ID, that exists for exactly the job's lifetime</td>
 </tr>
 <tr>
-<td><strong>Network latency</strong></td>
-<td>+1-2ms per hop</td>
-<td>Loopback call to sidecar then out to network</td>
+<td><strong>Safe data movement</strong></td>
+<td>The platform's internal queue/storage layer, opaque to you</td>
+<td>Every handoff — a payload arriving, a job's state changing, a result being claimed — happens as one atomic filesystem operation, so no reader can ever observe a half-finished state</td>
 </tr>
 <tr>
-<td><strong>Ops complexity</strong></td>
-<td>Very High</td>
-<td>Istio alone is a significant operational investment</td>
+<td><strong>Durable result</strong></td>
+<td>Write to DynamoDB/S3 as part of the function's own code</td>
+<td>An optional sink stage that claims the result exactly once and confirms it's saved <em>before</em> the workspace is allowed to be destroyed</td>
 </tr>
 <tr>
-<td><strong>Storage</strong></td>
-<td>Low (metrics)</td>
-<td>Prometheus stores metrics; Jaeger stores traces</td>
-</tr>
-<tr>
-<td><strong>Team required</strong></td>
-<td>Platform/SRE team</td>
-<td>Dedicated team to manage the mesh</td>
+<td><strong>Complete cleanup</strong></td>
+<td>The platform reclaims the sandbox; you never see it happen</td>
+<td>A destruction sequence wired to the process lifecycle itself — not to "the code path that runs on success" — so it fires on crash and timeout exactly as reliably as on a clean exit</td>
 </tr>
 </tbody>
 </table>
+<p>The interesting design work isn't in the list above — it's in what breaks if you implement each row naively, and what it takes to make each guarantee actually hold under concurrency.</p>
 <hr>
-<h2 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">¶</a></h2>
-<ol>
-<li><strong>Zero-code resilience</strong> - retries, circuit breaking, timeouts configured in YAML, not code</li>
-<li><strong>Automatic mTLS</strong> - all service-to-service traffic encrypted and authenticated without code</li>
-<li><strong>Full observability</strong> - golden signals (latency, traffic, errors, saturation) for every service pair</li>
-<li><strong>Traffic splitting</strong> - canary deployments and A/B tests without code changes</li>
-<li><strong>Policy enforcement</strong> - "Search Service must NOT call Payments Service" enforced at infrastructure level</li>
-<li><strong>Uniform across languages</strong> - same sidecar works for Node.js, Python, Go, Java services</li>
-</ol>
+<h2 id="where-the-real-design-work-is-failure-modes-not-happy-paths">Where the Real Design Work Is: Failure Modes, Not Happy Paths<a class="headerlink" href="#where-the-real-design-work-is-failure-modes-not-happy-paths" title="Permanent link">¶</a></h2>
+<p>A first-draft version of every layer above is almost easy to sketch. What makes this a genuine systems-design exercise is the list of ways a naive version fails silently under load — and the fact that each failure has the same underlying shape, which is the part worth internalizing:</p>
+<p><strong>A background helper process outlives its purpose.</strong> A microVM's virtual filesystem server is launched in the background to bridge host storage into the guest. If nothing records its process ID, nothing can kill it when the job ends — it becomes a slow, silent process leak, one per virtualized job, invisible until someone notices unexplained memory drift weeks later. The fix isn't complicated (capture the PID at launch, kill it explicitly, in the right order relative to tearing down the VM) — but you only find the bug by asking "who is responsible for ending this process's life?" for every process the system starts, not just the obvious ones.</p>
+<p><strong>Cleanup order matters more than cleanup happening.</strong> Reclaiming a RAM-backed filesystem mount and then deleting its now-empty directory tree is safe. Deleting the directory tree <em>first</em>, while something might still hold an open handle into it, then unmounting — is not: a stuck handle can leave memory pages un-reclaimed indefinitely, silently defeating the entire point of "ephemeral by default." Two operations that look interchangeable in a code review are not interchangeable at runtime.</p>
+<p><strong>Randomness has to be cryptographically real, not merely "looks random."</strong> When many workers can spawn child jobs concurrently, each generates its own private workspace ID. If that ID is seeded from anything with low real entropy — wall-clock time and process ID are the classic mistake — then workers all spawned in the same instant (exactly what happens during a fan-out burst) have far less actual randomness between them than the ID's bit-length suggests. Two jobs landing on the same ID means two jobs silently sharing one workspace, corrupting both. The fix is drawing from the kernel's cryptographic random source specifically, plus treating a collision as a retry-worthy event rather than an assumed impossibility.</p>
+<p><strong>A classifier that can answer two different ways for the same input isn't a function — and if a job-routing engine wants to route jobs at all reliably, that has to be a hard rule.</strong> A set of routing rules, expressed declaratively, is elegant — until two rules can both match the same job and there's no defined priority ordering. Without a strict "first match wins, nothing else can be considered" discipline, the same job description can end up routed two different ways depending on how the rules happen to get evaluated, which is a correctness bug wearing a design-elegance costume.</p>
+<p><strong>Self-replication needs a stopping condition designed on purpose.</strong> Letting jobs spawn other jobs (for fan-out/batch work) is a real, useful feature — and, left unbounded, it's a fork bomb with a job scheduler bolted onto it. A system that supports self-spawning hasn't actually finished designing that feature until it has <em>also</em> designed how deep a chain can recurse and how wide a single burst can fan out, both enforced <em>before</em> any real resources are committed, not after.</p>
+<p><strong>"Deleted" and "forensically unrecoverable" are different claims, and conflating them is dangerous specifically when the data is sensitive.</strong> RAM-backed storage sounds inherently safe — until you remember the OS can swap those pages to disk under memory pressure, same as any other memory. Destroying the mount doesn't touch that swap copy. For a system that might ever handle credentials or untrusted payloads, closing this gap (excluding the workspace from swap entirely, a one-time mount-level setting) is not optional polish, it's the difference between the security claim being true and merely sounding true.</p>
+<p><strong>Result persistence and self-destruction are two independent processes racing to touch the same file, and nobody designed who wins.</strong> If a job's result needs to land in a database, and cleanup fires immediately and unconditionally on job completion (which it must, to guarantee cleanup happens even on crash), then an asynchronous database writer and the cleanup process are both reaching for the same result file with no coordination between them. Whichever one is slower loses — and if cleanup wins, the result vanishes with no record it ever existed. This needed the exact same "claim it atomically first" discipline used everywhere else in the design, applied to one more handoff.</p>
 <hr>
-<h2 id="problems-it-solves-best">Problems It Solves Best<a class="headerlink" href="#problems-it-solves-best" title="Permanent link">¶</a></h2>
-<table>
-<thead>
-<tr>
-<th>Problem</th>
-<th>Why Service Mesh Wins</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>"10 teams, 50 services - each implements retries differently"</td>
-<td>Mesh provides uniform retry policy for all</td>
-</tr>
-<tr>
-<td>"We need mTLS between all services but can't change 50 service codebases"</td>
-<td>Mesh injects mTLS at sidecar level; zero code change</td>
-</tr>
-<tr>
-<td>"How do I know which service is the bottleneck?"</td>
-<td>Mesh traces every request; Jaeger shows you exactly</td>
-</tr>
-<tr>
-<td>"We want to deploy new version to 5% of traffic"</td>
-<td>Istio VirtualService: weight: 5 for new, weight: 95 for old</td>
-</tr>
-<tr>
-<td>"GDPR: Service A must never send data to Service B"</td>
-<td>Istio AuthorizationPolicy: DENY A -&gt; B at network level</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 id="costs-tradeoffs">Costs / Tradeoffs<a class="headerlink" href="#costs-tradeoffs" title="Permanent link">¶</a></h2>
-<ol>
-<li><strong>Complexity</strong> - Istio alone has 20+ CRDs; steep learning curve</li>
-<li><strong>Resource overhead</strong> - every pod needs a sidecar (+100MB RAM, +5-10% CPU)</li>
-<li><strong>Debugging harder</strong> - mTLS issues, sidecar config errors add a new failure layer</li>
-<li><strong>Requires Kubernetes</strong> - most meshes are Kubernetes-native</li>
-<li><strong>Not needed at small scale</strong> - 3 services don't need a mesh; overkill</li>
-</ol>
-<hr>
-<h2 id="big-tech-examples">Big Tech Examples<a class="headerlink" href="#big-tech-examples" title="Permanent link">¶</a></h2>
-<h3 id="lyft-envoy-creator-2016">Lyft (Envoy creator, 2016)<a class="headerlink" href="#lyft-envoy-creator-2016" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Architecture:</strong> Envoy was created at Lyft to solve their microservices communication chaos</li>
-<li><strong>Problem:</strong> 100+ services, each team implementing its own retry/timeout/circuit breaker logic in different ways</li>
-<li><strong>Solution:</strong> One sidecar proxy (Envoy) for all services; one team manages it</li>
-<li><strong>Good at:</strong> Uniform resilience across all services; observability dashboard for every service pair</li>
-</ul>
-<h3 id="google-istio-traffic-director">Google (Istio, Traffic Director)<a class="headerlink" href="#google-istio-traffic-director" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Architecture:</strong> Istio control plane + Envoy data plane (Google developed Istio)</li>
-<li><strong>Use case:</strong> Internal Google services use similar proxy-based mesh (Stubby -&gt; gRPC)</li>
-<li><strong>Scale:</strong> Handles trillions of RPCs/day internally</li>
-<li><strong>Good at:</strong> Automatic certificate rotation; mTLS enforced at cluster level</li>
-</ul>
-<h3 id="uber-uforwarder-envoy">Uber (uForwarder + Envoy)<a class="headerlink" href="#uber-uforwarder-envoy" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Architecture:</strong> Envoy-based mesh managing 4000+ services</li>
-<li><strong>Good at:</strong> Traffic shifting during deployments - 1% canary, then 5%, 20%, 100% - automated</li>
-<li><strong>Observability:</strong> Full request traces across 4000 services via Jaeger</li>
-</ul>
-<h3 id="pinterest">Pinterest<a class="headerlink" href="#pinterest" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Architecture:</strong> Envoy service mesh across their Python/Java/Go microservices</li>
-<li><strong>Problem:</strong> Needed mTLS without re-writing 50 services</li>
-<li><strong>Solution:</strong> Istio + Envoy; zero code changes in services</li>
-<li><strong>Good at:</strong> Authorization policies: "Feed service cannot query Payment service" enforced at network level</li>
-</ul>
-<h3 id="airbnb">Airbnb<a class="headerlink" href="#airbnb" title="Permanent link">¶</a></h3>
-<ul>
-<li><strong>Architecture:</strong> Envoy sidecar + custom control plane ("Aperture")</li>
-<li><strong>Good at:</strong> Circuit breaking for their third-party integrations (Twilio, Braintree, etc.); one trip takes down only that integration, not other services</li>
-</ul>
-<hr>
-<h2 id="senior-advice">Senior Advice<a class="headerlink" href="#senior-advice" title="Permanent link">¶</a></h2>
+<h2 id="the-one-idea-that-generalizes-across-all-of-the-above">The One Idea That Generalizes Across All of the Above<a class="headerlink" href="#the-one-idea-that-generalizes-across-all-of-the-above" title="Permanent link">¶</a></h2>
+<p>Every fix above has the identical shape, once you strip away the specific mechanism it's applied to:</p>
 <blockquote>
-<p>"Add a service mesh when you have 10+ services and a dedicated platform team. It's not something a product team should manage. Think of it as 'WiFi for your microservices' - you don't implement 802.11 in every application; you let the infrastructure layer handle it. The beauty is that your services (and Clean Architecture within them) remain completely unchanged. The mesh is invisible to your use cases, which is exactly right."</p>
+<p><strong>The visible name of a piece of data changes via exactly one atomic operation. A reader only ever sees the fully-old state or the fully-new state — never something in between, and never two readers who both believe they arrived first.</strong></p>
 </blockquote>
+<p>A file becomes visible only by being renamed into place after it's completely written, never by being written-in-place at its final name. A state transition is a rename between two fixed names, guarded so only one caller can win it. A workspace ID collision is treated as "try again," never as "assume this can't happen." A result gets <em>claimed</em> — atomically, exactly once — before anyone is allowed to consider it consumed.</p>
+<p>This single discipline, applied consistently everywhere two independent parts of the system could otherwise race on the same piece of data, is doing most of the actual correctness work in the whole design. Almost everything else — which isolation backend to pick, which language to implement the daemon in, how jobs get routed — is a much easier decision once this one is settled, because it defines the contract every other piece has to respect.</p>
 <hr>
-<h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">¶</a></h2>
-<blockquote>
-<p>The Service Mesh is the purest expression of Clean Architecture's "separation of concerns" at the infrastructure level. Your services don't implement resilience, observability, or security - the mesh does. Your use cases remain clean. This is Clean Architecture applied not just to code organization, but to the entire runtime infrastructure.</p>
-</blockquote>
+<h2 id="design-decisions-worth-naming-explicitly">Design Decisions Worth Naming Explicitly<a class="headerlink" href="#design-decisions-worth-naming-explicitly" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>A declarative, rule-based router for deciding how to run each job</strong> — rather than a cascading if/else — makes the routing logic auditable as a flat list of "when this is true, route here" statements, provided (see above) that at most one rule is ever allowed to match.</li>
+<li><strong>Not every execution path gets equally strong isolation, and that asymmetry has to be a stated decision, not an accident.</strong> The cheapest, most common execution path shares a kernel with the host; only the heavier path gets a real hardware-virtualized boundary. If the system's default path is also its weakest one, and jobs of genuinely unknown trust can land on the default, that's backwards — the fix is either flipping the default or hardening the cheap path as far as it can go (dropping process capabilities, restricting which system calls it's even allowed to make) so "less isolated" doesn't mean "unrestricted."</li>
+<li><strong>Reimplementing the daemon core in a memory-safe systems language earns its place specifically because the bugs found in this design were bookkeeping failures, not logic errors</strong> — a process handle nobody tracked, an operation ordering nobody enforced, two copies of the same cleanup logic quietly drifting apart. Those are exactly the class of mistake that a language with compiler-enforced ownership catches structurally, before the code ships, rather than under production load months later. The raw system calls underneath don't change; what changes is what's holding the bookkeeping together.</li>
+</ul>
+<hr>
+<h2 id="why-this-exercise-was-worth-doing">Why This Exercise Was Worth Doing<a class="headerlink" href="#why-this-exercise-was-worth-doing" title="Permanent link">¶</a></h2>
+<p>The value of working through a design like this isn't "now I have a Docker alternative" — a mature, battle-tested container/orchestration ecosystem already exists and beats a fresh design on almost every practical axis. The value is what the exercise forces: naming every implicit guarantee a platform normally hides from you, then proving — not assuming — that each one actually holds when two independent processes are racing to touch the same piece of data at the same moment. That skill transfers directly to any distributed system, not just this one.</p>
+<hr>
+<p><em>Full technical specification — syscall-level detail, complete code sketches, and the race-condition analysis this writeup summarizes — exists as a private, rights-reserved design document, referenced here for provenance but not reproduced. This writeup is original prose describing the architecture's ideas and reasoning; it is not a copy of that document's text or code.</em></p>
 
 
 
@@ -3801,7 +3243,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer">
         
           
-          <a href="../13_serverless/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 13 · Serverless">
+          <a href="../../ai-infra/34_ai_infra_hardware/" class="md-footer__link md-footer__link--prev" aria-label="Previous: NPU vs GPU vs CPU (Local Inference)">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -3811,20 +3253,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                13 · Serverless
+                NPU vs GPU vs CPU (Local Inference)
               </div>
             </div>
           </a>
         
         
           
-          <a href="../32_mvc_mvp_mvvm/" class="md-footer__link md-footer__link--next" aria-label="Next: MVC · MVP · MVVM">
+          <a href="../../production/40_caching/" class="md-footer__link md-footer__link--next" aria-label="Next: Caching &amp; CDN">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                MVC · MVP · MVVM
+                Caching &amp; CDN
               </div>
             </div>
             <div class="md-footer__button md-icon">
