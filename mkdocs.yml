@@ -45,6 +45,11 @@ plugins:
   - search:
       lang: en
   - glightbox
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: date
+      timezone: Asia/Bangkok
+      fallback_to_build_date: true
 
 markdown_extensions:
   - admonition
@@ -59,7 +64,9 @@ markdown_extensions:
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      base_path:
+        - docs
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.emoji:

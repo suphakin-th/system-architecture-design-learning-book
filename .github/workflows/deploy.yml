@@ -23,4 +23,6 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - run: python3 scripts/gen_recent_updates.py
+
       - run: mkdocs gh-deploy --force

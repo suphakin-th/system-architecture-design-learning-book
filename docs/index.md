@@ -12,6 +12,14 @@ A complete, self-contained learning library for software and system architecture
 
 ---
 
+## Recent Updates
+
+The 10 most recently changed pages, generated automatically from git history on every deploy — this list is never hand-maintained, so it can't go stale.
+
+--8<-- "_recent_updates.md"
+
+---
+
 ## Who Is This For?
 
 - Junior -> Mid developers who want to understand how large systems are built

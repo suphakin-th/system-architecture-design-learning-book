@@ -86,4 +86,8 @@ The value of working through a design like this isn't "now I have a Docker alter
 
 ---
 
-*Full technical specification — syscall-level detail, complete code sketches, and the race-condition analysis this writeup summarizes — exists as a private, rights-reserved design document, referenced here for provenance but not reproduced. This writeup is original prose describing the architecture's ideas and reasoning; it is not a copy of that document's text or code.*
+## Source & License
+
+This page is an original-prose summary written for this learning library. The full technical specification — syscall-level detail, complete code sketches, and the race-condition analysis this writeup summarizes — lives in a separate repository, **[suphakin-th/ghostexec](https://github.com/suphakin-th/ghostexec)**, under an all-rights-reserved license: reading it for evaluation is welcome, but any use, copying, or reproduction of its architecture, documentation, or code requires prior written authorization from the author (see that repo's `LICENSE` for the exact terms).
+
+This writeup itself does not reproduce that document's text or code — it's a fresh explanation of the same ideas — but the underlying design, the GhostExec name, and the source specification remain the property of the author under that license. Treat this page as a summary and pointer, not as a substitute for, or a grant of rights to, the source material.
