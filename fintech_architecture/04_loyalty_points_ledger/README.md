@@ -170,6 +170,91 @@ INSERT INTO point_transactions (lot_id, type, delta, ref_id)
 
 ---
 
+## Multiple Point Types: One Customer, Several Currencies
+
+Real programs rarely stop at one point currency. A customer earns Point A at Store 1 and
+Point B at Store 2 — now the ledger needs a `point_type` dimension, and checkout needs a
+rule for which types are spendable, in what order, and at what relative value.
+
+### Schema: point types don't merge into one balance
+
+```sql
+CREATE TABLE point_types (
+  id                        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  code                      VARCHAR(20) NOT NULL UNIQUE,   -- 'A', 'B'
+  name                      VARCHAR(100) NOT NULL,
+  issuer_scope              UUID REFERENCES stores(id),    -- NULL = network-wide point
+  value_per_point           NUMERIC(10,4) NOT NULL,        -- e.g. A = 1.00 THB, B = 0.50 THB
+  default_validity_months  INTEGER NOT NULL,
+  is_transferable           BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+ALTER TABLE point_lots ADD COLUMN point_type_id UUID NOT NULL REFERENCES point_types(id);
+
+-- balance is now GROUP BY point_type_id -- never a single merged number,
+-- because a raw point count means nothing without its value_per_point
+CREATE VIEW user_point_balances_by_type AS
+SELECT user_id, point_type_id, SUM(remaining) AS balance
+FROM point_lots
+WHERE status = 'active' AND expires_at > NOW()
+GROUP BY user_id, point_type_id;
+```
+
+### Where a type can be spent: an eligibility table, not a hardcoded check
+
+```sql
+CREATE TABLE point_redemption_scopes (
+  point_type_id  UUID REFERENCES point_types(id),
+  scope_type     VARCHAR(20) CHECK (scope_type IN ('network','store','category')),
+  scope_ref_id   UUID  -- store_id or category_id; NULL when scope_type = 'network'
+);
+-- Point A: scope_type='store', scope_ref_id=store_1.id  -> Store 1 only
+-- Point B: scope_type='network'                          -> spendable anywhere
+```
+
+### The checkout decision: which type gets cut, in what order
+
+```
+Checkout at Store 2
+  -> look up point_redemption_scopes for this store
+  -> eligible types: A (network) + B (store-scoped)
+  -> normalize each lot to value: remaining x value_per_point
+  -> pick a redemption strategy:
+
+     expiry-first (default):
+       merge ALL eligible lots regardless of type,
+       sort by expires_at ascending,
+       cut the soonest-expiring value first no matter which type it is
+
+     type-priority list:
+       drain Type A lots fully (FIFO within A) before touching Type B
+```
+
+Two strategies, and it's a product decision, not a technical default to assume:
+
+| Strategy | Behavior | Fits when |
+|---|---|---|
+| **Expiry-first across types** | Merge every eligible lot regardless of type, sort by `expires_at`, cut the soonest-expiring value first | Customer-first: never let a point silently expire while a same-value point of another type gets spent instead |
+| **Type-priority list** | Drain a configured type fully (FIFO within it) before touching the next type | Business wants to clear a specific type first — e.g. it carries a higher liability cost, or a promo wants store-scoped points used up before network points |
+
+### Normalize to value before comparing across types
+
+```sql
+-- Never compare raw point counts across types -- only their value
+SELECT pl.id, pl.remaining, pt.code, pt.value_per_point,
+       pl.remaining * pt.value_per_point AS redeemable_value
+FROM point_lots pl
+JOIN point_types pt ON pt.id = pl.point_type_id
+WHERE pl.user_id = $1 AND pl.remaining > 0 AND pl.status = 'active'
+  AND pt.id IN (/* eligible types resolved from point_redemption_scopes */)
+ORDER BY pl.expires_at ASC;
+-- Walk this list, summing redeemable_value, until the order total is covered --
+-- same FIFO loop as redeemPoints(), just joined against point_types and
+-- filtered by scope first.
+```
+
+---
+
 ## Expiry — Lazy Read, Eager Notify
 
 ```sql
