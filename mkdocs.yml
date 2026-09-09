@@ -141,6 +141,7 @@ nav:
     - Overview: fintech/00_overview.md
     - Double-Entry Ledger: fintech/01_double_entry_ledger.md
     - Immutable Audit Log: fintech/02_immutable_audit_log.md
+    - Loyalty Points Ledger: fintech/04_loyalty_points_ledger.md
     - Payment Networks (Visa · SWIFT · PromptPay): fintech/03_payment_networks.md
     - Security (HSM · PCI DSS): fintech/05_security_hsm_pci.md
     - Zero Trust Network: fintech/06_zero_trust.md

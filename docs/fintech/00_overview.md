@@ -146,6 +146,7 @@ With idempotency:
 |---|---|---|
 | **Double-Entry Ledger** | Conservation of money, audit trail | ALL financial systems |
 | **Immutable Audit Log** | Tamper-proof record, compliance | Banking, payments, fintech |
+| **Loyalty Points Ledger** | Expiring, transferable non-monetary balances | Rewards programs, airline miles, cashback |
 | **Payment Networks** | Routing money between banks | Visa, Mastercard, SWIFT |
 | **PromptPay/RTGS** | Real-time interbank settlement | Thailand, UK Faster Payments |
 | **HSM + PCI DSS** | Cryptographic key security | Card processing, banking |
