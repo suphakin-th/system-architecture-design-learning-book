@@ -9,13 +9,13 @@
         <meta name="author" content="Suphakin Th.">
       
       
-        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/05_security_hsm_pci/">
+        <link rel="canonical" href="https://suphakin-th.github.io/system-architecture-design-learning-book/fintech/04_loyalty_points_ledger/">
       
       
-        <link rel="prev" href="../03_payment_networks/">
+        <link rel="prev" href="../02_immutable_audit_log/">
       
       
-        <link rel="next" href="../06_zero_trust/">
+        <link rel="next" href="../03_payment_networks/">
       
       
         
@@ -26,7 +26,7 @@
     
     
       
-        <title>Security (HSM · PCI DSS) - System Architecture Design — Learning Book</title>
+        <title>Loyalty Points Ledger - System Architecture Design — Learning Book</title>
       
     
     
@@ -97,7 +97,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#security-hsm-pci-dss-encryption-in-financial-systems" class="md-skip">
+        <a href="#loyalty-points-ledger-expiring-transferable-points-done-right" class="md-skip">
           Skip to content
         </a>
       
@@ -132,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Security (HSM · PCI DSS)
+              Loyalty Points Ledger
             
           </span>
         </div>
@@ -2042,10 +2042,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../04_loyalty_points_ledger/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loyalty Points Ledger
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2061,6 +2088,186 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a Glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#senior-explains-to-junior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Senior Explains to Junior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redeem-fifo-by-expiry-not-by-amount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redeem: FIFO by Expiry, Not by Amount
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transfer-moves-points-never-resets-their-clock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transfer: Moves Points, Never Resets Their Clock
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expiry-lazy-read-eager-notify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expiry: Lazy Read, Eager Notify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-segment-and-period-actually-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where Segment and Period Actually Live
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ledger-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ledger Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-failure-modes-that-actually-cost-money" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two Failure Modes That Actually Cost Money
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-companies-using-this-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real Companies Using This Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real Companies Using This Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starbucks-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starbucks Rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grab-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grab Rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#airline-miles-all-major-carriers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Airline Miles (all major carriers)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-clean-architecture-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In Clean Architecture Terms
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2098,37 +2305,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Security (HSM · PCI DSS)
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../05_security_hsm_pci/" class="md-nav__link">
         
   
   
@@ -2144,209 +2324,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
-      
-        <li class="md-nav__item">
-  <a href="#at-a-glance" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        At a Glance
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-fundamental-principle-never-store-what-you-dont-need" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The Fundamental Principle: Never Store What You Don't Need
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hsm-hardware-security-module" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HSM - Hardware Security Module
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="HSM - Hardware Security Module">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-it-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What It Is
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hsm-in-the-payment-flow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HSM in the Payment Flow
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pci-dss-the-law-of-card-processing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PCI DSS - The Law of Card Processing
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PCI DSS - The Law of Card Processing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#the-12-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The 12 Requirements
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pci-compliance-levels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PCI Compliance Levels
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cardholder-data-what-you-can-and-cannot-store" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cardholder Data - What You Can and Cannot Store
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#encryption-architecture-for-financial-systems" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Encryption Architecture for Financial Systems
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Encryption Architecture for Financial Systems">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#encryption-at-rest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Encryption at Rest
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#encryption-in-transit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Encryption in Transit
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tokenization-the-modern-standard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tokenization - The Modern Standard
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#in-clean-architecture-terms" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        In Clean Architecture Terms
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sources
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -3147,10 +3124,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-fundamental-principle-never-store-what-you-dont-need" class="md-nav__link">
+  <a href="#senior-explains-to-junior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The Fundamental Principle: Never Store What You Don't Need
+        Senior Explains to Junior
       
     </span>
   </a>
@@ -3158,22 +3135,99 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hsm-hardware-security-module" class="md-nav__link">
+  <a href="#the-schema" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HSM - Hardware Security Module
+        The Schema
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="HSM - Hardware Security Module">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redeem-fifo-by-expiry-not-by-amount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redeem: FIFO by Expiry, Not by Amount
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transfer-moves-points-never-resets-their-clock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transfer: Moves Points, Never Resets Their Clock
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expiry-lazy-read-eager-notify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expiry: Lazy Read, Eager Notify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-segment-and-period-actually-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where Segment and Period Actually Live
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ledger-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ledger Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-failure-modes-that-actually-cost-money" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two Failure Modes That Actually Cost Money
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-companies-using-this-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real Companies Using This Pattern
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real Companies Using This Pattern">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-it-is" class="md-nav__link">
+  <a href="#starbucks-rewards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What It Is
+        Starbucks Rewards
       
     </span>
   </a>
@@ -3181,10 +3235,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#hsm-in-the-payment-flow" class="md-nav__link">
+  <a href="#grab-rewards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HSM in the Payment Flow
+        Grab Rewards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#airline-miles-all-major-carriers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Airline Miles (all major carriers)
       
     </span>
   </a>
@@ -3193,106 +3258,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pci-dss-the-law-of-card-processing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PCI DSS - The Law of Card Processing
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="PCI DSS - The Law of Card Processing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#the-12-requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        The 12 Requirements
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pci-compliance-levels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PCI Compliance Levels
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cardholder-data-what-you-can-and-cannot-store" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cardholder Data - What You Can and Cannot Store
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#encryption-architecture-for-financial-systems" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Encryption Architecture for Financial Systems
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Encryption Architecture for Financial Systems">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#encryption-at-rest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Encryption at Rest
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#encryption-in-transit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Encryption in Transit
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tokenization-the-modern-standard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tokenization - The Modern Standard
-      
-    </span>
-  </a>
   
 </li>
       
@@ -3301,17 +3266,6 @@
     <span class="md-ellipsis">
       
         In Clean Architecture Terms
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sources
       
     </span>
   </a>
@@ -3338,9 +3292,9 @@
   
 
 
-<h1 id="security-hsm-pci-dss-encryption-in-financial-systems">Security - HSM, PCI DSS, Encryption in Financial Systems<a class="headerlink" href="#security-hsm-pci-dss-encryption-in-financial-systems" title="Permanent link">¶</a></h1>
+<h1 id="loyalty-points-ledger-expiring-transferable-points-done-right">Loyalty Points Ledger - Expiring, Transferable Points Done Right<a class="headerlink" href="#loyalty-points-ledger-expiring-transferable-points-done-right" title="Permanent link">¶</a></h1>
 <blockquote>
-<p>"In financial security, the question is never 'can we afford the security?' The question is 'can we afford the breach?' One breach at a payment processor can cost $100M+ in fines, remediation, and reputation damage." - PCI QSA (Qualified Security Assessor)</p>
+<p>"A points balance is not a number. It's a set of promises with expiry dates, and every promise has to be honored in the order it was made." - Loyalty platform engineer</p>
 </blockquote>
 <hr>
 <h2 id="at-a-glance">At a Glance<a class="headerlink" href="#at-a-glance" title="Permanent link">¶</a></h2>
@@ -3353,251 +3307,329 @@
 </thead>
 <tbody>
 <tr>
-<td><strong>PCI DSS</strong></td>
-<td>Payment Card Industry Data Security Standard - mandatory for card processing</td>
+<td><strong>What</strong></td>
+<td>Points earned from spend, each batch carrying its own expiry date and transferable between users</td>
 </tr>
 <tr>
-<td><strong>HSM</strong></td>
-<td>Hardware Security Module - tamper-proof device that manages encryption keys</td>
+<td><strong>Why a single balance field fails</strong></td>
+<td>Can't tell which points expire next, can't guarantee oldest-first spend, can't reverse a transfer safely</td>
 </tr>
 <tr>
-<td><strong>Tokenization</strong></td>
-<td>Replace card number with a random token - store token, not card data</td>
+<td><strong>Key property</strong></td>
+<td>Balance is always derived: <code>SUM(remaining)</code> over unexpired lots - never a stored counter</td>
 </tr>
 <tr>
-<td><strong>Encryption</strong></td>
-<td>AES-256 at rest, TLS 1.3 in transit - all cardholder data encrypted</td>
+<td><strong>Used by</strong></td>
+<td>Every points/rewards program with an expiry policy - airlines, retail, banking cashback, ride-hailing</td>
 </tr>
 </tbody>
 </table>
 <hr>
-<h2 id="the-fundamental-principle-never-store-what-you-dont-need">The Fundamental Principle: Never Store What You Don't Need<a class="headerlink" href="#the-fundamental-principle-never-store-what-you-dont-need" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Senior to Junior:
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>"The safest cardholder data is the cardholder data you never store.
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a> Every byte of card data you store is a liability:
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  - PCI compliance scope expands
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  - Breach impact grows
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  - Regulatory exposure increases
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a> Modern approach: tokenize immediately at the edge.
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a> Only the payment processor (Stripe, Omise) stores card data.
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a> Your app stores only the TOKEN (useless to attackers)."
+<h2 id="senior-explains-to-junior">Senior Explains to Junior<a class="headerlink" href="#senior-explains-to-junior" title="Permanent link">¶</a></h2>
+<blockquote>
+<p>"New engineers reach for <code>users.points_balance INTEGER</code> and two functions: <code>addPoints()</code> and <code>deductPoints()</code>. That works right up until product asks for 'points expire after 12 months' and 'let users gift points to a friend.'</p>
+<p>Now you need to know: <em>which</em> points are about to expire? If Alice has 500 points and spends 200, which 200 disappear - the ones from March or the ones from August? If she gifts 100 points to Bob, does his gift expire on Bob's clock or the day Alice's original batch would have expired?</p>
+<p>The fix is the same one financial ledgers use for money: stop storing a balance. Store every earn event as its own row - a <strong>lot</strong> - with its own expiry, and record every change as an entry in an immutable transaction log. The balance is just a query."</p>
+</blockquote>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Single-balance way (what most beginners code):
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  user.points += 100        // earned from a purchase
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  user.points -= 30         // redeemed at checkout
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Problem: no idea which 100 expires when, no order to spend in,
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  no way to reverse a redemption to the correct source.
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Lot-based ledger way:
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  INSERT point_lots (user_id, amount, remaining, earned_at, expires_at)
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  INSERT point_transactions (lot_id, type, delta, ref_id)
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  Balance = SUM(remaining) WHERE expires_at &gt; now()
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  Spend always drains the lot with the soonest expires_at first (FIFO).
 </span></code></pre></div>
 <hr>
-<h2 id="hsm-hardware-security-module">HSM - Hardware Security Module<a class="headerlink" href="#hsm-hardware-security-module" title="Permanent link">¶</a></h2>
-<h3 id="what-it-is">What It Is<a class="headerlink" href="#what-it-is" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>An HSM is a dedicated cryptographic device that:
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  - Stores encryption keys in tamper-proof hardware (keys NEVER leave the device)
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  - Performs cryptographic operations (encrypt, decrypt, sign, verify)
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  - Self-destructs if physically tampered (keys erased on tampering detection)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  - Processes operations in microseconds (dedicated cryptographic ASICs)
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Without HSM:
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  Encryption keys stored in application memory or configuration files
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  If server is compromised: attacker gets the key + the encrypted data = full breach
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>With HSM:
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  Encryption keys stored inside tamper-proof hardware
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  If server is compromised: attacker gets encrypted data but NO key = useless
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  HSM only decrypts when the application authenticates to it
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  HSM physically destroys keys if tampered with
+<h2 id="the-schema">The Schema<a class="headerlink" href="#the-schema" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>erDiagram
+    USERS ||--o{ POINT_LOTS : earns
+    POINT_LOTS ||--o{ POINT_TRANSACTIONS : "recorded on"
+
+    USERS {
+        uuid id PK
+        string name
+        string tier
+    }
+    POINT_LOTS {
+        uuid id PK
+        uuid user_id FK
+        int amount
+        int remaining
+        string source
+        timestamp earned_at
+        timestamp expires_at
+        string status
+    }
+    POINT_TRANSACTIONS {
+        bigint id PK
+        uuid lot_id FK
+        string type
+        int delta
+        uuid ref_id
+        timestamp created_at
+    }</code></pre>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">point_lots</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="n">id</span><span class="w">          </span><span class="n">UUID</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">gen_random_uuid</span><span class="p">(),</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">user_id</span><span class="w">     </span><span class="n">UUID</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">users</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="n">amount</span><span class="w">      </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">amount</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="n">remaining</span><span class="w">   </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">remaining</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">source</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">              </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="k">source</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'purchase'</span><span class="p">,</span><span class="s1">'promo'</span><span class="p">,</span><span class="s1">'transfer'</span><span class="p">,</span><span class="s1">'manual_adjust'</span><span class="p">)),</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="n">earned_at</span><span class="w">   </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="n">expires_at</span><span class="w">  </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="n">status</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'active'</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">              </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'active'</span><span class="p">,</span><span class="s1">'expired'</span><span class="p">,</span><span class="s1">'closed'</span><span class="p">)),</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">remaining</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">amount</span><span class="p">)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">);</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_point_lots_spend_order</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">point_lots</span><span class="w"> </span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="n">expires_at</span><span class="p">)</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">  </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">remaining</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">point_transactions</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="n">id</span><span class="w">              </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">  </span><span class="n">lot_id</span><span class="w">          </span><span class="n">UUID</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">point_lots</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">  </span><span class="k">type</span><span class="w">            </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">                  </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="k">type</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'earn'</span><span class="p">,</span><span class="s1">'redeem'</span><span class="p">,</span><span class="s1">'expire'</span><span class="p">,</span><span class="s1">'transfer_out'</span><span class="p">,</span><span class="s1">'transfer_in'</span><span class="p">,</span><span class="s1">'reverse'</span><span class="p">)),</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">  </span><span class="n">delta</span><span class="w">           </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">  </span><span class="n">ref_id</span><span class="w">          </span><span class="n">UUID</span><span class="p">,</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">  </span><span class="n">idempotency_key</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">  </span><span class="n">created_at</span><span class="w">      </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="p">);</span>
 </span></code></pre></div>
-<h3 id="hsm-in-the-payment-flow">HSM in the Payment Flow<a class="headerlink" href="#hsm-in-the-payment-flow" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Card Processing Flow WITH HSM:
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>1. Customer types card number on checkout page
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a> -&gt; Encrypted in browser using Stripe.js (never hits your server)
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a> -&gt; OR: card number transmitted to payment terminal
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>2. Payment terminal uses HSM to:
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a> -&gt; Validate PIN (HSM performs PIN verification, PIN never leaves HSM)
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a> -&gt; Derive session key (HSM generates unique key per transaction)
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a> -&gt; Encrypt card data (HSM encrypts, key never leaves HSM)
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>3. Encrypted card data travels to your payment processor
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a> -&gt; Even if intercepted: encrypted with key only in HSM
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>4. Payment processor's HSM:
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a> -&gt; Decrypts card data (using their HSM key)
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a> -&gt; Performs authorization
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a> -&gt; Issues CVV/PIN verification
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a> -&gt; All within the HSM - raw card data never in server memory
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>HSM vendors used by banks:
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>  Thales Luna (HSBC, Deutsche Bank, BNP Paribas)
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>  Futurex Vectera Plus (US banks, Visa/Mastercard processors)
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>  AWS CloudHSM (cloud-native, used by fintech startups)
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>  Azure Dedicated HSM (Microsoft cloud)
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>  nCipher nShield (many European banks)
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Balance is always derived, never stored</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">user_point_balances</span><span class="w"> </span><span class="k">AS</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">SELECT</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="n">user_id</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="k">SUM</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">balance</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="k">MIN</span><span class="p">(</span><span class="n">expires_at</span><span class="p">)</span><span class="w"> </span><span class="n">FILTER</span><span class="w"> </span><span class="p">(</span><span class="k">WHERE</span><span class="w"> </span><span class="n">remaining</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">next_expiry</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">FROM</span><span class="w"> </span><span class="n">point_lots</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">expires_at</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">user_id</span><span class="p">;</span>
 </span></code></pre></div>
 <hr>
-<h2 id="pci-dss-the-law-of-card-processing">PCI DSS - The Law of Card Processing<a class="headerlink" href="#pci-dss-the-law-of-card-processing" title="Permanent link">¶</a></h2>
-<p>PCI DSS (Payment Card Industry Data Security Standard) is maintained by the PCI Security Standards Council (founded by Visa, Mastercard, AmEx, Discover, JCB).</p>
-<h3 id="the-12-requirements">The 12 Requirements<a class="headerlink" href="#the-12-requirements" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Requirement 1:  Install and maintain firewall/network security controls
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Requirement 2:  Do not use vendor-supplied defaults for system passwords
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Requirement 3:  Protect stored cardholder data (encrypt or don't store)
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Requirement 4:  Protect cardholder data with strong cryptography in transit
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Requirement 5:  Protect all systems and networks from malicious software
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Requirement 6:  Develop and maintain secure systems and software
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Requirement 7:  Restrict access to system components by business need
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>Requirement 8:  Identify users and authenticate access to system components
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Requirement 9:  Restrict physical access to cardholder data
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>Requirement 10: Log and monitor all access to network resources and cardholder data
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Requirement 11: Test security of systems and networks regularly
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>Requirement 12: Support information security with organizational policies
+<h2 id="redeem-fifo-by-expiry-not-by-amount">Redeem: FIFO by Expiry, Not by Amount<a class="headerlink" href="#redeem-fifo-by-expiry-not-by-amount" title="Permanent link">¶</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Before["Before: redeem 70 pts"]
+        L1["Lot 1 - 40 pts&lt;br/&gt;expires Jun"]
+        L2["Lot 2 - 60 pts&lt;br/&gt;expires Sep"]
+        L3["Lot 3 - 25 pts&lt;br/&gt;expires Feb"]
+    end
+    subgraph After["After: FIFO by expires_at"]
+        A1["Lot 1 - 0 pts&lt;br/&gt;closed"]
+        A2["Lot 2 - 30 pts&lt;br/&gt;expires Sep"]
+        A3["Lot 3 - 25 pts&lt;br/&gt;untouched"]
+    end
+    L1 -- "drain fully (40)" --&gt; A1
+    L2 -- "drain partially (30 of 60)" --&gt; A2
+    L3 -. "not touched" .-&gt; A3</code></pre>
+<div class="language-typescript highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">redeemPoints</span><span class="p">(</span><span class="nx">params</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nx">userId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nx">amount</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nx">orderId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nx">idempotencyKey</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">})</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">already</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="sb">`SELECT 1 FROM point_transactions WHERE idempotency_key = $1`</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="p">[</span><span class="nx">params</span><span class="p">.</span><span class="nx">idempotencyKey</span><span class="p">]</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="p">);</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">already</span><span class="p">.</span><span class="nx">rows</span><span class="p">[</span><span class="mf">0</span><span class="p">])</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="c1">// already processed this checkout</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">transaction</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">trx</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">lots</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">trx</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">      </span><span class="sb">`SELECT id, remaining FROM point_lots</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="sb">       WHERE user_id = $1 AND status = 'active' AND remaining &gt; 0</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="sb">       ORDER BY expires_at ASC</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="sb">       FOR UPDATE`</span><span class="p">,</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">      </span><span class="p">[</span><span class="nx">params</span><span class="p">.</span><span class="nx">userId</span><span class="p">]</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="p">);</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">toSpend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">params</span><span class="p">.</span><span class="nx">amount</span><span class="p">;</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">lot</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">lots</span><span class="p">.</span><span class="nx">rows</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">toSpend</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">take</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">lot</span><span class="p">.</span><span class="nx">remaining</span><span class="p">,</span><span class="w"> </span><span class="nx">toSpend</span><span class="p">);</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">      </span><span class="k">await</span><span class="w"> </span><span class="nx">trx</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">        </span><span class="sb">`UPDATE point_lots SET remaining = remaining - $1 WHERE id = $2`</span><span class="p">,</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">        </span><span class="p">[</span><span class="nx">take</span><span class="p">,</span><span class="w"> </span><span class="nx">lot</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">      </span><span class="p">);</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">      </span><span class="k">await</span><span class="w"> </span><span class="nx">trx</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">        </span><span class="sb">`INSERT INTO point_transactions (lot_id, type, delta, ref_id, idempotency_key)</span>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="sb">         VALUES ($1, 'redeem', $2, $3, $4)`</span><span class="p">,</span>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">        </span><span class="p">[</span><span class="nx">lot</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="nx">take</span><span class="p">,</span><span class="w"> </span><span class="nx">params</span><span class="p">.</span><span class="nx">orderId</span><span class="p">,</span><span class="w"> </span><span class="nx">params</span><span class="p">.</span><span class="nx">idempotencyKey</span><span class="p">]</span>
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">      </span><span class="p">);</span>
+</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">      </span><span class="nx">toSpend</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="nx">take</span><span class="p">;</span>
+</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>
+</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">toSpend</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">InsufficientPointsError</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">amount</span><span class="p">,</span><span class="w"> </span><span class="nx">toSpend</span><span class="p">);</span>
+</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="w">  </span><span class="p">});</span>
+</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="pci-compliance-levels">PCI Compliance Levels<a class="headerlink" href="#pci-compliance-levels" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Level 1: &gt; 6 million card transactions/year
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a> -&gt; Annual on-site audit by Qualified Security Assessor (QSA)
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a> -&gt; Quarterly network scan by Approved Scanning Vendor (ASV)
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a> -&gt; Who: Visa, Mastercard, Stripe, PayPal, large banks
+<hr>
+<h2 id="transfer-moves-points-never-resets-their-clock">Transfer: Moves Points, Never Resets Their Clock<a class="headerlink" href="#transfer-moves-points-never-resets-their-clock" title="Permanent link">¶</a></h2>
+<p>The one rule that matters here: a transferred lot <strong>inherits</strong> the sender's original
+<code>expires_at</code>. If transfers reset the clock, customers launder points that are about to
+expire into a fresh 12-month lot by sending them to a second account and back.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant A as User A (Lot 3, 25 pts, exp Feb)
+    participant DB as point_lots / point_transactions
+    participant B as User B
+
+    A-&gt;&gt;DB: transfer_out 20 (ref: transfer_789)
+    DB--&gt;&gt;DB: Lot 3.remaining = 5 (still expires Feb)
+    DB-&gt;&gt;B: transfer_in 20 (new Lot 4)
+    Note over B: Lot 4.expires_at = Feb - copied from Lot 3, not reset</code></pre>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">-- Sender side: consume the sender's lot(s) FIFO, same as a redeem</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">point_lots</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">remaining</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">remaining</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lot_a3'</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">point_transactions</span><span class="w"> </span><span class="p">(</span><span class="n">lot_id</span><span class="p">,</span><span class="w"> </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">ref_id</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'lot_a3'</span><span class="p">,</span><span class="w"> </span><span class="s1">'transfer_out'</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">'transfer_789'</span><span class="p">);</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Level 2: 1-6 million transactions/year
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a> -&gt; Annual Self-Assessment Questionnaire (SAQ) + QSA review
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a> -&gt; Quarterly ASV scan
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a> -&gt; Who: mid-size merchants, regional payment processors
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1">-- Receiver side: a NEW lot, but expires_at copied from the source lot</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">point_lots</span><span class="w"> </span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="n">remaining</span><span class="p">,</span><span class="w"> </span><span class="k">source</span><span class="p">,</span><span class="w"> </span><span class="n">earned_at</span><span class="p">,</span><span class="w"> </span><span class="n">expires_at</span><span class="p">)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">'user_bob'</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">'transfer'</span><span class="p">,</span><span class="w"> </span><span class="n">NOW</span><span class="p">(),</span><span class="w"> </span><span class="n">expires_at</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">point_lots</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lot_a3'</span><span class="p">;</span>
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>Level 3: 20,000-1 million e-commerce transactions/year
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a> -&gt; Annual SAQ
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a> -&gt; Quarterly ASV scan
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>Level 4: &lt; 20,000 e-commerce OR &lt; 1 million all channels
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a> -&gt; Annual SAQ
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a> -&gt; Recommended quarterly ASV scan
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a> -&gt; Most small businesses
-</span></code></pre></div>
-<h3 id="cardholder-data-what-you-can-and-cannot-store">Cardholder Data - What You Can and Cannot Store<a class="headerlink" href="#cardholder-data-what-you-can-and-cannot-store" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Card data:
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  PAN (Primary Account Number) = the 16-digit card number
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  Cardholder Name
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  Expiration Date
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  Service Code
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Sensitive Authentication Data (SAD) - NEVER store after authorization:
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  Full magnetic stripe data
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  CVV/CVC/CVV2/CID (the 3-4 digit security code)
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  PIN / PIN block
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>What you CAN store (with encryption + PCI controls):
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  PAN (masked to first 6 + last 4: 4111-XXXX-XXXX-1111)
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  Cardholder name
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>  Expiration date
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>What most apps SHOULD do:
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>  Store NOTHING - use tokenization instead
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>  Stripe, Omise, 2C2P: give you a token
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>  Store the token (useless to attackers, useful to you for recurring charges)
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">point_transactions</span><span class="w"> </span><span class="p">(</span><span class="n">lot_id</span><span class="p">,</span><span class="w"> </span><span class="k">type</span><span class="p">,</span><span class="w"> </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">ref_id</span><span class="p">)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">currval</span><span class="p">(</span><span class="s1">'point_lots_id_seq'</span><span class="p">),</span><span class="w"> </span><span class="s1">'transfer_in'</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">'transfer_789'</span><span class="p">);</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="c1">-- ref_id ties both legs of the transfer together for audit/reversal</span>
 </span></code></pre></div>
 <hr>
-<h2 id="encryption-architecture-for-financial-systems">Encryption Architecture for Financial Systems<a class="headerlink" href="#encryption-architecture-for-financial-systems" title="Permanent link">¶</a></h2>
-<h3 id="encryption-at-rest">Encryption at Rest<a class="headerlink" href="#encryption-at-rest" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Tier 1: Database encryption (AES-256)
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  PostgreSQL: pgcrypto or Transparent Data Encryption (TDE)
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  RDS: encryption enabled at instance level (AWS KMS key)
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  All card data, PII, account numbers encrypted at rest
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Tier 2: Column-level encryption
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  Specific sensitive columns encrypted with application-managed keys
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  Even DBA cannot read raw values - only encrypted ciphertext
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  Key stored in HSM or AWS KMS (not on the same server as data)
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Tier 3: File-level encryption
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>  Database backups encrypted before storing to S3
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>  Encryption key separate from the backup
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>Best practice (Stripe, Monzo approach):
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>  Envelope encryption:
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>    Data encrypted with Data Encryption Key (DEK)
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    DEK encrypted with Key Encryption Key (KEK) stored in HSM/KMS
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    Only the encrypted DEK is stored with the data
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>    To decrypt: KMS decrypts the DEK, then DEK decrypts data
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    Even if database is stolen: data is protected (no DEK)
-</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    Even if DEK is stolen: KEK is in HSM (not accessible)
-</span></code></pre></div>
-<h3 id="encryption-in-transit">Encryption in Transit<a class="headerlink" href="#encryption-in-transit" title="Permanent link">¶</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>All financial APIs: TLS 1.3 minimum (never TLS 1.0 or 1.1)
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  TLS 1.3 improvements over 1.2:
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    - Forward secrecy by default (past traffic can't be decrypted if key compromised)
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    - Faster handshake (1-RTT vs 2-RTT)
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    - Removed weak ciphers (RC4, 3DES, MD5)
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Internal service-to-service: mTLS (mutual TLS)
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  Both client AND server present certificates
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  Server authenticates client -&gt; no impersonation attacks
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Used by: Istio service mesh, all service-to-service in payment systems
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Certificate pinning (mobile apps):
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  App hard-codes the expected server certificate fingerprint
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>  Even if attacker has a valid CA certificate -&gt; won't match pinned cert
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>  Man-in-the-middle becomes impossible
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>  Used by: banking apps worldwide
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>API security:
-</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>  Signed requests: HMAC-SHA256 signature on request body
-</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>  Prevents: request tampering in transit
-</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>  Used by: Stripe webhooks, AWS API, most financial APIs
+<h2 id="expiry-lazy-read-eager-notify">Expiry: Lazy Read, Eager Notify<a class="headerlink" href="#expiry-lazy-read-eager-notify" title="Permanent link">¶</a></h2>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">-- Lazy: correctness needs no cron at all - a lot past its date is worth 0 on read</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">remaining</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">point_lots</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">expires_at</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">NOW</span><span class="p">();</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">-- Eager (nightly job): close expired lots and write the formal ledger entry,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1">-- so reporting and "points expiring soon" notifications have something to read</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">point_lots</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'expired'</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'active'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">expires_at</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">remaining</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="n">RETURNING</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">remaining</span><span class="p">;</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1">-- for each returned row: INSERT INTO point_transactions (lot_id, type, delta)</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1">--   VALUES (id, 'expire', -remaining)</span>
 </span></code></pre></div>
 <hr>
-<h2 id="tokenization-the-modern-standard">Tokenization - The Modern Standard<a class="headerlink" href="#tokenization-the-modern-standard" title="Permanent link">¶</a></h2>
-<p>The flow below shows how a real card number is exchanged for a useless-to-attackers token, so your application never stores the PAN.</p>
-<pre class="mermaid"><code>flowchart TD
-    A["Customer enters card: real PAN"] --&gt; B["Tokenization Service (Stripe, Omise)"]
-    B --&gt; B1["Stores real PAN in their vault (PCI Level 1)"]
-    B --&gt; B2["Returns token: tok_abc123xyz"]
-    B2 --&gt; C["Your application stores: tok_abc123xyz"]
-    C --&gt; D["Your database NEVER sees the real card number"]
-    C --&gt; E["Your PCI scope MASSIVELY reduced"]</code></pre>
-<p><strong>When you need to charge again:</strong> send <code>tok_abc123xyz</code> to Stripe. Stripe looks up the real PAN on its side and charges it. Your system never touches the real card number.</p>
-<p><strong>Network tokenization (the next level up):</strong></p>
+<h2 id="where-segment-and-period-actually-live">Where Segment and Period Actually Live<a class="headerlink" href="#where-segment-and-period-actually-live" title="Permanent link">¶</a></h2>
+<p>A common mistake is to add <code>segment</code> or <code>period</code> columns to the points tables.
+Neither belongs there:</p>
 <ul>
-<li>Visa Token Service / Mastercard Digital Enablement Service.</li>
-<li>Replaces the PAN with a network token that is specific to one merchant.</li>
-<li>Even if the token is stolen, it only works for that one merchant.</li>
-<li>Revocable: the token can be invalidated without reissuing the physical card.</li>
-<li>Used by Apple Pay, Google Pay, and Samsung Pay.</li>
+<li><strong>Segment</strong> is a property of the <em>user</em> (tier, cohort) - it decides the earn rate or
+  the lot's expiry length <em>at the moment a lot is created</em>, e.g. <code>tier = 'gold'</code> -&gt; lots
+  expire in 24 months instead of 12. It is never stored on the lot itself.</li>
+<li><strong>Period</strong> is not a stored concept at all - it's a <code>WHERE earned_at BETWEEN ...</code> filter
+  over the same ledger, used for reporting ("points earned in Q3").</li>
+</ul>
+<hr>
+<h2 id="ledger-reference">Ledger Reference<a class="headerlink" href="#ledger-reference" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>effect on lot</th>
+<th>sign</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>earn</code></td>
+<td>creates a new lot with amount = remaining</td>
+<td>+</td>
+</tr>
+<tr>
+<td><code>redeem</code></td>
+<td>decrements remaining, FIFO by expires_at</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>expire</code></td>
+<td>zeroes remaining once expires_at has passed</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>transfer_out</code></td>
+<td>decrements sender's lot(s), FIFO by expires_at</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>transfer_in</code></td>
+<td>creates a receiver lot, expires_at copied from source</td>
+<td>+</td>
+</tr>
+<tr>
+<td><code>reverse</code></td>
+<td>restores remaining on the original lot_id from the ref'd transaction</td>
+<td>+</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="two-failure-modes-that-actually-cost-money">Two Failure Modes That Actually Cost Money<a class="headerlink" href="#two-failure-modes-that-actually-cost-money" title="Permanent link">¶</a></h2>
+<p><strong>Redundant issuance (double-crediting).</strong> The <code>idempotency_key</code> on <code>point_transactions</code>
+is the entire fix - a checkout retry, a webhook fired twice, or a duplicate queue job all
+resolve to the same key, so the second write is a no-op. Points must be issued from the
+confirmed server-side payment/order event exactly once, never from a client-supplied signal.</p>
+<p><strong>Point inflation (currency devaluation).</strong> An unredeemed point is a liability, not a UI
+number - track <code>SUM(remaining)</code> the way a bank tracks deposits owed. If the earn rate
+grows faster than redemption + expiry, that liability balloons the same way printing more
+of a currency does. Two guardrails:</p>
+<ul>
+<li>Cap the earn rate per order server-side (never trust a client-supplied point amount).</li>
+<li>Expiry is the deliberate inflation control - lots that go unclaimed roll off the
+  liability by design, which is why almost no points program ships with no expiry at all.</li>
+</ul>
+<p>A simple health metric: <code>outstanding_liability / monthly_redemption_volume</code>. A rising
+ratio means points are being issued faster than the business can afford to honor them.</p>
+<hr>
+<h2 id="real-companies-using-this-pattern">Real Companies Using This Pattern<a class="headerlink" href="#real-companies-using-this-pattern" title="Permanent link">¶</a></h2>
+<h3 id="starbucks-rewards">Starbucks Rewards<a class="headerlink" href="#starbucks-rewards" title="Permanent link">¶</a></h3>
+<ul>
+<li>Stars (points) earned per purchase expire on a rolling 6- or 12-month window depending on tier</li>
+<li>Each earn batch tracked separately so the app can show "X stars expiring this month"</li>
+</ul>
+<h3 id="grab-rewards">Grab Rewards<a class="headerlink" href="#grab-rewards" title="Permanent link">¶</a></h3>
+<ul>
+<li>Points from rides/food orders carry individual expiry dates</li>
+<li>Points can be redeemed across a marketplace of partner merchants - spend order matters for partner settlement</li>
+</ul>
+<h3 id="airline-miles-all-major-carriers">Airline Miles (all major carriers)<a class="headerlink" href="#airline-miles-all-major-carriers" title="Permanent link">¶</a></h3>
+<ul>
+<li>The oldest textbook case of lot-based expiry - miles from each earning trip historically expired independently</li>
+<li>Modern programs (many airlines now "no-expiry-while-active") still track lot provenance for status-qualifying vs. redeemable distinctions</li>
 </ul>
 <hr>
 <h2 id="in-clean-architecture-terms">In Clean Architecture Terms<a class="headerlink" href="#in-clean-architecture-terms" title="Permanent link">¶</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Security = Cross-cutting concern (every layer has security responsibilities)
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Presentation Layer (Controller):
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  - Validate input (reject malicious input before it reaches use case)
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  - Apply rate limiting (prevent brute force)
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  - Authenticate requests (JWT, API key, session)
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  - Never log sensitive data (no PANs in application logs)
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>Use Case Layer:
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>  - Never store raw card data (call ITokenizationService instead)
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>  - Enforce business-level authorization ("can this user access this account?")
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  - Generate idempotency keys
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>Interface Adapters:
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>  ITokenizationService -&gt; StripeTokenizationAdapter
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>    (Stripe handles PCI scope for you)
-</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>  IEncryptionService -&gt; HSMEncryptionAdapter
-</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>    (HSM handles key management for you)
-</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
-</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>Infrastructure Layer:
-</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>  TLS termination at load balancer
-</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>  mTLS between all internal services
-</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>  Database encryption via KMS
-</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>  HSM-backed key storage
-</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>
-</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>Clean Architecture benefit:
-</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>  ITokenizationService (port) defined in use case layer
-</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>  If you switch from Stripe to Omise:
-</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>    Change StripeTokenizationAdapter -&gt; OmiseTokenizationAdapter
-</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>    Use case code unchanged
-</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>    Business rule "tokenize before storing" unchanged
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Point Lot Ledger = Domain Layer
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>PointLot = Entity (aggregate root)
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  id, user_id, amount, remaining, earned_at, expires_at, status
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>PointTransaction = Entity (immutable once created)
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  lot_id, type, delta, ref_id, created_at
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>RedeemPoints = Use Case
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  execute(userId, amount, orderId, idempotencyKey): void
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  Enforces FIFO-by-expiry - this rule lives here, not in the repository
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>TransferPoints = Use Case
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>  execute(fromUserId, toUserId, amount, idempotencyKey): void
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>  Enforces expiry inheritance - this rule lives here too
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>IPointLedgerRepository = Port
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>  lockActiveLots(userId): PointLot[]
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>  recordTransaction(lotId, type, delta, refId): void
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>PointLedgerRepositoryPostgres = Adapter
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>  All SQL and row locking logic here
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>ExpirePointsJob = Use Case (scheduled, nightly)
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>  closeExpiredLots(): void
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>The domain rule never moves to the adapter:
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>  Spend order = expires_at ascending. Transfer = expiry inherited, not reset.
 </span></code></pre></div>
-<hr>
-<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">¶</a></h2>
-<ul>
-<li><a href="https://pcidssguide.com/hsms-for-pci-dss-compliance/">HSMs for PCI DSS Compliance - PCI DSS Guide</a></li>
-<li><a href="https://www.pcisecuritystandards.org/about_us/press_releases/pci-security-standards-council-updates-hardware-security-module-standard/">PCI Security Standards Council - HSM Standard</a></li>
-<li><a href="https://www.fortinet.com/resources/cyberglossary/hardware-security-module">What is Hardware Security Module - Fortinet</a></li>
-</ul>
 
 
 
@@ -3620,7 +3652,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 26, 2026 00:43:44 +07">June 26, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 9, 2026 13:27:28 +07">September 9, 2026</span>
   </span>
 
     
@@ -3630,7 +3662,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 21, 2026 23:12:06 +07">June 21, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 9, 2026 13:27:28 +07">September 9, 2026</span>
   </span>
 
     
@@ -3669,7 +3701,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer">
         
           
-          <a href="../03_payment_networks/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Payment Networks (Visa · SWIFT · PromptPay)">
+          <a href="../02_immutable_audit_log/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Immutable Audit Log">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -3679,20 +3711,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Payment Networks (Visa · SWIFT · PromptPay)
+                Immutable Audit Log
               </div>
             </div>
           </a>
         
         
           
-          <a href="../06_zero_trust/" class="md-footer__link md-footer__link--next" aria-label="Next: Zero Trust Network">
+          <a href="../03_payment_networks/" class="md-footer__link md-footer__link--next" aria-label="Next: Payment Networks (Visa · SWIFT · PromptPay)">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Zero Trust Network
+                Payment Networks (Visa · SWIFT · PromptPay)
               </div>
             </div>
             <div class="md-footer__button md-icon">
